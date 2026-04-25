@@ -1,0 +1,343 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath,mathtools,amsthm,fancyhdr,amssymb,bbm, enumerate,float, mathrsfs}
+%\usepackage[hmargin=1.0in, vmargin=1.0in ]{geometry}
+\usepackage{tcolorbox}
+\usepackage{appendix}
+\tcbuselibrary{breakable}
+\usepackage{listings}
+\usepackage{color, comment}
+\usepackage{accents}
+\usepackage{hyperref}
+\hypersetup{
+colorlinks,
+linkcolor=blue,
+anchorcolor=blue,
+citecolor=blue
+}
+
+\mathtoolsset{showonlyrefs,showmanualtags} % show only reffered equation numbers 
+
+\newcommand{\reall}{\mathbb{R}}
+\newcommand{\Sp}{\mathbb{S}}
+\newcommand{\cpx}{\mathbb{C}}
+\newcommand{\x}{\mathbf{x}}
+\newcommand{\y}{\mathbf{y}}
+\newcommand{\z}{\mathbf{z}}
+\renewcommand{\a}{\mathbf{a}}
+\newcommand{\one}{\mathbbm{1}}
+\newcommand{\scl}[2]{\left\langle #1\,,\, #2\right\rangle}
+\newcommand{\om}{\omega}
+\newcommand{\vr}{\varrho}
+\newcommand{\vp}{\varphi}
+\newcommand{\dr}[1]{\left(#1\right)}
+\newcommand{\ds}[1]{\left[#1\right]}
+\newcommand{\dn}[1]{\left\|#1\right\|}
+\newcommand{\da}[1]{\left|#1\right|}
+\newcommand{\Rmnum}[1]{\uppercase\expandafter{\romannumeral#1}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\pa}{\partial}
+\newcommand{\Span}{\mathrm{Span\,}}
+\newcommand{\inn}{\textup{in}}
+\newcommand{\out}{\textup{ex}}
+\renewcommand{\mod}{\textup{mod}}
+\newcommand{\Mod}{\textup{Mod}}
+\newcommand{\ric}{\textup{Ric}}
+\newcommand{\NL}{\textup{NL}}
+\newcommand{\BS}{\mathrm{BS}}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+
+\numberwithin{equation}{section}
+
+\topmargin 5mm
+\textheight 220mm
+\textwidth 165mm
+\oddsidemargin 4mm
+\evensidemargin 4mm
+
+
+\newcommand{\Ac}{\mathcal{A}}
+\newcommand{\Bc}{\mathcal{B}}
+\newcommand{\Cc}{\mathcal{C}}
+\newcommand{\Dc}{\mathcal{D}}
+\newcommand{\Ec}{\mathcal{E}}
+\newcommand{\Fc}{\mathcal{F}}
+\newcommand{\Gc}{\mathcal{G}}
+\newcommand{\Hc}{\mathcal{H}}
+\newcommand{\Lc}{\mathcal{L}}
+\newcommand{\Oc}{\mathcal{O}}
+\newcommand{\Mc}{\mathcal{M}}
+\newcommand{\Nc}{\mathcal{N}}
+\newcommand{\Qc}{\mathcal{Q}}
+\newcommand{\Rc}{\mathcal{R}}
+\newcommand{\Sc}{\mathcal{S}}
+\newcommand{\Tc}{\mathcal{T}}
+\newcommand{\Uc}{\mathcal{U}}
+\newcommand{\Vc}{\mathcal{V}}
+\newcommand{\Ls}{\mathscr{L}}
+\newcommand{\Ms}{\mathscr{M}}
+\newcommand{\Hs}{\mathscr{H}}
+\newcommand{\As}{\mathscr{A}}
+
+\title{Nonuniqueness of the 2D Navier-Stokes equation with time-dependent viscosity}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+\subsection{Nonuniqueness of the 2D Euler equation}
+Consider the $2$D Euler equation in the vorticity form
+\begin{equation}\label{2D Euler eq}
+    \pa_t\omega + v\cdot\nabla\omega = f,\quad v(\cdot,t) = \nabla^\perp\Delta^{-1}\omega(\cdot,t) = K_2*\omega(\cdot,t),\quad (x,t)\in\reall^2\times(0<+\infty),\tag{Eu}
+\end{equation}
+where $K_2$ is the usual 2-dimensional Biot-Savart kernel. We consider the Cauchy problem of \eqref{2D Euler eq}:
+\[
+    \omega(x,0) = \omega_0(x).
+\]
+Classical uniqueness result of Yudovich (1963):
+\begin{theorem}[Yudovich]
+Consider a strictly positive $T>0$, an initial vorticity $\omega_0\in L^1\cap L^\infty$ with $v_0 = K_2*\omega_0\in L^2$ and an external force $f\in L^1([0,T];L^1\cap L^\infty)$ with $K_2*f\in L^1([0,T];L^2)$. Then, there is a unique solution $\omega$ to the Cauchy problem of \eqref{2D Euler eq} on $\reall^2\times[0,T]$ satisfying the estimates $\omega\in L^\infty([0,T];L^1\cap L^\infty)$ and $v = K_2*\omega\in L^\infty([0,T];L^2)$.
+\end{theorem}
+\textbf{Question:} How sharp is Yudovich's uniqueness theorem? In particular, does uniqueness holds for $L^p\;(p<\infty)$ initial data? Here comes the groundbreaking results of Vishik (\cite{vishik2018I,vishik2018II}, later demonstrated by \cite{Instability_after_Vishik}):
+\begin{theorem}
+    For every $p\in (2,\infty)$ there exist $\omega_0\in L^1\cap L^p$, $v_0\in L^2$ and forcing $f\in L^1([0,T];L^1\cap L^p)$ with $K_2*f\in L^1([0,T];L^2)$ for every $T<\infty$, such that there are uncountably many solutions $(\omega,v)$ of \eqref{2D Euler eq} with the same  initial data $(\omega_0,v_0)$, satisfying $\omega\in L^\infty([0,T];L^1\cap L^\infty)$ and $v\in L^\infty([0,T];L^2)$. Moreover, $\omega_0$ can be chosen to vanish identically.
+\end{theorem}
+The mechanism behind: unstable self-similar vortex. Consider the self-similar change of variables:
+\begin{equation}\label{self-similar change of variables mu}
+    \omega(x,t) = \frac{1}{t}\Omega\dr{\frac{x}{t^{\mu}},\tau},\quad v(x,t) =\frac{1}{t^{1-\mu}}V\dr{\frac{x}{t^{\mu}},\tau} ,\quad \tau = \log(t),\quad y:=\frac{x}{t^{\mu}},\quad \mu>0.
+\end{equation}
+Then, $\Omega$ solves the self-similar equation:
+\begin{equation}\label{self-similar Euler}
+    \pa_\tau \Omega - \dr{1+\mu y\cdot\nabla}\Omega + (V\cdot\nabla)\Omega = F.
+\end{equation}
+Suppose that $(\bar \Omega, \bar V)$ is a steady state solution to \eqref{self-similar Euler}, then the unstable mode of the associated linearized operator can trigger nonuniqueness:
+\begin{equation}\label{Euler: linear instability}
+    \Lc_{\bar\Omega}\eta :=(1+\mu y\cdot\nabla)\eta-\bar V\cdot\nabla\eta - (K_2*\eta)\cdot\nabla\bar\Omega = \lambda\eta,\quad \Re(\lambda)>0. 
+\end{equation}
+If the above holds true for some suitable $\eta$, then a second solution (the first solution is just $\bar\Omega$ itself) with the same initial data can be constructed as
+\begin{equation}
+    \Omega = \bar\Omega + \Re\dr{e^{\lambda\tau}\eta}+ \tilde\Omega,
+\end{equation}
+where the remainder $\tilde \Omega$ can be shown to be of lower order as $\tau\to -\infty$ (i.e., $t\to 0^+$) via nonlinear analysis. The key part in Vishik's proof is the construction of the unstable vortex such that \eqref{Euler: linear instability} holds. The forcing plays an important role as it gives the freedom to \textit{choose} the vortex profile by ourselves (in Vishik's setting, $\bar \Omega$ can even belongs to $C^\infty_0(\reall^2)$). \\
+Impact of Vishk's result: nonuniqueness of Leray-Hopf solutions to the $3$D forced Navier-Stokes equations \cite{abc_forcing}, nonuniqueness of Leray-Hopf solutions to the $2$D forced hypodissipative Navier-Stokes equation \cite{hypoNS_force23}.
+
+\textbf{Question:} Does nonuniqueness holds without forcing?
+
+\textbf{Technical difficulties:} 1) In the absence of forcing, the initial data and hence the vorticity profile must be singular in any nonuniqueness scenario. 2) Since now the vorticity profile is determined by the equation itself (we only have the flexibility to choose the initial data), it is hard to verify the existence of unstable mode. Even the general existence of such self-similar profiles remains unclear. 
+
+Our approach: To tackle 1), we introduce certain viscous regularization term which gives us smooth profiles. To tackle 2), we use numerical simulation to investigate evidence of instability (for the regularized systems). \\
+For a fixed scaling parameter $\mu>\frac{1}{2}$, we consider two different regularizations of the system \eqref{2D Euler eq}:
+\begin{align}
+    &\om_t + v\cdot\nabla\om = t^{2\mu-1}\Delta\om,\quad v= K_2*\om,\quad (x,t)\in\reall^2\times (0,+\infty). \tag{NSt}\label{NSt}\\
+    &\om_t +v\cdot\nabla\om = -(-\Delta)^{\frac{1}{2\mu}}\om,\quad v= K_2*\om,\quad (x,t)\in\reall^2\times(0,\infty). \tag{NSh}\label{NSh}
+\end{align}
+By the same change of variables \eqref{self-similar change of variables mu}, we arrive at the (steady) self-similar equations (note that the regularization terms are compactible with the scaling, making the following equations time-independent):
+\begin{align}
+    &\Delta\Omega + \Omega+\mu y\cdot\nabla\Omega-V\cdot\nabla\Omega = 0, \quad V = K_2*\Omega\tag{NSt-SS}\label{NSt SS}\\
+    &-(-\Delta)^{\frac{1}{2\mu}}\Omega + \Omega+\mu y\cdot\nabla\Omega-V\cdot\nabla\Omega = 0,\quad V = K_2*\Omega.\label{NSh SS}\tag{NSh-SS}.
+\end{align}
+Moreover, according to the self-similar transformation \eqref{self-similar change of variables mu}, we note that the far field asymptotics of $\Omega$ corresponds to the initial data of $\om$. Specifically, adopting the polar coordinates $y = (r\cos\theta, r\sin\theta)$, we have
+\begin{equation}
+    \om(x,0) = |x|^{-\frac{1}{\mu}}\bar\Omega(\theta)\quad \Longleftrightarrow\quad\lim_{r\to\infty}r^{\frac{1}{\mu}}\Omega(y) = \bar\Omega(\theta),
+\end{equation}
+i.e., the initial data specifies the far field boundary condition for the equations \eqref{NSt SS} and \eqref{NSh SS}. Following the unstable vortex framework, our goal now reduces to: \\
+a) For any homogeneous initial data $\omega_0 = |x|^{-\frac{1}{\mu}}\bar\Omega(\theta)$, show the existence of self-similar solutions to the regularized Euler equations \eqref{NSt} and \eqref{NSh}(i.e., the solutions to the self-similar equations \eqref{NSt SS} and \eqref{NSh SS} with far field boundary conditions given by $\bar\Omega(\theta)$).\\
+b) Show that there exists some $\bar\Omega(\theta)$, such that the associated self-similar vortex is an unstable one (i.e., the linearized operator has an eigenvalue with positive real part).\\
+(Remark: in the computer-assistance proof framework, a) and b) are investigated at the same time).\\
+Now I focus on addressing these two questions.
+For a): it is of independent theoretical interest. In fact, the investigation of the nonuniqueness of the Leray-Hopf solutions of the $3$D Navier-Stokes solutions starts from the investigation of the existence of self-similar solutions \cite{JiaSverak_Invention}. In addition, the information about the self-similar profiles provides us tools which can be useful in constructing nonunique solutions (for example, tail-cutoffs that produce finite-energy solutions).
+
+For b): my numerical experiments so far suggest the generality of unstable vortices. 
+
+Future work.
+
+\subsection{Self-similar setting}
+Nonuniqueness is closely related to the linear instability of the self-similar solutions. Consider the following vorticity formulation of the $2$D Navier-Stokes equation with a time-dependent viscosity:
+\begin{equation}\label{2D NS vorticity}
+    \om_t + \nabla^\perp\psi\cdot\nabla\om = \nu(t)\Delta\om,\quad \Delta\psi = \om,\quad (x,t)\in\reall^2\times(0,\infty). \tag{NSt}
+\end{equation}
+Given any $\mu>\frac{1}{2}$, we seek self-similar solutions of the form
+\begin{equation}\label{self similar change of variables}
+    w(x,t) = t^{-1}\Omega(y),\quad \psi(x,t) = t^{2\mu-1}\Psi(y),\quad y:=\frac{x}{t^\mu}.
+\end{equation}
+Then, the profile functions $\Omega$ and $\Psi$ satisfy
+\begin{align}\label{profile system}
+    (\nabla^\perp\Psi-\mu y)\cdot\nabla\Omega = \Omega+t^{1-2\mu}\nu(t)\Delta\Omega,\quad \Delta\Psi = \Omega.
+\end{align}
+The system above is time dependent once we consider the time-dependent viscosity
+\[
+    \nu(t) = t^{2\mu-1}\nu_0,\quad \nu_0>0.
+\]
+Without loss of generality, we can assume $\nu_0=1$ after rescaling the spatial variable ($y\mapsto y/\sqrt{\nu_0}$).
+Moreover, according to the transformation \eqref{self similar change of variables}, we note that the far field asymptotics of $\Omega$ corresponds to the initial data of $\om$. Specifically, adopting the polar coordinates $y = (r\cos\theta, r\sin\theta)$, we have
+\[
+    \om(x,0) = |x|^{-\frac{1}{\mu}}\bar\Omega(\theta)\quad \Longleftrightarrow\quad\lim_{r\to\infty}r^{\frac{1}{\mu}}\Omega(y) = \bar\Omega(\theta). 
+\]
+In summary, \eqref{profile system} reduces to a nonlinear elliptic system with far field boundary condition
+\begin{align}\label{elliptic system with far field boundary condition}
+\begin{cases}
+    (\nabla^\perp\Psi-\mu y)\cdot\nabla\Omega = \Omega+\Delta\Omega,\\[4pt]
+    \Delta\Psi = \Omega,\quad \lim_{r\to\infty}r^{\frac{1}{\mu}}\Omega(y) = \bar\Omega(\theta).
+\end{cases}
+\end{align}
+\textbf{Remarks:} Since $\mu>\frac{1}{2}$, the viscosity is forward vanishing, i.e., $\lim_{t\to 0^+}\nu(t) = t^{2\mu-1}\nu_0=0$. Thus, we expect that the effect of viscosity close to the initial time is small, and the nonuniqueness of this system will cast some light on the nonuniqueness of the $2$D Euler equation. 
+
+\subsection{Linearization and the associated eigen problem}
+Suppose $\Omega_0(y)$ and $\Psi_0(y)$ are solutions to \eqref{elliptic system with far field boundary condition}. 
+Now consider a perturbation of the self-similar solution on the profile level, i.e.,
+\[
+    \om(x,t) = t^{-1}(\Omega_0(y)+\tilde \Omega(y,\tau)),\quad \psi(x,t) = t^{2\mu-1}(\Psi_0(y)+\tilde\Psi(y,\tau)),\quad \Delta\tilde \Psi = \tilde\Omega,\quad \tau = \log(t).
+\]
+Plugging this decomposition into \eqref{2D NS vorticity}, $(\tilde \Omega,\tilde \Psi)$ satisfy
+\begin{align}
+    \pa_\tau\tilde \Omega = \Delta\tilde\Omega +\tilde\Omega-(\nabla^\perp\Psi_0-\mu y)\cdot\nabla \tilde\Omega - \nabla^\perp\tilde\Psi\cdot\nabla\Omega_0 - \nabla^\perp\tilde\Psi\cdot\nabla\tilde\Omega,\quad
+    \Delta\tilde\Psi = \tilde\Omega.
+\end{align}
+Therefore, we define the linearized operator:
+\begin{equation}
+    \Lc_{\Omega_0} \tilde\Omega :=\Delta\tilde\Omega +\tilde\Omega-(\nabla^\perp\Psi_0-\mu y)\cdot\nabla \tilde\Omega - \nabla^\perp(\Delta)^{-1}\tilde\Omega\cdot\nabla\Omega_0. 
+\end{equation}
+Roughly speaking, nonuniqueness occurs if the nontrivial $\tilde\Omega$ satisfies $\tilde\Omega\to 0$ as $\tau\to-\infty$. The existence of such perturbation is related to the unstable direction of the linearized operator:
+\begin{equation}
+    \Lc_{\Omega_0}\vp = \lambda\vp,\quad \Re(\lambda)>0.
+\end{equation}
+
+\section{Numerical implementation}
+Let $B_R(0):= \{y\in\reall^2\mid|y|< R\}$ be our computational domain. We need to impose suitable numerical boundary conditions for both $\Omega$ and $\Psi$. By the far field asymptotics of $\Omega$, it is natural to impose that
+\[
+    \Omega(y)\mid_{\pa B_R(0)} = R^{-\frac{1}{\mu}}\bar\Omega(\theta).
+\]
+As for the stream function profile, we consider the equation it satisfies in the far field:
+\[
+    \dr{\pa^2_r+\frac{1}{r}\pa_r+\frac{1}{r^2}\pa^2_\theta}\Psi = r^{-\frac{1}{\mu}}\bar\Omega(\theta).
+\]
+The decaying solution is given by
+\[
+    \Psi(y) = r^{2-\frac{1}{\mu}}\bar\Psi(\theta),
+\]
+where $\bar\Psi(\theta)$ is determined by
+\[
+    \dr{2-\frac{1}{\mu}}^2\bar\Psi(\theta)+\pa^2_\theta\bar\Psi(\theta) = \bar\Omega(\theta).
+\]
+It can be solved with Fourier expansion:
+\begin{equation}
+    \hat{\bar\Psi}_m = \frac{1}{\dr{2-\frac{1}{\mu}}^2-m^2}\hat{\bar\Omega}_m,\quad \bar\Psi = \sum_m \hat{\bar\Psi}_me^{im\theta},\quad \bar\Omega = \sum_m \hat{\bar\Omega}_me^{im\theta},
+\end{equation}
+assuming that $2-\frac{1}{\mu}$ is not an integer for convenience (otherwise, we need to take resonances into account). Then, we enforce the Neumann boundary conditions:
+\[
+    \frac{\pa\Psi}{\pa_{\vec n}}\Big|_{\pa B_R(0)} = \dr{2-\frac{1}{\mu}}R^{1-\frac{1}{\mu}}\bar\Psi(\theta).
+\]
+To summarize, numerically we are to solve the following system
+\begin{equation}
+\begin{cases}
+    (\nabla^\perp\Psi-\mu y)\cdot\nabla\Omega = \Omega+\Delta\Omega,\quad y\in B_R(0),\quad \Omega\mid_{\pa B_{R}(0)} = R^{-\frac{1}{\mu}}\bar\Omega(\theta)\\[4pt]
+    \Delta\Psi = \Omega,\quad y\in B_R(0),\quad \frac{\pa\Psi}{\pa_{\vec n}}\Big|_{\pa B_R(0)} = \dr{2-\frac{1}{\mu}}R^{1-\frac{1}{\mu}}\bar\Psi(\theta).
+\end{cases}
+\end{equation}
+In practice, it is convenient to fix the size of the computational domain by rescaling the spatial variable:
+\[
+    \Omega(y) = \Omega_*(z),\quad \Psi(y) = \frac{R^2}{R^2_*}\Psi_*(z),\quad z:=\frac{R_* y}{R}.
+\]
+where $R_*>0$ is fixed and relatively small (e.g. $R_*=10$). Then, the numerical problem becomes
+\begin{equation}\label{solving the profiles: numerical formulation}
+\begin{cases}
+    (\nabla^\perp\Psi_*-\mu z)\cdot\nabla\Omega_* = \Omega_*+\frac{R^2_*}{R^2}\Delta\Omega_*,\quad z\in B_{R_*}(0),\quad \Omega_*\mid_{\pa B_{R_*}(0)} = R^{-\frac{1}{\mu}}\bar\Omega(\theta)\\[4pt]
+    \Delta\Psi_* = \Omega_*,\quad z\in B_{R_*}(0),\quad \frac{\pa\Psi_*}{\pa_{\vec n}}\Big|_{\pa B_{R_*}(0)} = \dr{2-\frac{1}{\mu}}R_*R^{-\frac{1}{\mu}}\bar\Psi(\theta).
+\end{cases}
+\end{equation}
+Finite element method. Newton method  + continuation of the boundary data from $0$ (so that we have good initial guesses) for the nonlinear problem.
+\subsection{Gradient descent for eigenvalue}
+To systematically search for the profiles with unstable eigenfunctions, we adopt the idea of gradient descent. Assume that at step $n$, we obtained the numerical profiles $\Omega_n$ and $\Psi_n$ as well as the eigenfunction $v_n=v_n(\Omega_n)$ corresponding to the eigenvalue $\lambda_n$ (which we assume to be simple and isolated) with the largest real part, i.e., (for brevity, we denote $R^2_*/R^2:=\eps_*$)
+\begin{equation}
+    \begin{cases}
+         \eps_*\Delta v_n + v_n - (\nabla^\perp\Psi_n-\mu z)\cdot\nabla v_n - \nabla^\perp \phi_n\cdot\nabla\Omega_n = \lambda_n v_n,\quad z\in B_{R_*}(0), \quad v_n\mid_{\pa B_{R_*}(0)} = 0,\\
+        \Delta\phi_n = v_n,\quad \frac{\pa\phi_n}{\pa \vec{n}}\Big |_{\pa B_{R_*}(0)} = 0.
+    \end{cases}
+\end{equation}
+For brevity, we denote the linear system above by (numerically it is nothing but a matrix)
+\[
+    \hat\Lc(\Omega_n)v_n = \lambda_n v_n.
+\]
+We remarks that the matrix $\hat \Lc(\Omega_n)$ encodes the homogeneous boundary conditions as well. Now we derive formally the gradient of the eigenvalue with respect to the profile function in the direction denoted by $V$:
+\begin{align}
+    \dr{\frac{\delta \hat\Lc(\Omega_n)}{\delta\Omega}V} v_n + \hat\Lc(\Omega_n)\dr{\frac{\delta v_n}{\delta\Omega}V} = \dr{\frac{\delta\lambda_n}{\delta\Omega}V}v_n+\lambda_n\dr{\frac{\delta v_n}{\delta\Omega}V}.
+\end{align}
+Let $v_n'$ be the left eigenvector of $\hat \Lc(\Omega_n)$ associated to the eigenvalue $\lambda_n$, i.e., $\hat\Lc(\Omega_n)^* v_n' = \lambda_n^* v_n$. Taking the inner product of the equation above with $v'_n$, we have
+\begin{equation}\label{gradient descent: variation formulacinner product}
+    \scl{\dr{\frac{\delta \hat\Lc(\Omega_n)}{\delta\Omega}V} v_n}{v'_n}+\scl{\hat\Lc(\Omega_n)\dr{\frac{\delta v_n}{\delta\Omega}V}}{v'_n} = \scl{\dr{\frac{\delta\lambda_n}{\delta\Omega}V}v_n}{v'_n}+\scl{\lambda_n\dr{\frac{\delta v_n}{\delta\Omega}V}}{v'_n}.
+\end{equation}
+Note that 
+\begin{equation}
+    \scl{\hat\Lc(\Omega_n)\dr{\frac{\delta v_n}{\delta\Omega}V}}{v'_n}  = \scl{\dr{\frac{\delta v_n}{\delta\Omega}V}}{\hat\Lc(\Omega_n)^*v'_n} = \scl{\dr{\frac{\delta v_n}{\delta\Omega}V}}{\lambda_n^* v'_n} = \scl{\lambda_n\dr{\frac{\delta v_n}{\delta\Omega}V}}{v'_n}.
+\end{equation}
+Then, if we assume $\scl{v_n}{v_n'}\neq 0$, \eqref{gradient descent: variation formulacinner product} reduces to
+\begin{equation}\label{gradient descent: expression of dlambda}
+    \frac{\delta \lambda_n}{\delta\Omega}V = \frac{\scl{\dr{\frac{\delta \hat\Lc(\Omega_n)}{\delta\Omega}V} v_n}{v'_n}}{\scl{v_n}{v_n'}}.
+\end{equation}
+Furthermore, we compute that (in the following the operator $\Delta^{-1}$ corresponds to the Poisson problem on the numerical domain $B_{R_*}(0)$ with homogeneous Neumann boundary condition).
+\begin{align}\label{gradient descent: further computation}
+\begin{split}
+    \scl{\dr{\frac{\delta \hat\Lc(\Omega_n)}{\delta\Omega}V} v_n}{v'_n} &= -\scl{\nabla^\perp\Delta^{-1}V\cdot\nabla v_n}{v'_n} - \scl{\nabla^\perp\phi_n\cdot \nabla V}{v'_n}\\
+    &:= \scl{V}{\Delta^{-1}(\nabla v_n\cdot\nabla^\perp v'_n)+\nabla^\perp\phi_n\cdot\nabla v'_n}.
+\end{split}
+\end{align}
+Therefore, in view of \eqref{gradient descent: expression of dlambda} and \eqref{gradient descent: further computation}, to increase $\lambda_n$, the increment $V_n$ should be taken as 
+\begin{equation}
+    V_n = k_n \frac{\Delta^{-1}(\nabla v_n\cdot\nabla^\perp v'_n)+\nabla^\perp\phi_n\cdot\nabla v'_n}{\scl{v_n}{v'_n}} := k_n D(v_n,v_n'),
+\end{equation}
+where $k_n>0$ are the step size which can be taken adaptively. 
+Note that our profile functions $\Omega_n$ is always restricted to the manifold of the solution space of the self-similar equation, which we denote by $\Mc$. Thus, to ensure efficiency, the update $V_n$ should be tangent to the manifold at $U_n$, i.e.,
+\begin{equation}\label{gradient descent: tangent space def}
+    V_n\in T_{\Omega_n}\Mc:=\{V: \eps_*\Delta V + V - (\nabla^\perp\Psi_n-\mu z)\cdot\nabla V - \nabla^\perp \Delta^{-1}V\cdot\nabla\Omega_n=0,\;z\in B_{R_*}(0)\}.
+\end{equation}
+One notes the difference between $V_n\in T_{\Omega_n}\Mc$ and $\hat\Lc(\Omega_n)V_n = 0$. While the later means that $V_n$ is an eigenvector of $\hat\Lc(\Omega_n)$ with eigenvalue $0$ (which may not exist), the former does not specify the boundary value of $V_n$ so that nontrivial projections always exist (the degree of freedom is more than the degree of restriction). Furthermore, we could impose some technical constraints to enhance numerical performance, and one natural choice is the regularity of the boundary data (\textcolor{blue}{we can add more here}). For any update $V_n$, denote the (physical) boundary data of $\Omega_n+V_n$ by $\hat A_n(\theta) := R^{\frac{1}{\mu}}(\Omega_n+V_n)|_{\pa B_{R_*}(0)}$. Then, we can find the best increment by solving the following (convex) constrained optimization problem (for some given $C>0$): 
+\begin{align}
+    V_n = \arg\min_{V \in T_{\Omega_n}\Mc}\|V -  k_nD(v_n,v'_n)\|_{L^2}, \quad \text{s.t.} \quad \|\hat A(\theta)\|_{L^\infty}+\|\pa_\theta \hat A_n(\theta)\|_{L^\infty} \leq C
+\end{align}
+Finally, $\Omega_{n+1}$ is defined as the solution of \eqref{solving the profiles: numerical formulation} with the boundary condition $\hat A_n(\theta)$ of $\Omega_n+V_n$ (i.e., projecting back to the solution manifold).
+\textcolor{blue}{Now that we have full degree of freedom on the boundary in the gradient descent updates, way may instead impose the homogeneous Neumann boundary condition in \eqref{solving the profiles: numerical formulation} for $\Psi_*$ to reduce the computational cost.}
+
+\subsection{Numerical records}
+Experimentally, the instability phenomenon seems quite general: Taking the boundary data in the form
+\begin{equation}
+    \bar\Omega(\theta) = \sigma \sin(k\theta)\text{ or }\sigma\cos(k\theta),\quad k = 0,1,2,\dots,
+\end{equation}
+except for $k=0$ (there is a theoretical proof for the $2$D Euler equation related to this), the associated (numerical) linearized operator $\hat\Lc(\Omega_*)$ will always has positive eigenvalues when $\sigma$ is large enough. The low frequency cases ($k=0,1,2,3,4,5$) are experimented extensively. We observe that the lower the frequency (except for $k=0$), the faster the spectrum shifts to the right with the increase of $\sigma$ (However, the larger $\sigma$ is or the lower the frequency is, the harder it is to compute numerically). \\
+\textbf{Example $\mu = \frac{4}{5}$:}\\
+Theoretically, the linear operator
+\[
+    \Lc_0 f = \Delta f + f + \mu y\cdot\nabla f, \quad x\in \reall^2 
+\]
+has discrete eigenvalues (the ones with exponential decays)
+\[
+    \lambda_n = -\frac{3}{5} - \frac{4n}{5},\quad n = 0,1,2,\dots,\text{ with multiplicities } n+1.
+\]
+\textbf{Case 1:} $(R,R_*,h_{\max}) = (150,10,0.06)$, $\bar\Omega(\theta) = 80\cos(\theta)$.\\
+The top six eigenvalues:
+\[
+   \lambda_1 = 1.40\times 10^{-1},\;\lambda_2 = 4.78\times 10^{-1},\;\lambda_3 = 6.65\times 10^{-1},\;\lambda_4 =1.39 ,\;\lambda_5 = 1.41,\;\lambda_6 = 2.20.
+\]
+\textbf{Case 2:} $(R,R_*,h_{\max}) = (100,10,0.06)$, $\bar\Omega(\theta) = 100\cos(2\theta)$.\\
+The top six eigenvalues:
+\[
+   \lambda_1 = -1.60\times 10^{-1},\;\lambda_2 = -1.54\times 10^{-1},\;\lambda_3 = 4.37\times 10^{-1},\;\lambda_4 =6.14\times 10^{-1} ,\;\lambda_5 = 6.16\times10^{-1},\;\lambda_6 = 1.09.
+\]
+\textbf{Case 3:} $(R,R_*,h_{\max}) = (200,10,0.06)$, $\bar\Omega(\theta) = 140\cos(3\theta)$.\\
+The top six eigenvalues:
+\[
+   \lambda_1 = -1.52\times 10^{-1},\;\lambda_2 = -1.51\times 10^{-1},\;\lambda_3 = -1.49\times 10^{-1},\;\lambda_4 =0.405+0.408i ,\;\lambda_5 = 0.405-0.408i,\;\lambda_6 = 0.428.
+\]
+
+
+\bibliographystyle{plain} % We choose the "alpha" or "plain" reference style
+\bibliography{refs} % Entries are in the ref.bib file
+\end{document}
