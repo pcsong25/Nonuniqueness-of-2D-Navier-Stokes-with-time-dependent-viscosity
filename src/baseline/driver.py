@@ -41,7 +41,7 @@ def main(make_plots: bool = True):
     params = SimulationParams(mu=0.8, R=150.0, Rdom=10.0, M=48,
                               tol_newton=1e-9, max_newton=48,
                               sigma_grid=tuple(np.linspace(0.0, 1.0, 21)),
-                              h_min=0.04, h_max=0.08)
+                              h_min=0.05, h_max=0.10)
 
     mesh, facet_tags = build_disk(params.Rdom, params.h_min, params.h_max)
 
