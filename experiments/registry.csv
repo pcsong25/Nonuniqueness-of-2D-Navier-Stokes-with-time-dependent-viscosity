@@ -1,1 +1,2 @@
 date,tag,codebase,script,input_case,domain,grid_or_mesh,solver,parameters,wall_time_sec,error_metrics,eigenvalues_summary,status,notes
+2026-04-25,intake-baseline-driver,baseline,src/baseline/driver.py,m3_coeff70_mu0.8_R150_Rdom10,disk_Rdom10,gmsh_CG1_h0.05_0.10,continuation_newton_plus_shift_invert_eigs,"mu=0.8; R=150; Rdom=10; M=48; k=6; sigma_grid=0:0.05:1",n/a,n/a,n/a,blocked_external_dependency,"Intake only; repo-local output paths patched; syntax compile ok with PYTHONPYCACHEPREFIX=/tmp/pycache-euler; live import blocked because gmsh is missing in current Python"

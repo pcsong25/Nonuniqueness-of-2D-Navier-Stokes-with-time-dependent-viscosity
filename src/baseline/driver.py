@@ -20,9 +20,12 @@ from datetime import datetime
 
 from pathlib import Path
 
-# Choose a single, unambiguous output directory (edit this path once)
-SAVE_DIR = Path("/Users/caltech/Peicong").expanduser().resolve()
+# Choose repo-local output directories (edit these paths once)
+BASELINE_DIR = Path(__file__).resolve().parent
+REPO_ROOT = BASELINE_DIR.parents[1]
+SAVE_DIR = (REPO_ROOT / "experiments" / "raw" / "baseline").resolve()
 SAVE_DIR.mkdir(parents=True, exist_ok=True)
+PLOT_DIR = BASELINE_DIR
 # Optional: timestamped filenames to avoid confusion across runs
 STAMP = datetime.now().strftime("%Y%m%d_%H%M%S")
 OUT_XDMF = (SAVE_DIR / f"results.xdmf")  # or just "results.xdmf"
@@ -41,17 +44,17 @@ def main(make_plots: bool = True):
     params = SimulationParams(mu=0.8, R=150.0, Rdom=10.0, M=48,
                               tol_newton=1e-9, max_newton=48,
                               sigma_grid=tuple(np.linspace(0.0, 1.0, 21)),
-                              h_min=0.05, h_max=0.10)
+                              h_min=0.06, h_max=0.12)
 
     mesh, facet_tags = build_disk(params.Rdom, params.h_min, params.h_max)
 
-    save_mesh_plot(mesh, filename="mesh.png")
+    save_mesh_plot(mesh, filename=str(PLOT_DIR / "mesh.png"))
     spaces = create_spaces(mesh)
     assert isinstance(spaces, dict), f"create_spaces returned {type(spaces)} (expected dict)"
 
     # Example Fourier coefficients for \barΩ(θ)
     sig = 1.0
-    coeffs = {0: 0.0 + 0.0j, 1: 0.0 + 0.0j, 2: 0.0 + 0.0j, 3: 70.0 + 0.0j, 4: 0.0 + 0j, 5: 0.0 + 0.0j, 
+    coeffs = {0: 0.0 + 0.0j, 1: 0.0 + 0.0j, 2: 0.0 + 0.0j, 3: 0.0 + 0.0j, 4: 20.0 + 0j, 5: 0.0 + 0.0j, 
               6: 0.0 + 0.0j, 10: 0.0 + 0.0j, 12: 0.0 + 0.0j, 24: 0.0 + 0.0j, 36: 0.0 + 0.0j}
     # approximate coeffs for step function profile
     # coeffs = {0: np.pi/4 + 0.0j, 1: 0.0 + 0.0j, 2: 0.5 - 0.5j, 3: 0.0 + 0.0j, 4: 0.0 -0.5j, 
@@ -94,10 +97,10 @@ def main(make_plots: bool = True):
         #from viz import save_velocity_quiver
         from viz import save_streamfunction_contours
 
-        save_streamfunction_contours(mesh, spaces["Vpsi"], psi, filename="streamlines.png",
+        save_streamfunction_contours(mesh, spaces["Vpsi"], psi, filename=str(PLOT_DIR / "streamlines.png"),
                              n_levels=40, linewidth=0.8)
 
-        save_vorticity_heatmap(mesh, Omega, filename="vorticity.png")
+        save_vorticity_heatmap(mesh, Omega, filename=str(PLOT_DIR / "vorticity.png"))
         # pass Vpsi (scalar space) instead of a vector space
         #save_velocity_quiver(mesh, spaces["Vpsi"], psi, filename="velocity.png", stride=4)
 
@@ -141,10 +144,10 @@ def main(make_plots: bool = True):
         print(f"#{j:2d}: lambda = {lam.real:.15e} {lam.imag:+.15e}j")
 
     # vorticity + streamlines (requires psi_re computed in your solver):
-    save_modes_plots_real(mesh, modes, n_plot=k, plot_stream=True)
+    save_modes_plots_real(mesh, modes, outdir=str(PLOT_DIR / "eig_plots"), n_plot=k, plot_stream=True)
 
 
-    es.export_to_matlab("/Users/caltech/Peicong/Nonuniqueness 2D NS with time dep visc/linop_blocks.mat")
+    es.export_to_matlab(str(SAVE_DIR / "linop_blocks.mat"))
 
     # # For advection-dominated cases, target a modest negative value and use mass-normalization
 
@@ -184,7 +187,7 @@ def main(make_plots: bool = True):
         print(f"[MESH] vertices={nvert}, cells={ncell}  |  DoFs: Omega={dofs_o}, psi={dofs_p}")
 
         # also log to a file
-        with open("run_time.txt", "a") as f:
+        with open(SAVE_DIR / "run_time.txt", "a") as f:
             f.write(
                 f"{datetime.now().isoformat()}  wall={elapsed:.3f}s  "
                 f"verts={nvert} cells={ncell}  dofsΩ={dofs_o} dofsψ={dofs_p}\n"
