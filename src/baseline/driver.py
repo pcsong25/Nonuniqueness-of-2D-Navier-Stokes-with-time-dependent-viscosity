@@ -54,7 +54,7 @@ def main(make_plots: bool = True):
 
     # Example Fourier coefficients for \barΩ(θ)
     sig = 1.0
-    coeffs = {0: 0.0 + 0.0j, 1: 0.0 + 0.0j, 2: 0.0 + 0.0j, 3: 0.0 + 0.0j, 4: 20.0 + 0j, 5: 0.0 + 0.0j, 
+    coeffs = {0: 0.0 + 0.0j, 1: 0.0 + 0.0j, 2: 0.0 + 0.0j, 3: 0.0 + 0.0j, 4: 50.0 + 0j, 5: 0.0 + 0.0j, 
               6: 0.0 + 0.0j, 10: 0.0 + 0.0j, 12: 0.0 + 0.0j, 24: 0.0 + 0.0j, 36: 0.0 + 0.0j}
     # approximate coeffs for step function profile
     # coeffs = {0: np.pi/4 + 0.0j, 1: 0.0 + 0.0j, 2: 0.5 - 0.5j, 3: 0.0 + 0.0j, 4: 0.0 -0.5j, 

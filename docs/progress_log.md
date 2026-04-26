@@ -8,13 +8,102 @@ of the verified baseline implementation.
 
 ## Current status
 
-Initial intake completed on 2026-04-25.
-The active baseline workflow has been traced, and repo-local output path issues in
-`src/baseline/driver.py` have been fixed without changing the numerical method.
+Baseline reference run completed on 2026-04-25 using `conda run -n femx_spc`.
+The default shell Python still lacks `gmsh`, but the `femx_spc` environment has
+the required FEniCSx/gmsh/PETSc/SLEPc stack.
 
-The baseline could not be live-imported or run in the current system Python because `gmsh`
-is not installed there. This is an external environment issue, not a repo-local code issue.
-Syntax compilation of the active baseline files passed with Python cache redirected to `/tmp`.
+The first `src/nextgen/` foundation scaffold is in place for a square uniform
+finite-difference domain. It includes configuration, Fourier boundary data,
+square grid indexing, sparse finite-difference operators, diagnostics, and tests
+only. No full Newton/profile solver or eigensolver has been implemented yet.
+
+## 2026-04-25 baseline reference run and nextgen scaffold
+
+### Baseline run
+
+Command:
+
+```bash
+env MPLCONFIGDIR=/tmp/mplconfig-euler conda run -n femx_spc python src/baseline/driver.py
+```
+
+Current active input from `src/baseline/driver.py`:
+
+- `mu=0.8`, `R=150.0`, `Rdom=10.0`, `M=48`
+- `sigma_grid=np.linspace(0.0, 1.0, 21)`
+- `h_min=0.06`, `h_max=0.12`
+- active Fourier coefficient `c_4=50+0j`
+- `k=6`, eigensolver shift `sigma=-1.0`
+
+Outputs:
+
+- `experiments/raw/baseline/results.xdmf`
+- `experiments/raw/baseline/results.h5`
+- `experiments/raw/baseline/linop_blocks.mat`
+- debug plots in `src/baseline/`
+- summary in `experiments/summaries/baseline_reference_2026-04-25.md`
+
+Numerical results:
+
+- vertices: `25600`
+- cells: `50674`
+- DoFs: `Omega=25600`, `psi=25600`
+- total wall time: `243.419 s`
+- raw weak residuals: `||R_Omega||_2=6.070e-04`,
+  `||R_Psi||_2=1.797e-13`
+- eigenvalues:
+  `0.4537468912529909-1.176662542133605j`,
+  `0.4537468912529909+1.176662542133605j`,
+  `0.4677034814983481+0j`,
+  `0.4783460496236707-1.276583293491166j`,
+  `0.4791564448291539-1.267528281259206j`,
+  `0.4791564448291539+1.267528281259206j`
+
+### Nextgen scaffold
+
+Added:
+
+- `src/nextgen/__init__.py`
+- `src/nextgen/config.py`
+- `src/nextgen/boundary.py`
+- `src/nextgen/grid.py`
+- `src/nextgen/operators.py`
+- `src/nextgen/diagnostics.py`
+- `tests/test_nextgen_foundations.py`
+
+Implemented only foundational pieces:
+
+- current-baseline config dataclasses
+- Fourier mirroring and `Omega_bar`, `Psi_bar`, angular derivative evaluation
+- circular and arbitrary-normal Neumann data for the scaled far-field
+  streamfunction
+- square grid coordinates, masks, indexing, interior flattening, and outward
+  boundary normals
+- sparse interior five-point Laplacian, centered gradients, Dirichlet boundary
+  contributions, and centered advection matrix assembly
+- basic diagnostics for operator residuals, grid norms, boundary mismatch,
+  domain/boundary integrals, and Poisson compatibility
+
+Checks run:
+
+```bash
+python -m unittest discover -s tests
+PYTHONPYCACHEPREFIX=/tmp/pycache-euler python -m py_compile src/nextgen/__init__.py src/nextgen/config.py src/nextgen/boundary.py src/nextgen/grid.py src/nextgen/operators.py src/nextgen/diagnostics.py tests/test_nextgen_foundations.py
+```
+
+Result: `7` tests passed.
+
+Remaining uncertainties:
+
+- Square-domain `psi` Neumann data is implemented as the normal projection of
+  the analytic far-field gradient. This should be reviewed before solver work.
+- Corner treatment currently uses normalized diagonal normals for diagnostics;
+  later finite-difference boundary closures may need a solver-specific corner
+  convention.
+- The active baseline input has changed from the earlier intake notes
+  (`m=3`, coefficient `70`) to the current driver input (`m=4`, coefficient
+  `50`). Future comparisons should use the current driver state unless a
+  specific case is requested.
 
 ## 2026-04-25 intake report
 
