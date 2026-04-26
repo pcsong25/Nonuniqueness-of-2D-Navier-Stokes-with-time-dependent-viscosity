@@ -12,10 +12,68 @@ Baseline reference run completed on 2026-04-25 using `conda run -n femx_spc`.
 The default shell Python still lacks `gmsh`, but the `femx_spc` environment has
 the required FEniCSx/gmsh/PETSc/SLEPc stack.
 
-The first `src/nextgen/` foundation scaffold is in place for a square uniform
-finite-difference domain. It includes configuration, Fourier boundary data,
-square grid indexing, sparse finite-difference operators, diagnostics, and tests
-only. No full Newton/profile solver or eigensolver has been implemented yet.
+The `src/nextgen/` square-grid foundation now includes configuration, Fourier
+boundary data, square grid indexing, sparse finite-difference operators,
+diagnostics, tests, and a sparse Neumann Poisson solve with gauge handling.
+No full Newton/profile solver or eigensolver has been implemented yet.
+
+## 2026-04-26 square-domain review and Neumann Poisson scaffold
+
+### Review result
+
+- The square-domain far-field Neumann data in `src/nextgen/boundary.py` is kept
+  as the normal projection of the analytic scaled far-field streamfunction
+  gradient:
+  `Psi_far(z) = (Rdom/R)^(1/mu) |z|^(2-1/mu) Psi_bar(theta)`.
+- On a circular boundary of radius `Rdom` with radial normals, this reduces to
+  the baseline formula
+  `d_n psi = alpha * Rdom * R^(-1/mu) * Psi_bar(theta)`.
+- Square-grid corner normals are currently normalized diagonal normals. The new
+  Poisson boundary closure matches that convention by using the diagonal inward
+  neighbor and distance `sqrt(2) * h` at corners.
+
+### Added
+
+- `src/nextgen/poisson.py`
+
+Implemented:
+
+- full-grid sparse system for `Delta psi = omega`
+- interior five-point Laplacian rows
+- first-order Neumann boundary rows
+- diagonal corner Neumann rows consistent with normalized diagonal corner normals
+- configurable gauge row, defaulting to the center grid point
+- direct sparse solve through `scipy.sparse.linalg.spsolve`
+- assembled-system residual helper
+
+### Tests
+
+Updated `tests/test_nextgen_foundations.py` with:
+
+- explicit comparison of `psi_neumann_circle` against the baseline Fourier
+  coefficient formula
+- zero Neumann/zero source Poisson solve with gauge
+- manufactured linear Neumann solution, including corner boundary rows
+
+Checks run:
+
+```bash
+python -m unittest discover -s tests
+PYTHONPYCACHEPREFIX=/tmp/pycache-euler python -m py_compile src/nextgen/__init__.py src/nextgen/config.py src/nextgen/boundary.py src/nextgen/grid.py src/nextgen/operators.py src/nextgen/diagnostics.py src/nextgen/poisson.py tests/test_nextgen_foundations.py
+```
+
+Result: `10` tests passed.
+
+Remaining uncertainties:
+
+- The Poisson boundary closure is first-order at the boundary. It is suitable
+  for the scaffold but should be benchmarked against refinement and, if needed,
+  upgraded before high-accuracy profile/eigen comparisons.
+- Gauge row replacement drops one discrete equation. This is comparable in
+  spirit to baseline gauge pinning, but later diagnostics should track the
+  omitted row and compatibility defect.
+- The corner convention is now explicit and test-covered, but it is still a
+  modeling choice for the square domain.
 
 ## 2026-04-25 baseline reference run and nextgen scaffold
 
