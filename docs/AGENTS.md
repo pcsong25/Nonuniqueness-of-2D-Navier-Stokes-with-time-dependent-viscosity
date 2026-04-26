@@ -121,3 +121,76 @@ A major implementation task is not done until:
 Be concise, explicit, and technically rigorous.
 Separate facts, hypotheses, and open questions.
 When something is ambiguous, state the ambiguity and propose a concrete resolution.
+
+## Milestone discipline
+
+Work in narrow milestones. Do not expand scope prematurely.
+
+For this project, the intended implementation order is:
+1. foundations (grid, operators, boundary handling, diagnostics),
+2. Poisson solver,
+3. profile solver,
+4. linearized operator assembly,
+5. eigensolver,
+6. benchmarking and visualization refinement.
+
+Unless explicitly instructed otherwise, only work on one milestone at a time.
+
+## Session and context discipline
+
+Do not rely on prior chat history as the only source of project state.
+
+At the start of any substantial task:
+1. read `AGENTS.md`,
+2. read `docs/progress_log.md`,
+3. read `docs/implementation_plan.md`,
+4. inspect recent relevant files in `src/baseline/`, `src/nextgen/`, `tests/`, and `experiments/` as needed.
+
+When a session may have been interrupted or context may be incomplete, first reconstruct state from the repository before making further changes.
+
+## Progress bookkeeping
+
+After every substantial milestone or validation step:
+- update `docs/progress_log.md`,
+- update `docs/implementation_plan.md`,
+- append meaningful runs to `experiments/registry.csv`.
+
+## Response footer requirement
+
+At the end of every substantial response, provide:
+1. a brief milestone summary,
+2. the main unresolved risks or uncertainties,
+3. the exact recommended next prompt.
+
+The recommended next prompt must be narrowly scoped and should not jump ahead by more than one milestone.
+
+## Prompt economy
+
+Prefer short prompts that reference repo files and existing documentation rather than repeating long project background in chat.
+
+When the task depends on project conventions or earlier work, rely on:
+- `AGENTS.md`
+- `docs/progress_log.md`
+- `docs/implementation_plan.md`
+- `experiments/registry.csv`
+
+Keep conversational restatements brief unless the user explicitly asks for a longer explanation.
+
+## Decision tracking
+
+Maintain `docs/decision_log.md`.
+
+Whenever a major design or workflow decision is made, update that file with:
+- the decision,
+- the reason,
+- relevant evidence,
+- and any follow-up consequences.
+
+For major milestones, the repository should be understandable from:
+- `AGENTS.md`
+- `docs/progress_log.md`
+- `docs/implementation_plan.md`
+- `docs/decision_log.md`
+- `experiments/registry.csv`
+
+Do not rely on chat history as the only source of project state.
