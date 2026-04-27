@@ -15,7 +15,7 @@ the required FEniCSx/gmsh/PETSc/SLEPc stack.
 The `src/nextgen/` foundation now includes configuration, Fourier boundary
 data, square-grid sparse operators, diagnostics, a sparse Neumann Poisson
 solve with gauge handling, the original square M3 sparse Newton profile
-solver, and a circular/polar c3-sector profile solver for disk validation. No
+solver, and a general full-disk polar profile solver for disk validation. No
 nextgen eigensolver has been implemented yet.
 
 The current authoritative `src/baseline/driver.py` input now uses
@@ -23,7 +23,163 @@ The current authoritative `src/baseline/driver.py` input now uses
 Older m4 or mixed m3/m4 baseline rows and summaries are historical references,
 not the current active driver state.
 
+## 2026-04-27 M3 general full-disk polar validation
+
+Correction to the previous c3-sector experiment: the production M3 solver
+should not use a mesh customized to a particular symmetry. Symmetry remains a
+debugging diagnostic only. The current validation path uses `symmetry=1`, a
+full polar disk, and arbitrary Fourier boundary data.
+
+### Added / changed
+
+- `src/nextgen/polar_profile.py` now uses a full-disk mean-gauge Poisson block
+  through a bordered sparse system instead of replacing one angular row.
+- `experiments/run_m3_c3_profile_visual_check.py` now uses a full disk
+  `nr=54`, `ntheta=162` for the active `c_3=60`, `c_4=0` visual check.
+- `experiments/run_m3_polar_validation_suite.py` validates three additional
+  reduced boundary conditions without symmetry-sector meshes:
+  `c_4=5`, mixed complex modes `c_2=3+i`, `c_5=-2+0.5i`, and mixed
+  `c_3=6`, `c_4=5`.
+- `experiments/summaries/m3_c3_60_c4_0_full_disk_visual_check_2026-04-27.json`
+- `experiments/summaries/m3_polar_full_disk_validation_suite_2026-04-27.json`
+- plots under
+  `experiments/raw/nextgen/m3_c3_60_c4_0_full_disk_visual/`
+
+Norm definitions used in the validation:
+
+- Native nextgen residual: the assembled polar residual weighted by polar cell
+  areas, reported as
+  `sqrt(||R_Omega||_L2^2 + ||R_Poisson||_L2^2) /
+  max(||Omega||_L2, ||Delta psi||_L2)`.
+- Common sampled strong residual: both nextgen and baseline are interpolated to
+  the same Cartesian sample grid. Centered finite differences are applied to
+  compute
+  `R_Omega = v . grad(Omega) - Omega - eps Delta(Omega)` and
+  `R_Psi = Delta(psi) - Omega`; the reported relative norm is
+  `sqrt(||R_Omega||_L2^2 + ||R_Psi||_L2^2) /
+  max(||Omega||_L2, ||Delta psi||_L2)`.
+- Probe RMS: `sqrt(mean((Omega_nextgen - Omega_baseline)^2))` on common polar
+  probe points with radius in `[0.5, 8]`.
+- Probe Linf: `max(abs(nextgen - baseline))` on the same valid probes.
+- Streamfunction probe errors remove the mean difference first, because psi is
+  defined only up to a gauge constant.
+- Baseline raw residuals from `residuals_quick.py` are PETSc vector 2-norms of
+  the baseline weak residuals. They are logged, but the common sampled strong
+  residual is the fairer cross-code residual comparison.
+
+Full-amplitude active c3 visual run:
+
+```bash
+conda run -n femx_spc python experiments/run_m3_c3_profile_visual_check.py
+```
+
+Results:
+
+- nextgen full disk: `nr=54`, `ntheta=162`, runtime `49.409 s`,
+  native relative residual `2.282e-14`
+- baseline: `h_min=0.12`, `h_max=0.18`, runtime `10.050 s`,
+  mesh vertices `11513`, cells `22674`
+- common sampled strong residual: nextgen `5.893e-01`, baseline `1.118e+00`
+- probe discrepancies on radius `<=8`: Omega RMS `3.020e-01`, Omega Linf
+  `4.543`, psi RMS after mean-offset removal `3.814e-02`, psi Linf
+  `1.092e-01`
+- c3 symmetry diagnostic on this c3-only test: nextgen Omega relative RMS
+  `1.157e-14`, psi relative RMS `5.620e-15`; this is a diagnostic result, not
+  a design assumption.
+
+General reduced-boundary validation suite:
+
+```bash
+conda run -n femx_spc python experiments/run_m3_polar_validation_suite.py
+```
+
+All three cases completed with the full-disk grid `nr=32`, `ntheta=96` and
+baseline mesh `h_min=0.20`, `h_max=0.30`.
+
+| case | nextgen runtime | baseline runtime | nextgen common strong rel | baseline common strong rel | Omega probe RMS | psi probe RMS |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| `c4_reduced` | `3.982 s` | `1.772 s` | `7.054e-01` | `2.938e+00` | `1.081e-01` | `2.091e-02` |
+| `mixed_2_5_reduced` | `5.666 s` | `1.907 s` | `6.913e-01` | `2.093e+00` | `1.990e-01` | `1.456e-02` |
+| `c3_c4_reduced` | `5.078 s` | `1.987 s` | `7.401e-01` | `3.629e+00` | `1.994e-01` | `5.395e-02` |
+
+Interpretation:
+
+- The current polar solver is now general with respect to Fourier boundary
+  data and no longer relies on an n-fold sector mesh.
+- On the reduced validation suite, the nextgen common sampled strong residuals
+  are consistently lower than the baseline sampled strong residuals on the
+  chosen grids, and the field probe errors are moderate.
+- Runtime is still slower than baseline on all tested cases. The full-amplitude
+  c3 case especially requires `ntheta=162` to match the angular resolution of
+  the earlier sector experiment, giving `49.409 s` versus baseline `10.050 s`.
+
+Recommended next step:
+
+- Stay in M3. Improve full-disk polar robustness/performance before M4,
+  especially around the active full-amplitude c3 resolution threshold.
+
+### Full-disk polar refinement study
+
+Command:
+
+```bash
+conda run -n femx_spc python experiments/run_m3_polar_refinement_study.py
+```
+
+Summary:
+
+- `experiments/summaries/m3_polar_full_disk_refinement_study_2026-04-27.json`
+- status: `partial`, because the coarser active-c3 nextgen grid stalled before
+  reaching sigma `1`.
+- no eigensolver or M4 code was used.
+
+The refinement study used a full polar disk for nextgen and disk meshes for
+baseline. Comparisons used the same common sampled strong residual and probe
+RMS/Linf definitions described above. Baseline weak residuals are also logged,
+but they are not used as the cross-code residual metric.
+
+Active full-amplitude `c_3=60`, `c_4=0`:
+
+| run | runtime | status | common strong rel | Omega probe RMS | psi probe RMS |
+| --- | ---: | --- | ---: | ---: | ---: |
+| baseline h `0.20/0.30` | `17.609 s` | completed but unstable | `4.111e+03` | mesh-diff `3.307e+04` | mesh-diff `3.135e+02` |
+| baseline h `0.12/0.18` | `18.859 s` | completed | `8.353e-01` | reference | reference |
+| nextgen `nr=48`, `ntheta=144` | `50.186 s` | nonconverged at sigma `0.7` | n/a | n/a | n/a |
+| nextgen `nr=54`, `ntheta=162` | `52.408 s` | completed | `6.496e-01` | `3.024e-01` | `3.842e-02` |
+
+Mixed non-symmetric reduced case
+`c_2=3+i`, `c_5=-2+0.5i`:
+
+| run | runtime | status | common strong rel | Omega probe RMS | psi probe RMS |
+| --- | ---: | --- | ---: | ---: | ---: |
+| baseline h `0.30/0.45` | `2.567 s` | completed | `7.631e+00` | mesh-diff `1.117e-01` | mesh-diff `8.351e-02` |
+| baseline h `0.20/0.30` | `3.914 s` | completed | `2.093e+00` | reference | reference |
+| nextgen `nr=30`, `ntheta=90` | `13.617 s` | completed | `7.592e-01` | `2.622e-01` | `1.670e-02` |
+| nextgen `nr=32`, `ntheta=96` | `12.988 s` | completed | `6.913e-01` | `1.990e-01` | `1.456e-02` |
+| nextgen `nr=36`, `ntheta=108` | `15.775 s` | completed | `6.535e-01` | `1.424e-01` | `1.252e-02` |
+
+Interpretation:
+
+- The mixed non-symmetric reduced case gives the cleanest refinement evidence:
+  nextgen common strong residual, Omega probe RMS, and offset-removed psi probe
+  RMS all improve as the full-disk polar grid is refined.
+- The active full-amplitude c3 case has a practical resolution threshold.
+  `nr=48`, `ntheta=144` stalls in continuation, while `nr=54`,
+  `ntheta=162` completes and has a lower common sampled strong residual than
+  the fine baseline mesh.
+- Baseline mesh refinement matters strongly for the active c3 case: the coarse
+  baseline mesh produces a very large common strong residual and field blow-up,
+  so comparisons should use the `h_min=0.12`, `h_max=0.18` or finer baseline
+  reference.
+- The nextgen profile solver is not yet an efficiency improvement. It is more
+  accurate than the tested baseline meshes under the common strong residual,
+  but direct sparse Newton solves are slower on these grid sizes.
+
 ## 2026-04-26 M3 circular c3-sector profile validation
+
+Superseded diagnostic note: this section used a c3-sector mesh and should not
+be treated as the production validation path. It is retained only as historical
+debugging evidence that the square-domain issue was symmetry related.
 
 ### Added
 

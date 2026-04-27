@@ -132,22 +132,24 @@ class PolarProfileTests(unittest.TestCase):
 
         omega = 0.01 * rng.standard_normal(grid.size)
         psi = 0.01 * rng.standard_normal(grid.size)
-        delta = 0.01 * rng.standard_normal(2 * grid.size)
+        delta = 0.01 * rng.standard_normal(2 * grid.size + 1)
         sigma = 0.4
         eps = 1e-7
 
-        residual = problem.residual_vector(omega, psi, sigma)
+        lambda_value = 0.01 * rng.standard_normal()
+        residual = problem.residual_vector(omega, psi, sigma, lambda_value)
         jac_delta = problem.jacobian(omega, psi, sigma) @ delta
         perturbed = problem.residual_vector(
             omega + eps * delta[: grid.size],
-            psi + eps * delta[grid.size :],
+            psi + eps * delta[grid.size : 2 * grid.size],
             sigma,
+            lambda_value + eps * delta[-1],
         )
 
         assert_allclose((perturbed - residual) / eps, jac_delta, rtol=2e-5, atol=2e-7)
 
-    def test_polar_c3_sector_preserves_threefold_symmetry(self) -> None:
-        grid = PolarGrid(radius=2.0, nr=10, ntheta=12, symmetry=3)
+    def test_polar_full_disk_c3_data_preserves_threefold_symmetry(self) -> None:
+        grid = PolarGrid(radius=2.0, nr=10, ntheta=36)
         physical = PhysicalParams(mu=0.8, R=150.0, Rdom=2.0)
         data = FourierBoundaryData(M=9, coeffs={3: 0.4 + 0.0j})
         problem = PolarProfileProblem(grid, physical, data)
@@ -174,6 +176,30 @@ class PolarProfileTests(unittest.TestCase):
 
         assert_allclose(omega, omega_rot, rtol=1e-10, atol=1e-10)
         assert_allclose(psi, psi_rot, rtol=1e-10, atol=1e-10)
+
+    def test_polar_full_disk_handles_mixed_boundary_modes(self) -> None:
+        grid = PolarGrid(radius=2.0, nr=10, ntheta=40)
+        physical = PhysicalParams(mu=0.8, R=150.0, Rdom=2.0)
+        data = FourierBoundaryData(
+            M=10,
+            coeffs={
+                2: 0.18 + 0.04j,
+                3: 0.12 + 0.0j,
+                5: -0.08 + 0.03j,
+            },
+        )
+        problem = PolarProfileProblem(grid, physical, data)
+        result = problem.solve(
+            PolarProfileParams(
+                sigma_grid=(0.0, 0.5, 1.0),
+                tol_step=1e-8,
+                tol_residual=1e-8,
+                max_iter=20,
+            )
+        )
+
+        self.assertTrue(result.converged, result.message)
+        self.assertLess(result.diagnostics["relative_residual"], 1e-8)
 
 
 if __name__ == "__main__":

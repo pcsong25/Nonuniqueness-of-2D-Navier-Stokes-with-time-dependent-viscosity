@@ -43,7 +43,7 @@ NEXTGEN_SIGMA_GRID = (0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)
 
 
 def run_nextgen() -> dict[str, Any]:
-    grid = PolarGrid(radius=10.0, nr=54, ntheta=54, symmetry=3)
+    grid = PolarGrid(radius=10.0, nr=54, ntheta=162)
     physical = PhysicalParams(mu=0.8, R=150.0, Rdom=10.0)
     boundary = FourierBoundaryData(M=48, coeffs=COEFFS)
     problem = PolarProfileProblem(grid, physical, boundary)
@@ -59,7 +59,7 @@ def run_nextgen() -> dict[str, Any]:
     )
     return {
         "status": "completed" if result.converged else "nonconverged",
-        "solver": "polar_c3_sector_upwind_newton",
+        "solver": "polar_full_disk_upwind_newton",
         "grid": grid,
         "problem": problem,
         "result": result,
@@ -413,15 +413,15 @@ def append_registry(summary: dict[str, Any]) -> None:
         writer = csv.writer(f)
         writer.writerow(
             [
-                "2026-04-26",
-                "m3-profile-c3-60-c4-0-polar-upwind-visual-check",
+                "2026-04-27",
+                "m3-profile-c3-60-c4-0-full-disk-upwind-visual-check",
                 "nextgen_vs_baseline",
                 "experiments/run_m3_c3_profile_visual_check.py",
                 "c3_60_c4_0_mu0.8_R150_Rdom10",
-                "nextgen_polar_c3_sector_disk_Rdom10_vs_baseline_disk_Rdom10",
-                "nextgen_nr54_ntheta54_sector3_dr0.185; baseline_gmsh_h0.12_0.18",
+                "nextgen_polar_full_disk_Rdom10_vs_baseline_disk_Rdom10",
+                "nextgen_nr54_ntheta162_dr0.185_dtheta0.0388; baseline_gmsh_h0.12_0.18",
                 "profile_continuation_newton_only_polar_fd",
-                "nextgen_sigma_grid=0:0.1:1; baseline_sigma_grid=0,0.25,0.5,0.75,1; c3 sector; no eigensolver",
+                "nextgen_sigma_grid=0:0.1:1; baseline_sigma_grid=0,0.25,0.5,0.75,1; full disk; no eigensolver",
                 f"nextgen={summary['nextgen'].get('runtime_sec'):.3f}; baseline={baseline.get('runtime_sec', 'n/a')}",
                 (
                     f"nextgen_rel_res={next_diag.get('relative_residual'):.3e}; "
@@ -443,7 +443,7 @@ def append_registry(summary: dict[str, Any]) -> None:
 
 
 def main() -> int:
-    outdir = REPO_ROOT / "experiments" / "raw" / "nextgen" / "m3_c3_60_c4_0_polar_visual"
+    outdir = REPO_ROOT / "experiments" / "raw" / "nextgen" / "m3_c3_60_c4_0_full_disk_visual"
     summaries = REPO_ROOT / "experiments" / "summaries"
     summaries.mkdir(parents=True, exist_ok=True)
 
@@ -479,7 +479,7 @@ def main() -> int:
             "Rdom": 10.0,
             "nextgen_sigma_grid": NEXTGEN_SIGMA_GRID,
             "baseline_sigma_grid": BASELINE_SIGMA_GRID,
-            "nextgen_grid": {"type": "polar_c3_sector", "radius": 10.0, "nr": 54, "ntheta": 54, "symmetry": 3},
+            "nextgen_grid": {"type": "polar_full_disk", "radius": 10.0, "nr": 54, "ntheta": 162},
         },
         "nextgen": nextgen,
         "baseline": baseline,
@@ -490,7 +490,7 @@ def main() -> int:
     }
     append_registry(summary)
 
-    summary_path = summaries / "m3_c3_60_c4_0_polar_visual_check_2026-04-26.json"
+    summary_path = summaries / "m3_c3_60_c4_0_full_disk_visual_check_2026-04-27.json"
     summary_path.write_text(json.dumps(sanitize(summary), indent=2, sort_keys=True))
     print(json.dumps(sanitize(summary), indent=2, sort_keys=True))
     return 0 if status == "completed" else 1

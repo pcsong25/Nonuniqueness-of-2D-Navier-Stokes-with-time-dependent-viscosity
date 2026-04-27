@@ -1,0 +1,147 @@
+{
+  "baseline": {
+    "mesh_cells": 22674,
+    "mesh_vertices": 11513,
+    "residuals": {
+      "meta": {
+        "R": 150.0,
+        "Rdom": 10.0,
+        "eps": 0.0044444444444444444,
+        "mu": 0.8,
+        "sigma": 1.0
+      },
+      "norms": {
+        "Omega_l2": 0.15405739680230413,
+        "Psi_l2": 3.5507990459137024e-12
+      }
+    },
+    "runtime_sec": 10.050184368155897,
+    "status": "completed"
+  },
+  "common_sampled_residuals": {
+    "baseline": {
+      "lap_psi_l2": 11.29052183774776,
+      "omega_field_l2": 11.146718855863154,
+      "omega_strong_l2": 11.662945022277961,
+      "poisson_strong_l2": 4.815957492232241,
+      "profile_strong_l2": 12.618150940596095,
+      "profile_strong_relative": 1.1175879310033001,
+      "sample_hx": 0.109375,
+      "sample_hy": 0.109375,
+      "sample_points": 16129
+    },
+    "nextgen": {
+      "lap_psi_l2": 11.712110354526672,
+      "omega_field_l2": 11.211584757294519,
+      "omega_strong_l2": 5.861686097757853,
+      "poisson_strong_l2": 3.6433377747928106,
+      "profile_strong_l2": 6.901686319290374,
+      "profile_strong_relative": 0.589277774062546,
+      "sample_hx": 0.109375,
+      "sample_hy": 0.109375,
+      "sample_points": 16129
+    },
+    "sample_domain": "square_half_width_7"
+  },
+  "comparison": {
+    "omega_probe_linf": 4.543116752703714,
+    "omega_probe_mean_offset": 0.00025129479091908733,
+    "omega_probe_rms": 0.30198604166543763,
+    "probe_count": 10092,
+    "psi_probe_linf_offset_removed": 0.10916014824898654,
+    "psi_probe_mean_offset": -0.036122419115818725,
+    "psi_probe_rms_offset_removed": 0.038135497882151266,
+    "valid_probe_count": 10092
+  },
+  "input": {
+    "R": 150.0,
+    "Rdom": 10.0,
+    "baseline_sigma_grid": [
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "coefficients": {
+      "3": 60.0,
+      "4": 0.0
+    },
+    "mu": 0.8,
+    "nextgen_grid": {
+      "nr": 54,
+      "ntheta": 162,
+      "radius": 10.0,
+      "type": "polar_full_disk"
+    },
+    "nextgen_sigma_grid": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      1.0
+    ]
+  },
+  "nextgen": {
+    "diagnostics": {
+      "final_sigma": 1.0,
+      "grid_dr": 0.18518518518518517,
+      "grid_dtheta": 0.038785094488762877,
+      "grid_nr": 54,
+      "grid_ntheta": 162,
+      "lap_psi_l2": 11.614622583421216,
+      "newton_steps": 71,
+      "omega_field_l2": 11.614622583421212,
+      "omega_residual_norm": 1.9085627752144642e-14,
+      "physical_poisson_residual_norm": 2.6437579169487323e-13,
+      "poisson_lambda": -6.924221062491084e-13,
+      "poisson_residual_norm": 2.6437604678107367e-13,
+      "relative_residual": 2.282158175646299e-14,
+      "residual_norm": 2.650640588580087e-13,
+      "runtime_sec": 49.40898439427838
+    },
+    "runtime_sec": 49.40898439427838,
+    "solver": "polar_full_disk_upwind_newton",
+    "status": "completed"
+  },
+  "notes": "Profile-only visual/residual comparison completed; psi comparison removes mean gauge offset.",
+  "plot_paths": [
+    "experiments/raw/nextgen/m3_c3_60_c4_0_full_disk_visual/nextgen_vorticity_heatmap.png",
+    "experiments/raw/nextgen/m3_c3_60_c4_0_full_disk_visual/nextgen_streamlines.png",
+    "experiments/raw/nextgen/m3_c3_60_c4_0_full_disk_visual/baseline_vorticity_heatmap.png",
+    "experiments/raw/nextgen/m3_c3_60_c4_0_full_disk_visual/baseline_streamlines.png"
+  ],
+  "status": "completed",
+  "threefold_symmetry": {
+    "baseline_omega": {
+      "max_abs": 3.724624551877273,
+      "relative_rms": 0.23473621851600912,
+      "rms": 0.2955660162105187,
+      "sample_count": 7240
+    },
+    "baseline_psi": {
+      "max_abs": 0.09808513580702038,
+      "relative_rms": 0.04512440763260218,
+      "rms": 0.042755118826097054,
+      "sample_count": 7240
+    },
+    "nextgen_omega": {
+      "max_abs": 1.6725509865977983e-13,
+      "relative_rms": 1.1566659777164075e-14,
+      "rms": 1.429213717229836e-14,
+      "sample_count": 7240
+    },
+    "nextgen_psi": {
+      "max_abs": 1.7319479184152442e-14,
+      "relative_rms": 5.62032661927755e-15,
+      "rms": 5.458392944656338e-15,
+      "sample_count": 7240
+    }
+  }
+}

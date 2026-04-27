@@ -16,7 +16,12 @@ from .profile import ProfileIteration
 
 @dataclass(frozen=True)
 class PolarGrid:
-    """Cell-centered polar grid on a disk or rotational symmetry sector."""
+    """Cell-centered polar grid on a disk.
+
+    The `symmetry` option is only for diagnostic reduced-sector experiments.
+    Production M3 validation uses the default full disk (`symmetry=1`) so the
+    mesh is not customized to any boundary-data symmetry.
+    """
 
     radius: float
     nr: int
@@ -124,12 +129,7 @@ def _periodic_second_matrix(ntheta: int, dtheta: float) -> sp.csr_matrix:
 
 
 class PolarProfileProblem:
-    """Picard/Newton-style profile solve on a circular polar finite-difference grid.
-
-    This solver is intentionally rotationally compatible: with `ntheta`
-    divisible by 3, c3 boundary data and the discrete operators are invariant
-    under 120-degree rotations.
-    """
+    """Newton profile solve on a circular polar finite-difference grid."""
 
     def __init__(
         self,
@@ -150,8 +150,8 @@ class PolarProfileProblem:
         self.psi_radial_derivative_matrix = self._radial_derivative_matrix(boundary="interior")
         self.laplacian_dirichlet = self._laplacian_matrix(boundary="dirichlet")
         self.laplacian_neumann = self._laplacian_matrix(boundary="neumann")
-        self.gauge_row = 0
-        self.poisson_matrix = self._gauged_poisson_matrix()
+        self.mean_weights = self.grid.area_weights()
+        self.poisson_matrix = self._bordered_poisson_matrix()
         self.poisson_omega_jacobian = self._poisson_omega_jacobian()
 
     def omega_boundary(self, sigma: float) -> np.ndarray:
@@ -179,6 +179,7 @@ class PolarProfileProblem:
         t0 = time.perf_counter()
         omega = np.zeros(self.grid.size, dtype=float)
         psi = np.zeros(self.grid.size, dtype=float)
+        poisson_lambda = 0.0
         iterations: list[ProfileIteration] = []
         sigmas = [float(sigma) for sigma in controls.sigma_grid if float(sigma) > 0.0]
         if not sigmas:
@@ -192,11 +193,11 @@ class PolarProfileProblem:
             current_sigma = sigma
             if sigma_prev not in (None, 0.0):
                 omega = omega * (sigma / sigma_prev)
-            psi = self.solve_poisson(omega, sigma)
+            psi, poisson_lambda = self.solve_poisson(omega, sigma)
             sigma_converged = False
             last_relative_step = 0.0
             for iteration in range(controls.max_iter + 1):
-                summary = self.residual_summary(omega, psi, sigma)
+                summary = self.residual_summary(omega, psi, sigma, poisson_lambda)
                 if iteration == 0:
                     iterations.append(
                         ProfileIteration(
@@ -222,14 +223,15 @@ class PolarProfileProblem:
                     break
 
                 jac = self.jacobian(omega, psi, sigma)
-                residual = self.residual_vector(omega, psi, sigma)
+                residual = self.residual_vector(omega, psi, sigma, poisson_lambda)
                 delta = np.asarray(spla.spsolve(jac, -residual), dtype=float)
                 linear_residual = float(
                     np.linalg.norm(jac @ delta + residual)
                     / max(summary["residual_norm"], 1e-30)
                 )
                 delta_omega = delta[: self.grid.size]
-                delta_psi = delta[self.grid.size :]
+                delta_psi = delta[self.grid.size : 2 * self.grid.size]
+                delta_lambda = float(delta[-1])
 
                 accepted = False
                 best: tuple[float, np.ndarray, np.ndarray, dict[str, float]] | None = None
@@ -237,7 +239,13 @@ class PolarProfileProblem:
                 for _ in range(controls.max_backtracks + 1):
                     trial_omega = omega + alpha * delta_omega
                     trial_psi = psi + alpha * delta_psi
-                    trial_summary = self.residual_summary(trial_omega, trial_psi, sigma)
+                    trial_lambda = poisson_lambda + alpha * delta_lambda
+                    trial_summary = self.residual_summary(
+                        trial_omega,
+                        trial_psi,
+                        sigma,
+                        trial_lambda,
+                    )
                     if best is None or trial_summary["residual_norm"] < best[3]["residual_norm"]:
                         best = (alpha, trial_omega, trial_psi, trial_summary)
                     if (
@@ -254,6 +262,7 @@ class PolarProfileProblem:
                 old_omega = omega
                 omega = trial_omega
                 psi = trial_psi
+                poisson_lambda = poisson_lambda + alpha_used * delta_lambda
                 step = float(
                     np.linalg.norm(alpha_used * delta_omega)
                     / max(np.linalg.norm(old_omega), 1.0)
@@ -291,7 +300,7 @@ class PolarProfileProblem:
             sigma_prev = sigma
 
         runtime = time.perf_counter() - t0
-        diagnostics = self.residual_summary(omega, psi, current_sigma)
+        diagnostics = self.residual_summary(omega, psi, current_sigma, poisson_lambda)
         diagnostics["runtime_sec"] = runtime
         diagnostics["newton_steps"] = len(iterations)
         diagnostics["final_sigma"] = current_sigma
@@ -299,6 +308,7 @@ class PolarProfileProblem:
         diagnostics["grid_ntheta"] = self.grid.ntheta
         diagnostics["grid_dr"] = self.grid.dr
         diagnostics["grid_dtheta"] = self.grid.dtheta
+        diagnostics["poisson_lambda"] = poisson_lambda
         return PolarProfileResult(
             omega=omega.reshape(self.grid.shape),
             psi=psi.reshape(self.grid.shape),
@@ -310,16 +320,16 @@ class PolarProfileProblem:
             diagnostics=diagnostics,
         )
 
-    def solve_poisson(self, omega: np.ndarray, sigma: float) -> np.ndarray:
+    def solve_poisson(self, omega: np.ndarray, sigma: float) -> tuple[np.ndarray, float]:
         rhs = self.poisson_rhs(omega, sigma)
-        return np.asarray(spla.spsolve(self.poisson_matrix, rhs), dtype=float)
+        solution = np.asarray(spla.spsolve(self.poisson_matrix, rhs), dtype=float)
+        return solution[: self.grid.size], float(solution[-1])
 
     def poisson_rhs(self, omega: np.ndarray, sigma: float) -> np.ndarray:
         rhs = np.asarray(omega, dtype=float).reshape(-1) - self._neumann_laplacian_bc(
             self.psi_neumann_boundary(sigma)
         )
-        rhs[self.gauge_row] = 0.0
-        return rhs
+        return np.concatenate((rhs, [0.0]))
 
     def solve_linear_omega(self, psi: np.ndarray, sigma: float) -> np.ndarray:
         psi_vec = np.asarray(psi, dtype=float).reshape(-1)
@@ -345,7 +355,13 @@ class PolarProfileProblem:
         rhs = self.physical.eps * omega_lap_bc - vr * omega_dr_bc
         return np.asarray(spla.spsolve(operator.tocsr(), rhs), dtype=float)
 
-    def residual(self, omega: np.ndarray, psi: np.ndarray, sigma: float) -> tuple[np.ndarray, np.ndarray]:
+    def residual(
+        self,
+        omega: np.ndarray,
+        psi: np.ndarray,
+        sigma: float,
+        poisson_lambda: float = 0.0,
+    ) -> tuple[np.ndarray, np.ndarray]:
         omega_vec = np.asarray(omega, dtype=float).reshape(-1)
         psi_vec = np.asarray(psi, dtype=float).reshape(-1)
         omega_boundary = self.omega_boundary(sigma)
@@ -362,11 +378,18 @@ class PolarProfileProblem:
         omega_r = omega_dr @ omega_vec + omega_dr_bc
         omega_theta = omega_dtheta @ omega_vec
         omega_residual = vr * omega_r + vtheta_over_r * omega_theta - omega_vec - self.physical.eps * lap_omega
-        poisson_residual = self.poisson_matrix @ psi_vec - self.poisson_rhs(omega_vec, sigma)
+        poisson_unknown = np.concatenate((psi_vec, [float(poisson_lambda)]))
+        poisson_residual = self.poisson_matrix @ poisson_unknown - self.poisson_rhs(omega_vec, sigma)
         return omega_residual, poisson_residual
 
-    def residual_vector(self, omega: np.ndarray, psi: np.ndarray, sigma: float) -> np.ndarray:
-        omega_residual, poisson_residual = self.residual(omega, psi, sigma)
+    def residual_vector(
+        self,
+        omega: np.ndarray,
+        psi: np.ndarray,
+        sigma: float,
+        poisson_lambda: float = 0.0,
+    ) -> np.ndarray:
+        omega_residual, poisson_residual = self.residual(omega, psi, sigma, poisson_lambda)
         return np.concatenate((omega_residual, poisson_residual))
 
     def physical_poisson_residual(self, omega: np.ndarray, psi: np.ndarray, sigma: float) -> np.ndarray:
@@ -403,22 +426,32 @@ class PolarProfileProblem:
             -sp.diags(omega_r * inv_r, format="csr") @ self.dtheta_full
             + sp.diags(omega_theta * inv_r, format="csr") @ self.psi_radial_derivative_matrix
         )
+        j_op_augmented = sp.hstack(
+            (j_op, sp.csr_matrix((self.grid.size, 1), dtype=float)),
+            format="csr",
+        )
         return sp.bmat(
             [
-                [j_oo, j_op],
+                [j_oo, j_op_augmented],
                 [self.poisson_omega_jacobian, self.poisson_matrix],
             ],
             format="csr",
         )
 
-    def residual_summary(self, omega: np.ndarray, psi: np.ndarray, sigma: float) -> dict[str, float]:
-        omega_residual, poisson_residual = self.residual(omega, psi, sigma)
+    def residual_summary(
+        self,
+        omega: np.ndarray,
+        psi: np.ndarray,
+        sigma: float,
+        poisson_lambda: float = 0.0,
+    ) -> dict[str, float]:
+        omega_residual, poisson_residual = self.residual(omega, psi, sigma, poisson_lambda)
         physical_poisson_residual = self.physical_poisson_residual(omega, psi, sigma)
         weights = self.grid.quadrature_weights()
         omega_norm = self._weighted_norm(np.asarray(omega).reshape(-1), weights)
         lap_norm = self._weighted_norm(physical_poisson_residual + np.asarray(omega).reshape(-1), weights)
         omega_residual_norm = self._weighted_norm(omega_residual, weights)
-        poisson_residual_norm = self._weighted_norm(poisson_residual, weights)
+        poisson_residual_norm = float(np.sqrt(self._weighted_norm(poisson_residual[:-1], weights) ** 2 + poisson_residual[-1] ** 2))
         physical_poisson_residual_norm = self._weighted_norm(physical_poisson_residual, weights)
         total = float(np.sqrt(omega_residual_norm**2 + poisson_residual_norm**2))
         scale = max(omega_norm, lap_norm, 1e-30)
@@ -543,19 +576,22 @@ class PolarProfileProblem:
             out[row] = (0.5 * self.grid.dr * neumann[k]) / (1.5 * self.grid.dr)
         return out
 
-    def _gauged_poisson_matrix(self) -> sp.csr_matrix:
-        mat = self.laplacian_neumann.copy().tolil()
-        weights = self.grid.area_weights()
-        mat.rows[self.gauge_row] = list(range(self.grid.size))
-        mat.data[self.gauge_row] = list(weights)
-        return mat.tocsr()
+    def _bordered_poisson_matrix(self) -> sp.csr_matrix:
+        weights = sp.csr_matrix(self.mean_weights.reshape(-1, 1))
+        top = sp.hstack((self.laplacian_neumann, weights), format="csr")
+        bottom = sp.hstack(
+            (
+                sp.csr_matrix(self.mean_weights.reshape(1, -1)),
+                sp.csr_matrix((1, 1), dtype=float),
+            ),
+            format="csr",
+        )
+        return sp.vstack((top, bottom), format="csr")
 
     def _poisson_omega_jacobian(self) -> sp.csr_matrix:
         mat = sp.eye(self.grid.size, format="lil")
         mat *= -1.0
-        mat.rows[self.gauge_row] = []
-        mat.data[self.gauge_row] = []
-        return mat.tocsr()
+        return sp.vstack((mat.tocsr(), sp.csr_matrix((1, self.grid.size), dtype=float)), format="csr")
 
     def _laplacian_matrix(self, *, boundary: str) -> sp.csr_matrix:
         mat = sp.lil_matrix((self.grid.size, self.grid.size), dtype=float)

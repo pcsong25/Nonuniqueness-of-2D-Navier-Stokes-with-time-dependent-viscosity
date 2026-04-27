@@ -56,7 +56,7 @@ Deliverables:
 - tests for Neumann conventions / manufactured checks / gauge handling
 
 ### M3. Profile solver
-Status: implemented / circular validation in progress
+Status: implemented / refinement validation in progress
 
 Objectives:
 - implement the nonlinear self-similar profile solve on top of nextgen foundations,
@@ -83,14 +83,27 @@ Validation note:
 - The square-grid solver is retained as a diagnostic implementation but is not
   valid for c3 disk/whole-space validation because it preserves square-domain
   symmetry instead of threefold symmetry.
-- A polar c3-sector upwind Newton solver now gives exact threefold symmetry to
-  roundoff and improves the common sampled strong residual for the active
-  `c_3=60`, `c_4=0` case (`0.589` nextgen vs `1.118` baseline on the latest
-  common sample). Runtime was slower than the baseline (`16.288 s` vs
-  `10.255 s`), and Omega Linf discrepancies near the central vortex arms remain.
-- Before M4, complete at least one polar refinement/convergence check and
-  decide whether the upwind advection discretization is the M3 default for
-  active-amplitude profile generation.
+- A general full-disk polar upwind Newton solver is now the M3 validation path.
+  It does not customize the mesh to c3 or any other n-fold symmetry. On the
+  active `c_3=60`, `c_4=0` case, the latest common sampled strong residual is
+  `0.589` for nextgen versus `1.118` for baseline. Runtime is slower than the
+  baseline (`49.409 s` vs `10.050 s`), and Omega Linf discrepancies near the
+  central vortex arms remain.
+- A full-disk reduced validation suite also passed for `c_4=5`, mixed
+  `c_2/c_5` complex data, and reduced mixed `c_3/c_4` data.
+- A full-disk refinement study has now been run for the active
+  `c_3=60`, `c_4=0` case and a mixed non-symmetric reduced
+  `c_2=3+i`, `c_5=-2+0.5i` case. The mixed reduced case shows monotone
+  improvement in common strong residual and probe RMS errors as
+  `nr, ntheta` are refined from `30/90` to `36/108`.
+- The active full-amplitude c3 case remains only partially robust:
+  `nr=48`, `ntheta=144` stalled during continuation at sigma `0.7`, while
+  `nr=54`, `ntheta=162` completed with common sampled strong residual
+  `0.650` versus `0.835` for the fine baseline mesh. Baseline coarse meshes
+  are not reliable for this case.
+- Before M4, decide whether this M3 validation is sufficient for profile
+  generation despite slower runtime, or improve the Newton/linear solve
+  strategy to reduce the full-disk polar cost.
 
 ### M4. Linearized operator assembly
 Status: pending
@@ -140,6 +153,7 @@ Required validation:
 
 ## Current recommended next milestone
 
-Continue M3 validation/fix work: run polar c3-sector refinement and
-performance checks before M4.
+Continue M3 validation/fix work: improve full-disk polar robustness and
+performance, especially for the active full-amplitude c3 continuation threshold,
+before M4.
 Do not implement the linearized operator or eigensolver yet.

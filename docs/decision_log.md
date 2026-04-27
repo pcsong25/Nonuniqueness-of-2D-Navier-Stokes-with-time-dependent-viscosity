@@ -201,10 +201,11 @@ Consequences:
 The next implementation step should be a disk/rotationally compatible profile discretization
 or a circular truncation strategy for the FD solver. M4 and eigensolver work remain blocked.
 
-### 2026-04-26 — Use a polar c3-sector upwind FD profile solver for c3 validation
+### 2026-04-26 — Diagnostic polar c3-sector experiment
 Decision:
-Add a circular finite-difference profile solver in `src/nextgen/polar_profile.py` and use a
-`2*pi/3` periodic polar sector for the active `c_3=60`, `c_4=0` validation case.
+Add a circular finite-difference profile solver in `src/nextgen/polar_profile.py`. The initial
+diagnostic experiment used a `2*pi/3` periodic polar sector for the active `c_3=60`, `c_4=0`
+case.
 
 Why:
 The square truncation cannot preserve threefold symmetry. A full polar disk with arbitrary
@@ -228,6 +229,64 @@ defect `1.416`. Probe discrepancies also improved to Omega RMS `0.302` and offse
 RMS `0.0381`.
 
 Consequences:
-The polar c3-sector path is the current M3 validation path for c3 profile work. It is not yet
-an efficiency win on the active full-amplitude case (`16.288 s` nextgen vs `10.255 s` baseline),
-so M3 should continue with polar refinement/performance checks before any M4/eigensolver work.
+This sector experiment is superseded by the 2026-04-27 full-disk decision below. It remains
+useful debugging evidence but is not the production validation path because the solver must work
+for arbitrary boundary data without a mesh customized to one symmetry.
+
+### 2026-04-27 — Use a general full-disk polar FD profile solver for M3 validation
+Decision:
+Use the full polar disk (`symmetry=1`) as the M3 disk finite-difference profile validation path.
+Keep n-fold symmetry only as a diagnostic when the boundary data happens to have such symmetry.
+
+Why:
+The project goal is a profile solver for arbitrary Fourier boundary data, not a solver tied to
+one mode family. The mesh and gauge treatment therefore must not encode c3 symmetry. The polar
+Poisson block now uses a bordered mean-gauge system rather than replacing one angular row, and
+the validation scripts use full-disk grids.
+
+Alternatives considered:
+- Keep the c3-sector mesh for the active test because it is cheaper
+- Keep the square-grid profile solver and document its c3 failure
+- Use only symmetry-preserving cases as validation
+
+Evidence:
+The active full-amplitude `c_3=60`, `c_4=0` full-disk run completed with native relative
+residual `2.282e-14`, common sampled strong residual `0.589`, Omega probe RMS `0.302`, and
+offset-removed psi probe RMS `0.0381`. Runtime was `49.409 s` versus baseline `10.050 s`.
+A reduced full-disk validation suite also completed for `c_4=5`, mixed complex `c_2/c_5` data,
+and reduced mixed `c_3/c_4` data. In those cases, nextgen common sampled strong residuals were
+`0.705`, `0.691`, and `0.740`, respectively, versus baseline sampled residuals `2.938`,
+`2.093`, and `3.629` on the selected coarse grids.
+
+Consequences:
+The full-disk polar solver is the current M3 validation target. The square solver remains useful
+for algebraic diagnostics, and the c3-sector experiment remains historical debugging evidence,
+but neither should be treated as the production profile-validation path.
+
+### 2026-04-27 — Full-disk polar refinement study keeps M3 open
+Decision:
+Keep M3 open after the first full-disk refinement study; do not start M4 yet.
+
+Why:
+The refinement study supports the full-disk polar formulation for general boundary data, but it
+also shows that active-amplitude c3 continuation has a resolution/robustness threshold and that
+the current nextgen implementation is slower than the baseline profile workflow.
+
+Alternatives considered:
+- Treat the lower common sampled strong residual on the completed nextgen grids as enough to
+  declare M3 complete.
+- Start linearized-operator assembly while leaving profile robustness as a later cleanup.
+
+Evidence:
+For the mixed non-symmetric reduced case `c_2=3+i`, `c_5=-2+0.5i`, nextgen grids
+`30/90`, `32/96`, and `36/108` all completed and improved monotonically in common sampled
+strong residual (`0.759`, `0.691`, `0.654`) and Omega probe RMS (`0.262`, `0.199`, `0.142`).
+For active `c_3=60`, `c_4=0`, nextgen `48/144` stalled at sigma `0.7`, while `54/162`
+completed with common sampled strong residual `0.650` versus the fine baseline value `0.835`.
+The coarse active-c3 baseline mesh was unstable under the common strong residual metric, so fine
+baseline meshes are required for meaningful comparison.
+
+Consequences:
+The common sampled strong residual remains the primary cross-code residual metric, supplemented
+by probe RMS/Linf errors and runtime. Next M3 work should target Newton continuation robustness,
+linear-solve performance, and perhaps better preconditioning/reuse before moving to M4.

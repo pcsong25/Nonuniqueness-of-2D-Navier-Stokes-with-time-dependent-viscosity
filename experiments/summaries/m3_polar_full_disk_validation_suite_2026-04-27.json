@@ -1,0 +1,306 @@
+{
+  "cases": [
+    {
+      "baseline": {
+        "mesh_cells": 8192,
+        "mesh_vertices": 4202,
+        "residuals": {
+          "meta": {
+            "R": 150.0,
+            "Rdom": 10.0,
+            "eps": 0.0044444444444444444,
+            "mu": 0.8,
+            "sigma": 1.0
+          },
+          "norms": {
+            "Omega_l2": 0.11656276173213598,
+            "Psi_l2": 2.062420493248514e-14
+          }
+        },
+        "runtime_sec": 1.7721749166958034,
+        "status": "completed"
+      },
+      "coeffs": {
+        "4": {
+          "imag": 0.0,
+          "real": 5.0
+        }
+      },
+      "common_sampled_residuals": {
+        "baseline": {
+          "lap_psi_l2": 0.9559059845761371,
+          "omega_field_l2": 0.9366479293751473,
+          "omega_strong_l2": 2.7580281561820437,
+          "poisson_strong_l2": 0.5275679978722534,
+          "profile_strong_l2": 2.8080326391749546,
+          "profile_strong_relative": 2.9375615222453892,
+          "sample_hx": 0.14583333333333304,
+          "sample_hy": 0.14583333333333304,
+          "sample_points": 9025
+        },
+        "nextgen": {
+          "lap_psi_l2": 1.465333245238102,
+          "omega_field_l2": 1.4344272221706935,
+          "omega_strong_l2": 0.9160003614986895,
+          "poisson_strong_l2": 0.4790405252994668,
+          "profile_strong_l2": 1.0337003855783933,
+          "profile_strong_relative": 0.7054370662356926,
+          "sample_hx": 0.14583333333333304,
+          "sample_hy": 0.14583333333333304,
+          "sample_points": 9025
+        },
+        "sample_domain": "square_half_width_7"
+      },
+      "comparison": {
+        "omega_probe_linf": 0.9713585485463622,
+        "omega_probe_mean_offset": -0.0017031761380657856,
+        "omega_probe_rms": 0.10814194428372507,
+        "probe_count": 6912,
+        "psi_probe_linf_offset_removed": 0.0908773557670926,
+        "psi_probe_mean_offset": 0.29068297804956794,
+        "psi_probe_rms_offset_removed": 0.02090663685081561,
+        "valid_probe_count": 6912
+      },
+      "description": "single fourfold mode, reduced amplitude",
+      "name": "c4_reduced",
+      "nextgen": {
+        "diagnostics": {
+          "final_sigma": 1.0,
+          "grid_dr": 0.3125,
+          "grid_dtheta": 0.06544984694978735,
+          "grid_nr": 32,
+          "grid_ntheta": 96,
+          "lap_psi_l2": 1.502198066516786,
+          "newton_steps": 19,
+          "omega_field_l2": 1.5021980665167862,
+          "omega_residual_norm": 1.6608526569382958e-15,
+          "physical_poisson_residual_norm": 5.977729617640266e-15,
+          "poisson_lambda": -3.574350537833552e-14,
+          "poisson_residual_norm": 5.978252830498021e-15,
+          "relative_residual": 4.130394543111572e-15,
+          "residual_norm": 6.204670696613689e-15,
+          "runtime_sec": 3.9823016417212784
+        },
+        "runtime_sec": 3.9823016417212784,
+        "status": "completed"
+      },
+      "notes": "Full-disk polar nextgen and baseline profile comparison completed.",
+      "status": "completed"
+    },
+    {
+      "baseline": {
+        "mesh_cells": 8192,
+        "mesh_vertices": 4202,
+        "residuals": {
+          "meta": {
+            "R": 150.0,
+            "Rdom": 10.0,
+            "eps": 0.0044444444444444444,
+            "mu": 0.8,
+            "sigma": 1.0
+          },
+          "norms": {
+            "Omega_l2": 0.07015087622017598,
+            "Psi_l2": 1.9962529398580918e-14
+          }
+        },
+        "runtime_sec": 1.907464827876538,
+        "status": "completed"
+      },
+      "coeffs": {
+        "2": {
+          "imag": 1.0,
+          "real": 3.0
+        },
+        "5": {
+          "imag": 0.5,
+          "real": -2.0
+        }
+      },
+      "common_sampled_residuals": {
+        "baseline": {
+          "lap_psi_l2": 0.8586626428706982,
+          "omega_field_l2": 0.8399457722370202,
+          "omega_strong_l2": 1.735743398711262,
+          "poisson_strong_l2": 0.46584064378289325,
+          "profile_strong_l2": 1.7971679530777818,
+          "profile_strong_relative": 2.0929849085660157,
+          "sample_hx": 0.14583333333333304,
+          "sample_hy": 0.14583333333333304,
+          "sample_points": 9025
+        },
+        "nextgen": {
+          "lap_psi_l2": 1.8038758795941894,
+          "omega_field_l2": 1.890352746124763,
+          "omega_strong_l2": 1.195080188529614,
+          "poisson_strong_l2": 0.5287915426943127,
+          "profile_strong_l2": 1.3068424360423139,
+          "profile_strong_relative": 0.6913219972946058,
+          "sample_hx": 0.14583333333333304,
+          "sample_hy": 0.14583333333333304,
+          "sample_points": 9025
+        },
+        "sample_domain": "square_half_width_7"
+      },
+      "comparison": {
+        "omega_probe_linf": 3.115272576868791,
+        "omega_probe_mean_offset": 0.00021388132292614548,
+        "omega_probe_rms": 0.1989807371942394,
+        "probe_count": 6912,
+        "psi_probe_linf_offset_removed": 0.06390411635455928,
+        "psi_probe_mean_offset": -0.2738285286580979,
+        "psi_probe_rms_offset_removed": 0.014556166788895314,
+        "valid_probe_count": 6912
+      },
+      "description": "non-symmetric mixed complex modes, reduced amplitude",
+      "name": "mixed_2_5_reduced",
+      "nextgen": {
+        "diagnostics": {
+          "final_sigma": 1.0,
+          "grid_dr": 0.3125,
+          "grid_dtheta": 0.06544984694978735,
+          "grid_nr": 32,
+          "grid_ntheta": 96,
+          "lap_psi_l2": 1.966888372325525,
+          "newton_steps": 25,
+          "omega_field_l2": 1.9668877956441961,
+          "omega_residual_norm": 6.9431339287811316e-15,
+          "physical_poisson_residual_norm": 0.0016390255394521465,
+          "poisson_lambda": 0.2009199460357784,
+          "poisson_residual_norm": 2.96888863797551e-14,
+          "relative_residual": 1.5501617151933035e-14,
+          "residual_norm": 3.048995052837901e-14,
+          "runtime_sec": 5.66558264894411
+        },
+        "runtime_sec": 5.66558264894411,
+        "status": "completed"
+      },
+      "notes": "Full-disk polar nextgen and baseline profile comparison completed.",
+      "status": "completed"
+    },
+    {
+      "baseline": {
+        "mesh_cells": 8192,
+        "mesh_vertices": 4202,
+        "residuals": {
+          "meta": {
+            "R": 150.0,
+            "Rdom": 10.0,
+            "eps": 0.0044444444444444444,
+            "mu": 0.8,
+            "sigma": 1.0
+          },
+          "norms": {
+            "Omega_l2": 0.2436711858663023,
+            "Psi_l2": 3.539530735808035e-14
+          }
+        },
+        "runtime_sec": 1.9872182831168175,
+        "status": "completed"
+      },
+      "coeffs": {
+        "3": {
+          "imag": 0.0,
+          "real": 6.0
+        },
+        "4": {
+          "imag": 0.0,
+          "real": 5.0
+        }
+      },
+      "common_sampled_residuals": {
+        "baseline": {
+          "lap_psi_l2": 1.6027802679595302,
+          "omega_field_l2": 1.569096664736021,
+          "omega_strong_l2": 5.751875684005103,
+          "poisson_strong_l2": 0.8684410512445677,
+          "profile_strong_l2": 5.817066592685349,
+          "profile_strong_relative": 3.629359999603033,
+          "sample_hx": 0.14583333333333304,
+          "sample_hy": 0.14583333333333304,
+          "sample_points": 9025
+        },
+        "nextgen": {
+          "lap_psi_l2": 2.3463945589992483,
+          "omega_field_l2": 2.285884276244036,
+          "omega_strong_l2": 1.5586594574610952,
+          "poisson_strong_l2": 0.765457929235032,
+          "profile_strong_l2": 1.7364749194162579,
+          "profile_strong_relative": 0.7400609214491509,
+          "sample_hx": 0.14583333333333304,
+          "sample_hy": 0.14583333333333304,
+          "sample_points": 9025
+        },
+        "sample_domain": "square_half_width_7"
+      },
+      "comparison": {
+        "omega_probe_linf": 2.4995622633866934,
+        "omega_probe_mean_offset": -0.004474300854342985,
+        "omega_probe_rms": 0.19939666663286515,
+        "probe_count": 6912,
+        "psi_probe_linf_offset_removed": 0.21042274401630068,
+        "psi_probe_mean_offset": 0.5634595347278839,
+        "psi_probe_rms_offset_removed": 0.05395395970926022,
+        "valid_probe_count": 6912
+      },
+      "description": "historical mixed c3/c4 reduced active-shape test",
+      "name": "c3_c4_reduced",
+      "nextgen": {
+        "diagnostics": {
+          "final_sigma": 1.0,
+          "grid_dr": 0.3125,
+          "grid_dtheta": 0.06544984694978735,
+          "grid_nr": 32,
+          "grid_ntheta": 96,
+          "lap_psi_l2": 2.4044348608604187,
+          "newton_steps": 23,
+          "omega_field_l2": 2.4044345640487528,
+          "omega_residual_norm": 4.01926163096815e-15,
+          "physical_poisson_residual_norm": 0.0014145730260746588,
+          "poisson_lambda": -0.17340543464479277,
+          "poisson_residual_norm": 1.6978922008770536e-14,
+          "relative_residual": 7.256657022784011e-15,
+          "residual_norm": 1.7448159118889455e-14,
+          "runtime_sec": 5.077574559021741
+        },
+        "runtime_sec": 5.077574559021741,
+        "status": "completed"
+      },
+      "notes": "Full-disk polar nextgen and baseline profile comparison completed.",
+      "status": "completed"
+    }
+  ],
+  "input": {
+    "baseline_mesh": {
+      "h_max": 0.3,
+      "h_min": 0.2
+    },
+    "nextgen_grid": {
+      "nr": 32,
+      "ntheta": 96,
+      "type": "polar_full_disk"
+    },
+    "physical": {
+      "R": 150.0,
+      "Rdom": 10.0,
+      "eps": 0.0044444444444444444,
+      "mu": 0.8
+    },
+    "sigma_grid": [
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ]
+  },
+  "norm_definitions": {
+    "baseline_raw_residual": "baseline PETSc vector 2-norms from residuals_quick.py; not directly normalized like common_strong_relative",
+    "common_strong_relative": "sqrt(||R_Omega||_L2^2+||R_Psi||_L2^2)/max(||Omega||_L2,||Delta psi||_L2) on a common Cartesian sample grid",
+    "native_relative_residual": "nextgen assembled polar residual weighted by polar cell areas, divided by max(||Omega||_L2,||Delta psi||_L2)",
+    "probe_linf": "max(abs(nextgen-baseline)) over valid common probes",
+    "probe_rms": "sqrt(mean((nextgen-baseline)^2)) over common polar probes r in [0.5,8]",
+    "psi_probe_rms_offset_removed": "same RMS after subtracting mean psi difference to remove gauge offset"
+  },
+  "status": "completed"
+}
