@@ -10,8 +10,8 @@ def current_baseline_coefficients() -> dict[int, complex]:
         0: 0.0 + 0.0j,
         1: 0.0 + 0.0j,
         2: 0.0 + 0.0j,
-        3: 0.0 + 0.0j,
-        4: 50.0 + 0.0j,
+        3: 60.0 + 0.0j,
+        4: 0.0 + 0.0j,
         5: 0.0 + 0.0j,
         6: 0.0 + 0.0j,
         10: 0.0 + 0.0j,
@@ -70,4 +70,3 @@ class NextgenCase:
     physical: PhysicalParams = field(default_factory=PhysicalParams)
     boundary: BoundaryParams = field(default_factory=BoundaryParams)
     grid: SquareGridParams = field(default_factory=SquareGridParams)
-

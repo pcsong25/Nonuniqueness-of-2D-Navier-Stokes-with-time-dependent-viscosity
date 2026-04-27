@@ -1,0 +1,58 @@
+{
+  "baseline": {
+    "mesh_cells": 3660,
+    "mesh_vertices": 1901,
+    "residuals": {
+      "meta": {
+        "R": 150.0,
+        "Rdom": 10.0,
+        "eps": 0.0044444444444444444,
+        "mu": 0.8,
+        "sigma": 1.0
+      },
+      "norms": {
+        "Omega_l2": 1.1660483993577662,
+        "Psi_l2": 4.51015130980854e-13
+      }
+    },
+    "runtime_sec": 1.2804250963963568,
+    "status": "completed"
+  },
+  "comparison": {
+    "omega_probe_linf": 1.4693386459357374,
+    "omega_probe_mean_offset": -0.002051104197084673,
+    "omega_probe_rms": 0.12181604264066866,
+    "probe_count": 2061,
+    "psi_probe_linf_offset_removed": 0.701304669561134,
+    "psi_probe_mean_offset": -0.0005061457568864531,
+    "psi_probe_rms_offset_removed": 0.234562569876382,
+    "valid_probe_count": 2061
+  },
+  "nextgen": {
+    "diagnostics": {
+      "final_sigma": 1.0,
+      "grid_h": 0.3125,
+      "grid_n": 65,
+      "newton_steps": 16,
+      "omega_boundary_l2": 0.0,
+      "omega_boundary_max_abs": 0.0,
+      "omega_residual_norm": 1.67126908970786e-15,
+      "poisson_compatibility": 0.8945447959659576,
+      "poisson_residual_norm": 1.8365921976547224e-13,
+      "psi_gauge_value": 0.0,
+      "relative_residual": 1.5053809216306575e-13,
+      "residual_norm": 1.8366682374678406e-13,
+      "runtime_sec": 7.408739616628736
+    },
+    "plot_paths": [
+      "experiments/raw/nextgen/m3_profile_reduced/omega.png",
+      "experiments/raw/nextgen/m3_profile_reduced/psi.png",
+      "experiments/raw/nextgen/m3_profile_reduced/newton_residual_history.png"
+    ],
+    "runtime_sec": 7.408739616628736,
+    "status": "completed"
+  },
+  "notes": "Profile-only reduced comparison completed; psi discrepancy removes mean gauge offset.",
+  "scale": 0.1,
+  "status": "completed"
+}

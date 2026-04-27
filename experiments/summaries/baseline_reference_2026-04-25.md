@@ -1,4 +1,9 @@
-# Baseline Reference Run - 2026-04-25
+# Historical Baseline Reference Run - 2026-04-25
+
+Note: this run remains useful as historical validation data, but it is not the
+current active `src/baseline/driver.py` input. As of the c3-only M3 validation on
+2026-04-26, the authoritative driver uses `c_3=60+0j` and `c_4=0+0j`,
+with `h_min=0.05` and `h_max=0.10`.
 
 ## Command
 
@@ -6,7 +11,7 @@
 env MPLCONFIGDIR=/tmp/mplconfig-euler conda run -n femx_spc python src/baseline/driver.py
 ```
 
-## Current `driver.py` Inputs
+## Inputs Used For This Historical Run
 
 - `mu = 0.8`
 - `R = 150.0`

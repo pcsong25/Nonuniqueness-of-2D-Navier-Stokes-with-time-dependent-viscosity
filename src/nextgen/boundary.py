@@ -78,10 +78,22 @@ class FourierBoundaryData:
         *,
         mu: float,
         R: float,
+        Rdom: float | None = None,
         sigma: float = 1.0,
     ) -> np.ndarray:
-        theta = np.arctan2(np.asarray(y, dtype=float), np.asarray(x, dtype=float))
-        return float(sigma) * float(R) ** (-1.0 / float(mu)) * self.omega_bar(theta)
+        x_arr = np.asarray(x, dtype=float)
+        y_arr = np.asarray(y, dtype=float)
+        theta = np.arctan2(y_arr, x_arr)
+        if Rdom is None:
+            scale = float(R) ** (-1.0 / float(mu))
+        else:
+            radius = np.hypot(x_arr, y_arr)
+            if np.any(radius <= 0.0):
+                raise ValueError("Far-field vorticity data is undefined at the origin.")
+            scale = (float(Rdom) / float(R)) ** (1.0 / float(mu)) * radius ** (
+                -1.0 / float(mu)
+            )
+        return float(sigma) * scale * self.omega_bar(theta)
 
     def psi_neumann_circle(
         self,
@@ -153,4 +165,3 @@ class FourierBoundaryData:
         grad_x = scale * (alpha * psi * er_x + psi_theta * et_x)
         grad_y = scale * (alpha * psi * er_y + psi_theta * et_y)
         return grad_x * nx_unit + grad_y * ny_unit
-

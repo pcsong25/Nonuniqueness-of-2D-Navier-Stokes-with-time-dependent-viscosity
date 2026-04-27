@@ -56,7 +56,7 @@ Deliverables:
 - tests for Neumann conventions / manufactured checks / gauge handling
 
 ### M3. Profile solver
-Status: in progress / next
+Status: implemented / circular validation in progress
 
 Objectives:
 - implement the nonlinear self-similar profile solve on top of nextgen foundations,
@@ -71,9 +71,26 @@ Required validation:
 - runtime and discrepancy summary.
 
 Deliverables:
-- profile solver module(s)
-- tests
-- logged comparison results
+- `src/nextgen/profile.py`
+- `src/nextgen/polar_profile.py`
+- `tests/test_nextgen_profile.py`
+- `experiments/run_m3_profile_comparison.py`
+- `experiments/run_m3_c3_profile_visual_check.py`
+- logged reduced comparison results in `experiments/registry.csv` and
+  `experiments/summaries/`
+
+Validation note:
+- The square-grid solver is retained as a diagnostic implementation but is not
+  valid for c3 disk/whole-space validation because it preserves square-domain
+  symmetry instead of threefold symmetry.
+- A polar c3-sector upwind Newton solver now gives exact threefold symmetry to
+  roundoff and improves the common sampled strong residual for the active
+  `c_3=60`, `c_4=0` case (`0.589` nextgen vs `1.118` baseline on the latest
+  common sample). Runtime was slower than the baseline (`16.288 s` vs
+  `10.255 s`), and Omega Linf discrepancies near the central vortex arms remain.
+- Before M4, complete at least one polar refinement/convergence check and
+  decide whether the upwind advection discretization is the M3 default for
+  active-amplitude profile generation.
 
 ### M4. Linearized operator assembly
 Status: pending
@@ -123,5 +140,6 @@ Required validation:
 
 ## Current recommended next milestone
 
-M3. Profile solver only.
-Do not implement the eigensolver yet.
+Continue M3 validation/fix work: run polar c3-sector refinement and
+performance checks before M4.
+Do not implement the linearized operator or eigensolver yet.

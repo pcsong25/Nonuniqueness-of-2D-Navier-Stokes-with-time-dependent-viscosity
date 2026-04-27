@@ -12,10 +12,272 @@ Baseline reference run completed on 2026-04-25 using `conda run -n femx_spc`.
 The default shell Python still lacks `gmsh`, but the `femx_spc` environment has
 the required FEniCSx/gmsh/PETSc/SLEPc stack.
 
-The `src/nextgen/` square-grid foundation now includes configuration, Fourier
-boundary data, square grid indexing, sparse finite-difference operators,
-diagnostics, tests, and a sparse Neumann Poisson solve with gauge handling.
-No full Newton/profile solver or eigensolver has been implemented yet.
+The `src/nextgen/` foundation now includes configuration, Fourier boundary
+data, square-grid sparse operators, diagnostics, a sparse Neumann Poisson
+solve with gauge handling, the original square M3 sparse Newton profile
+solver, and a circular/polar c3-sector profile solver for disk validation. No
+nextgen eigensolver has been implemented yet.
+
+The current authoritative `src/baseline/driver.py` input now uses
+`c_3=60+0j` and `c_4=0+0j`, with `h_min=0.05` and `h_max=0.10`.
+Older m4 or mixed m3/m4 baseline rows and summaries are historical references,
+not the current active driver state.
+
+## 2026-04-26 M3 circular c3-sector profile validation
+
+### Added
+
+- `src/nextgen/polar_profile.py`
+- polar profile tests in `tests/test_nextgen_profile.py`
+- updated `experiments/run_m3_c3_profile_visual_check.py` to use the polar
+  c3-sector solver for the active `c_3=60`, `c_4=0` visual comparison
+- `experiments/summaries/m3_c3_60_c4_0_polar_visual_check_2026-04-26.json`
+- simple plots under
+  `experiments/raw/nextgen/m3_c3_60_c4_0_polar_visual/`
+
+Implementation notes:
+
+- The new disk path uses a cell-centered polar finite-difference grid with a
+  `2*pi/3` periodic sector for c3 data. Sampling maps the sector back to the
+  full disk, so threefold symmetry is enforced by the discrete domain.
+- The Poisson block uses the same gauged Neumann convention as the square
+  nextgen solver.
+- The Omega equation uses first-order upwind advection in polar coordinates
+  and centered diffusion. Centered polar advection preserved symmetry but
+  produced the wrong bounded radial profile for this inward-advection case.
+- The polar velocity convention is now
+  `v_r = -psi_theta/r - mu*r`, `v_theta/r = psi_r/r`, matching
+  `(-psi_y, psi_x) - mu*(x,y)`.
+
+Validation run:
+
+```bash
+conda run -n femx_spc python experiments/run_m3_c3_profile_visual_check.py
+```
+
+Unit checks:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests
+```
+
+Result: `19` tests passed.
+
+Inputs:
+
+- `c_3=60+0j`, `c_4=0+0j`
+- `mu=0.8`, `R=150`, `Rdom=10`, `M=48`
+- nextgen polar sector grid: `nr=54`, `ntheta=54`, `symmetry=3`,
+  `dr=0.185185`
+- nextgen sigma continuation: `0:0.1:1`
+- baseline profile-only disk mesh: `h_min=0.12`, `h_max=0.18`,
+  baseline sigma grid `(0, 0.25, 0.5, 0.75, 1)`
+- no eigensolver
+
+Results:
+
+- nextgen polar-upwind: completed, runtime `16.288 s`, `71` recorded Newton
+  history entries, native relative residual `2.245e-14`, native absolute
+  residual `2.607e-13`, physical Poisson residual norm `8.889e-12`
+- baseline profile-only: completed, runtime `10.255 s`, mesh vertices `11513`,
+  cells `22674`, raw weak residuals `||R_Omega||_2=1.541e-01`,
+  `||R_Psi||_2=3.551e-12`
+- common sampled strong residual on `[-7,7]^2`:
+  nextgen relative `5.893e-01`, baseline relative `1.118e+00`
+- probe comparison on `10092` shared points with radius `<=8`:
+  Omega RMS discrepancy `3.020e-01`, Omega Linf discrepancy `4.543`,
+  psi RMS discrepancy after mean-offset removal `3.814e-02`,
+  psi Linf discrepancy after mean-offset removal `1.092e-01`
+- threefold symmetry defect:
+  nextgen Omega relative RMS `4.842e-15`, nextgen psi relative RMS
+  `1.419e-15`; baseline sampled defects were `2.347e-01` and `4.512e-02`,
+  mostly reflecting unstructured-mesh interpolation/noise on the probe set.
+
+Interpretation:
+
+- The circular c3-sector solver fixes the fundamental square-domain symmetry
+  failure. The nextgen visual field now matches the baseline c3 structure
+  qualitatively and has a lower common sampled strong residual than the
+  baseline on this grid/probe comparison.
+- The nextgen run was slower than the baseline in this validation
+  (`16.288 s` vs `10.255 s`) because it needed finer sigma continuation and
+  repeated direct Newton solves. It is not yet an efficiency improvement for
+  this full-amplitude c3 profile case.
+- The remaining Omega Linf discrepancy is concentrated near the central
+  high-gradient vortex arms; radial/angular refinement and convergence checks
+  are still required before treating M3 as fully validated for production
+  profile data.
+
+Recommended next step:
+
+- Stay in M3 and run a polar-grid refinement/convergence study for
+  `c_3=60`, `c_4=0` before starting M4. Keep using the common sampled strong
+  residual, probe RMS/Linf discrepancies, symmetry defect, and runtime.
+
+## 2026-04-26 M3 c3-only visual/residual check
+
+### Added
+
+- `experiments/run_m3_c3_profile_visual_check.py`
+- `experiments/summaries/m3_c3_60_c4_0_visual_check_2026-04-26.json`
+- simple plots under `experiments/raw/nextgen/m3_c3_60_c4_0_visual/`
+- common sampled strong residual metrics in `src/nextgen/diagnostics.py`
+- radially scaled square-boundary vorticity Dirichlet data in
+  `src/nextgen/boundary.py`
+
+Input:
+
+- `c_3=60+0j`, `c_4=0+0j`
+- `mu=0.8`, `R=150`, `Rdom=10`, `M=48`
+- `sigma_grid=(0, 0.25, 0.5, 0.75, 1)`
+- nextgen square grid: half-width `10`, `n=129`, `h=0.15625`
+- baseline profile-only disk mesh: `h_min=0.12`, `h_max=0.18`
+- no eigensolver
+
+Outputs:
+
+- nextgen vorticity heat map:
+  `experiments/raw/nextgen/m3_c3_60_c4_0_visual/nextgen_vorticity_heatmap.png`
+- nextgen streamfunction contours:
+  `experiments/raw/nextgen/m3_c3_60_c4_0_visual/nextgen_streamlines.png`
+- baseline vorticity heat map:
+  `experiments/raw/nextgen/m3_c3_60_c4_0_visual/baseline_vorticity_heatmap.png`
+- baseline streamfunction contours:
+  `experiments/raw/nextgen/m3_c3_60_c4_0_visual/baseline_streamlines.png`
+
+Latest results after the square-boundary vorticity scaling fix:
+
+- nextgen: converged, runtime `43.373 s`, `25` recorded Newton history entries,
+  final relative native algebraic residual `7.944e-14`, absolute algebraic
+  residual `2.302e-12`, Omega boundary mismatch `0`, compatibility defect
+  `7.494e-15`
+- baseline profile-only: completed, runtime `10.000 s`, mesh vertices `11513`,
+  cells `22674`, raw weak residuals `||R_Omega||_2=1.541e-01`,
+  `||R_Psi||_2=3.551e-12`
+- probe comparison on `8245` shared points with radius `<=8`:
+  Omega RMS discrepancy `8.017e-01`, Omega Linf discrepancy `9.504`,
+  psi RMS discrepancy after mean-offset removal `1.436`,
+  psi Linf discrepancy after mean-offset removal `3.159`
+- common sampled strong residual on a uniform square `[-7,7]^2`:
+  nextgen relative `1.638e+01`, baseline relative `1.118e+00`
+- threefold symmetry defect on polar samples with radius `<=7`:
+  nextgen Omega relative RMS `1.416`, baseline Omega relative RMS `0.235`;
+  nextgen psi relative RMS `1.730`, baseline psi relative RMS `0.045`
+
+Additional square-domain symmetry probe:
+
+- On a small `n=65` square nextgen run, `c_3` data produced Omega threefold
+  relative RMS defect `1.417`, while `c_4` data produced fourfold relative RMS
+  defect `2.05e-15`.
+- This confirms that the current square-domain truncation preserves the square
+  grid's fourfold symmetry, not the threefold symmetry required by c3 boundary
+  data.
+
+Interpretation:
+
+- The visual comparison shows a substantial qualitative mismatch between the
+  square-grid nextgen profile and the disk baseline profile for this c3-only
+  case.
+- The nextgen native algebraic residual confirms it solves its assembled
+  square-grid equations accurately, but the common sampled strong residual and
+  symmetry defect show that this is not yet a reliable approximation of the
+  intended whole-space/disk profile.
+- The c3/c4 symmetry probe indicates that the square boundary/domain shape is a
+  fundamental issue for odd non-square-compatible modes.
+- At comparable practical resolution in this test, nextgen is slower
+  (`43.373 s`) than the baseline profile-only solve (`10.000 s`).
+
+Recommended next step:
+
+- Stay in M3 validation/fix mode. Before M4, move the nextgen profile solve to
+  a disk/rotationally compatible discretization or otherwise enforce a circular
+  truncation; the current square domain is not suitable for validating c3
+  profiles.
+
+## 2026-04-26 M3 nextgen profile solver
+
+### Added
+
+- `src/nextgen/profile.py`
+- `tests/test_nextgen_profile.py`
+- `experiments/run_m3_profile_comparison.py`
+- `experiments/summaries/m3_profile_reduced_comparison_2026-04-26.json`
+- preliminary debug plots under `experiments/raw/nextgen/m3_profile_reduced/`
+
+Implemented:
+
+- strong-form interior profile residual
+  `v . grad(Omega) - Omega - eps * Delta(Omega)`
+- monolithic residual on `(Omega_interior, psi_full)`
+- analytic sparse Jacobian blocks for Omega/Omega, Omega/psi, Poisson/Omega,
+  and Poisson/psi
+- sigma-continuation with sparse direct Newton solves and residual-decreasing
+  backtracking
+- profile diagnostics for residual components, Omega boundary mismatch,
+  Poisson compatibility, gauge value, runtime, and Newton history
+- preliminary Omega, psi, and Newton residual-history debug plots
+
+### Tests
+
+Checks run:
+
+```bash
+PYTHONPYCACHEPREFIX=/tmp/pycache-euler python -m py_compile src/nextgen/profile.py experiments/run_m3_profile_comparison.py tests/test_nextgen_profile.py
+python -m unittest discover -s tests
+```
+
+Result: `14` tests passed.
+
+Added tests cover:
+
+- full-grid psi gradient matrix on a linear field
+- finite-difference check of the analytic profile Jacobian
+- zero-boundary profile solve
+- small nonzero continuation solve with preserved Omega boundary data
+
+### Reduced baseline comparison
+
+Command:
+
+```bash
+conda run -n femx_spc python experiments/run_m3_profile_comparison.py
+```
+
+Input:
+
+- historical active boundary shape scaled by `0.1`: `c_3=6+0j`, `c_4=5+0j`
+- `mu=0.8`, `R=150`, `Rdom=10`, `M=48`
+- `sigma_grid=(0, 0.25, 0.5, 0.75, 1)`
+- nextgen square grid: half-width `10`, `n=65`, `h=0.3125`
+- baseline profile-only disk mesh: `h_min=0.30`, `h_max=0.45`
+- no eigensolver
+
+Results:
+
+- nextgen: converged, runtime `7.409 s`, `16` recorded Newton history entries,
+  final relative residual `1.505e-13`, Omega boundary mismatch `0`
+- baseline profile-only: completed, runtime `1.280 s`, mesh vertices `1901`,
+  cells `3660`, raw weak residuals `||R_Omega||_2=1.166`,
+  `||R_Psi||_2=4.510e-13`
+- probe comparison on `2061` shared points with radius `<=8`:
+  Omega RMS discrepancy `1.218e-01`, Omega Linf discrepancy `1.469`,
+  psi RMS discrepancy after mean-offset removal `2.346e-01`,
+  psi Linf discrepancy after mean-offset removal `7.013e-01`
+
+Remaining uncertainties:
+
+- The square-vs-disk comparison is a coarse reduced validation; boundary-shape
+  and discretization differences likely dominate the probe discrepancies.
+- The square Neumann boundary closure is first-order and shows a large
+  compatibility defect (`8.945e-01`) on the reduced run.
+- The centered-advection Newton solve worked on the reduced case; full active
+  amplitude and refinement should be tested before relying on high-accuracy
+  profile outputs.
+
+Recommended next step:
+
+- Superseded by the later c3-only visual/residual check above: stay in M3
+  validation/fix mode before starting M4.
 
 ## 2026-04-26 square-domain review and Neumann Poisson scaffold
 
@@ -85,12 +347,12 @@ Command:
 env MPLCONFIGDIR=/tmp/mplconfig-euler conda run -n femx_spc python src/baseline/driver.py
 ```
 
-Current active input from `src/baseline/driver.py`:
+Historical active input for this 2026-04-25 baseline reference run:
 
 - `mu=0.8`, `R=150.0`, `Rdom=10.0`, `M=48`
 - `sigma_grid=np.linspace(0.0, 1.0, 21)`
 - `h_min=0.06`, `h_max=0.12`
-- active Fourier coefficient `c_4=50+0j`
+- active Fourier coefficient at the time: `c_4=50+0j`
 - `k=6`, eigensolver shift `sigma=-1.0`
 
 Outputs:
@@ -158,10 +420,10 @@ Remaining uncertainties:
 - Corner treatment currently uses normalized diagonal normals for diagnostics;
   later finite-difference boundary closures may need a solver-specific corner
   convention.
-- The active baseline input has changed from the earlier intake notes
-  (`m=3`, coefficient `70`) to the current driver input (`m=4`, coefficient
-  `50`). Future comparisons should use the current driver state unless a
-  specific case is requested.
+- The active baseline input has changed again since the earlier intake notes:
+  the current driver uses `m=3` coefficient `60` and `m=4` coefficient `0`.
+  Future comparisons should use the current driver state unless a specific
+  historical case is requested.
 
 ## 2026-04-25 intake report
 
@@ -189,7 +451,7 @@ Remaining uncertainties:
 2. Build a gmsh disk mesh on `B_Rdom(0)` and create scalar CG1 spaces for
    `Omega` and `psi`.
 3. Build Fourier boundary data from the hard-coded coefficients. In the current
-   active input, only mode `m=3` is nonzero with coefficient `70`, mirrored to
+   active input, only mode `m=3` is nonzero with coefficient `60`, mirrored to
    negative modes for real-valued data.
 4. Construct the Neumann Poisson solver for `Delta psi = Omega` with far-field
    Neumann data from the Fourier coefficients and one pinned gauge dof.

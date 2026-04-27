@@ -78,3 +78,156 @@ Alternatives considered:
 Open questions:
 - How boundary data and far-field conventions should be represented most cleanly on the square
 - How to benchmark square-domain outputs against the baseline disk-domain implementation
+
+### 2026-04-26 — M3 profile residual and Jacobian form
+Decision:
+Implement the nextgen profile solver as a monolithic sparse finite-difference Newton solve on
+`(Omega_interior, psi_full)`.
+
+Why:
+This preserves the baseline manifold-Newton structure while reusing the M1/M2 square-grid
+operators and gauged Neumann Poisson matrix directly. The Omega equation is assembled in
+strong form as `v . grad(Omega) - Omega - eps * Delta(Omega)`, with boundary Omega values
+eliminated into the interior derivative stencils.
+
+Alternatives considered:
+- Re-solve Poisson as a nested operation inside each residual evaluation
+- Implement only Picard iteration before Newton
+- Start the eigen/linearized operator work in the same milestone
+
+Evidence:
+Jacobian finite-difference tests pass on a small grid, and the reduced `c_3=6`, `c_4=5`
+profile run converged with final nextgen relative residual `1.505e-13`.
+
+Consequences:
+The M4 linearized-operator assembly should reuse the same discrete derivative, Poisson,
+and sign conventions instead of re-deriving separate stencils.
+
+### 2026-04-26 — Historical active baseline coefficient correction
+Decision:
+At this point in the M3 work, treat `src/baseline/driver.py` as using both
+`c_3=60+0j` and `c_4=50+0j`, with `h_min=0.05` and `h_max=0.10`.
+
+Why:
+Direct inspection of the authoritative driver showed the earlier m4-only notes are stale.
+
+Alternatives considered:
+- Continue using the historical m4-only baseline reference as the current default
+- Revert the baseline driver to match the old documentation
+
+Evidence:
+The active driver coefficient dictionary includes modes `3: 60.0+0j` and `4: 50.0+0j`.
+
+Consequences:
+Nextgen defaults were updated to the current active shape. Existing m4-only run records remain
+historical validation data but should not be described as the current driver state.
+This entry was superseded later on 2026-04-26 when the active driver was corrected to
+`c_3=60+0j`, `c_4=0+0j`.
+
+### 2026-04-26 — M3 reduced square-vs-disk validation
+Decision:
+Validate M3 with a reduced profile-only comparison using the active boundary shape scaled by
+`0.1`, nextgen on a square `n=65` grid, and baseline on a coarse disk mesh.
+
+Why:
+This gives a feasible same-shape workflow comparison without entering eigensolver scope.
+
+Alternatives considered:
+- Run the full active-amplitude baseline case
+- Compare only residuals without a baseline run
+- Delay baseline comparison until after eigensolver work
+
+Evidence:
+The profile-only comparison completed in `experiments/run_m3_profile_comparison.py`.
+Nextgen reached relative residual `1.505e-13`; the coarse baseline profile run completed with
+raw weak residuals `||R_Omega||_2=1.166` and `||R_Psi||_2=4.510e-13`.
+
+Consequences:
+The measured probe discrepancies are preliminary because square-vs-disk domain shape,
+coarse baseline mesh, and first-order square Neumann closure are all active error sources.
+
+### 2026-04-26 — C3-only profile validation blocks M4
+Decision:
+Do not move to M4 until the c3-only profile mismatch is understood.
+
+Why:
+The user corrected the active baseline input to `c_3=60+0j`, `c_4=0+0j` and requested
+visual/residual validation before moving forward. The nextgen solver reached a tiny algebraic
+residual on its square-grid equations, but the vorticity heat map and streamfunction contours
+do not qualitatively match the baseline disk solve at comparable practical resolution.
+
+Alternatives considered:
+- Treat low nextgen residual alone as sufficient and start linearized-operator assembly
+- Attribute all discrepancy to square-vs-disk geometry without further checks
+
+Evidence:
+For `experiments/run_m3_c3_profile_visual_check.py`, nextgen `n=129` reached relative residual
+`7.944e-14` in `43.373 s`; the baseline disk profile solve completed in `10.000 s` with raw
+weak residuals `||R_Omega||_2=1.541e-01` and `||R_Psi||_2=3.551e-12`. Probe discrepancies on
+radius `<=8` were large: Omega RMS `8.017e-01`, psi RMS after gauge-offset removal `1.436`.
+On common sampled strong residuals over `[-7,7]^2`, nextgen relative residual was `1.638e+01`
+and baseline relative residual was `1.118e+00`. The nextgen Omega threefold relative RMS defect
+was `1.416`.
+
+Consequences:
+M3 is implemented but not validated as a baseline replacement. The next task should investigate
+profile residual/sign conventions, square boundary treatment, and disk-vs-square effects before
+any M4 work.
+
+### 2026-04-26 — Square domain is not acceptable for c3 profile validation
+Decision:
+The nextgen profile validation for c3 data should move away from the full square boundary
+truncation before starting M4.
+
+Why:
+The c3 whole-space problem should have threefold symmetry. A square computational domain is
+not invariant under 120-degree rotation, so the finite square-domain boundary value problem
+is not the same symmetry class as the disk baseline problem. Applying radially scaled far-field
+vorticity data on the square boundary fixed an inconsistency with the streamfunction Neumann
+scaling, but it did not restore c3 symmetry.
+
+Alternatives considered:
+- Keep the square domain and rely on larger `Rdom`
+- Use low native algebraic residual as the validation criterion
+- Proceed to M4 while documenting the mismatch
+
+Evidence:
+Small nextgen `n=65` symmetry probes showed `c_3` Omega threefold relative RMS defect `1.417`.
+The same solver/grid with `c_4` data had fourfold relative RMS defect `2.05e-15`, matching the
+square grid symmetry. This isolates the issue to the square-domain symmetry class rather than
+the Newton residual alone.
+
+Consequences:
+The next implementation step should be a disk/rotationally compatible profile discretization
+or a circular truncation strategy for the FD solver. M4 and eigensolver work remain blocked.
+
+### 2026-04-26 — Use a polar c3-sector upwind FD profile solver for c3 validation
+Decision:
+Add a circular finite-difference profile solver in `src/nextgen/polar_profile.py` and use a
+`2*pi/3` periodic polar sector for the active `c_3=60`, `c_4=0` validation case.
+
+Why:
+The square truncation cannot preserve threefold symmetry. A full polar disk with arbitrary
+gauge-row replacement can also introduce avoidable asymmetry, while a c3 periodic sector
+enforces the physical threefold class directly. The centered polar advection stencil converged
+to a bounded radial profile with poor common strong residual, so the Omega advection term now
+uses first-order upwind derivatives while retaining the same strong-form PDE and centered
+diffusion.
+
+Alternatives considered:
+- Keep the square solver and document the c3 mismatch
+- Use centered polar advection because it is closer to the original algebraic square M3 form
+- Move directly to M4 with the square profile
+
+Evidence:
+The latest c3 profile-only comparison produced nextgen native relative residual `2.245e-14`,
+common sampled strong residual `0.589`, and threefold Omega/psi relative RMS defects
+`4.842e-15` / `1.419e-15`. The corresponding baseline run had common sampled strong residual
+`1.118`; the square nextgen run had common sampled strong residual `16.38` and Omega symmetry
+defect `1.416`. Probe discrepancies also improved to Omega RMS `0.302` and offset-removed psi
+RMS `0.0381`.
+
+Consequences:
+The polar c3-sector path is the current M3 validation path for c3 profile work. It is not yet
+an efficiency win on the active full-amplitude case (`16.288 s` nextgen vs `10.255 s` baseline),
+so M3 should continue with polar refinement/performance checks before any M4/eigensolver work.

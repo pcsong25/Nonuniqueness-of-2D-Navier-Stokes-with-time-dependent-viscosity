@@ -64,6 +64,33 @@ class FourierBoundaryTests(unittest.TestCase):
         direct = data.psi_neumann_circle(theta, mu=mu, R=R, Rdom=Rdom, sigma=sigma)
         assert_allclose(direct, baseline, rtol=1e-12, atol=1e-12)
 
+    def test_scaled_omega_dirichlet_matches_baseline_on_circle(self) -> None:
+        data = FourierBoundaryData(M=8, coeffs={3: 60.0 + 0.0j})
+        mu = 0.8
+        R = 150.0
+        Rdom = 10.0
+        theta = np.linspace(-np.pi, np.pi, 29)
+        x = Rdom * np.cos(theta)
+        y = Rdom * np.sin(theta)
+
+        legacy = data.omega_dirichlet(x, y, mu=mu, R=R)
+        scaled = data.omega_dirichlet(x, y, mu=mu, R=R, Rdom=Rdom)
+        assert_allclose(scaled, legacy, rtol=1e-12, atol=1e-12)
+
+    def test_scaled_omega_dirichlet_decays_off_circle(self) -> None:
+        data = FourierBoundaryData(M=8, coeffs={3: 60.0 + 0.0j})
+        mu = 0.8
+        R = 150.0
+        Rdom = 10.0
+        theta = np.array([0.2, 1.1, 2.0])
+        radius = 2.0 * Rdom
+        x = radius * np.cos(theta)
+        y = radius * np.sin(theta)
+
+        legacy = data.omega_dirichlet(x, y, mu=mu, R=R)
+        scaled = data.omega_dirichlet(x, y, mu=mu, R=R, Rdom=Rdom)
+        assert_allclose(scaled, legacy * 2.0 ** (-1.0 / mu), rtol=1e-12, atol=1e-12)
+
     def test_real_mode_mirroring(self) -> None:
         data = FourierBoundaryData(M=4, coeffs={2: 3.0 + 2.0j})
         theta = np.array([0.1, 1.2, 2.4])
