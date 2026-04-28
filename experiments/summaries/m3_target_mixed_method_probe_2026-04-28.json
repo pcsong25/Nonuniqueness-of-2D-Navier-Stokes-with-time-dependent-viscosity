@@ -1,0 +1,247 @@
+{
+  "baseline": {
+    "mesh": {
+      "h_max": 0.18,
+      "h_min": 0.12
+    },
+    "mesh_cells": 22674,
+    "mesh_vertices": 11513,
+    "residuals": {
+      "meta": {
+        "R": 150.0,
+        "Rdom": 10.0,
+        "eps": 0.0044444444444444444,
+        "mu": 0.8,
+        "sigma": 1.0
+      },
+      "norms": {
+        "Omega_l2": 0.012943055272787048,
+        "Psi_l2": 0.026609492647242945
+      }
+    },
+    "runtime_sec": 14.963529407978058,
+    "status": "completed"
+  },
+  "common_residuals": {
+    "baseline": {
+      "lap_psi_l2": 1.8306849772518754,
+      "omega_field_l2": 1.8216799318147456,
+      "omega_strong_l2": 1.5976943612723806,
+      "poisson_strong_l2": 0.7512534432428946,
+      "profile_strong_l2": 1.76550531237543,
+      "profile_strong_relative": 0.9643960235177712,
+      "sample_hx": 0.109375,
+      "sample_hy": 0.109375,
+      "sample_points": 16129
+    },
+    "polar_blended": {
+      "lap_psi_l2": 0.4582382503401288,
+      "omega_field_l2": 0.30454535732942195,
+      "omega_strong_l2": 9.327852812741984,
+      "poisson_strong_l2": 0.22157628971031587,
+      "profile_strong_l2": 9.330484132580706,
+      "profile_strong_relative": 20.361644026126417,
+      "sample_hx": 0.109375,
+      "sample_hy": 0.109375,
+      "sample_points": 16129
+    },
+    "polar_upwind_fine": {
+      "lap_psi_l2": 2.093986994496651,
+      "omega_field_l2": 2.119018628948875,
+      "omega_strong_l2": 0.7960129155230922,
+      "poisson_strong_l2": 0.4012031377227639,
+      "profile_strong_l2": 0.8914036792599437,
+      "profile_strong_relative": 0.4206681654809796,
+      "sample_hx": 0.109375,
+      "sample_hy": 0.109375,
+      "sample_points": 16129
+    },
+    "square_fd": {
+      "lap_psi_l2": 0.7124236856521629,
+      "omega_field_l2": 0.152238942939069,
+      "omega_strong_l2": 5.681329058624995,
+      "poisson_strong_l2": 0.6636394224209763,
+      "profile_strong_l2": 5.719957793145682,
+      "profile_strong_relative": 8.028870892900692,
+      "sample_hx": 0.109375,
+      "sample_hy": 0.109375,
+      "sample_points": 16129
+    }
+  },
+  "input": {
+    "coeffs": {
+      "2": {
+        "imag": 3.0,
+        "real": 6.0
+      },
+      "5": {
+        "imag": 1.0,
+        "real": -5.0
+      },
+      "8": {
+        "imag": -1.5,
+        "real": 2.0
+      }
+    },
+    "physical": {
+      "R": 150.0,
+      "Rdom": 10.0,
+      "eps": 0.0044444444444444444,
+      "mu": 0.8
+    },
+    "sigma_grid": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      1.0
+    ]
+  },
+  "notes": "Target mixed method probe completed.",
+  "plot_paths": [
+    "experiments/raw/nextgen/m3_target_mixed_method_probe/square_fd_omega.png",
+    "experiments/raw/nextgen/m3_target_mixed_method_probe/square_fd_psi.png",
+    "experiments/raw/nextgen/m3_target_mixed_method_probe/polar_blended_omega.png",
+    "experiments/raw/nextgen/m3_target_mixed_method_probe/polar_blended_psi.png",
+    "experiments/raw/nextgen/m3_target_mixed_method_probe/polar_upwind_fine_omega.png",
+    "experiments/raw/nextgen/m3_target_mixed_method_probe/polar_upwind_fine_psi.png",
+    "experiments/raw/nextgen/m3_target_mixed_method_probe/baseline_omega.png",
+    "experiments/raw/nextgen/m3_target_mixed_method_probe/baseline_psi.png"
+  ],
+  "polar_blended": {
+    "diagnostics": {
+      "adaptive_retries": 0,
+      "advection_scheme": "blended",
+      "anchored_attempts": 0,
+      "anchored_linear_solve_time_sec": 0.0,
+      "anchored_successes": 0,
+      "attempted_sigma": 1.0,
+      "completed_sigma_steps": 10,
+      "diffusion_attempts": 0,
+      "diffusion_linear_solve_time_sec": 0.0,
+      "diffusion_successes": 0,
+      "final_sigma": 1.0,
+      "grid_dr": 0.18518518518518517,
+      "grid_dtheta": 0.038785094488762877,
+      "grid_nr": 54,
+      "grid_ntheta": 162,
+      "lap_psi_l2": 0.49533716967141006,
+      "newton_linear_solve_time_sec": 4.68913478590548,
+      "newton_steps": 31,
+      "omega_field_l2": 0.4953371696714451,
+      "omega_residual_norm": 1.2994948993398743e-14,
+      "physical_poisson_residual_norm": 3.913183567076411e-07,
+      "poisson_gauge": "mean",
+      "poisson_lambda": 0.0001365797452110097,
+      "poisson_residual_norm": 1.5177112162847877e-14,
+      "relative_residual": 4.033681978753617e-14,
+      "residual_norm": 1.9980326147105307e-14,
+      "runtime_sec": 5.974991616792977,
+      "upwind_blend": 0.01,
+      "upwind_smoothing": 0.001
+    },
+    "grid": {
+      "dr": 0.18518518518518517,
+      "dtheta": 0.038785094488762877,
+      "nr": 54,
+      "ntheta": 162
+    },
+    "runtime_sec": 5.974991616792977,
+    "status": "completed"
+  },
+  "polar_upwind_fine": {
+    "diagnostics": {
+      "adaptive_retries": 0,
+      "advection_scheme": "upwind",
+      "anchored_attempts": 0,
+      "anchored_linear_solve_time_sec": 0.0,
+      "anchored_successes": 0,
+      "attempted_sigma": 1.0,
+      "completed_sigma_steps": 10,
+      "diffusion_attempts": 0,
+      "diffusion_linear_solve_time_sec": 0.0,
+      "diffusion_successes": 0,
+      "final_sigma": 1.0,
+      "grid_dr": 0.1388888888888889,
+      "grid_dtheta": 0.02908882086657216,
+      "grid_nr": 72,
+      "grid_ntheta": 216,
+      "lap_psi_l2": 2.172942729673859,
+      "newton_linear_solve_time_sec": 10.752002712339163,
+      "newton_steps": 41,
+      "omega_field_l2": 2.172941988537644,
+      "omega_residual_norm": 2.715973787644803e-10,
+      "physical_poisson_residual_norm": 0.0019411862240283758,
+      "poisson_gauge": "mean",
+      "poisson_lambda": -1.2044380276334916,
+      "poisson_residual_norm": 3.273669527927198e-13,
+      "relative_residual": 1.2499067386800158e-10,
+      "residual_norm": 2.7159757605851043e-10,
+      "runtime_sec": 13.22717463131994,
+      "upwind_blend": 0.01,
+      "upwind_smoothing": 0.001
+    },
+    "grid": {
+      "dr": 0.1388888888888889,
+      "dtheta": 0.02908882086657216,
+      "nr": 72,
+      "ntheta": 216
+    },
+    "runtime_sec": 13.22717463131994,
+    "status": "completed"
+  },
+  "probe_errors": {
+    "polar_blended_vs_baseline": {
+      "omega_probe_linf": 2.3428066288744835,
+      "omega_probe_rms": 0.2253759673239415,
+      "psi_probe_linf_offset_removed": 0.5162771323088738,
+      "psi_probe_rms_offset_removed": 0.24115445095437302,
+      "valid_probe_count": 10092
+    },
+    "polar_upwind_fine_vs_baseline": {
+      "omega_probe_linf": 2.01926435964866,
+      "omega_probe_rms": 0.10650395181215978,
+      "psi_probe_linf_offset_removed": 0.048098487978341486,
+      "psi_probe_rms_offset_removed": 0.0100747258319527,
+      "valid_probe_count": 10092
+    },
+    "square_fd_vs_baseline": {
+      "omega_probe_linf": 2.375385296156092,
+      "omega_probe_rms": 0.2326058281203975,
+      "psi_probe_linf_offset_removed": 0.5663294385578728,
+      "psi_probe_rms_offset_removed": 0.2441059227313192,
+      "valid_probe_count": 10092
+    }
+  },
+  "square_fd": {
+    "diagnostics": {
+      "final_sigma": 1.0,
+      "grid_h": 0.20833333333333334,
+      "grid_n": 97,
+      "newton_steps": 39,
+      "omega_boundary_l2": 0.0,
+      "omega_boundary_max_abs": 0.0,
+      "omega_residual_norm": 3.9842732603294975e-15,
+      "poisson_compatibility": -0.1115165396913004,
+      "poisson_residual_norm": 1.5142866974046422e-13,
+      "psi_gauge_value": 0.0,
+      "relative_residual": 6.963371388263024e-14,
+      "residual_norm": 1.5148107622003339e-13,
+      "runtime_sec": 36.73014083877206
+    },
+    "grid": {
+      "h": 0.20833333333333334,
+      "half_width": 10.0,
+      "n": 97
+    },
+    "runtime_sec": 36.73014083877206,
+    "status": "completed"
+  },
+  "status": "completed"
+}

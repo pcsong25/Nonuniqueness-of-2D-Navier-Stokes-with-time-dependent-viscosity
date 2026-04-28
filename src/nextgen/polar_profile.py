@@ -164,21 +164,25 @@ class PolarProfileProblem:
         gauge_index: int | None = None,
         advection_scheme: str = "upwind",
         upwind_blend: float = 0.01,
+        upwind_smoothing: float = 1e-3,
     ):
         if not np.isclose(grid.radius, physical.Rdom):
             raise ValueError("PolarGrid.radius must match PhysicalParams.Rdom for the M3 disk solve.")
         if poisson_gauge not in {"mean", "pin"}:
             raise ValueError("poisson_gauge must be 'mean' or 'pin'.")
-        if advection_scheme not in {"upwind", "centered", "blended"}:
-            raise ValueError("advection_scheme must be 'upwind', 'centered', or 'blended'.")
+        if advection_scheme not in {"upwind", "smooth_upwind", "centered", "blended"}:
+            raise ValueError("advection_scheme must be 'upwind', 'smooth_upwind', 'centered', or 'blended'.")
         if not 0.0 <= float(upwind_blend) <= 1.0:
             raise ValueError("upwind_blend must be between 0 and 1.")
+        if float(upwind_smoothing) < 0.0:
+            raise ValueError("upwind_smoothing must be nonnegative.")
         self.grid = grid
         self.physical = physical
         self.boundary_data = boundary_data
         self.poisson_gauge = poisson_gauge
         self.advection_scheme = advection_scheme
         self.upwind_blend = float(upwind_blend)
+        self.upwind_smoothing = float(upwind_smoothing)
         self.gauge_index = 0 if gauge_index is None else int(gauge_index)
         if not 0 <= self.gauge_index < grid.size:
             raise ValueError("gauge_index must be a valid polar grid unknown index.")
@@ -1003,6 +1007,7 @@ class PolarProfileProblem:
             "poisson_gauge": self.poisson_gauge,
             "advection_scheme": self.advection_scheme,
             "upwind_blend": self.upwind_blend,
+            "upwind_smoothing": self.upwind_smoothing,
         }
 
     def sample_cartesian(
@@ -1075,12 +1080,43 @@ class PolarProfileProblem:
         )
         return mat.tocsr(), bc
 
+    def _smooth_upwind_positive_weight(self, velocity: np.ndarray) -> np.ndarray:
+        vel = np.asarray(velocity, dtype=float).reshape(-1)
+        delta = max(self.upwind_smoothing, 0.0)
+        if delta == 0.0:
+            return (vel >= 0.0).astype(float)
+        return 0.5 * (1.0 + vel / np.sqrt(vel * vel + delta * delta))
+
+    def _smooth_radial_advection_matrix_and_bc(
+        self,
+        velocity: np.ndarray,
+        boundary_values: np.ndarray,
+    ) -> tuple[sp.csr_matrix, np.ndarray]:
+        positive_weight = self._smooth_upwind_positive_weight(velocity)
+        mat = (
+            sp.diags(positive_weight, format="csr") @ self.radial_upwind_positive
+            + sp.diags(1.0 - positive_weight, format="csr") @ self.radial_upwind_negative
+        )
+        bc = np.zeros(self.grid.size, dtype=float)
+        outer_negative = 1.0 - positive_weight[self.radial_upwind_outer_rows]
+        bc[self.radial_upwind_outer_rows] = (
+            outer_negative * self.radial_upwind_outer_scale * np.asarray(boundary_values, dtype=float)
+        )
+        return mat.tocsr(), bc
+
     def _angular_advection_matrix(self, velocity_over_r: np.ndarray) -> sp.csr_matrix:
         vel = np.asarray(velocity_over_r, dtype=float).reshape(-1)
         positive = vel >= 0.0
         return (
             sp.diags(positive.astype(float), format="csr") @ self.angular_upwind_positive
             + sp.diags((~positive).astype(float), format="csr") @ self.angular_upwind_negative
+        ).tocsr()
+
+    def _smooth_angular_advection_matrix(self, velocity_over_r: np.ndarray) -> sp.csr_matrix:
+        positive_weight = self._smooth_upwind_positive_weight(velocity_over_r)
+        return (
+            sp.diags(positive_weight, format="csr") @ self.angular_upwind_positive
+            + sp.diags(1.0 - positive_weight, format="csr") @ self.angular_upwind_negative
         ).tocsr()
 
     def _omega_advection_operators(
@@ -1094,9 +1130,16 @@ class PolarProfileProblem:
         centered_angular = self.dtheta_full
         if self.advection_scheme == "centered":
             return centered_radial, centered_radial_bc, centered_angular
-        radial_matrix, radial_bc = self._radial_advection_matrix_and_bc(radial_speed, boundary_values)
-        angular_matrix = self._angular_advection_matrix(angular_speed_over_r)
-        if self.advection_scheme == "upwind":
+        if self.advection_scheme == "smooth_upwind":
+            radial_matrix, radial_bc = self._smooth_radial_advection_matrix_and_bc(
+                radial_speed,
+                boundary_values,
+            )
+            angular_matrix = self._smooth_angular_advection_matrix(angular_speed_over_r)
+        else:
+            radial_matrix, radial_bc = self._radial_advection_matrix_and_bc(radial_speed, boundary_values)
+            angular_matrix = self._angular_advection_matrix(angular_speed_over_r)
+        if self.advection_scheme in {"upwind", "smooth_upwind"}:
             return radial_matrix, radial_bc, angular_matrix
         blend = self.upwind_blend
         return (
@@ -1259,7 +1302,8 @@ def solve_coefficient_homotopy(
     *,
     poisson_gauge: str = "mean",
     advection_scheme: str = "upwind",
-    upwind_blend: float = 0.1,
+    upwind_blend: float = 0.01,
+    upwind_smoothing: float = 1e-3,
     mode_order: tuple[int, ...] | None = None,
 ) -> PolarProfileResult:
     """Solve a profile by adding Fourier modes through affine continuation.
@@ -1301,6 +1345,7 @@ def solve_coefficient_homotopy(
             poisson_gauge=poisson_gauge,
             advection_scheme=advection_scheme,
             upwind_blend=upwind_blend,
+            upwind_smoothing=upwind_smoothing,
         )
         return problem.solve(controls)
 
@@ -1315,6 +1360,7 @@ def solve_coefficient_homotopy(
             poisson_gauge=poisson_gauge,
             advection_scheme=advection_scheme,
             upwind_blend=upwind_blend,
+            upwind_smoothing=upwind_smoothing,
         )
         result = problem.solve(controls, initial_state=state)
         total_runtime += result.runtime_sec

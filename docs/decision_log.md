@@ -362,3 +362,29 @@ Consequences:
 The next M3 step should focus on a discretization/globalization strategy that preserves the
 smooth upwind-like profile quality while crossing the mixed-mode continuation barrier. Do not
 move to M4 until this is resolved or the accepted boundary-data envelope is explicitly narrowed.
+
+### 2026-04-28 — Resolve target mixed case by refining the upwind polar grid
+Decision:
+Keep upwind full-disk polar FD as the M3 production profile path for mixed Fourier data, and use
+finer grids for moderate/large mixed cases rather than switching to centered, blended, square, or
+smooth-stencil variants.
+
+Why:
+The target mixed case failure at `54/162` was a resolution/continuation threshold. The same
+upwind discretization reaches sigma `1` on `72/216` and produces smooth baseline-like plots.
+Centered/blended and square FD alternatives converge algebraically but produce visible ringing
+and poor common sampled strong residuals.
+
+Evidence:
+For `{c_2=6+3i,c_5=-5+i,c_8=2-1.5i}`, polar upwind `nr=72`, `ntheta=216` completed in
+`13.227 s`, native relative residual `1.25e-10`, common sampled strong residual `0.421`, Omega
+probe RMS `0.1065`, and offset-removed psi probe RMS `0.0101`. The baseline `h_min=0.12`,
+`h_max=0.18` completed in `14.964 s` with common sampled strong residual `0.964`. Polar blended
+`54/162` and square FD `n=97` had common sampled strong residuals `20.36` and `8.03`,
+respectively, and their plots were visibly oscillatory.
+
+Consequences:
+Native algebraic residuals are not sufficient for accepting profile solves; visual checks and the
+common sampled strong residual remain mandatory. The next M3 step should run a broader fine-grid
+acceptance suite before M4, but the target mixed blocker no longer requires changing numerical
+frameworks.

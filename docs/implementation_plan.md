@@ -124,9 +124,15 @@ Validation note:
   radial ringing and very poor common sampled strong residuals. Upwind remains
   the smoother/more credible accuracy path, but still stalls near sigma `0.658`
   even with `min_sigma_step=1e-5`.
-- Before M4, fix mixed-mode nonlinear continuation robustness or explicitly
-  narrow the accepted M3 input envelope to active c3 plus reduced/general
-  cases that pass validation.
+- A finer upwind polar grid resolves the target mixed case without centered
+  ringing. On `nr=72`, `ntheta=216`, `{c_2=6+3i,c_5=-5+i,c_8=2-1.5i}` reaches
+  sigma `1` in `13.227 s`, with native relative residual `1.25e-10`, common
+  sampled strong residual `0.421`, Omega probe RMS `0.1065`, and offset-removed
+  psi RMS `0.0101` versus the baseline. The baseline `h_min=0.12`,
+  `h_max=0.18` run took `14.964 s` with common sampled strong residual `0.964`.
+- Before M4, run one broader fine-grid M3 acceptance suite using the upwind
+  polar solver on active c3, the resolved target mixed case, and at least one
+  additional large-amplitude mixed case.
 
 ### M4. Linearized operator assembly
 Status: pending

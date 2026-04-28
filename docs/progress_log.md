@@ -935,3 +935,37 @@ schemes can reach sigma `1` for the target mixed case, but the resulting fields 
 enough because of radial ringing and poor common strong residuals. The upwind discretization is
 visually smoother and historically much better under the common residual, but still has a genuine
 fine-grid continuation barrier for the target mixed case.
+
+## 2026-04-28 — M3 target mixed case resolved by finer upwind polar grid
+
+Scope stayed in M3; no eigensolver/M4 work was started.
+
+Numerical conclusion:
+- The target mixed case `{c_2=6+3i,c_5=-5+i,c_8=2-1.5i}` was not fixed by
+  centered/blended advection, smooth-upwind stencil transitions, filtered centered predictors, or
+  square FD fallback. Those paths either stalled or converged to visibly oscillatory low-amplitude
+  branches.
+- The smooth branch is recovered by resolving the core more finely with the original upwind polar
+  discretization. On `Rdom=10`, `nr=72`, `ntheta=216`, the upwind polar solve reaches sigma `1`.
+
+Validation:
+- `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests` passed: `21` tests.
+- `conda run -n femx_spc python experiments/run_m3_target_mixed_method_probe.py` completed.
+- Target mixed results:
+  - polar upwind `72/216`: runtime `13.227 s`, native relative residual `1.25e-10`,
+    common sampled strong residual `0.421`, Omega probe RMS vs baseline `0.1065`,
+    offset-removed psi probe RMS `0.0101`.
+  - baseline `h_min=0.12`, `h_max=0.18`: runtime `14.964 s`, common sampled strong residual
+    `0.964`.
+  - polar blended `54/162`: common sampled strong residual `20.36`, rejected as oscillatory.
+  - square FD `n=97`: common sampled strong residual `8.03`, rejected as oscillatory/domain
+    inappropriate for this validation.
+- Plots are in `experiments/raw/nextgen/m3_target_mixed_method_probe/`.
+- Summary is `experiments/summaries/m3_target_mixed_method_probe_2026-04-28.json`.
+
+Updated interpretation:
+- The previous `54/162` upwind stall was primarily an underresolution/continuation-threshold
+  issue for the localized mixed-mode core, not a need to switch away from upwind polar FD.
+- For moderate/large mixed Fourier data, the M3 validation path should use a finer polar grid,
+  starting at least around `nr=72`, `ntheta=216`, and judge quality by plots plus common sampled
+  residual/probe errors, not by native algebraic residual alone.
