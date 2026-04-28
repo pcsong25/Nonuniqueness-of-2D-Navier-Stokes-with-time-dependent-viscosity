@@ -152,7 +152,7 @@ class PolarProfileTests(unittest.TestCase):
         grid = PolarGrid(radius=2.0, nr=10, ntheta=36)
         physical = PhysicalParams(mu=0.8, R=150.0, Rdom=2.0)
         data = FourierBoundaryData(M=9, coeffs={3: 0.4 + 0.0j})
-        problem = PolarProfileProblem(grid, physical, data)
+        problem = PolarProfileProblem(grid, physical, data, advection_scheme="blended", upwind_blend=0.01)
         result = problem.solve(
             PolarProfileParams(
                 sigma_grid=(0.0, 0.5, 1.0),
@@ -199,6 +199,33 @@ class PolarProfileTests(unittest.TestCase):
         )
 
         self.assertTrue(result.converged, result.message)
+        self.assertLess(result.diagnostics["relative_residual"], 1e-8)
+
+    def test_polar_blended_advection_handles_moderate_mixed_modes(self) -> None:
+        grid = PolarGrid(radius=4.0, nr=12, ntheta=48)
+        physical = PhysicalParams(mu=0.8, R=150.0, Rdom=4.0)
+        data = FourierBoundaryData(
+            M=10,
+            coeffs={
+                2: 6.0 + 3.0j,
+                5: -5.0 + 1.0j,
+                8: 2.0 - 1.5j,
+            },
+        )
+        problem = PolarProfileProblem(grid, physical, data, advection_scheme="blended", upwind_blend=0.01)
+        result = problem.solve(
+            PolarProfileParams(
+                sigma_grid=(0.0, 0.25, 0.5, 0.75, 1.0),
+                tol_step=1e-8,
+                tol_residual=1e-8,
+                tol_residual_only=1e-8,
+                max_iter=32,
+                max_backtracks=16,
+            )
+        )
+
+        self.assertTrue(result.converged, result.message)
+        self.assertEqual(result.diagnostics["advection_scheme"], "blended")
         self.assertLess(result.diagnostics["relative_residual"], 1e-8)
 
 

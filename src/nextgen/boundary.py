@@ -165,3 +165,88 @@ class FourierBoundaryData:
         grad_x = scale * (alpha * psi * er_x + psi_theta * et_x)
         grad_y = scale * (alpha * psi * er_y + psi_theta * et_y)
         return grad_x * nx_unit + grad_y * ny_unit
+
+
+@dataclass(frozen=True)
+class AffineFourierBoundaryData:
+    """Boundary homotopy from a base Fourier state toward an increment.
+
+    The supplied ``sigma`` parameter scales only ``increment``.  This supports
+    coefficient continuation paths that are not equivalent to scaling all
+    target modes from zero at once.
+    """
+
+    base: FourierBoundaryData
+    increment: FourierBoundaryData
+
+    @property
+    def M(self) -> int:
+        return max(int(self.base.M), int(self.increment.M))
+
+    def omega_dirichlet(
+        self,
+        x: np.ndarray,
+        y: np.ndarray,
+        *,
+        mu: float,
+        R: float,
+        Rdom: float | None = None,
+        sigma: float = 1.0,
+    ) -> np.ndarray:
+        return self.base.omega_dirichlet(x, y, mu=mu, R=R, Rdom=Rdom, sigma=1.0) + self.increment.omega_dirichlet(
+            x,
+            y,
+            mu=mu,
+            R=R,
+            Rdom=Rdom,
+            sigma=sigma,
+        )
+
+    def psi_neumann_circle(
+        self,
+        theta: np.ndarray,
+        *,
+        mu: float,
+        R: float,
+        Rdom: float,
+        sigma: float = 1.0,
+    ) -> np.ndarray:
+        return self.base.psi_neumann_circle(theta, mu=mu, R=R, Rdom=Rdom, sigma=1.0) + self.increment.psi_neumann_circle(
+            theta,
+            mu=mu,
+            R=R,
+            Rdom=Rdom,
+            sigma=sigma,
+        )
+
+    def psi_neumann_normal(
+        self,
+        x: np.ndarray,
+        y: np.ndarray,
+        nx: np.ndarray,
+        ny: np.ndarray,
+        *,
+        mu: float,
+        R: float,
+        Rdom: float,
+        sigma: float = 1.0,
+    ) -> np.ndarray:
+        return self.base.psi_neumann_normal(
+            x,
+            y,
+            nx,
+            ny,
+            mu=mu,
+            R=R,
+            Rdom=Rdom,
+            sigma=1.0,
+        ) + self.increment.psi_neumann_normal(
+            x,
+            y,
+            nx,
+            ny,
+            mu=mu,
+            R=R,
+            Rdom=Rdom,
+            sigma=sigma,
+        )

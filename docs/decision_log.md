@@ -290,3 +290,75 @@ Consequences:
 The common sampled strong residual remains the primary cross-code residual metric, supplemented
 by probe RMS/Linf errors and runtime. Next M3 work should target Newton continuation robustness,
 linear-solve performance, and perhaps better preconditioning/reuse before moving to M4.
+
+### 2026-04-27 — Optimize polar upwind assembly before M4
+Decision:
+Precompute the polar upwind derivative sparsity patterns and use row-scaled sparse matrices
+during residual/Jacobian assembly. Cache the bordered Poisson LU factor and use explicit SuperLU
+factor objects for Newton linear solves.
+
+Why:
+Profiling by wall-clock experiments showed that direct Newton linear solves were not the only
+cost. Rebuilding radial/angular upwind matrices with Python loops inside every residual and
+Jacobian evaluation dominated runtime on the active full-disk grid.
+
+Evidence:
+On active `c_3=60`, `c_4=0`, nextgen `nr=54`, `ntheta=162` retained native relative residual
+`2.317e-14` and common sampled strong residual `0.650`, while runtime dropped to `17.585 s`.
+The finer baseline mesh `h_min=0.08`, `h_max=0.12` took `48.056 s` and reached common sampled
+strong residual `0.637`; the baseline `0.12/0.18` mesh took `18.945 s` with common sampled
+strong residual `0.835`.
+
+Consequences:
+M3 now has a credible profile-solver runtime/accuracy point for the active c3 case. The main
+remaining robustness issue is the coarser `48/144` active grid: adaptive continuation reached
+accepted sigma `0.98125` but not sigma `1`, and took `227.059 s`.
+
+### 2026-04-28 — Do not accept M3 as general-purpose yet
+Decision:
+Keep M3 open. Do not start M4 until mixed-mode nonlinear continuation is more robust, or until
+the accepted input envelope is explicitly narrowed.
+
+Why:
+The project goal for M3 is an efficient profile solver for arbitrary Fourier boundary values on
+fine grids. The optimized full-disk polar solver is strong on active c3, single non-c3 modes,
+and reduced mixed cases, but it still fails on moderate-amplitude mixed boundary data that the
+baseline profile workflow can solve.
+
+Evidence:
+The general-boundary visual suite completed for `c_4=20`, phase-shifted `c_2=15+8i`, reduced
+`c_1/c_4/c_7`, and reduced `c_2/c_5/c_8`, with plots and baseline comparisons recorded in
+`experiments/summaries/m3_general_boundary_visual_suite_2026-04-28.json`. However, the moderate
+mixed cases `{c_1=4-2i,c_4=8,c_7=-3+2i}` and `{c_2=6+3i,c_5=-5+i,c_8=2-1.5i}` stalled before
+sigma `1`. A tighter continuation probe for the latter still stalled near sigma `0.658` after
+`247.168 s`.
+
+Consequences:
+M3 remains the active milestone. The next work should target a more robust nonlinear solve path
+for mixed modes, such as pseudo-transient/Newton continuation, better globalization, or a nested
+Picard/Newton strategy, while keeping M4/eigensolver work out of scope.
+
+### 2026-04-28 — Centered/blended continuation is diagnostic, not accepted accuracy
+Decision:
+Keep the new centered and blended advection paths as diagnostics/continuation experiments, but do
+not treat them as proof that M3 is complete for general mixed Fourier data.
+
+Why:
+For the target moderate mixed case `{c_2=6+3i,c_5=-5+i,c_8=2-1.5i}`, pure centered advection and
+a `1%` upwind blend both reached sigma `1` on `nr=54`, `ntheta=162`. However, the generated
+Omega heat maps show radial ringing and the common sampled strong residual remains much worse
+than the baseline. The upwind residual is visually smoother and better aligned with earlier
+validation, but its scalar continuation path has a real fine-grid barrier near sigma `0.658`.
+
+Evidence:
+Upwind with `min_sigma_step=1e-5` stalled at accepted sigma `0.657702` after `125.996 s`.
+Centered reached sigma `1` in `11.298 s` with native relative residual `4.76e-14`, but produced
+ringing. A `1%` blend reached sigma `1` in `8.988 s` with native relative residual `3.14e-14`
+and physical Poisson residual `3.91e-7`, but still had ringing and common sampled strong residual
+about `20.36` on the target mixed case. The baseline profile solve for the same case completed
+in about `15.0 s` with common sampled strong residual about `0.964`.
+
+Consequences:
+The next M3 step should focus on a discretization/globalization strategy that preserves the
+smooth upwind-like profile quality while crossing the mixed-mode continuation barrier. Do not
+move to M4 until this is resolved or the accepted boundary-data envelope is explicitly narrowed.

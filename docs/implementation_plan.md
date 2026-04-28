@@ -56,7 +56,7 @@ Deliverables:
 - tests for Neumann conventions / manufactured checks / gauge handling
 
 ### M3. Profile solver
-Status: implemented / refinement validation in progress
+Status: implemented / general-boundary robustness not complete
 
 Objectives:
 - implement the nonlinear self-similar profile solve on top of nextgen foundations,
@@ -96,14 +96,37 @@ Validation note:
   `c_2=3+i`, `c_5=-2+0.5i` case. The mixed reduced case shows monotone
   improvement in common strong residual and probe RMS errors as
   `nr, ntheta` are refined from `30/90` to `36/108`.
-- The active full-amplitude c3 case remains only partially robust:
-  `nr=48`, `ntheta=144` stalled during continuation at sigma `0.7`, while
-  `nr=54`, `ntheta=162` completed with common sampled strong residual
-  `0.650` versus `0.835` for the fine baseline mesh. Baseline coarse meshes
-  are not reliable for this case.
-- Before M4, decide whether this M3 validation is sufficient for profile
-  generation despite slower runtime, or improve the Newton/linear solve
-  strategy to reduce the full-disk polar cost.
+- The active full-amplitude c3 case now has a viable runtime/accuracy point:
+  optimized nextgen `nr=54`, `ntheta=162` completed in `17.585 s` with common
+  sampled strong residual `0.650`; the finer baseline `h_min=0.08`,
+  `h_max=0.12` completed in `48.056 s` with common sampled strong residual
+  `0.637`. The previous `h_min=0.12`, `h_max=0.18` baseline was slightly
+  slower than nextgen and less accurate under the common strong residual.
+- Robustness is improved but not complete on coarser active grids:
+  adaptive continuation moved `nr=48`, `ntheta=144` from the old sigma `0.7`
+  stall to final accepted sigma `0.98125`, but it still did not reach sigma
+  `1` and was too slow (`227.059 s`) to use as the production path.
+- A general boundary visual suite was run for non-c3 inputs on medium and fine
+  full-disk polar grids. Completed cases include `c_4=20`, phase-shifted
+  `c_2=15+8i`, reduced mixed `c_1/c_4/c_7`, and reduced mixed `c_2/c_5/c_8`;
+  each has baseline comparisons and plots under
+  `experiments/raw/nextgen/m3_general_boundary_visual_suite/`.
+- M3 is not complete under the stricter "any given boundary values" goal:
+  moderate mixed cases `{c_1=4-2i,c_4=8,c_7=-3+2i}` and
+  `{c_2=6+3i,c_5=-5+i,c_8=2-1.5i}` still stall in nextgen continuation,
+  even though the baseline profile workflow completes. A tighter continuation
+  stress probe for the latter still stalled near sigma `0.658`.
+- A focused robustness pass added secant prediction, affine coefficient homotopy,
+  pinned-gauge Poisson diagnostics, LSMR least-squares fallback, and selectable
+  centered/upwind/blended advection. These changes showed that the target
+  `{c_2=6+3i,c_5=-5+i,c_8=2-1.5i}` case can be forced to sigma `1` with
+  centered or lightly blended advection on `54/162`, but those fields exhibit
+  radial ringing and very poor common sampled strong residuals. Upwind remains
+  the smoother/more credible accuracy path, but still stalls near sigma `0.658`
+  even with `min_sigma_step=1e-5`.
+- Before M4, fix mixed-mode nonlinear continuation robustness or explicitly
+  narrow the accepted M3 input envelope to active c3 plus reduced/general
+  cases that pass validation.
 
 ### M4. Linearized operator assembly
 Status: pending
@@ -153,7 +176,6 @@ Required validation:
 
 ## Current recommended next milestone
 
-Continue M3 validation/fix work: improve full-disk polar robustness and
-performance, especially for the active full-amplitude c3 continuation threshold,
-before M4.
+Continue M3 validation/fix work: fix robust nonlinear continuation for
+moderate-amplitude mixed Fourier boundary data before M4.
 Do not implement the linearized operator or eigensolver yet.

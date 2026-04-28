@@ -129,8 +129,7 @@ conda run -n femx_spc python experiments/run_m3_polar_refinement_study.py
 Summary:
 
 - `experiments/summaries/m3_polar_full_disk_refinement_study_2026-04-27.json`
-- status: `partial`, because the coarser active-c3 nextgen grid stalled before
-  reaching sigma `1`.
+- status: `completed` for the optimized full-disk comparison.
 - no eigensolver or M4 code was used.
 
 The refinement study used a full polar disk for nextgen and disk meshes for
@@ -142,38 +141,113 @@ Active full-amplitude `c_3=60`, `c_4=0`:
 
 | run | runtime | status | common strong rel | Omega probe RMS | psi probe RMS |
 | --- | ---: | --- | ---: | ---: | ---: |
-| baseline h `0.20/0.30` | `17.609 s` | completed but unstable | `4.111e+03` | mesh-diff `3.307e+04` | mesh-diff `3.135e+02` |
-| baseline h `0.12/0.18` | `18.859 s` | completed | `8.353e-01` | reference | reference |
-| nextgen `nr=48`, `ntheta=144` | `50.186 s` | nonconverged at sigma `0.7` | n/a | n/a | n/a |
-| nextgen `nr=54`, `ntheta=162` | `52.408 s` | completed | `6.496e-01` | `3.024e-01` | `3.842e-02` |
+| baseline h `0.20/0.30` | `17.488 s` | completed but unstable | `4.111e+03` | mesh-diff n/a | mesh-diff n/a |
+| baseline h `0.12/0.18` | `18.945 s` | completed | `8.353e-01` | mesh-diff `2.671e-01` | mesh-diff `2.726e-02` |
+| baseline h `0.08/0.12` | `48.056 s` | completed | `6.369e-01` | reference | reference |
+| nextgen `nr=54`, `ntheta=162` | `17.585 s` | completed | `6.496e-01` | `2.304e-01` | `2.636e-02` |
+
+Additional active-grid robustness probe:
+
+- nextgen `nr=48`, `ntheta=144` with adaptive sigma retries improved from the
+  previous fixed-continuation stall at sigma `0.7` to final accepted sigma
+  `0.98125`, with native relative residual `1.821e-14` at that accepted sigma.
+  It still failed before sigma `1` and took `227.059 s`, so it is retained only
+  as robustness/stability evidence, not as the performance path.
 
 Mixed non-symmetric reduced case
 `c_2=3+i`, `c_5=-2+0.5i`:
 
 | run | runtime | status | common strong rel | Omega probe RMS | psi probe RMS |
 | --- | ---: | --- | ---: | ---: | ---: |
-| baseline h `0.30/0.45` | `2.567 s` | completed | `7.631e+00` | mesh-diff `1.117e-01` | mesh-diff `8.351e-02` |
-| baseline h `0.20/0.30` | `3.914 s` | completed | `2.093e+00` | reference | reference |
-| nextgen `nr=30`, `ntheta=90` | `13.617 s` | completed | `7.592e-01` | `2.622e-01` | `1.670e-02` |
-| nextgen `nr=32`, `ntheta=96` | `12.988 s` | completed | `6.913e-01` | `1.990e-01` | `1.456e-02` |
-| nextgen `nr=36`, `ntheta=108` | `15.775 s` | completed | `6.535e-01` | `1.424e-01` | `1.252e-02` |
+| baseline h `0.30/0.45` | `2.617 s` | completed | `7.631e+00` | mesh-diff `1.117e-01` | mesh-diff `8.351e-02` |
+| baseline h `0.20/0.30` | `3.875 s` | completed | `2.093e+00` | reference | reference |
+| nextgen `nr=30`, `ntheta=90` | `5.064 s` | completed | `7.592e-01` | `2.622e-01` | `1.670e-02` |
+| nextgen `nr=32`, `ntheta=96` | `4.601 s` | completed | `6.913e-01` | `1.990e-01` | `1.456e-02` |
+| nextgen `nr=36`, `ntheta=108` | `5.536 s` | completed | `6.535e-01` | `1.424e-01` | `1.252e-02` |
 
 Interpretation:
 
 - The mixed non-symmetric reduced case gives the cleanest refinement evidence:
   nextgen common strong residual, Omega probe RMS, and offset-removed psi probe
   RMS all improve as the full-disk polar grid is refined.
-- The active full-amplitude c3 case has a practical resolution threshold.
-  `nr=48`, `ntheta=144` stalls in continuation, while `nr=54`,
-  `ntheta=162` completes and has a lower common sampled strong residual than
-  the fine baseline mesh.
+- The active full-amplitude c3 case still has a practical resolution threshold,
+  but adaptive continuation now gets the coarser `48/144` grid much closer to
+  sigma `1`. The accepted production path remains `54/162`.
 - Baseline mesh refinement matters strongly for the active c3 case: the coarse
   baseline mesh produces a very large common strong residual and field blow-up,
-  so comparisons should use the `h_min=0.12`, `h_max=0.18` or finer baseline
-  reference.
-- The nextgen profile solver is not yet an efficiency improvement. It is more
-  accurate than the tested baseline meshes under the common strong residual,
-  but direct sparse Newton solves are slower on these grid sizes.
+  and the finer `0.08/0.12` baseline improves the common strong residual from
+  `0.835` to `0.637`.
+- The optimized nextgen `54/162` run is now a runtime improvement over the
+  finer active baseline (`17.585 s` versus `48.056 s`) at nearly the same
+  common strong residual (`0.650` versus `0.637`). It is also faster than the
+  `0.12/0.18` baseline (`18.945 s`) while giving a lower common strong
+  residual.
+
+### General boundary visual validation
+
+Command:
+
+```bash
+conda run -n femx_spc python experiments/run_m3_general_boundary_visual_suite.py
+```
+
+Summary:
+
+- `experiments/summaries/m3_general_boundary_visual_suite_2026-04-28.json`
+- plots under `experiments/raw/nextgen/m3_general_boundary_visual_suite/`
+- status: `completed` for four non-c3/general completed cases.
+- no eigensolver or M4 code was used.
+
+Validation design:
+
+- nextgen medium grid: `nr=40`, `ntheta=120`
+- nextgen fine grid: `nr=54`, `ntheta=162`
+- baseline mesh: `h_min=0.12`, `h_max=0.18`
+- metrics: common sampled strong residual, probe RMS/Linf versus baseline,
+  fine-minus-medium nextgen self-convergence on common probes, and visual
+  vorticity/streamfunction/difference plots.
+
+Completed cases:
+
+| case | nextgen fine runtime | baseline runtime | nextgen fine common rel | baseline common rel | Omega probe RMS | nextgen self Omega RMS |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| `single_c4_20` | `10.842 s` | `13.388 s` | `5.167e-01` | `8.858e-01` | `1.674e-01` | `5.016e-02` |
+| `phase_shifted_c2_20` | `14.748 s` | `16.392 s` | `4.819e-01` | `1.465e+00` | `2.030e-01` | `1.320e-01` |
+| `mixed_1_4_7_reduced` | `20.040 s` | `15.975 s` | `8.710e-01` | `7.314e-01` | `1.088e-01` | `6.419e-02` |
+| `mixed_2_5_8_reduced` | `11.865 s` | `12.763 s` | `5.368e-01` | `6.731e-01` | `5.458e-02` | `9.424e-02` |
+
+Plot files per case:
+
+- `nextgen_omega.png`
+- `nextgen_psi_contours.png`
+- `baseline_omega.png`
+- `baseline_psi_contours.png`
+- `omega_nextgen_minus_baseline.png`
+- `psi_nextgen_minus_baseline_offset_removed.png`
+
+Stress cases that did not validate:
+
+- Moderate `mixed_1_4_7` data
+  `{c_1=4-2i, c_4=8, c_7=-3+2i}`: baseline completed, but nextgen medium
+  stalled at accepted sigma `0.2125` and nextgen fine stalled at accepted
+  sigma `0.5703125`.
+- Moderate `mixed_2_5_8` data
+  `{c_2=6+3i, c_5=-5+i, c_8=2-1.5i}`: baseline completed, nextgen medium
+  completed, but nextgen fine stalled at accepted sigma `0.65625`.
+- A tighter continuation probe for moderate `mixed_2_5_8` with sigma spacing
+  `0.05`, `min_sigma_step=5e-4`, `max_iter=60`, and `max_backtracks=28`
+  still stalled at accepted sigma `0.657665` after `247.168 s`.
+
+Interpretation:
+
+- The optimized full-disk polar solver now handles several non-c3 and
+  nonsymmetric boundary inputs on fine grids and produces useful debug plots.
+- It is not yet a general solver for arbitrary moderate-amplitude mixed
+  boundary data. The failure mode is continuation/Newton robustness, not the
+  final algebraic residual at the last accepted sigma.
+- M3 should not be marked complete under the stricter goal "any given boundary
+  values with high accuracy." The next M3 work should focus specifically on
+  robust nonlinear continuation for mixed-mode data.
 
 ## 2026-04-26 M3 circular c3-sector profile validation
 
@@ -819,3 +893,45 @@ reference outputs, then scaffold `src/nextgen/` with config, Fourier boundary
 data, square grid indexing, sparse finite-difference operators, and diagnostics
 tests only. Do not implement the full Newton/eigen solvers until those
 foundational pieces are reviewed.
+## 2026-04-28 — M3 mixed-mode continuation robustness pass
+
+Scope stayed in M3; no eigensolver/M4 work was started.
+
+Changes made:
+- Added a baseline-compatible pinned Poisson gauge option for diagnostics, while retaining the
+  mean-gauge bordered Neumann solve as the main physical compatibility path.
+- Added secant continuation prediction, optional residual-only acceptance, anchored/diffusion
+  fallback hooks, and a sparse LSMR least-squares Newton fallback.
+- Added affine Fourier boundary data plus coefficient-homotopy support so future experiments can
+  continue through coefficient space instead of scaling all modes together.
+- Added selectable polar advection schemes: `upwind`, `centered`, and a small blended mode.
+
+Targeted robustness results on `{c_2=6+3i,c_5=-5+i,c_8=2-1.5i}`, `Rdom=10`, `nr=54`,
+`ntheta=162`:
+- Upwind with tighter adaptive continuation still stalled at accepted sigma `0.657702`
+  after `125.996 s`; reducing `min_sigma_step` to `1e-5` did not cross the threshold.
+- Pinned-gauge Poisson stalled earlier and produced a large physical Poisson defect, so it is
+  diagnostic only, not the M3 default.
+- Pure centered advection reached sigma `1` in `11.298 s` with native relative residual
+  `4.76e-14`, but the vorticity heat map showed radial ringing and the common sampled strong
+  residual was large.
+- A `1%` centered/upwind blend reached sigma `1` in `8.988 s` with native relative residual
+  `3.14e-14` and physical Poisson residual `3.91e-7`, but still showed visible radial ringing
+  and common sampled strong residual near `20.36`.
+- Heavier `5%` blending stalled at sigma `0.234`, so the blend is not a robust accuracy fix.
+
+Validation run:
+- `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests` passed: `21` tests.
+- `conda run -n femx_spc python experiments/run_m3_general_boundary_visual_suite.py` completed
+  with baseline comparisons and plots for five cases:
+  `c_4=20`, `c_2=15+8i`, small mixed `c_1/c_4/c_7`, reduced mixed `c_2/c_5/c_8`, and the
+  target moderate mixed `c_2/c_5/c_8`.
+- Plots are under `experiments/raw/nextgen/m3_general_boundary_visual_suite/`; summary is
+  `experiments/summaries/m3_general_boundary_visual_suite_2026-04-28.json`.
+
+Conclusion:
+M3 should remain open. The new continuation options are useful diagnostics and centered/blended
+schemes can reach sigma `1` for the target mixed case, but the resulting fields are not accurate
+enough because of radial ringing and poor common strong residuals. The upwind discretization is
+visually smoother and historically much better under the common residual, but still has a genuine
+fine-grid continuation barrier for the target mixed case.

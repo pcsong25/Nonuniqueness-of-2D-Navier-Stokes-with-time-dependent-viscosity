@@ -2,10 +2,10 @@
   "cases": [
     {
       "baseline_mesh_difference": {
-        "omega_linf": 260717.99314856963,
-        "omega_rms": 33073.07451779582,
-        "psi_linf_offset_removed": 2354.5915608908335,
-        "psi_rms_offset_removed": 313.50790776266507,
+        "omega_linf": 5.1093559564500195,
+        "omega_rms": 0.2671015559858098,
+        "psi_linf_offset_removed": 0.06444949062678207,
+        "psi_rms_offset_removed": 0.02725751351086241,
         "valid_probe_count": 6912
       },
       "baseline_runs": [
@@ -40,7 +40,7 @@
               "Psi_l2": 3.8499741138035456e-05
             }
           },
-          "runtime_sec": 17.609385879710317,
+          "runtime_sec": 17.488276551943272,
           "status": "completed"
         },
         {
@@ -74,7 +74,41 @@
               "Psi_l2": 2.74325709070881e-13
             }
           },
-          "runtime_sec": 18.85939518129453,
+          "runtime_sec": 18.944782848935574,
+          "status": "completed"
+        },
+        {
+          "common_sampled_residuals": {
+            "lap_psi_l2": 10.402358151969539,
+            "omega_field_l2": 11.201009395493003,
+            "omega_strong_l2": 6.874631608966486,
+            "poisson_strong_l2": 1.9067765120233795,
+            "profile_strong_l2": 7.134168236438302,
+            "profile_strong_relative": 0.6369219044945098,
+            "sample_hx": 0.14583333333333304,
+            "sample_hy": 0.14583333333333304,
+            "sample_points": 9025
+          },
+          "mesh": {
+            "h_max": 0.12,
+            "h_min": 0.08
+          },
+          "mesh_cells": 50674,
+          "mesh_vertices": 25600,
+          "residuals": {
+            "meta": {
+              "R": 150.0,
+              "Rdom": 10.0,
+              "eps": 0.0044444444444444444,
+              "mu": 0.8,
+              "sigma": 1.0
+            },
+            "norms": {
+              "Omega_l2": 0.0036306402036660394,
+              "Psi_l2": 5.699191141750318e-13
+            }
+          },
+          "runtime_sec": 48.05621076235548,
           "status": "completed"
         }
       ],
@@ -92,72 +126,47 @@
       "name": "active_c3_60_c4_0",
       "nextgen_runs": [
         {
-          "common_sampled_residuals": {},
-          "comparison_to_finest_baseline": {},
-          "diagnostics": {
-            "final_sigma": 0.7,
-            "grid_dr": 0.20833333333333334,
-            "grid_dtheta": 0.04363323129985824,
-            "grid_nr": 48,
-            "grid_ntheta": 144,
-            "lap_psi_l2": 8.707353427050142,
-            "newton_steps": 59,
-            "omega_field_l2": 8.707353427050142,
-            "omega_residual_norm": 0.8397874836758362,
-            "physical_poisson_residual_norm": 2.9254019577127277e-12,
-            "poisson_lambda": -3.778409340138889e-12,
-            "poisson_residual_norm": 2.9253720529254588e-12,
-            "relative_residual": 0.09644577892829803,
-            "residual_norm": 0.8397874836758362,
-            "runtime_sec": 50.18553254986182
-          },
-          "grid": {
-            "dr": 0.20833333333333334,
-            "dtheta": 0.04363323129985824,
-            "nr": 48,
-            "ntheta": 144
-          },
-          "runtime_sec": 50.18553254986182,
-          "status": "nonconverged"
-        },
-        {
           "common_sampled_residuals": {
             "lap_psi_l2": 11.183546767160555,
-            "omega_field_l2": 11.170045239808891,
-            "omega_strong_l2": 6.875171931233276,
-            "poisson_strong_l2": 2.3467846520713738,
-            "profile_strong_l2": 7.264667045860785,
-            "profile_strong_relative": 0.649585252076989,
+            "omega_field_l2": 11.170045239808893,
+            "omega_strong_l2": 6.875171931233278,
+            "poisson_strong_l2": 2.3467846520713795,
+            "profile_strong_l2": 7.264667045860788,
+            "profile_strong_relative": 0.6495852520769894,
             "sample_hx": 0.14583333333333304,
             "sample_hy": 0.14583333333333304,
             "sample_points": 9025
           },
           "comparison_to_finest_baseline": {
-            "omega_probe_linf": 4.471171504249966,
-            "omega_probe_mean_offset": 0.00024559968831656476,
-            "omega_probe_rms": 0.30238835344581566,
+            "omega_probe_linf": 3.98089524177628,
+            "omega_probe_mean_offset": 0.0003319520063373086,
+            "omega_probe_rms": 0.23036609422795876,
             "probe_count": 6912,
-            "psi_probe_linf_offset_removed": 0.10825360529680353,
-            "psi_probe_mean_offset": -0.035928280045658255,
-            "psi_probe_rms_offset_removed": 0.03842153685280093,
+            "psi_probe_linf_offset_removed": 0.07308949779717189,
+            "psi_probe_mean_offset": 2.670025732969387,
+            "psi_probe_rms_offset_removed": 0.02635852411599435,
             "valid_probe_count": 6912
           },
           "diagnostics": {
+            "adaptive_retries": 0,
+            "attempted_sigma": 1.0,
+            "completed_sigma_steps": 10,
             "final_sigma": 1.0,
             "grid_dr": 0.18518518518518517,
             "grid_dtheta": 0.038785094488762877,
             "grid_nr": 54,
             "grid_ntheta": 162,
             "lap_psi_l2": 11.614622583421216,
+            "newton_linear_solve_time_sec": 12.887820282485336,
             "newton_steps": 71,
-            "omega_field_l2": 11.614622583421212,
-            "omega_residual_norm": 1.9085627752144642e-14,
-            "physical_poisson_residual_norm": 2.6437579169487323e-13,
-            "poisson_lambda": -6.924221062491084e-13,
-            "poisson_residual_norm": 2.6437604678107367e-13,
-            "relative_residual": 2.282158175646299e-14,
-            "residual_norm": 2.650640588580087e-13,
-            "runtime_sec": 52.40849263826385
+            "omega_field_l2": 11.614622583421214,
+            "omega_residual_norm": 1.9144039723088686e-14,
+            "physical_poisson_residual_norm": 2.683889648858562e-13,
+            "poisson_lambda": -7.998810460452433e-13,
+            "poisson_residual_norm": 2.6841280559990023e-13,
+            "relative_residual": 2.316860870810908e-14,
+            "residual_norm": 2.6909464592765315e-13,
+            "runtime_sec": 17.58547199284658
           },
           "grid": {
             "dr": 0.18518518518518517,
@@ -165,12 +174,12 @@
             "nr": 54,
             "ntheta": 162
           },
-          "runtime_sec": 52.40849263826385,
+          "runtime_sec": 17.58547199284658,
           "status": "completed"
         }
       ],
-      "notes": "Nonconverged nextgen grids are retained as refinement/stability data.",
-      "status": "partial"
+      "notes": "Optimized full-disk polar profile refinement/runtime comparison; no eigensolver.",
+      "status": "completed"
     },
     {
       "baseline_mesh_difference": {
@@ -212,7 +221,7 @@
               "Psi_l2": 5.0714917201804596e-14
             }
           },
-          "runtime_sec": 2.567280842922628,
+          "runtime_sec": 2.6165050719864666,
           "status": "completed"
         },
         {
@@ -246,7 +255,7 @@
               "Psi_l2": 2.1176284409321712e-14
             }
           },
-          "runtime_sec": 3.9137895717285573,
+          "runtime_sec": 3.8752540526911616,
           "status": "completed"
         }
       ],
@@ -265,42 +274,46 @@
       "nextgen_runs": [
         {
           "common_sampled_residuals": {
-            "lap_psi_l2": 2.2555274263628777,
-            "omega_field_l2": 2.352755268795817,
-            "omega_strong_l2": 1.6448487699880507,
-            "poisson_strong_l2": 0.6964768485523538,
-            "profile_strong_l2": 1.7862271626813375,
-            "profile_strong_relative": 0.7592065296258209,
+            "lap_psi_l2": 2.2555274263628764,
+            "omega_field_l2": 2.352755268795822,
+            "omega_strong_l2": 1.6448487699880563,
+            "poisson_strong_l2": 0.6964768485523547,
+            "profile_strong_l2": 1.786227162681343,
+            "profile_strong_relative": 0.7592065296258216,
             "sample_hx": 0.14583333333333304,
             "sample_hy": 0.14583333333333304,
             "sample_points": 9025
           },
           "comparison_to_finest_baseline": {
-            "omega_probe_linf": 4.196543228510735,
-            "omega_probe_mean_offset": 9.136687697733349e-05,
-            "omega_probe_rms": 0.26216618047599477,
+            "omega_probe_linf": 4.196543228510722,
+            "omega_probe_mean_offset": 9.13668769771246e-05,
+            "omega_probe_rms": 0.2621661804759948,
             "probe_count": 6912,
-            "psi_probe_linf_offset_removed": 0.07920280735576868,
-            "psi_probe_mean_offset": -0.2735857370321911,
-            "psi_probe_rms_offset_removed": 0.016699367639746943,
+            "psi_probe_linf_offset_removed": 0.07920280735576524,
+            "psi_probe_mean_offset": -0.2735857370321902,
+            "psi_probe_rms_offset_removed": 0.01669936763974685,
             "valid_probe_count": 6912
           },
           "diagnostics": {
+            "adaptive_retries": 0,
+            "attempted_sigma": 1.0,
+            "completed_sigma_steps": 10,
             "final_sigma": 1.0,
             "grid_dr": 0.3333333333333333,
             "grid_dtheta": 0.06981317007977318,
             "grid_nr": 30,
             "grid_ntheta": 90,
             "lap_psi_l2": 2.4672356636408934,
+            "newton_linear_solve_time_sec": 2.8885528040118515,
             "newton_steps": 65,
-            "omega_field_l2": 2.4672353145300945,
-            "omega_residual_norm": 9.333434239305652e-15,
-            "physical_poisson_residual_norm": 0.0014544381527470589,
-            "poisson_lambda": 0.15670749171345685,
-            "poisson_residual_norm": 2.787293268934979e-14,
-            "relative_residual": 1.1913780591737342e-14,
-            "residual_norm": 2.9394104364727076e-14,
-            "runtime_sec": 13.616773763205856
+            "omega_field_l2": 2.4672353145300994,
+            "omega_residual_norm": 8.777819625732866e-15,
+            "physical_poisson_residual_norm": 0.0014544381527462726,
+            "poisson_lambda": 0.1567074917133592,
+            "poisson_residual_norm": 2.73646332558803e-14,
+            "relative_residual": 1.164785809707278e-14,
+            "residual_norm": 2.8738010902126315e-14,
+            "runtime_sec": 5.064239996951073
           },
           "grid": {
             "dr": 0.3333333333333333,
@@ -308,47 +321,51 @@
             "nr": 30,
             "ntheta": 90
           },
-          "runtime_sec": 13.616773763205856,
+          "runtime_sec": 5.064239996951073,
           "status": "completed"
         },
         {
           "common_sampled_residuals": {
-            "lap_psi_l2": 1.8038758795941912,
-            "omega_field_l2": 1.8903527461247638,
-            "omega_strong_l2": 1.1950801885296143,
-            "poisson_strong_l2": 0.5287915426943133,
+            "lap_psi_l2": 1.8038758795941896,
+            "omega_field_l2": 1.8903527461247627,
+            "omega_strong_l2": 1.1950801885296147,
+            "poisson_strong_l2": 0.5287915426943124,
             "profile_strong_l2": 1.3068424360423143,
-            "profile_strong_relative": 0.6913219972946056,
+            "profile_strong_relative": 0.6913219972946061,
             "sample_hx": 0.14583333333333304,
             "sample_hy": 0.14583333333333304,
             "sample_points": 9025
           },
           "comparison_to_finest_baseline": {
-            "omega_probe_linf": 3.115272576868785,
-            "omega_probe_mean_offset": 0.0002138813229260088,
-            "omega_probe_rms": 0.19898073719423925,
+            "omega_probe_linf": 3.115272576868805,
+            "omega_probe_mean_offset": 0.00021388132292624664,
+            "omega_probe_rms": 0.19898073719423964,
             "probe_count": 6912,
-            "psi_probe_linf_offset_removed": 0.06390411635455723,
-            "psi_probe_mean_offset": -0.2738285286580964,
-            "psi_probe_rms_offset_removed": 0.014556166788895233,
+            "psi_probe_linf_offset_removed": 0.06390411635456078,
+            "psi_probe_mean_offset": -0.2738285286580973,
+            "psi_probe_rms_offset_removed": 0.014556166788895129,
             "valid_probe_count": 6912
           },
           "diagnostics": {
+            "adaptive_retries": 0,
+            "attempted_sigma": 1.0,
+            "completed_sigma_steps": 10,
             "final_sigma": 1.0,
             "grid_dr": 0.3125,
             "grid_dtheta": 0.06544984694978735,
             "grid_nr": 32,
             "grid_ntheta": 96,
-            "lap_psi_l2": 1.9668883723255262,
+            "lap_psi_l2": 1.966888372325527,
+            "newton_linear_solve_time_sec": 2.7748157349415123,
             "newton_steps": 56,
-            "omega_field_l2": 1.966887795644196,
-            "omega_residual_norm": 8.955566947948265e-15,
-            "physical_poisson_residual_norm": 0.0016390255394513153,
-            "poisson_lambda": 0.2009199460356938,
-            "poisson_residual_norm": 2.7201797009864644e-14,
-            "relative_residual": 1.4560096994998188e-14,
-            "residual_norm": 2.863808547939377e-14,
-            "runtime_sec": 12.987866380717605
+            "omega_field_l2": 1.9668877956441968,
+            "omega_residual_norm": 8.75144896025149e-15,
+            "physical_poisson_residual_norm": 0.0016390255394519815,
+            "poisson_lambda": 0.2009199460357907,
+            "poisson_residual_norm": 2.7365664480083773e-14,
+            "relative_residual": 1.4607310596760598e-14,
+            "residual_norm": 2.8730949363715876e-14,
+            "runtime_sec": 4.601278356742114
           },
           "grid": {
             "dr": 0.3125,
@@ -356,47 +373,51 @@
             "nr": 32,
             "ntheta": 96
           },
-          "runtime_sec": 12.987866380717605,
+          "runtime_sec": 4.601278356742114,
           "status": "completed"
         },
         {
           "common_sampled_residuals": {
-            "lap_psi_l2": 1.508644191745607,
-            "omega_field_l2": 1.6028317943074017,
-            "omega_strong_l2": 0.9656490812959887,
-            "poisson_strong_l2": 0.40583400346242465,
-            "profile_strong_l2": 1.047463310371359,
-            "profile_strong_relative": 0.6535079439349265,
+            "lap_psi_l2": 1.5086441917456193,
+            "omega_field_l2": 1.6028317943074162,
+            "omega_strong_l2": 0.9656490812960061,
+            "poisson_strong_l2": 0.40583400346243426,
+            "profile_strong_l2": 1.0474633103713789,
+            "profile_strong_relative": 0.6535079439349329,
             "sample_hx": 0.14583333333333304,
             "sample_hy": 0.14583333333333304,
             "sample_points": 9025
           },
           "comparison_to_finest_baseline": {
-            "omega_probe_linf": 2.19657580867785,
-            "omega_probe_mean_offset": -1.798576064110076e-05,
-            "omega_probe_rms": 0.1423922460874087,
+            "omega_probe_linf": 2.196575808677884,
+            "omega_probe_mean_offset": -1.7985760641110493e-05,
+            "omega_probe_rms": 0.14239224608740983,
             "probe_count": 6912,
-            "psi_probe_linf_offset_removed": 0.054544375632160025,
-            "psi_probe_mean_offset": -0.27364225202150255,
-            "psi_probe_rms_offset_removed": 0.01252374350800946,
+            "psi_probe_linf_offset_removed": 0.05454437563216025,
+            "psi_probe_mean_offset": -0.2736422520215024,
+            "psi_probe_rms_offset_removed": 0.012523743508009527,
             "valid_probe_count": 6912
           },
           "diagnostics": {
+            "adaptive_retries": 0,
+            "attempted_sigma": 1.0,
+            "completed_sigma_steps": 10,
             "final_sigma": 1.0,
             "grid_dr": 0.2777777777777778,
             "grid_dtheta": 0.05817764173314432,
             "grid_nr": 36,
             "grid_ntheta": 108,
-            "lap_psi_l2": 1.6700012671111708,
+            "lap_psi_l2": 1.6700012671111852,
+            "newton_linear_solve_time_sec": 3.5648524463176727,
             "newton_steps": 53,
-            "omega_field_l2": 1.6700006941688852,
-            "omega_residual_norm": 7.461236951943525e-15,
-            "physical_poisson_residual_norm": 0.001486593231983247,
-            "poisson_lambda": 0.23062812352749437,
-            "poisson_residual_norm": 3.483741058906462e-14,
-            "relative_residual": 2.1333786543535907e-14,
-            "residual_norm": 3.562745055998421e-14,
-            "runtime_sec": 15.77530966931954
+            "omega_field_l2": 1.6700006941689003,
+            "omega_residual_norm": 8.865927712304009e-15,
+            "physical_poisson_residual_norm": 0.0014865932319835073,
+            "poisson_lambda": 0.2306281235274493,
+            "poisson_residual_norm": 3.7215299600990814e-14,
+            "relative_residual": 2.2908249631579733e-14,
+            "residual_norm": 3.8256805912037497e-14,
+            "runtime_sec": 5.535587764810771
           },
           "grid": {
             "dr": 0.2777777777777778,
@@ -404,11 +425,11 @@
             "nr": 36,
             "ntheta": 108
           },
-          "runtime_sec": 15.77530966931954,
+          "runtime_sec": 5.535587764810771,
           "status": "completed"
         }
       ],
-      "notes": "Nonconverged nextgen grids are retained as refinement/stability data.",
+      "notes": "Optimized full-disk polar profile refinement/runtime comparison; no eigensolver.",
       "status": "completed"
     }
   ],
@@ -439,5 +460,5 @@
     "probe_rms": "sqrt(mean((nextgen-baseline)^2)) over common polar probes r in [0.5,8]",
     "psi_probe_errors": "streamfunction probe differences after subtracting the mean difference to remove gauge offset"
   },
-  "status": "partial"
+  "status": "completed"
 }
