@@ -56,7 +56,7 @@ Deliverables:
 - tests for Neumann conventions / manufactured checks / gauge handling
 
 ### M3. Profile solver
-Status: implemented / general-boundary robustness not complete
+Status: implemented / moderate fine-grid acceptance passed / high-amplitude mixed robustness open
 
 Objectives:
 - implement the nonlinear self-similar profile solve on top of nextgen foundations,
@@ -76,6 +76,8 @@ Deliverables:
 - `tests/test_nextgen_profile.py`
 - `experiments/run_m3_profile_comparison.py`
 - `experiments/run_m3_c3_profile_visual_check.py`
+- `experiments/run_m3_fine_upwind_acceptance_suite.py`
+- `experiments/run_m3_high_amplitude_stress_suite.py`
 - logged reduced comparison results in `experiments/registry.csv` and
   `experiments/summaries/`
 
@@ -111,11 +113,11 @@ Validation note:
   `c_2=15+8i`, reduced mixed `c_1/c_4/c_7`, and reduced mixed `c_2/c_5/c_8`;
   each has baseline comparisons and plots under
   `experiments/raw/nextgen/m3_general_boundary_visual_suite/`.
-- M3 is not complete under the stricter "any given boundary values" goal:
+- Coarser grids are not a reliable general-boundary production path:
   moderate mixed cases `{c_1=4-2i,c_4=8,c_7=-3+2i}` and
-  `{c_2=6+3i,c_5=-5+i,c_8=2-1.5i}` still stall in nextgen continuation,
-  even though the baseline profile workflow completes. A tighter continuation
-  stress probe for the latter still stalled near sigma `0.658`.
+  `{c_2=6+3i,c_5=-5+i,c_8=2-1.5i}` stalled in nextgen continuation on
+  `54/162`, even though the baseline profile workflow completes. A tighter
+  continuation stress probe for the latter still stalled near sigma `0.658`.
 - A focused robustness pass added secant prediction, affine coefficient homotopy,
   pinned-gauge Poisson diagnostics, LSMR least-squares fallback, and selectable
   centered/upwind/blended advection. These changes showed that the target
@@ -130,9 +132,44 @@ Validation note:
   sampled strong residual `0.421`, Omega probe RMS `0.1065`, and offset-removed
   psi RMS `0.0101` versus the baseline. The baseline `h_min=0.12`,
   `h_max=0.18` run took `14.964 s` with common sampled strong residual `0.964`.
-- Before M4, run one broader fine-grid M3 acceptance suite using the upwind
-  polar solver on active c3, the resolved target mixed case, and at least one
-  additional large-amplitude mixed case.
+- A fine-grid upwind acceptance suite passed on `nr=72`, `ntheta=216` for:
+  active `c_3=60,c_4=0`, the target mixed
+  `{c_2=6+3i,c_5=-5+i,c_8=2-1.5i}`, and a `1.5x` larger mixed case. The
+  nextgen native relative residuals were `2.18e-11`, `1.25e-10`, and
+  `5.06e-10`. Common sampled strong residuals were `0.544`, `0.421`, and
+  `0.462`, versus baseline `0.537`, `0.964`, and `1.104`. Runtimes were
+  `33.274 s`, `13.491 s`, and `16.855 s`, versus baseline `53.414 s`,
+  `15.032 s`, and `15.756 s`.
+- M3 profile generation can be used for M4 input only within this tested
+  full-disk upwind polar envelope. Very large arbitrary mixed Fourier data
+  (`60`- to `100+`-scale combinations) still need a dedicated stress/refinement
+  study before claiming general high-amplitude robustness.
+- A high-amplitude mixed stress run with
+  `{c_2=60,c_5=-5+i,c_8=2-1.5i}` shows that the current full-disk upwind
+  Newton path is not yet robust enough for the larger boundary values needed
+  before M4/eigenvalue searches. Nextgen `72/216` reached only sigma `0.45`
+  after `248.238 s` and failed at attempted sigma `0.4515625`; `96/288` was
+  skipped as not operationally feasible after the coarser failure. The fine
+  baseline `h_min=0.08,h_max=0.12` completed sigma `1` in `105.068 s` with
+  common sampled strong residual `0.651`. The coarser baseline
+  `h_min=0.12,h_max=0.18` converged to a bad branch with common residual
+  `5.94e3`, so baseline refinement is essential at this amplitude.
+- A focused pseudo-transient fallback was added to the polar Newton solver:
+  if the exact Newton step fails the residual line search, the solver tries
+  shifted Omega-block solves `(J + beta M_Omega) delta = -F`. On the same
+  high-amplitude stress case this did not improve the accepted sigma: nextgen
+  `72/216` again stopped at sigma `0.45`, with the same partial-state common
+  residual `0.468`, and runtime increased to `472.999 s`. The high-amplitude
+  M3 blocker therefore remains a discretization/continuation issue, not just
+  an undamped Newton-step issue.
+- A conservative polar finite-volume transport option `fv_upwind` was added
+  for the Omega advection term. It discretizes `v . grad(Omega)` as
+  `div(v Omega) - Omega div(v)` with monotone face fluxes. On the
+  high-amplitude stress case it is a real improvement: `30/90` reached sigma
+  `1` in `68.953 s` with common sampled residual `0.738` versus fine baseline
+  `0.651`, but refinement `36/108` still stalled at sigma `0.933203125` after
+  `354.832 s`; therefore the requested `72/216` fine-grid run remains
+  operationally blocked and M3 is still open for high-amplitude production.
 
 ### M4. Linearized operator assembly
 Status: pending

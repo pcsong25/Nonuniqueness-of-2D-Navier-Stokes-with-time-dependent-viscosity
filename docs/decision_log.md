@@ -388,3 +388,107 @@ Native algebraic residuals are not sufficient for accepting profile solves; visu
 common sampled strong residual remain mandatory. The next M3 step should run a broader fine-grid
 acceptance suite before M4, but the target mixed blocker no longer requires changing numerical
 frameworks.
+
+### 2026-04-28 — Fine-grid upwind acceptance suite passes tested M3 cases
+Decision:
+Accept the full-disk polar upwind solver on `nr=72`, `ntheta=216` as the current M3 profile
+generation path for the tested active c3 and moderate mixed boundary data. Keep the square,
+centered, blended, and smooth-upwind variants diagnostic only.
+
+Why:
+The broader acceptance suite crossed sigma `1` for the active `c_3=60,c_4=0` case, the target
+mixed case `{c_2=6+3i,c_5=-5+i,c_8=2-1.5i}`, and a larger `1.5x` version of that mixed case.
+The plots are smooth and baseline-like, and the common sampled strong residuals are comparable to
+or better than the baseline on the same domain.
+
+Evidence:
+- `c_3=60,c_4=0`: nextgen `33.274 s`, native relative residual `2.18e-11`, common sampled
+  strong residual `0.544`; baseline `53.414 s`, common sampled strong residual `0.537`.
+- Target mixed `c_2/c_5/c_8`: nextgen `13.491 s`, native relative residual `1.25e-10`, common
+  sampled strong residual `0.421`; baseline `15.032 s`, common sampled strong residual `0.964`.
+- Larger `1.5x` mixed `c_2/c_5/c_8`: nextgen `16.855 s`, native relative residual `5.06e-10`,
+  common sampled strong residual `0.462`; baseline `15.756 s`, common sampled strong residual
+  `1.104`.
+
+Consequences:
+This clears the current M3 acceptance gate for the tested fine-grid cases, but it does not prove
+robustness for arbitrary `60`- to `100+`-amplitude mixed Fourier boundary data. Before claiming a
+general high-amplitude profile generator, run a separate stress/refinement suite with larger
+mixed coefficients and, where runtime permits, one finer polar grid or domain-sensitivity check.
+
+### 2026-04-28 — High-amplitude mixed stress keeps M3 open
+Decision:
+Do not move to M4 yet if the target is robust profile generation for large mixed Fourier data.
+The current full-disk polar upwind Newton path is accepted for the moderate cases above, but not
+for `60`-scale mixed coefficients.
+
+Why:
+For `{c_2=60,c_5=-5+i,c_8=2-1.5i}`, nextgen `nr=72`, `ntheta=216` did not reach sigma `1`.
+It accepted sigma `0.45` with native relative residual `7.59e-09`, then failed the line search at
+attempted sigma `0.4515625` after `248.238 s`. The requested `96/288` refinement was skipped
+after that coarser failure because the direct sparse Newton path was not operationally feasible.
+
+Evidence:
+- Nextgen partial accepted state at sigma `0.45`: accepted-state sampled strong residual `0.468`,
+  runtime `248.238 s`, `436` Newton iterations, physical Poisson residual `2.78e-02`.
+- Fine baseline `h_min=0.08`, `h_max=0.12`: completed sigma `1` in `105.068 s`, common sampled
+  strong residual `0.651`, and smooth Omega/psi plots.
+- Coarse baseline `h_min=0.12`, `h_max=0.18`: reported completion but produced a bad branch with
+  common sampled strong residual `5.94e3` and visibly noisy Omega, so coarse baseline comparisons
+  are unreliable at this amplitude.
+
+Consequences:
+The M3 solver needs one more numerical-method pass before it can support the high-amplitude
+profiles required for eigenvalue searches. Likely directions are a continuation method that can
+cross the high-amplitude branch point more cheaply, a pseudo-transient or defect-correction
+globalization, or a finite-volume/monotone discretization that preserves the smooth branch without
+requiring many direct Newton factorizations.
+
+### 2026-04-28 — Pseudo-transient Newton fallback is not enough for high amplitude
+Decision:
+Keep the pseudo-transient shifted-Newton fallback in `src/nextgen/polar_profile.py` as a
+diagnostic/globalization option, but do not mark M3 high-amplitude mixed profile generation as
+solved.
+
+Why:
+The fallback directly targets the observed line-search barrier by trying shifted Omega-block
+systems `(J + beta M_Omega) delta = -F` after an exact Newton direction fails. This made the
+failure mode less abrupt but did not move the accepted high-amplitude continuation threshold.
+
+Evidence:
+For `{c_2=60,c_5=-5+i,c_8=2-1.5i}` on `nr=72`, `ntheta=216`, pseudo-transient polar upwind
+again stopped at sigma `0.45` and failed at attempted sigma `0.4515625`. Runtime increased from
+`248.238 s` to `472.999 s`, Newton iteration records increased from `436` to `647`, and the
+accepted partial-state common sampled strong residual remained `0.468`. The fine baseline
+`h_min=0.08`, `h_max=0.12` still completes sigma `1` in about `106.815 s` with common sampled
+strong residual `0.651`.
+
+Consequences:
+The next useful M3 move should not be another scalar Newton damping variant. It should change the
+discrete nonlinear path, for example a conservative finite-volume/monotone transport form,
+pseudo-arclength continuation, or a baseline-like Galerkin/SUPG finite-difference analogue with
+explicit rejection criteria for the low-amplitude centered branch.
+
+### 2026-04-28 — Conservative FV transport improves but does not close M3
+Decision:
+Add `fv_upwind` as an M3 polar transport option, but keep high-amplitude mixed profile generation
+open until it reaches the refined/fine grids needed for production.
+
+Why:
+The conservative finite-volume form changes the nonlinear discrete path more substantially than
+Newton damping. It evaluates the same continuous advection term as
+`div(v Omega) - Omega div(v)` and uses monotone radial/angular face fluxes.
+
+Evidence:
+For `{c_2=60,c_5=-5+i,c_8=2-1.5i}`, `fv_upwind` on `nr=30`, `ntheta=90` reached sigma `1` in
+`68.953 s`, with native relative residual `9.47e-09`, common sampled strong residual `0.738`,
+Omega probe RMS `0.602`, and offset-removed psi probe RMS `0.0397` versus the fine baseline.
+The fine baseline `h_min=0.08`, `h_max=0.12` completed in `108.811 s` with common sampled strong
+residual `0.651`. The refinement `nr=36`, `ntheta=108` improved far beyond the old upwind sigma
+`0.45` barrier but still stalled at sigma `0.933203125` after `354.832 s`; its accepted partial
+state common sampled strong residual was `0.668`.
+
+Consequences:
+FV upwind is the best high-amplitude direction so far and should be the next M3 target, but it is
+not yet a fine-grid production solver. The immediate blocker is refinement robustness/runtime,
+possibly caused by using only an approximate psi-coupling Jacobian for the conservative fluxes.

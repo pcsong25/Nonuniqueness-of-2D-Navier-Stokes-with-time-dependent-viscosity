@@ -969,3 +969,147 @@ Updated interpretation:
 - For moderate/large mixed Fourier data, the M3 validation path should use a finer polar grid,
   starting at least around `nr=72`, `ntheta=216`, and judge quality by plots plus common sampled
   residual/probe errors, not by native algebraic residual alone.
+
+## 2026-04-28 — M3 fine-grid upwind acceptance suite
+
+Scope stayed in M3; no eigensolver/M4 work was started.
+
+Validation run:
+- `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests` passed: `21` tests.
+- `conda run -n femx_spc python experiments/run_m3_fine_upwind_acceptance_suite.py` completed
+  all requested fine-grid cases with nextgen `nr=72`, `ntheta=216`, `Rdom=10`.
+- The common sampled strong residual is measured after sampling both codes on the same
+  Cartesian grid over `[-7,7]^2`: `sqrt(||R_Omega||_L2^2 + ||R_Psi||_L2^2) /
+  max(||Omega||_L2, ||Delta psi||_L2)`. Probe RMS errors are over common polar probe points
+  `r in [0.5,8]`; psi errors subtract the mean probe offset to remove gauge differences.
+
+Results:
+
+| case | nextgen runtime | baseline runtime | nextgen native rel | nextgen common strong rel | baseline common strong rel | Omega probe RMS | psi probe RMS |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `c3_60_c4_0` | `33.274 s` | `53.414 s` | `2.18e-11` | `5.441e-01` | `5.371e-01` | `1.926e-01` | `1.951e-02` |
+| `target_mixed_2_5_8` | `13.491 s` | `15.032 s` | `1.25e-10` | `4.207e-01` | `9.644e-01` | `1.065e-01` | `1.007e-02` |
+| `larger_mixed_2_5_8_1p5x` | `16.855 s` | `15.756 s` | `5.06e-10` | `4.620e-01` | `1.104e+00` | `2.039e-01` | `2.108e-02` |
+
+Visual check:
+- Omega heat maps and psi stream-contour plots are under
+  `experiments/raw/nextgen/m3_fine_upwind_acceptance_suite/`.
+- The active c3 case preserves the expected three-arm structure.
+- The two mixed cases are non-symmetric, smooth, and free of the radial ringing seen in the
+  centered/blended `54/162` diagnostics.
+
+Interpretation:
+- The fine-grid full-disk upwind polar solver passes the current M3 acceptance suite. It is faster
+  than the finer baseline on active c3, slightly faster on the target mixed case, and comparable
+  on the `1.5x` mixed case while giving lower common sampled strong residuals on the mixed cases.
+- This validates the M3 profile path for the tested envelope, but not yet for arbitrary
+  high-amplitude mixed Fourier data at `60`- to `100+`-scale coefficients.
+
+## 2026-04-28 — M3 high-amplitude mixed stress suite
+
+Scope stayed in M3; no eigensolver/M4 work was started.
+
+Stress input:
+- `{c_2=60,c_5=-5+i,c_8=2-1.5i}`, `Rdom=10`, `mu=0.8`, `R=150`.
+- Requested nextgen refinement path: `nr=72,ntheta=216`, then `nr=96,ntheta=288` if feasible.
+- Baseline comparison meshes: `h_min=0.12,h_max=0.18` and `h_min=0.08,h_max=0.12`.
+
+Results:
+
+| run | status | runtime | final sigma | common sampled strong residual |
+| --- | --- | ---: | ---: | ---: |
+| nextgen `72/216` | nonconverged | `248.238 s` | `0.45` | `4.681e-01` for accepted partial state only |
+| nextgen `96/288` | skipped | `0.000 s` | n/a | n/a |
+| baseline `0.12/0.18` | bad branch | `186.127 s` | `1.0` | `5.939e+03` |
+| baseline `0.08/0.12` | completed | `105.068 s` | `1.0` | `6.509e-01` |
+
+Notes:
+- The nextgen partial common residual is reported only for the accepted sigma `0.45` state; it is
+  not a valid sigma-1 profile comparison and no probe errors are reported.
+- The coarse baseline run printed large Newton relative residuals near sigma `0.75` and `1.0`,
+  and its Omega plot is visibly noisy. The fine baseline is the usable reference for this stress
+  case.
+- Plots are under `experiments/raw/nextgen/m3_high_amplitude_stress_suite/`.
+- Summary is `experiments/summaries/m3_high_amplitude_stress_suite_2026-04-28.json`.
+
+Conclusion:
+- The moderate-amplitude M3 acceptance suite remains valid, but the current full-disk polar
+  upwind Newton solver is not yet an acceptable profile generator for the larger mixed boundary
+  values needed before eigenvalue searches.
+- M3 should stay open for one more numerical-method pass focused on high-amplitude continuation
+  and discretization robustness, rather than moving to M4 immediately.
+
+## 2026-04-28 — M3 pseudo-transient robustness pass
+
+Scope stayed in M3; no eigensolver/M4 work was started.
+
+Change made:
+- Added a pseudo-transient shifted-Newton fallback to `src/nextgen/polar_profile.py`.
+- When the exact Newton correction fails the residual line search, the solver now tries shifted
+  Omega-block systems `(J + beta M_Omega) delta = -F` with configurable shifts before declaring
+  the sigma step failed.
+- Updated `experiments/run_m3_high_amplitude_stress_suite.py` to run the high-amplitude stress
+  case with this fallback enabled explicitly.
+
+Validation:
+- `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests` passed: `21` tests.
+- `conda run --no-capture-output -n femx_spc python experiments/run_m3_high_amplitude_stress_suite.py`
+  reran the stress suite against the fine baseline.
+
+Results:
+
+| run | status | runtime | final sigma | common sampled strong residual |
+| --- | --- | ---: | ---: | ---: |
+| nextgen pseudo-transient `72/216` | nonconverged | `472.999 s` | `0.45` | `4.681e-01` for accepted partial state only |
+| nextgen pseudo-transient `96/288` | skipped | `0.000 s` | n/a | n/a |
+| baseline `0.08/0.12` | completed | `106.815 s` | `1.0` | `6.509e-01` |
+
+Interpretation:
+- The pseudo-transient fallback did not solve the high-amplitude mixed case. It kept the same
+  sigma threshold as the previous direct upwind run and increased runtime substantially.
+- Diagnostic probes also confirmed that a centered `72/216` solve can algebraically reach
+  sigma `1`, but it lands on the rejected low-amplitude/ringing branch with common sampled
+  strong residual near `19.5`, so centered convergence is not an acceptable fix.
+- The high-amplitude blocker is therefore likely in the discrete nonlinear continuation path or
+  transport discretization, not just in Newton damping.
+
+## 2026-04-28 — M3 conservative FV transport pass
+
+Scope stayed in M3; no eigensolver/M4 work was started.
+
+Change made:
+- Added `advection_scheme="fv_upwind"` to `src/nextgen/polar_profile.py`.
+- The new transport residual discretizes the same continuous term
+  `v . grad(Omega)` as the conservative identity
+  `div(v Omega) - Omega div(v)`.
+- Radial and angular face fluxes use monotone upwinding; Dirichlet Omega data is used only on
+  incoming outer radial faces.
+- Added a small mixed-boundary FV unit test in `tests/test_nextgen_profile.py`.
+
+Validation:
+- `PYTHONDONTWRITEBYTECODE=1 python -m unittest discover -s tests` passed: `22` tests.
+- `conda run --no-capture-output -n femx_spc python experiments/run_m3_high_amplitude_stress_suite.py`
+  reran the high-amplitude stress suite using `fv_upwind` against the fine baseline.
+
+Results:
+
+| run | status | runtime | final sigma | common sampled strong residual |
+| --- | --- | ---: | ---: | ---: |
+| nextgen FV `30/90` | completed | `68.953 s` | `1.0` | `7.376e-01` |
+| nextgen FV `36/108` | nonconverged | `354.832 s` | `0.933203125` | `6.677e-01` for accepted partial state only |
+| nextgen FV `72/216` | skipped | `0.000 s` | n/a | n/a |
+| baseline `0.08/0.12` | completed | `108.811 s` | `1.0` | `6.509e-01` |
+
+Additional comparison for the completed `30/90` FV run:
+- Omega probe RMS versus fine baseline: `0.602`.
+- Offset-removed psi probe RMS versus fine baseline: `0.0397`.
+- Plots are under `experiments/raw/nextgen/m3_high_amplitude_stress_suite/`.
+
+Interpretation:
+- Conservative FV transport is a substantial improvement over the old upwind path: it reaches
+  sigma `1` on `30/90` and pushes the refined `36/108` case to sigma `0.933`, compared with the
+  old `72/216` upwind barrier at sigma `0.45`.
+- It is not yet sufficient for M3 high-amplitude acceptance because the refined grid still stalls
+  before sigma `1`, and `72/216` was skipped after that refinement failure.
+- The most likely next fix is improving the FV Jacobian/globalization. The current FV block uses
+  a conservative Omega transport Jacobian, but the psi-coupling block is still approximate.

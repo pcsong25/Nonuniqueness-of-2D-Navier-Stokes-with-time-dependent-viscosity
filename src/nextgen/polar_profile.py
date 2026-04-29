@@ -102,6 +102,8 @@ class PolarProfileParams:
     least_squares_fallback: bool = True
     least_squares_damps: tuple[float, ...] = (1e-6, 1e-4, 1e-2, 1e-1, 1.0)
     least_squares_maxiter: int = 300
+    pseudo_transient_fallback: bool = True
+    pseudo_transient_shifts: tuple[float, ...] = (1e-2, 1e-1, 1.0, 10.0, 100.0)
     anchored_continuation: bool = False
     anchor_betas: tuple[float, ...] = (10.0, 3.0, 1.0, 0.3, 0.1, 0.03, 0.01, 0.0)
     diffusion_continuation: bool = False
@@ -170,8 +172,10 @@ class PolarProfileProblem:
             raise ValueError("PolarGrid.radius must match PhysicalParams.Rdom for the M3 disk solve.")
         if poisson_gauge not in {"mean", "pin"}:
             raise ValueError("poisson_gauge must be 'mean' or 'pin'.")
-        if advection_scheme not in {"upwind", "smooth_upwind", "centered", "blended"}:
-            raise ValueError("advection_scheme must be 'upwind', 'smooth_upwind', 'centered', or 'blended'.")
+        if advection_scheme not in {"upwind", "smooth_upwind", "centered", "blended", "fv_upwind"}:
+            raise ValueError(
+                "advection_scheme must be 'upwind', 'smooth_upwind', 'centered', 'blended', or 'fv_upwind'."
+            )
         if not 0.0 <= float(upwind_blend) <= 1.0:
             raise ValueError("upwind_blend must be between 0 and 1.")
         if float(upwind_smoothing) < 0.0:
@@ -616,6 +620,57 @@ class PolarProfileProblem:
                         ls_alpha *= controls.line_search_shrink
                     if accepted:
                         break
+            if not accepted and controls.pseudo_transient_fallback:
+                mass_diagonal = np.zeros(2 * self.grid.size + 1, dtype=float)
+                mass_diagonal[: self.grid.size] = 1.0
+                for shift in controls.pseudo_transient_shifts:
+                    shift_value = float(shift)
+                    if shift_value <= 0.0:
+                        continue
+                    shifted_jac = jac + shift_value * sp.diags(mass_diagonal, format="csr")
+                    try:
+                        t_linear = time.perf_counter()
+                        shifted_factor = spla.splu(shifted_jac.tocsc())
+                        shifted_delta = np.asarray(shifted_factor.solve(-residual), dtype=float)
+                        linear_solve_time += time.perf_counter() - t_linear
+                    except RuntimeError:
+                        continue
+                    shifted_delta_omega = shifted_delta[: self.grid.size]
+                    shifted_delta_psi = shifted_delta[self.grid.size : 2 * self.grid.size]
+                    shifted_delta_lambda = float(shifted_delta[-1])
+                    shifted_alpha = float(controls.initial_damping)
+                    for _ in range(controls.max_backtracks + 1):
+                        shifted_omega = omega_current + shifted_alpha * shifted_delta_omega
+                        shifted_psi = psi_current + shifted_alpha * shifted_delta_psi
+                        shifted_lambda = lambda_current + shifted_alpha * shifted_delta_lambda
+                        shifted_summary = self._residual_summary_with_anchor(
+                            shifted_omega,
+                            shifted_psi,
+                            sigma,
+                            shifted_lambda,
+                            anchor_vec,
+                            beta,
+                            eps_scale,
+                        )
+                        if (
+                            shifted_summary["relative_residual"] <= controls.tol_residual
+                            or shifted_summary["residual_norm"] < summary["residual_norm"]
+                        ):
+                            accepted = True
+                            alpha_used = shifted_alpha
+                            trial_omega = shifted_omega
+                            trial_psi = shifted_psi
+                            trial_lambda = shifted_lambda
+                            new_summary = shifted_summary
+                            step_delta_omega = shifted_delta_omega
+                            linear_residual = float(
+                                np.linalg.norm(jac @ shifted_delta + residual)
+                                / max(summary["residual_norm"], 1e-30)
+                            )
+                            break
+                        shifted_alpha *= controls.line_search_shrink
+                    if accepted:
+                        break
             step = float(
                 np.linalg.norm(alpha_used * step_delta_omega)
                 / max(np.linalg.norm(omega_current), 1.0)
@@ -841,6 +896,21 @@ class PolarProfileProblem:
         psi_vec = np.asarray(psi, dtype=float).reshape(-1)
         omega_boundary = self.omega_boundary(sigma)
         neumann = self.psi_neumann_boundary(sigma)
+        if self.advection_scheme == "fv_upwind":
+            transport, transport_bc, div_v = self._fv_transport_matrix_bc_divergence(
+                psi_vec,
+                neumann,
+                omega_boundary,
+            )
+            omega_lap_bc = self._dirichlet_laplacian_bc(omega_boundary)
+            operator = (
+                transport
+                - sp.diags(div_v, format="csr")
+                - sp.eye(self.grid.size, format="csr")
+                - self.physical.eps * self.laplacian_dirichlet
+            )
+            rhs = self.physical.eps * omega_lap_bc - transport_bc
+            return np.asarray(spla.splu(operator.tocsc()).solve(rhs), dtype=float)
         psi_theta = self.dtheta_full @ psi_vec
         psi_r = self._psi_radial_derivative(psi_vec, neumann)
         inv_r = np.repeat(1.0 / self.grid.r, self.grid.ntheta)
@@ -884,15 +954,24 @@ class PolarProfileProblem:
         psi_r = self._psi_radial_derivative(psi_vec, neumann)
         vr = -psi_theta * inv_r - self.physical.mu * r
         vtheta_over_r = psi_r * inv_r
-        omega_dr, omega_dr_bc, omega_dtheta = self._omega_advection_operators(
-            vr,
-            vtheta_over_r,
-            omega_boundary,
-        )
-        omega_r = omega_dr @ omega_vec + omega_dr_bc
-        omega_theta = omega_dtheta @ omega_vec
         eps = self.physical.eps * float(diffusion_scale)
-        omega_residual = vr * omega_r + vtheta_over_r * omega_theta - omega_vec - eps * lap_omega
+        if self.advection_scheme == "fv_upwind":
+            transport, transport_bc, div_v = self._fv_transport_matrix_bc_divergence(
+                psi_vec,
+                neumann,
+                omega_boundary,
+            )
+            advective_derivative = transport @ omega_vec + transport_bc - div_v * omega_vec
+            omega_residual = advective_derivative - omega_vec - eps * lap_omega
+        else:
+            omega_dr, omega_dr_bc, omega_dtheta = self._omega_advection_operators(
+                vr,
+                vtheta_over_r,
+                omega_boundary,
+            )
+            omega_r = omega_dr @ omega_vec + omega_dr_bc
+            omega_theta = omega_dtheta @ omega_vec
+            omega_residual = vr * omega_r + vtheta_over_r * omega_theta - omega_vec - eps * lap_omega
         poisson_unknown = np.concatenate((psi_vec, [float(poisson_lambda)]))
         poisson_residual = self.poisson_matrix @ poisson_unknown - self.poisson_rhs(omega_vec, sigma)
         return omega_residual, poisson_residual
@@ -949,12 +1028,25 @@ class PolarProfileProblem:
         omega_theta = omega_dtheta @ omega_vec
 
         identity = sp.eye(self.grid.size, format="csr")
-        j_oo = (
-            sp.diags(vr, format="csr") @ omega_dr
-            + sp.diags(vtheta_over_r, format="csr") @ omega_dtheta
-            - identity
-            - (self.physical.eps * float(diffusion_scale)) * self.laplacian_dirichlet
-        )
+        if self.advection_scheme == "fv_upwind":
+            transport, _, div_v = self._fv_transport_matrix_bc_divergence(
+                psi_vec,
+                neumann,
+                omega_boundary,
+            )
+            j_oo = (
+                transport
+                - sp.diags(div_v, format="csr")
+                - identity
+                - (self.physical.eps * float(diffusion_scale)) * self.laplacian_dirichlet
+            )
+        else:
+            j_oo = (
+                sp.diags(vr, format="csr") @ omega_dr
+                + sp.diags(vtheta_over_r, format="csr") @ omega_dtheta
+                - identity
+                - (self.physical.eps * float(diffusion_scale)) * self.laplacian_dirichlet
+            )
         j_op = (
             -sp.diags(omega_r * inv_r, format="csr") @ self.dtheta_full
             + sp.diags(omega_theta * inv_r, format="csr") @ self.psi_radial_derivative_matrix
@@ -1118,6 +1210,106 @@ class PolarProfileProblem:
             sp.diags(positive_weight, format="csr") @ self.angular_upwind_positive
             + sp.diags(1.0 - positive_weight, format="csr") @ self.angular_upwind_negative
         ).tocsr()
+
+    def _fv_transport_matrix_bc_divergence(
+        self,
+        psi: np.ndarray,
+        neumann: np.ndarray,
+        boundary_values: np.ndarray,
+    ) -> tuple[sp.csr_matrix, np.ndarray, np.ndarray]:
+        """Conservative upwind transport operator for `div(v Omega) - Omega div(v)`.
+
+        The continuous equation is still the baseline strong form
+        `v . grad(Omega) - Omega - eps Delta(Omega) = 0`.  This helper only
+        changes the transport discretization by computing the advective
+        derivative as a finite-volume flux divergence corrected by the same
+        discrete velocity divergence.
+        """
+
+        psi_vec = np.asarray(psi, dtype=float).reshape(-1)
+        psi_theta_cells = (self.dtheta_full @ psi_vec).reshape(self.grid.shape)
+        psi_r_cells = self._psi_radial_derivative(psi_vec, neumann).reshape(self.grid.shape)
+        boundary = np.asarray(boundary_values, dtype=float).reshape(self.grid.ntheta)
+
+        nr = self.grid.nr
+        ntheta = self.grid.ntheta
+        dr = self.grid.dr
+        dtheta = self.grid.dtheta
+        r_cells = self.grid.r
+        r_faces = np.arange(nr + 1, dtype=float) * dr
+
+        psi_theta_faces = np.zeros((nr + 1, ntheta), dtype=float)
+        psi_theta_faces[1:nr, :] = 0.5 * (psi_theta_cells[:-1, :] + psi_theta_cells[1:, :])
+        psi_theta_faces[nr, :] = psi_theta_cells[-1, :]
+
+        vr_faces = np.zeros((nr + 1, ntheta), dtype=float)
+        nonzero_faces = r_faces > 0.0
+        vr_faces[nonzero_faces, :] = (
+            -psi_theta_faces[nonzero_faces, :] / r_faces[nonzero_faces, None]
+            - self.physical.mu * r_faces[nonzero_faces, None]
+        )
+
+        vtheta_faces = 0.5 * (psi_r_cells + np.roll(psi_r_cells, -1, axis=1))
+
+        rows: list[int] = []
+        cols: list[int] = []
+        data: list[float] = []
+        bc = np.zeros(self.grid.size, dtype=float)
+        div_v = np.zeros(self.grid.size, dtype=float)
+
+        def add(row: int, col: int, value: float) -> None:
+            if value != 0.0:
+                rows.append(row)
+                cols.append(col)
+                data.append(value)
+
+        for j, rj in enumerate(r_cells):
+            radial_scale = 1.0 / (rj * dr)
+            angular_scale = 1.0 / (rj * dtheta)
+            rin = r_faces[j]
+            rout = r_faces[j + 1]
+            for k in range(ntheta):
+                row = self.grid.index(j, k)
+
+                vr_out = vr_faces[j + 1, k]
+                coeff_out = rout * vr_out * radial_scale
+                if vr_out >= 0.0:
+                    add(row, row, coeff_out)
+                elif j < nr - 1:
+                    add(row, self.grid.index(j + 1, k), coeff_out)
+                else:
+                    bc[row] += coeff_out * boundary[k]
+
+                vr_in = vr_faces[j, k]
+                coeff_in = rin * vr_in * radial_scale
+                if vr_in >= 0.0:
+                    if j > 0:
+                        add(row, self.grid.index(j - 1, k), -coeff_in)
+                else:
+                    add(row, row, -coeff_in)
+
+                vtheta_right = vtheta_faces[j, k]
+                coeff_right = vtheta_right * angular_scale
+                if vtheta_right >= 0.0:
+                    add(row, row, coeff_right)
+                else:
+                    add(row, self.grid.index(j, k + 1), coeff_right)
+
+                left_index = (k - 1) % ntheta
+                vtheta_left = vtheta_faces[j, left_index]
+                coeff_left = vtheta_left * angular_scale
+                if vtheta_left >= 0.0:
+                    add(row, self.grid.index(j, k - 1), -coeff_left)
+                else:
+                    add(row, row, -coeff_left)
+
+                div_v[row] = (
+                    (rout * vr_out - rin * vr_in) * radial_scale
+                    + (vtheta_right - vtheta_left) * angular_scale
+                )
+
+        mat = sp.csr_matrix((data, (rows, cols)), shape=(self.grid.size, self.grid.size))
+        return mat, bc, div_v
 
     def _omega_advection_operators(
         self,

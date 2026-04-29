@@ -1,0 +1,301 @@
+{
+  "cases": [
+    {
+      "baseline_reference": {
+        "common_residuals": {
+          "lap_psi_l2": 12.073941830203255,
+          "omega_field_l2": 12.734294330742275,
+          "omega_strong_l2": 8.01477099535603,
+          "poisson_strong_l2": 2.1136982731298053,
+          "profile_strong_l2": 8.288804165730557,
+          "profile_strong_relative": 0.6509040823503102,
+          "sample_hx": 0.109375,
+          "sample_hy": 0.109375,
+          "sample_points": 16129
+        },
+        "label": "h0.08_0.12",
+        "mesh": {
+          "h_max": 0.12,
+          "h_min": 0.08
+        },
+        "mesh_cells": 50674,
+        "mesh_vertices": 25600,
+        "residuals": {
+          "meta": {
+            "R": 150.0,
+            "Rdom": 10.0,
+            "eps": 0.0044444444444444444,
+            "mu": 0.8,
+            "sigma": 1.0
+          },
+          "norms": {
+            "Omega_l2": 0.008250427796013102,
+            "Psi_l2": 0.00028621112716939456
+          }
+        },
+        "runtime_sec": 108.81125709693879,
+        "status": "completed"
+      },
+      "baseline_runs": [
+        {
+          "common_residuals": {
+            "lap_psi_l2": 12.073941830203255,
+            "omega_field_l2": 12.734294330742275,
+            "omega_strong_l2": 8.01477099535603,
+            "poisson_strong_l2": 2.1136982731298053,
+            "profile_strong_l2": 8.288804165730557,
+            "profile_strong_relative": 0.6509040823503102,
+            "sample_hx": 0.109375,
+            "sample_hy": 0.109375,
+            "sample_points": 16129
+          },
+          "label": "h0.08_0.12",
+          "mesh": {
+            "h_max": 0.12,
+            "h_min": 0.08
+          },
+          "mesh_cells": 50674,
+          "mesh_vertices": 25600,
+          "residuals": {
+            "meta": {
+              "R": 150.0,
+              "Rdom": 10.0,
+              "eps": 0.0044444444444444444,
+              "mu": 0.8,
+              "sigma": 1.0
+            },
+            "norms": {
+              "Omega_l2": 0.008250427796013102,
+              "Psi_l2": 0.00028621112716939456
+            }
+          },
+          "runtime_sec": 108.81125709693879,
+          "status": "completed"
+        }
+      ],
+      "coeffs": {
+        "2": {
+          "imag": 0.0,
+          "real": 60.0
+        },
+        "5": {
+          "imag": 1.0,
+          "real": -5.0
+        },
+        "8": {
+          "imag": -1.5,
+          "real": 2.0
+        }
+      },
+      "description": "mixed case with a 60-scale leading coefficient and target-size higher modes",
+      "name": "large_leading_mixed_2_5_8",
+      "nextgen_runs": [
+        {
+          "common_residuals": {
+            "lap_psi_l2": 14.127491534761408,
+            "omega_field_l2": 10.25245978833772,
+            "omega_strong_l2": 5.165089868589796,
+            "poisson_strong_l2": 9.05090873635826,
+            "profile_strong_l2": 10.420993345381966,
+            "profile_strong_relative": 0.7376393268217917,
+            "sample_hx": 0.109375,
+            "sample_hy": 0.109375,
+            "sample_points": 16129
+          },
+          "diagnostics": {
+            "adaptive_retries": 0,
+            "advection_scheme": "fv_upwind",
+            "anchored_attempts": 0,
+            "anchored_linear_solve_time_sec": 0.0,
+            "anchored_successes": 0,
+            "attempted_sigma": 1.0,
+            "completed_sigma_steps": 20,
+            "diffusion_attempts": 0,
+            "diffusion_linear_solve_time_sec": 0.0,
+            "diffusion_successes": 0,
+            "final_sigma": 1.0,
+            "grid_dr": 0.3333333333333333,
+            "grid_dtheta": 0.06981317007977318,
+            "grid_nr": 30,
+            "grid_ntheta": 90,
+            "lap_psi_l2": 11.104492895017117,
+            "newton_linear_solve_time_sec": 16.70314878411591,
+            "newton_steps": 357,
+            "omega_field_l2": 11.10449270441274,
+            "omega_residual_norm": 1.0521248020389318e-07,
+            "physical_poisson_residual_norm": 0.00228288069836168,
+            "poisson_gauge": "mean",
+            "poisson_lambda": -0.2459674943515955,
+            "poisson_residual_norm": 1.8783740116064012e-13,
+            "relative_residual": 9.4747667632146e-09,
+            "residual_norm": 1.0521248020406085e-07,
+            "runtime_sec": 68.95314756780863,
+            "upwind_blend": 0.01,
+            "upwind_smoothing": 0.001
+          },
+          "grid": {
+            "dr": 0.3333333333333333,
+            "dtheta": 0.06981317007977318,
+            "nr": 30,
+            "ntheta": 90
+          },
+          "message": "converged",
+          "probe_errors_vs_reference_baseline": {
+            "omega_probe_linf": 19.11904107435446,
+            "omega_probe_rms": 0.6024430962293069,
+            "psi_probe_linf_offset_removed": 0.23819574953191935,
+            "psi_probe_rms_offset_removed": 0.03966452862121065,
+            "valid_probe_count": 10092
+          },
+          "runtime_sec": 68.95314756780863,
+          "status": "completed"
+        },
+        {
+          "accepted_state_common_residuals": {
+            "lap_psi_l2": 12.429444179264054,
+            "omega_field_l2": 9.973597154781924,
+            "omega_strong_l2": 4.723652705317208,
+            "poisson_strong_l2": 6.823027442584964,
+            "profile_strong_l2": 8.298590143073588,
+            "profile_strong_relative": 0.6676557715201829,
+            "sample_hx": 0.109375,
+            "sample_hy": 0.109375,
+            "sample_points": 16129
+          },
+          "diagnostics": {
+            "adaptive_retries": 7,
+            "advection_scheme": "fv_upwind",
+            "anchored_attempts": 0,
+            "anchored_linear_solve_time_sec": 0.0,
+            "anchored_successes": 0,
+            "attempted_sigma": 0.934423828125,
+            "completed_sigma_steps": 21,
+            "diffusion_attempts": 0,
+            "diffusion_linear_solve_time_sec": 0.0,
+            "diffusion_successes": 0,
+            "final_sigma": 0.933203125,
+            "grid_dr": 0.2777777777777778,
+            "grid_dtheta": 0.05817764173314432,
+            "grid_nr": 36,
+            "grid_ntheta": 108,
+            "lap_psi_l2": 10.687388993564475,
+            "newton_linear_solve_time_sec": 61.91295566037297,
+            "newton_steps": 716,
+            "omega_field_l2": 10.687388802292332,
+            "omega_residual_norm": 7.967824706594929e-08,
+            "physical_poisson_residual_norm": 0.0023437334243575827,
+            "poisson_gauge": "mean",
+            "poisson_lambda": -0.36360372836375543,
+            "poisson_residual_norm": 2.620655908323189e-13,
+            "relative_residual": 7.45535201482414e-09,
+            "residual_norm": 7.967824706638025e-08,
+            "runtime_sec": 354.8321954216808,
+            "upwind_blend": 0.01,
+            "upwind_smoothing": 0.001
+          },
+          "grid": {
+            "dr": 0.2777777777777778,
+            "dtheta": 0.05817764173314432,
+            "nr": 36,
+            "ntheta": 108
+          },
+          "message": "polar Newton line search failed at sigma=0.934424, iteration=30; adaptive sigma step fell below 1.000e-03 after accepted sigma=0.933203",
+          "runtime_sec": 354.8321954216808,
+          "status": "nonconverged"
+        },
+        {
+          "diagnostics": {
+            "final_sigma": null,
+            "relative_residual": null
+          },
+          "grid": {
+            "dr": 0.1388888888888889,
+            "dtheta": 0.02908882086657216,
+            "nr": 72,
+            "ntheta": 216
+          },
+          "message": "Skipped because the coarser high-amplitude nextgen solve did not reach sigma 1.",
+          "runtime_sec": 0.0,
+          "status": "skipped_after_coarser_nonconvergence"
+        }
+      ],
+      "plot_paths": [
+        "experiments/raw/nextgen/m3_high_amplitude_stress_suite/large_leading_mixed_2_5_8/nextgen_30_90_omega.png",
+        "experiments/raw/nextgen/m3_high_amplitude_stress_suite/large_leading_mixed_2_5_8/nextgen_30_90_psi_contours.png",
+        "experiments/raw/nextgen/m3_high_amplitude_stress_suite/large_leading_mixed_2_5_8/nextgen_36_108_partial_sigma0p933_omega.png",
+        "experiments/raw/nextgen/m3_high_amplitude_stress_suite/large_leading_mixed_2_5_8/nextgen_36_108_partial_sigma0p933_psi_contours.png",
+        "experiments/raw/nextgen/m3_high_amplitude_stress_suite/large_leading_mixed_2_5_8/baseline_h0p08_0p12_omega.png",
+        "experiments/raw/nextgen/m3_high_amplitude_stress_suite/large_leading_mixed_2_5_8/baseline_h0p08_0p12_psi_contours.png"
+      ],
+      "status": "partial"
+    }
+  ],
+  "input": {
+    "baseline_meshes": [
+      {
+        "h_max": 0.12,
+        "h_min": 0.08
+      }
+    ],
+    "nextgen_grids": [
+      {
+        "nr": 30,
+        "ntheta": 90
+      },
+      {
+        "nr": 36,
+        "ntheta": 108
+      },
+      {
+        "nr": 72,
+        "ntheta": 216
+      }
+    ],
+    "physical": {
+      "R": 150.0,
+      "Rdom": 10.0,
+      "eps": 0.0044444444444444444,
+      "mu": 0.8
+    },
+    "probe_grid": {
+      "nr": 58,
+      "ntheta": 174,
+      "r_max": 8.0,
+      "r_min": 0.5
+    },
+    "sample_grid": {
+      "n": 129,
+      "x_max": 7.0,
+      "x_min": -7.0
+    },
+    "sigma_grid": [
+      0.0,
+      0.05,
+      0.1,
+      0.15000000000000002,
+      0.2,
+      0.25,
+      0.30000000000000004,
+      0.35000000000000003,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6000000000000001,
+      0.65,
+      0.7000000000000001,
+      0.75,
+      0.8,
+      0.8500000000000001,
+      0.9,
+      0.9500000000000001,
+      1.0
+    ]
+  },
+  "norm_definitions": {
+    "common_strong_relative": "both codes sampled to the same Cartesian grid; sqrt(||R_Omega||_L2^2+||R_Psi||_L2^2)/max(||Omega||_L2,||Delta psi||_L2)",
+    "probe_rms": "sqrt(mean((nextgen-baseline)^2)) over common polar probes r in [0.5,8]",
+    "psi_probe_errors": "streamfunction probe differences after subtracting mean difference to remove gauge offset"
+  },
+  "status": "partial"
+}
