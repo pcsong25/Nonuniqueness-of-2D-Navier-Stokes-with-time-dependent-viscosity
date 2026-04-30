@@ -1,0 +1,135 @@
+{
+  "status": "superseded_by_full_live_baseline_stress_suite",
+  "scope": "M3 profile solve only; no M4 operator assembly or eigensolver",
+  "change": {
+    "files": [
+      "src/nextgen/polar_profile.py",
+      "tests/test_nextgen_profile.py"
+    ],
+    "summary": "Corrected the fv_upwind omega-psi Jacobian block to differentiate the active finite-volume face fluxes instead of reusing the centered strong-form psi derivative."
+  },
+  "input": {
+    "physical": {
+      "mu": 0.8,
+      "R": 150.0,
+      "Rdom": 10.0,
+      "eps": 0.0044444444444444444
+    },
+    "coeffs": {
+      "2": {
+        "real": 60.0,
+        "imag": 0.0
+      },
+      "5": {
+        "real": -5.0,
+        "imag": 1.0
+      },
+      "8": {
+        "real": 2.0,
+        "imag": -1.5
+      }
+    },
+    "sigma_grid": [
+      0.0,
+      0.05,
+      0.1,
+      0.15000000000000002,
+      0.2,
+      0.25,
+      0.30000000000000004,
+      0.35000000000000003,
+      0.4,
+      0.45,
+      0.5,
+      0.55,
+      0.6000000000000001,
+      0.65,
+      0.7000000000000001,
+      0.75,
+      0.8,
+      0.8500000000000001,
+      0.9,
+      0.9500000000000001,
+      1.0
+    ],
+    "advection_scheme": "fv_upwind"
+  },
+  "validation": {
+    "pytest": {
+      "command": "python -m pytest tests/test_nextgen_profile.py -q",
+      "status": "passed",
+      "tests": 11
+    },
+    "standalone_fv_jacobian_check": {
+      "omega_block_relative_error_before_fix": 0.04480728424978466,
+      "omega_block_relative_error_after_fix": 1.1797544415897299e-08
+    }
+  },
+  "nextgen_runs": [
+    {
+      "grid": {
+        "nr": 36,
+        "ntheta": 108
+      },
+      "status": "completed",
+      "runtime_sec": 27.16885642055422,
+      "message": "converged",
+      "diagnostics": {
+        "final_sigma": 1.0,
+        "attempted_sigma": 1.0,
+        "relative_residual": 2.113607719282794e-12,
+        "newton_steps": 98,
+        "adaptive_retries": 0,
+        "completed_sigma_steps": 20,
+        "newton_linear_solve_time_sec": 15.836199684999883
+      }
+    },
+    {
+      "grid": {
+        "nr": 72,
+        "ntheta": 216
+      },
+      "status": "completed",
+      "runtime_sec": 203.9172167731449,
+      "message": "converged",
+      "diagnostics": {
+        "final_sigma": 1.0,
+        "attempted_sigma": 1.0,
+        "relative_residual": 8.428270233604397e-10,
+        "newton_steps": 99,
+        "adaptive_retries": 0,
+        "completed_sigma_steps": 20,
+        "newton_linear_solve_time_sec": 163.15366028621793
+      },
+      "common_residuals": {
+        "omega_field_l2": 11.075019953078973,
+        "lap_psi_l2": 11.25831214407085,
+        "omega_strong_l2": 4.984979554079595,
+        "poisson_strong_l2": 2.1388794196312184,
+        "profile_strong_l2": 5.424465533701322,
+        "profile_strong_relative": 0.48181871885281646,
+        "sample_hx": 0.109375,
+        "sample_hy": 0.109375,
+        "sample_points": 16129
+      }
+    }
+  ],
+  "baseline_reference": {
+    "source": "experiments/summaries/m3_high_amplitude_stress_suite_2026-04-29.json",
+    "mesh": {
+      "h_min": 0.08,
+      "h_max": 0.12
+    },
+    "runtime_sec": 107.96624087262899,
+    "common_residuals": {
+      "profile_strong_relative": 0.6509040823503102
+    },
+    "live_rerun_status": "completed",
+    "live_rerun_error": null
+  },
+  "notes": [
+    "The previous fv_upwind 36/108 stress run stalled at final accepted sigma 0.933203125.",
+    "After the psi-Jacobian fix, 36/108 and 72/216 both reached sigma 1 with no adaptive retries.",
+    "This compact direct-run summary is superseded by the full 2026-04-29 stress-suite summary, which recomputed the fine baseline and probe errors in the femx_spc environment."
+  ]
+}

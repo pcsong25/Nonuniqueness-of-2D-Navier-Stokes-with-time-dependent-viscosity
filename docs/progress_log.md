@@ -1113,3 +1113,311 @@ Interpretation:
   before sigma `1`, and `72/216` was skipped after that refinement failure.
 - The most likely next fix is improving the FV Jacobian/globalization. The current FV block uses
   a conservative Omega transport Jacobian, but the psi-coupling block is still approximate.
+
+## 2026-04-29 — M3 FV psi-Jacobian high-amplitude fix
+
+Scope stayed in M3; no M4 operator assembly or eigensolver work was started.
+
+Change made:
+- Replaced the `fv_upwind` omega-psi Jacobian block in `src/nextgen/polar_profile.py`.
+- The old `fv_upwind` Jacobian reused the centered/blended strong-form psi derivative even though
+  the residual is a conservative face-flux discretization.
+- The new block differentiates the active upwind finite-volume radial and angular face fluxes
+  with respect to `psi`, including the `div(v Omega) - Omega div(v)` correction and incoming
+  outer Dirichlet Omega faces.
+- Added a finite-difference test for the `fv_upwind` Jacobian path in `tests/test_nextgen_profile.py`.
+
+Validation:
+- `python -m pytest tests/test_nextgen_profile.py -q` passed: `11` tests.
+- Standalone finite-difference check on the `fv_upwind` omega block improved from about
+  `4.48e-02` relative error before the fix to about `1.18e-08` after the fix.
+- Reran the high-amplitude target `{c_2=60,c_5=-5+i,c_8=2-1.5i}` with the existing
+  stress-suite controls.
+
+Results:
+
+| run | status | runtime | final sigma | native relative residual | common sampled strong residual |
+| --- | --- | ---: | ---: | ---: | ---: |
+| nextgen FV `36/108` | completed | `27.169 s` | `1.0` | `2.114e-12` | n/a for direct gate run |
+| nextgen FV `72/216` | completed | `203.917 s` | `1.0` | `8.428e-10` | `4.818e-01` |
+| recorded fine baseline `h_min=0.08,h_max=0.12` | completed | `108.811 s` | `1.0` | n/a | `6.509e-01` |
+
+Notes:
+- The previous `36/108` FV run stalled at accepted sigma `0.933203125`; after the psi-Jacobian
+  fix it reached sigma `1` with no adaptive retries.
+- The requested `72/216` run also reached sigma `1` with no adaptive retries. Its common sampled
+  strong residual is lower than the recorded fine baseline reference for the same stress case.
+- A live baseline rerun in the current shell was blocked by `ModuleNotFoundError: No module named
+  'gmsh'`; therefore the baseline comparison above uses the already recorded fine baseline from
+  `experiments/summaries/m3_high_amplitude_stress_suite_2026-04-28.json`.
+- Probe errors versus the fine baseline were not recomputed in this environment because the live
+  baseline field could not be regenerated without `gmsh`.
+
+## 2026-04-29 — M3 high-amplitude FV acceptance closure
+
+Scope stayed in M3; no M4 operator assembly or eigensolver work was started.
+
+Assessment before closure:
+- M0-M2 are complete.
+- M3 had one remaining blocker: the corrected high-amplitude `fv_upwind` path still needed a
+  canonical stress-suite rerun with a live fine baseline, common sampled residuals, probe errors,
+  plots, and registry rows.
+- The shell-default Python lacks `gmsh`, but the intended `femx_spc` environment provides it
+  (`gmsh 4.13.1`), so the live baseline comparison is feasible there.
+
+Validation:
+- `PYTHONDONTWRITEBYTECODE=1 python -m pytest tests/test_nextgen_profile.py -q` passed:
+  `11` tests.
+- `conda run --no-capture-output -n femx_spc python experiments/run_m3_high_amplitude_stress_suite.py`
+  completed the full high-amplitude stress suite with the corrected `fv_upwind` psi Jacobian.
+- A non-fatal OpenMPI TCP bind warning appeared during the serial baseline run, but gmsh meshing,
+  continuation, residual sampling, probe comparison, plot generation, and JSON/registry logging
+  all completed.
+
+High-amplitude stress results for `{c_2=60,c_5=-5+i,c_8=2-1.5i}`:
+
+| run | status | runtime | final sigma | native relative residual | common sampled strong residual | Omega probe RMS | psi probe RMS |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| nextgen FV `30/90` | completed | `20.297 s` | `1.0` | `1.22e-10` | `7.376e-01` | `6.024e-01` | `3.966e-02` |
+| nextgen FV `36/108` | completed | `29.772 s` | `1.0` | `2.11e-12` | `6.789e-01` | `5.949e-01` | `3.469e-02` |
+| nextgen FV `72/216` | completed | `136.261 s` | `1.0` | `8.43e-10` | `4.818e-01` | `5.585e-01` | `2.016e-02` |
+| baseline `h_min=0.08,h_max=0.12` | completed | `107.966 s` | `1.0` | n/a | `6.509e-01` | reference | reference |
+
+Artifacts:
+- Full summary: `experiments/summaries/m3_high_amplitude_stress_suite_2026-04-29.json`.
+- Plots: `experiments/raw/nextgen/m3_high_amplitude_stress_suite/large_leading_mixed_2_5_8/`.
+- Registry rows appended for all three nextgen grids.
+
+Conclusion:
+- The prior high-amplitude blocker is closed for the documented M3 profile envelope. The accepted
+  production profile path is full-disk polar `fv_upwind` with the exact active-upwind psi
+  Jacobian for high-amplitude mixed cases, and full-disk polar upwind remains validated for the
+  earlier moderate acceptance suite.
+- M3 is complete enough to move to M4. Remaining caveats are not M3 blockers: arbitrary
+  `100+`-scale Fourier combinations, memory/runtime of direct sparse factorization on finer
+  grids, and the fact that M4 must reuse/document the same discrete profile conventions rather
+  than infer a different linearization.
+
+## 2026-04-29 — M3 c4/c7 high-amplitude spot check
+
+Scope stayed in M3; no M4 operator assembly or eigensolver work was started.
+
+Request:
+- Solve the profile with boundary data `{c_4=100,c_7=40}` and all other
+  Fourier coefficients zero.
+- Use fine enough resolution for the large boundary values, report runtime,
+  plots, residuals, and compare against the baseline.
+
+Resolution choice:
+- Baseline meshes: `h_min=0.08,h_max=0.12` and refined
+  `h_min=0.05,h_max=0.08`.
+- Nextgen completed grids: `64/256` and `72/288` with `fv_upwind`.
+- Larger nextgen runtime probes `80/320` and `96/384` were stopped after
+  extended runtime without completion output. This confirms that direct sparse
+  factorization remains the limiting cost for pushing this stress case finer.
+
+Results:
+
+| run | status | runtime | final sigma | native residual | common sampled strong residual | Omega RMS vs fine baseline | psi RMS vs fine baseline |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| nextgen FV `64/256` | completed | `226.561 s` | `1.0` | `1.785e-10` | `8.199e-01` | `1.228` | `0.128` |
+| nextgen FV `72/288` | completed | `251.747 s` | `1.0` | `8.221e-09` | `8.811e-01` | `1.273` | `0.141` |
+| baseline `h_min=0.08,h_max=0.12` | completed | `178.638 s` | `1.0` | n/a | `7.580e-01` | compared to fine: `0.218` | compared to fine: `0.0175` |
+| baseline `h_min=0.05,h_max=0.08` | completed | `503.579 s` | `1.0` | n/a | `4.564e-01` | reference | reference |
+
+Artifacts:
+- Summary: `experiments/summaries/m3_c4_c7_high_amplitude_validation_2026-04-29.json`.
+- Plots: `experiments/raw/nextgen/m3_c4_c7_high_amplitude_validation/c4_100_c7_40/`.
+- Registry rows appended for both completed nextgen grids.
+
+Assessment:
+- The corrected `fv_upwind` path can continue this large c4/c7 profile to
+  sigma `1` with tight native nonlinear residuals.
+- Accuracy against the fine baseline is not at the level of the accepted M3
+  high-amplitude envelope: the nextgen/fine-baseline Omega probe RMS is about
+  `1.27`, much larger than the baseline mesh-refinement Omega RMS `0.218`.
+- This test should therefore be treated as a cautionary stress check, not as
+  evidence that M3 supports arbitrary `100`-scale Fourier combinations. If
+  `{c_4=100,c_7=40}` is required as an M4 input, another M3 pass should target
+  finer-grid performance or a closer baseline-matching discretization before
+  moving on.
+
+## 2026-04-29 — M3 c4/c7 reduced-Newton and FV-blend probe
+
+Scope stayed in M3; no M4 operator assembly or eigensolver work was started.
+
+Changes made:
+- Added conservative FV variants `fv_centered` and `fv_blended` to support
+  baseline-closer fluxes without deleting the robust `fv_upwind` path.
+- Added finite-difference Jacobian coverage for `fv_centered` and
+  `fv_blended`.
+- Added `reduced_poisson_newton=True`, which eliminates the linear Poisson
+  constraint from the Newton solve and applies the reduced Omega Schur
+  complement by GMRES, preconditioned by an LU factorization of the Omega
+  block.
+- Fixed a face-orientation bug introduced during the FV blend refactor:
+  inward radial and left angular faces must use the neighboring cell as the
+  upwind value for positive face velocity. The bug only affected the new
+  generalized helper; the finite-difference tests now cover the corrected path.
+
+Validation and probes:
+- `PYTHONDONTWRITEBYTECODE=1 python -m pytest tests/test_nextgen_profile.py -q`
+  passed: `13` tests.
+- Pure centered and very lightly blended FV were not efficient on the c4/c7
+  stress case; they were stopped during screening before completion.
+- A buggy low-branch reduced run briefly made `96/384` and `128/512` appear
+  practical, but those results were invalidated by the face-orientation fix and
+  removed from the registry as acceptance evidence.
+- Corrected reduced Newton on the high-amplitude branch at `72/288` completed
+  with the same field as monolithic Newton: native residual `8.22e-09`, common
+  sampled strong residual `0.881`, Omega L2 `17.754`, and final sigma `1`.
+  Runtime was `201.333 s`, with `83.082 s` in reduced linear solves. A
+  corrected monolithic check on the same grid took `395.715 s`, with
+  `279.212 s` in linear solves.
+- Corrected reduced `96/384` high-branch probes, including a looser GMRES
+  tolerance `1e-6`, were stopped after extended runtime without completion.
+
+Assessment:
+- The reduced Poisson Newton path is a real performance improvement at the
+  validated `72/288` c4/c7 grid, but the current Omega-block Schur
+  preconditioner is not strong enough to make the high-branch `96/384` solve
+  operational.
+- The c4/c7 discrepancy against the fine baseline is therefore reduced in
+  linear-solve cost, not yet in field accuracy. The fine-baseline comparison
+  remains the earlier high-branch result: nextgen `72/288` common sampled
+  residual `0.881` versus baseline `0.456`, Omega probe RMS `1.273`, and
+  offset-removed psi RMS `0.141`.
+- M3 should remain open for general large boundary data. The next useful work
+  is a stronger reduced-system preconditioner or a discretization that matches
+  the baseline branch more closely without losing high-amplitude robustness.
+
+## 2026-04-29 — M3 nested reduced c4/c7 fine-grid validation
+
+Scope stayed in M3; no M4 operator assembly or eigensolver work was started.
+
+Change made:
+- Updated the c4/c7 reduced fine validation to use nested high-branch
+  refinement:
+  `72/288` monolithic `fv_upwind` continuation to sigma `1`, then
+  prolongation to `96/384` and `128/512` followed by
+  `reduced_poisson_newton=True` corrections at sigma `1`.
+- This changes the operational path from trying to continue the reduced
+  high-branch solve from zero on the fine grid to using the coarser converged
+  high-branch profile as the fine-grid initial state.
+
+Validation:
+- `PYTHONDONTWRITEBYTECODE=1 python -m pytest tests/test_nextgen_profile.py -q`
+  passed: `13` tests.
+- `conda run --no-capture-output -n femx_spc python experiments/run_m3_c4_c7_reduced_fine_validation.py`
+  completed nextgen `72/288`, nested reduced `96/384`, nested reduced
+  `128/512`, and a fresh fine baseline `h_min=0.05,h_max=0.08`.
+- A non-fatal OpenMPI TCP bind warning appeared during the serial baseline
+  run, but gmsh meshing, Newton continuation, residual sampling, probe
+  comparison, plot generation, JSON, and registry logging completed.
+
+Results for `{c_4=100,c_7=40}`:
+
+| run | status | runtime | final sigma | native residual | common sampled strong residual | Omega probe RMS | psi probe RMS |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| nextgen seed `72/288` | completed | `285.952 s` | `1.0` | `8.221e-09` | `0.881` | `1.273` | `0.141` |
+| nested reduced `96/384` | completed | `32.771 s` | `1.0` | `8.130e-10` | `0.935` | `1.585` | `0.281` |
+| nested reduced `128/512` | completed | `92.078 s` | `1.0` | `1.436e-11` | `0.616` | `1.612` | `0.291` |
+| baseline `h_min=0.05,h_max=0.08` | completed | `505.636 s` | `1.0` | n/a | `0.456` | reference | reference |
+
+Artifacts:
+- Summary: `experiments/summaries/m3_c4_c7_reduced_fine_validation_2026-04-29.json`.
+- Plots: `experiments/raw/nextgen/m3_c4_c7_reduced_fine_validation/c4_100_c7_40/`.
+- Registry rows appended for `72/288`, `96/384`, and `128/512`.
+
+Assessment:
+- The corrected nested reduced path now makes fine high-branch c4/c7 grids
+  operational: `96/384` and `128/512` reach sigma `1` quickly after the
+  `72/288` seed.
+- The common sampled strong residual improves substantially at `128/512`
+  (`0.616` versus `0.881` at `72/288`) and is closer to the fine baseline
+  (`0.456`), but the probe field discrepancy remains large. In particular,
+  Omega probe RMS versus the fine baseline is `1.612`, not improved over the
+  `72/288` value `1.273`.
+- Seeded less-diffusive `fv_blended` corrections at `96/384` were also tested
+  (`upwind_blend=0.5`, `0.25`, and `0.10`) and gave worse common residuals
+  (`1.08`, `1.15`, and `1.20`), so simply reducing upwind dissipation is not
+  the next accuracy fix.
+- M3 large-boundary performance has improved, but general large-boundary
+  accuracy is not closed. The next issue is the remaining branch/discretization
+  mismatch versus the baseline, not just the ability to reach fine polar grids.
+
+## 2026-04-29 — M3 c4/c7 branch/discretization diagnostic
+
+Scope stayed in M3; no M4 operator assembly or eigensolver work was started.
+
+Diagnostic added:
+- Added `experiments/run_m3_c4_c7_structure_diagnostics.py` to compare the
+  `{c_4=100,c_7=40}` nextgen profile structure against the fresh
+  `h_min=0.05,h_max=0.08` baseline.
+- The diagnostic checks Fourier boundary conventions, baseline boundary dofs,
+  Poisson-only behavior, nextgen circulation/compatibility, radial field
+  errors, Fourier-mode amplitude plots, and a `128/512` reduced Newton solve
+  seeded directly from the fine baseline field.
+
+Validation:
+- `python -m py_compile experiments/run_m3_c4_c7_structure_diagnostics.py`
+  passed.
+- `python -m pytest tests/test_nextgen_profile.py -q` passed: `13` tests.
+- `conda run --no-capture-output -n femx_spc python experiments/run_m3_c4_c7_structure_diagnostics.py`
+  completed the nested nextgen `72/288 -> 96/384 -> 128/512` path, a fresh
+  fine baseline, and the baseline-seeded `128/512` nextgen correction. The
+  usual non-fatal OpenMPI TCP bind warning appeared during the serial baseline
+  run, but meshing, continuation, sampling, plotting, JSON, and registry
+  logging completed.
+
+Results:
+
+| run | status | runtime | common sampled strong residual | Omega RMS vs baseline | psi RMS vs baseline |
+| --- | --- | ---: | ---: | ---: | ---: |
+| nested nextgen `72/288` | completed | `286.919 s` | `0.881` | `1.169` | `0.141` |
+| nested reduced nextgen `96/384` | completed | `32.125 s` | `0.935` | `1.454` | `0.279` |
+| nested reduced nextgen `128/512` | completed | `92.461 s` | `0.616` | `1.476` | `0.289` |
+| baseline-seeded reduced nextgen `128/512` | completed | `56.291 s` | `0.433` | `0.651` | `0.022` |
+| baseline `h_min=0.05,h_max=0.08` | completed | `505.265 s` | `0.456` | reference | reference |
+
+Convention checks:
+- Analytic nextgen and baseline Fourier boundary conventions match to
+  roundoff: Omega Dirichlet max error `2.22e-16`, psi Neumann max error
+  `5.55e-17`, and trapezoidal Neumann flux `4.36e-16`.
+- The baseline applied Omega boundary dofs match the Fourier data to
+  roundoff: max error `5.55e-16` across `786` boundary dofs.
+- Solving nextgen Poisson on the `128/512` grid using the fine-baseline Omega
+  gives offset-removed psi RMS `2.21e-03` and Linf `1.67e-02` against the
+  baseline psi. The Poisson convention is therefore not the dominant source of
+  the field mismatch.
+
+Structure assessment:
+- The nested high-branch `128/512` solution has an Omega integral defect
+  `2.477` and Poisson multiplier `387.6`; the baseline-seeded nextgen branch
+  reduces these to `-0.154` and `-24.0`.
+- The discrepancy is concentrated in the inner core. For nested `128/512`,
+  Omega radial RMS peaks at `r=0.5` with `3.84`, while it is only `0.00198` at
+  `r=8` and `0.00146` at `r=9.5`.
+- The baseline-seeded `128/512` correction stays near the baseline rather than
+  returning to the nested high branch: its common residual is `0.433` versus
+  the baseline `0.456`, and its offset-removed psi RMS is `0.022`. This is
+  direct evidence that the remaining issue is branch selection/continuation,
+  not a Fourier boundary scaling error or a Poisson sign/gauge convention.
+
+Artifacts:
+- Summary:
+  `experiments/summaries/m3_c4_c7_structure_diagnostics_2026-04-29.json`.
+- Plots:
+  `experiments/raw/nextgen/m3_c4_c7_structure_diagnostics/c4_100_c7_40/`.
+- Registry row appended:
+  `m3-c4-c7-structure-diagnostics`.
+
+Assessment:
+- M3 can now solve the large c4/c7 profile on `128/512` in more than one
+  branch. The branch reached by zero-amplitude continuation and nested
+  refinement is not the fine-baseline branch, even though it has a small native
+  residual.
+- The next M3 work should implement a baseline-free branch-selection strategy:
+  for example an anchored/arclength continuation path, a circulation/Poisson
+  compatibility constraint, or a coarse Galerkin/less-dissipative predictor
+  that lands on the baseline-close branch before the reduced FV correction.

@@ -56,7 +56,7 @@ Deliverables:
 - tests for Neumann conventions / manufactured checks / gauge handling
 
 ### M3. Profile solver
-Status: implemented / moderate fine-grid acceptance passed / high-amplitude mixed robustness open
+Status: open for general large-boundary data / accepted envelope still documented
 
 Objectives:
 - implement the nonlinear self-similar profile solve on top of nextgen foundations,
@@ -170,6 +170,54 @@ Validation note:
   `0.651`, but refinement `36/108` still stalled at sigma `0.933203125` after
   `354.832 s`; therefore the requested `72/216` fine-grid run remains
   operationally blocked and M3 is still open for high-amplitude production.
+- The `fv_upwind` omega-psi Jacobian block has now been corrected to
+  differentiate the conservative active-upwind face fluxes instead of reusing
+  the centered/blended strong-form psi derivative. The full high-amplitude
+  stress suite now completes against a live fine baseline for
+  `{c_2=60,c_5=-5+i,c_8=2-1.5i}`: nextgen `30/90`, `36/108`, and `72/216`
+  all reach sigma `1`, with common sampled strong residuals `0.738`, `0.679`,
+  and `0.482`. The live fine baseline `h_min=0.08,h_max=0.12` reaches common
+  sampled strong residual `0.651`. The `72/216` nextgen run has Omega probe RMS
+  `0.559` and offset-removed psi probe RMS `0.0202` versus that fine baseline.
+  This closes the high-amplitude M3 blocker for the documented profile envelope.
+- An additional c4/c7 spot check with `{c_4=100,c_7=40}` converges to sigma
+  `1` on nextgen `64/256` and `72/288`, and the refined baseline
+  `h_min=0.05,h_max=0.08` also completes. It should not expand the M3
+  acceptance envelope: nextgen `72/288` has common sampled strong residual
+  `0.881` versus refined baseline `0.456`, with Omega probe RMS `1.273`
+  against the fine baseline. Larger nextgen probes `80/320` and `96/384` were
+  stopped after extended runtime without completion output, so this arbitrary
+  `100`-scale boundary remains a stress/runtime caveat rather than an M3
+  production claim.
+- A reduced Poisson Newton path now eliminates the linear Poisson constraint
+  and solves the Omega Schur complement by preconditioned GMRES. On the
+  corrected high-amplitude c4/c7 branch, it reduces `72/288` runtime from
+  `395.715 s` for the monolithic check to `201.333 s`, while matching the same
+  native residual and common sampled residual. This improves M3 performance,
+  but does not yet reduce the field discrepancy versus the fine baseline.
+  Corrected reduced `96/384` high-branch probes did not complete with the
+  current Omega-block preconditioner, so general efficient large-boundary
+  profile generation remains open.
+- Nested high-branch refinement now makes finer c4/c7 grids operational:
+  continue `72/288` monolithically to sigma `1`, prolong to `96/384` and
+  `128/512`, then use reduced Poisson Newton at sigma `1`. In the final
+  validation, `96/384` completed in `32.771 s` and `128/512` in `92.078 s`
+  after the `72/288` seed. The `128/512` common sampled strong residual
+  improved to `0.616` versus the fine baseline `0.456`, but Omega probe RMS
+  remained large at `1.612`, so c4/c7 is still not an accepted general
+  large-boundary accuracy case.
+- A structure diagnostic isolates the remaining c4/c7 mismatch as branch
+  selection, not Fourier/Poisson convention. Analytic nextgen and baseline
+  boundary data agree to roundoff, the baseline boundary dofs match the same
+  Fourier data, and solving nextgen Poisson with the fine-baseline Omega gives
+  offset-removed psi RMS `2.21e-03`. However, a `128/512` reduced FV solve
+  seeded from the fine baseline converges in `56.291 s` to a baseline-close
+  branch with common sampled strong residual `0.433`, Omega RMS `0.651`, and
+  offset-removed psi RMS `0.022`. The nested zero-continuation branch remains
+  at common residual `0.616`, Omega RMS `1.476` on the same diagnostic probe,
+  and has a larger Poisson compatibility defect. The discrepancy is localized
+  mainly to the inner core (`r < 3`), while the outer boundary layer is already
+  close.
 
 ### M4. Linearized operator assembly
 Status: pending
@@ -219,6 +267,11 @@ Required validation:
 
 ## Current recommended next milestone
 
-Continue M3 validation/fix work: fix robust nonlinear continuation for
-moderate-amplitude mixed Fourier boundary data before M4.
-Do not implement the linearized operator or eigensolver yet.
+Continue M3 for general large-boundary profile generation. The nested reduced
+path reaches `128/512` for `{c_4=100,c_7=40}`, and a baseline-seeded
+`128/512` reduced FV correction proves that a baseline-close nextgen branch
+exists. The remaining blocker is a baseline-free branch-selection continuation
+strategy, not the Fourier boundary convention or the Poisson sign/gauge. Do
+not start M4 or the eigensolver until arbitrary large-boundary profiles either
+use that branch-selection path or are explicitly excluded from the M3
+acceptance envelope.

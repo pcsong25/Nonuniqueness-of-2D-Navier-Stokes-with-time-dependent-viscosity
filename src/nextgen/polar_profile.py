@@ -104,6 +104,10 @@ class PolarProfileParams:
     least_squares_maxiter: int = 300
     pseudo_transient_fallback: bool = True
     pseudo_transient_shifts: tuple[float, ...] = (1e-2, 1e-1, 1.0, 10.0, 100.0)
+    reduced_poisson_newton: bool = False
+    reduced_gmres_rtol: float = 1e-8
+    reduced_gmres_maxiter: int = 200
+    reduced_gmres_restart: int = 80
     anchored_continuation: bool = False
     anchor_betas: tuple[float, ...] = (10.0, 3.0, 1.0, 0.3, 0.1, 0.03, 0.01, 0.0)
     diffusion_continuation: bool = False
@@ -172,9 +176,18 @@ class PolarProfileProblem:
             raise ValueError("PolarGrid.radius must match PhysicalParams.Rdom for the M3 disk solve.")
         if poisson_gauge not in {"mean", "pin"}:
             raise ValueError("poisson_gauge must be 'mean' or 'pin'.")
-        if advection_scheme not in {"upwind", "smooth_upwind", "centered", "blended", "fv_upwind"}:
+        if advection_scheme not in {
+            "upwind",
+            "smooth_upwind",
+            "centered",
+            "blended",
+            "fv_upwind",
+            "fv_centered",
+            "fv_blended",
+        }:
             raise ValueError(
-                "advection_scheme must be 'upwind', 'smooth_upwind', 'centered', 'blended', or 'fv_upwind'."
+                "advection_scheme must be 'upwind', 'smooth_upwind', 'centered', 'blended', "
+                "'fv_upwind', 'fv_centered', or 'fv_blended'."
             )
         if not 0.0 <= float(upwind_blend) <= 1.0:
             raise ValueError("upwind_blend must be between 0 and 1.")
@@ -404,6 +417,9 @@ class PolarProfileProblem:
         diagnostics["grid_dr"] = self.grid.dr
         diagnostics["grid_dtheta"] = self.grid.dtheta
         diagnostics["poisson_lambda"] = poisson_lambda
+        diagnostics["reduced_poisson_newton"] = controls.reduced_poisson_newton
+        diagnostics["reduced_gmres_rtol"] = controls.reduced_gmres_rtol
+        diagnostics["reduced_gmres_maxiter"] = controls.reduced_gmres_maxiter
         return PolarProfileResult(
             omega=omega.reshape(self.grid.shape),
             psi=psi.reshape(self.grid.shape),
@@ -474,6 +490,18 @@ class PolarProfileProblem:
         anchor_beta: float = 0.0,
         diffusion_scale: float = 1.0,
     ) -> tuple[bool, np.ndarray, np.ndarray, float, float, str]:
+        if controls.reduced_poisson_newton:
+            return self._reduced_newton_solve_sigma(
+                omega,
+                psi,
+                sigma,
+                poisson_lambda,
+                controls,
+                iterations,
+                anchor_omega=anchor_omega,
+                anchor_beta=anchor_beta,
+                diffusion_scale=diffusion_scale,
+            )
         linear_solve_time = 0.0
         last_relative_step = 0.0
         omega_current = np.asarray(omega, dtype=float).reshape(-1).copy()
@@ -719,6 +747,272 @@ class PolarProfileProblem:
             f"polar Newton solve did not converge at sigma={sigma:.6g}",
         )
 
+    def _poisson_delta_from_omega(self, delta_omega: np.ndarray) -> tuple[np.ndarray, float]:
+        rhs = np.concatenate((np.asarray(delta_omega, dtype=float).reshape(-1), [0.0]))
+        solution = np.asarray(self.poisson_lu.solve(rhs), dtype=float)
+        return solution[: self.grid.size], float(solution[-1])
+
+    def _reduced_newton_solve_sigma(
+        self,
+        omega: np.ndarray,
+        psi: np.ndarray,
+        sigma: float,
+        poisson_lambda: float,
+        controls: PolarProfileParams,
+        iterations: list[ProfileIteration],
+        *,
+        anchor_omega: np.ndarray | None = None,
+        anchor_beta: float = 0.0,
+        diffusion_scale: float = 1.0,
+    ) -> tuple[bool, np.ndarray, np.ndarray, float, float, str]:
+        del psi, poisson_lambda
+        linear_solve_time = 0.0
+        last_relative_step = 0.0
+        omega_current = np.asarray(omega, dtype=float).reshape(-1).copy()
+        psi_current, lambda_current = self.solve_poisson(omega_current, sigma)
+        anchor_vec = None if anchor_omega is None else np.asarray(anchor_omega, dtype=float).reshape(-1)
+        beta = float(anchor_beta)
+        eps_scale = float(diffusion_scale)
+
+        for iteration in range(controls.max_iter + 1):
+            psi_current, lambda_current = self.solve_poisson(omega_current, sigma)
+            summary = self._residual_summary_with_anchor(
+                omega_current,
+                psi_current,
+                sigma,
+                lambda_current,
+                anchor_vec,
+                beta,
+                eps_scale,
+            )
+            if iteration == 0:
+                iterations.append(
+                    ProfileIteration(
+                        sigma=sigma,
+                        iteration=iteration,
+                        residual_norm=summary["residual_norm"],
+                        relative_residual=summary["relative_residual"],
+                        omega_residual_norm=summary["omega_residual_norm"],
+                        poisson_residual_norm=summary["poisson_residual_norm"],
+                        relative_omega_step=0.0,
+                        alpha=0.0,
+                        linear_residual_norm=0.0,
+                        accepted=True,
+                    )
+                )
+            if (
+                summary["relative_residual"] <= controls.tol_residual
+                and last_relative_step <= controls.tol_step
+            ):
+                return True, omega_current, psi_current, lambda_current, linear_solve_time, "converged"
+            if (
+                controls.tol_residual_only is not None
+                and summary["relative_residual"] <= controls.tol_residual_only
+            ):
+                return True, omega_current, psi_current, lambda_current, linear_solve_time, "converged_residual_only"
+            if iteration == controls.max_iter:
+                break
+
+            residual = self._residual_vector_with_anchor(
+                omega_current,
+                psi_current,
+                sigma,
+                lambda_current,
+                anchor_vec,
+                beta,
+                eps_scale,
+            )[: self.grid.size]
+            j_oo, j_op = self._omega_jacobian_blocks(
+                omega_current,
+                psi_current,
+                sigma,
+                diffusion_scale=eps_scale,
+            )
+            if anchor_vec is not None and beta != 0.0:
+                j_oo = j_oo + beta * sp.eye(self.grid.size, format="csr")
+
+            delta_omega, linear_residual, solve_elapsed = self._solve_reduced_delta(
+                j_oo,
+                j_op,
+                residual,
+                controls,
+                shift=0.0,
+            )
+            linear_solve_time += solve_elapsed
+
+            accepted = False
+            best: tuple[float, np.ndarray, np.ndarray, float, dict[str, float]] | None = None
+            alpha = float(controls.initial_damping)
+            for _ in range(controls.max_backtracks + 1):
+                trial_omega = omega_current + alpha * delta_omega
+                trial_psi, trial_lambda = self.solve_poisson(trial_omega, sigma)
+                trial_summary = self._residual_summary_with_anchor(
+                    trial_omega,
+                    trial_psi,
+                    sigma,
+                    trial_lambda,
+                    anchor_vec,
+                    beta,
+                    eps_scale,
+                )
+                if best is None or trial_summary["residual_norm"] < best[4]["residual_norm"]:
+                    best = (alpha, trial_omega, trial_psi, trial_lambda, trial_summary)
+                if (
+                    trial_summary["relative_residual"] <= controls.tol_residual
+                    or trial_summary["residual_norm"] < summary["residual_norm"]
+                ):
+                    accepted = True
+                    best = (alpha, trial_omega, trial_psi, trial_lambda, trial_summary)
+                    break
+                alpha *= controls.line_search_shrink
+
+            assert best is not None
+            alpha_used, trial_omega, trial_psi, trial_lambda, new_summary = best
+            step_delta_omega = delta_omega
+            if not accepted and controls.pseudo_transient_fallback:
+                for shift in controls.pseudo_transient_shifts:
+                    shift_value = float(shift)
+                    if shift_value <= 0.0:
+                        continue
+                    try:
+                        shifted_delta, shifted_linear_residual, solve_elapsed = self._solve_reduced_delta(
+                            j_oo,
+                            j_op,
+                            residual,
+                            controls,
+                            shift=shift_value,
+                        )
+                        linear_solve_time += solve_elapsed
+                    except RuntimeError:
+                        continue
+                    shifted_alpha = float(controls.initial_damping)
+                    for _ in range(controls.max_backtracks + 1):
+                        shifted_omega = omega_current + shifted_alpha * shifted_delta
+                        shifted_psi, shifted_lambda = self.solve_poisson(shifted_omega, sigma)
+                        shifted_summary = self._residual_summary_with_anchor(
+                            shifted_omega,
+                            shifted_psi,
+                            sigma,
+                            shifted_lambda,
+                            anchor_vec,
+                            beta,
+                            eps_scale,
+                        )
+                        if (
+                            shifted_summary["relative_residual"] <= controls.tol_residual
+                            or shifted_summary["residual_norm"] < summary["residual_norm"]
+                        ):
+                            accepted = True
+                            alpha_used = shifted_alpha
+                            trial_omega = shifted_omega
+                            trial_psi = shifted_psi
+                            trial_lambda = shifted_lambda
+                            new_summary = shifted_summary
+                            step_delta_omega = shifted_delta
+                            linear_residual = shifted_linear_residual
+                            break
+                        shifted_alpha *= controls.line_search_shrink
+                    if accepted:
+                        break
+            step = float(
+                np.linalg.norm(alpha_used * step_delta_omega)
+                / max(np.linalg.norm(omega_current), 1.0)
+            )
+            iterations.append(
+                ProfileIteration(
+                    sigma=sigma,
+                    iteration=iteration + 1,
+                    residual_norm=new_summary["residual_norm"],
+                    relative_residual=new_summary["relative_residual"],
+                    omega_residual_norm=new_summary["omega_residual_norm"],
+                    poisson_residual_norm=new_summary["poisson_residual_norm"],
+                    relative_omega_step=step,
+                    alpha=alpha_used,
+                    linear_residual_norm=linear_residual,
+                    accepted=accepted,
+                )
+            )
+            if not accepted:
+                return (
+                    False,
+                    omega_current,
+                    psi_current,
+                    lambda_current,
+                    linear_solve_time,
+                    f"reduced polar Newton line search failed at sigma={sigma:.6g}, iteration={iteration}",
+                )
+            omega_current = trial_omega
+            psi_current = trial_psi
+            lambda_current = trial_lambda
+            last_relative_step = step
+            if step <= controls.tol_step and new_summary["relative_residual"] <= controls.tol_residual:
+                return True, omega_current, psi_current, lambda_current, linear_solve_time, "converged"
+            if (
+                controls.tol_residual_only is not None
+                and new_summary["relative_residual"] <= controls.tol_residual_only
+            ):
+                return True, omega_current, psi_current, lambda_current, linear_solve_time, "converged_residual_only"
+
+        return (
+            False,
+            omega_current,
+            psi_current,
+            lambda_current,
+            linear_solve_time,
+            f"reduced polar Newton solve did not converge at sigma={sigma:.6g}",
+        )
+
+    def _solve_reduced_delta(
+        self,
+        j_oo: sp.csr_matrix,
+        j_op: sp.csr_matrix,
+        residual: np.ndarray,
+        controls: PolarProfileParams,
+        *,
+        shift: float,
+    ) -> tuple[np.ndarray, float, float]:
+        n = self.grid.size
+        shift_value = float(shift)
+
+        def matvec(vec: np.ndarray) -> np.ndarray:
+            delta_psi, _ = self._poisson_delta_from_omega(vec)
+            out = j_oo @ vec + j_op @ delta_psi
+            if shift_value != 0.0:
+                out = out + shift_value * vec
+            return np.asarray(out, dtype=float)
+
+        operator = spla.LinearOperator((n, n), matvec=matvec, dtype=float)
+        preconditioner_matrix = j_oo
+        if shift_value != 0.0:
+            preconditioner_matrix = preconditioner_matrix + shift_value * sp.eye(n, format="csr")
+        t_linear = time.perf_counter()
+        preconditioner_lu = spla.splu(preconditioner_matrix.tocsc())
+        preconditioner = spla.LinearOperator(
+            (n, n),
+            matvec=lambda vec: np.asarray(preconditioner_lu.solve(vec), dtype=float),
+            dtype=float,
+        )
+        delta, info = spla.gmres(
+            operator,
+            -np.asarray(residual, dtype=float).reshape(-1),
+            M=preconditioner,
+            rtol=float(controls.reduced_gmres_rtol),
+            atol=0.0,
+            restart=max(int(controls.reduced_gmres_restart), 1),
+            maxiter=max(int(controls.reduced_gmres_maxiter), 1),
+        )
+        elapsed = time.perf_counter() - t_linear
+        delta = np.asarray(delta, dtype=float)
+        linear_residual = float(
+            np.linalg.norm(matvec(delta) + residual)
+            / max(np.linalg.norm(residual), 1e-30)
+        )
+        if info != 0 and linear_residual > 10.0 * float(controls.reduced_gmres_rtol):
+            raise RuntimeError(
+                f"reduced GMRES failed with info={info}, relative residual={linear_residual:.3e}"
+            )
+        return delta, linear_residual, elapsed
+
     def _anchored_solve_sigma(
         self,
         omega: np.ndarray,
@@ -896,7 +1190,7 @@ class PolarProfileProblem:
         psi_vec = np.asarray(psi, dtype=float).reshape(-1)
         omega_boundary = self.omega_boundary(sigma)
         neumann = self.psi_neumann_boundary(sigma)
-        if self.advection_scheme == "fv_upwind":
+        if self.advection_scheme in {"fv_upwind", "fv_centered", "fv_blended"}:
             transport, transport_bc, div_v = self._fv_transport_matrix_bc_divergence(
                 psi_vec,
                 neumann,
@@ -955,7 +1249,7 @@ class PolarProfileProblem:
         vr = -psi_theta * inv_r - self.physical.mu * r
         vtheta_over_r = psi_r * inv_r
         eps = self.physical.eps * float(diffusion_scale)
-        if self.advection_scheme == "fv_upwind":
+        if self.advection_scheme in {"fv_upwind", "fv_centered", "fv_blended"}:
             transport, transport_bc, div_v = self._fv_transport_matrix_bc_divergence(
                 psi_vec,
                 neumann,
@@ -1008,48 +1302,11 @@ class PolarProfileProblem:
         *,
         diffusion_scale: float = 1.0,
     ) -> sp.csr_matrix:
-        omega_vec = np.asarray(omega, dtype=float).reshape(-1)
-        psi_vec = np.asarray(psi, dtype=float).reshape(-1)
-        omega_boundary = self.omega_boundary(sigma)
-        neumann = self.psi_neumann_boundary(sigma)
-        inv_r = np.repeat(1.0 / self.grid.r, self.grid.ntheta)
-        r = np.repeat(self.grid.r, self.grid.ntheta)
-
-        psi_theta = self.dtheta_full @ psi_vec
-        psi_r = self._psi_radial_derivative(psi_vec, neumann)
-        vr = -psi_theta * inv_r - self.physical.mu * r
-        vtheta_over_r = psi_r * inv_r
-        omega_dr, omega_dr_bc, omega_dtheta = self._omega_advection_operators(
-            vr,
-            vtheta_over_r,
-            omega_boundary,
-        )
-        omega_r = omega_dr @ omega_vec + omega_dr_bc
-        omega_theta = omega_dtheta @ omega_vec
-
-        identity = sp.eye(self.grid.size, format="csr")
-        if self.advection_scheme == "fv_upwind":
-            transport, _, div_v = self._fv_transport_matrix_bc_divergence(
-                psi_vec,
-                neumann,
-                omega_boundary,
-            )
-            j_oo = (
-                transport
-                - sp.diags(div_v, format="csr")
-                - identity
-                - (self.physical.eps * float(diffusion_scale)) * self.laplacian_dirichlet
-            )
-        else:
-            j_oo = (
-                sp.diags(vr, format="csr") @ omega_dr
-                + sp.diags(vtheta_over_r, format="csr") @ omega_dtheta
-                - identity
-                - (self.physical.eps * float(diffusion_scale)) * self.laplacian_dirichlet
-            )
-        j_op = (
-            -sp.diags(omega_r * inv_r, format="csr") @ self.dtheta_full
-            + sp.diags(omega_theta * inv_r, format="csr") @ self.psi_radial_derivative_matrix
+        j_oo, j_op = self._omega_jacobian_blocks(
+            omega,
+            psi,
+            sigma,
+            diffusion_scale=diffusion_scale,
         )
         j_op_augmented = sp.hstack(
             (j_op, sp.csr_matrix((self.grid.size, 1), dtype=float)),
@@ -1062,6 +1319,64 @@ class PolarProfileProblem:
             ],
             format="csr",
         )
+
+    def _omega_jacobian_blocks(
+        self,
+        omega: np.ndarray,
+        psi: np.ndarray,
+        sigma: float,
+        *,
+        diffusion_scale: float = 1.0,
+    ) -> tuple[sp.csr_matrix, sp.csr_matrix]:
+        omega_vec = np.asarray(omega, dtype=float).reshape(-1)
+        psi_vec = np.asarray(psi, dtype=float).reshape(-1)
+        omega_boundary = self.omega_boundary(sigma)
+        neumann = self.psi_neumann_boundary(sigma)
+
+        identity = sp.eye(self.grid.size, format="csr")
+        if self.advection_scheme in {"fv_upwind", "fv_centered", "fv_blended"}:
+            transport, _, div_v = self._fv_transport_matrix_bc_divergence(
+                psi_vec,
+                neumann,
+                omega_boundary,
+            )
+            j_oo = (
+                transport
+                - sp.diags(div_v, format="csr")
+                - identity
+                - (self.physical.eps * float(diffusion_scale)) * self.laplacian_dirichlet
+            )
+            j_op = self._fv_transport_psi_jacobian(
+                omega_vec,
+                psi_vec,
+                neumann,
+                omega_boundary,
+            )
+        else:
+            inv_r = np.repeat(1.0 / self.grid.r, self.grid.ntheta)
+            r = np.repeat(self.grid.r, self.grid.ntheta)
+            psi_theta = self.dtheta_full @ psi_vec
+            psi_r = self._psi_radial_derivative(psi_vec, neumann)
+            vr = -psi_theta * inv_r - self.physical.mu * r
+            vtheta_over_r = psi_r * inv_r
+            omega_dr, omega_dr_bc, omega_dtheta = self._omega_advection_operators(
+                vr,
+                vtheta_over_r,
+                omega_boundary,
+            )
+            omega_r = omega_dr @ omega_vec + omega_dr_bc
+            omega_theta = omega_dtheta @ omega_vec
+            j_oo = (
+                sp.diags(vr, format="csr") @ omega_dr
+                + sp.diags(vtheta_over_r, format="csr") @ omega_dtheta
+                - identity
+                - (self.physical.eps * float(diffusion_scale)) * self.laplacian_dirichlet
+            )
+            j_op = (
+                -sp.diags(omega_r * inv_r, format="csr") @ self.dtheta_full
+                + sp.diags(omega_theta * inv_r, format="csr") @ self.psi_radial_derivative_matrix
+            )
+        return j_oo.tocsr(), j_op.tocsr()
 
     def residual_summary(
         self,
@@ -1256,12 +1571,48 @@ class PolarProfileProblem:
         data: list[float] = []
         bc = np.zeros(self.grid.size, dtype=float)
         div_v = np.zeros(self.grid.size, dtype=float)
+        upwind_blend = self._fv_upwind_blend()
 
         def add(row: int, col: int, value: float) -> None:
             if value != 0.0:
                 rows.append(row)
                 cols.append(col)
                 data.append(value)
+
+        def add_face_value(
+            row: int,
+            coeff: float,
+            velocity: float,
+            center_col: int,
+            other_col: int | None,
+            boundary_value: float | None,
+            *,
+            positive_uses_center: bool,
+        ) -> None:
+            if coeff == 0.0:
+                return
+            central_center = 0.5
+            central_other = 0.5
+            if velocity >= 0.0 and positive_uses_center:
+                upwind_center = 1.0
+                upwind_other = 0.0
+            elif velocity >= 0.0:
+                upwind_center = 0.0
+                upwind_other = 1.0
+            elif positive_uses_center:
+                upwind_center = 0.0
+                upwind_other = 1.0
+            else:
+                upwind_center = 1.0
+                upwind_other = 0.0
+            center_weight = (1.0 - upwind_blend) * central_center + upwind_blend * upwind_center
+            other_weight = (1.0 - upwind_blend) * central_other + upwind_blend * upwind_other
+            add(row, center_col, coeff * center_weight)
+            if other_col is None:
+                if boundary_value is not None:
+                    bc[row] += coeff * other_weight * float(boundary_value)
+            else:
+                add(row, other_col, coeff * other_weight)
 
         for j, rj in enumerate(r_cells):
             radial_scale = 1.0 / (rj * dr)
@@ -1273,35 +1624,53 @@ class PolarProfileProblem:
 
                 vr_out = vr_faces[j + 1, k]
                 coeff_out = rout * vr_out * radial_scale
-                if vr_out >= 0.0:
-                    add(row, row, coeff_out)
-                elif j < nr - 1:
-                    add(row, self.grid.index(j + 1, k), coeff_out)
-                else:
-                    bc[row] += coeff_out * boundary[k]
+                add_face_value(
+                    row,
+                    coeff_out,
+                    vr_out,
+                    row,
+                    self.grid.index(j + 1, k) if j < nr - 1 else None,
+                    boundary[k] if j == nr - 1 else None,
+                    positive_uses_center=True,
+                )
 
                 vr_in = vr_faces[j, k]
                 coeff_in = rin * vr_in * radial_scale
-                if vr_in >= 0.0:
-                    if j > 0:
-                        add(row, self.grid.index(j - 1, k), -coeff_in)
-                else:
-                    add(row, row, -coeff_in)
+                if j > 0:
+                    add_face_value(
+                        row,
+                        -coeff_in,
+                        vr_in,
+                        row,
+                        self.grid.index(j - 1, k),
+                        None,
+                        positive_uses_center=False,
+                    )
 
                 vtheta_right = vtheta_faces[j, k]
                 coeff_right = vtheta_right * angular_scale
-                if vtheta_right >= 0.0:
-                    add(row, row, coeff_right)
-                else:
-                    add(row, self.grid.index(j, k + 1), coeff_right)
+                add_face_value(
+                    row,
+                    coeff_right,
+                    vtheta_right,
+                    row,
+                    self.grid.index(j, k + 1),
+                    None,
+                    positive_uses_center=True,
+                )
 
                 left_index = (k - 1) % ntheta
                 vtheta_left = vtheta_faces[j, left_index]
                 coeff_left = vtheta_left * angular_scale
-                if vtheta_left >= 0.0:
-                    add(row, self.grid.index(j, k - 1), -coeff_left)
-                else:
-                    add(row, row, -coeff_left)
+                add_face_value(
+                    row,
+                    -coeff_left,
+                    vtheta_left,
+                    row,
+                    self.grid.index(j, k - 1),
+                    None,
+                    positive_uses_center=False,
+                )
 
                 div_v[row] = (
                     (rout * vr_out - rin * vr_in) * radial_scale
@@ -1310,6 +1679,180 @@ class PolarProfileProblem:
 
         mat = sp.csr_matrix((data, (rows, cols)), shape=(self.grid.size, self.grid.size))
         return mat, bc, div_v
+
+    def _fv_upwind_blend(self) -> float:
+        if self.advection_scheme == "fv_centered":
+            return 0.0
+        if self.advection_scheme == "fv_blended":
+            return self.upwind_blend
+        return 1.0
+
+    def _fv_transport_psi_jacobian(
+        self,
+        omega: np.ndarray,
+        psi: np.ndarray,
+        neumann: np.ndarray,
+        boundary_values: np.ndarray,
+    ) -> sp.csr_matrix:
+        """Frozen-upwind derivative of the conservative FV transport with respect to psi."""
+
+        del neumann
+        omega_cells = np.asarray(omega, dtype=float).reshape(self.grid.shape)
+        psi_vec = np.asarray(psi, dtype=float).reshape(-1)
+        boundary = np.asarray(boundary_values, dtype=float).reshape(self.grid.ntheta)
+
+        nr = self.grid.nr
+        ntheta = self.grid.ntheta
+        dr = self.grid.dr
+        dtheta = self.grid.dtheta
+        r_cells = self.grid.r
+        r_faces = np.arange(nr + 1, dtype=float) * dr
+
+        psi_theta_cells = (self.dtheta_full @ psi_vec).reshape(self.grid.shape)
+        psi_r_cells = (self.psi_radial_derivative_matrix @ psi_vec).reshape(self.grid.shape)
+
+        psi_theta_faces = np.zeros((nr + 1, ntheta), dtype=float)
+        psi_theta_faces[1:nr, :] = 0.5 * (psi_theta_cells[:-1, :] + psi_theta_cells[1:, :])
+        psi_theta_faces[nr, :] = psi_theta_cells[-1, :]
+
+        vr_faces = np.zeros((nr + 1, ntheta), dtype=float)
+        nonzero_faces = r_faces > 0.0
+        vr_faces[nonzero_faces, :] = (
+            -psi_theta_faces[nonzero_faces, :] / r_faces[nonzero_faces, None]
+            - self.physical.mu * r_faces[nonzero_faces, None]
+        )
+        vtheta_faces = 0.5 * (psi_r_cells + np.roll(psi_r_cells, -1, axis=1))
+
+        rows: list[int] = []
+        cols: list[int] = []
+        data: list[float] = []
+        theta_scale = 1.0 / (2.0 * dtheta)
+        upwind_blend = self._fv_upwind_blend()
+
+        def add(row: int, col: int, value: float) -> None:
+            if value != 0.0:
+                rows.append(row)
+                cols.append(col)
+                data.append(value)
+
+        def add_theta_cell(row: int, coeff: float, j: int, k: int) -> None:
+            add(row, self.grid.index(j, k - 1), -coeff * theta_scale)
+            add(row, self.grid.index(j, k + 1), coeff * theta_scale)
+
+        def add_radial_face(row: int, coeff: float, face: int, k: int) -> None:
+            if coeff == 0.0 or face <= 0:
+                return
+            r_face = r_faces[face]
+            if face < nr:
+                face_coeff = -0.5 * coeff / r_face
+                add_theta_cell(row, face_coeff, face - 1, k)
+                add_theta_cell(row, face_coeff, face, k)
+            else:
+                add_theta_cell(row, -coeff / r_face, nr - 1, k)
+
+        def add_psi_r_cell(row: int, coeff: float, j: int, k: int) -> None:
+            if coeff == 0.0 or j == 0:
+                return
+            if j == nr - 1:
+                add(row, self.grid.index(j, k), coeff / dr)
+                add(row, self.grid.index(j - 1, k), -coeff / dr)
+                return
+            add(row, self.grid.index(j - 1, k), -coeff / (2.0 * dr))
+            add(row, self.grid.index(j + 1, k), coeff / (2.0 * dr))
+
+        def add_angular_face(row: int, coeff: float, j: int, k: int) -> None:
+            if coeff == 0.0:
+                return
+            face_coeff = 0.5 * coeff
+            add_psi_r_cell(row, face_coeff, j, k)
+            add_psi_r_cell(row, face_coeff, j, k + 1)
+
+        def face_value_minus_center(
+            velocity: float,
+            center_value: float,
+            other_value: float,
+            *,
+            positive_uses_center: bool,
+        ) -> float:
+            central = 0.5 * (center_value + other_value)
+            if velocity >= 0.0:
+                upwind = center_value if positive_uses_center else other_value
+            else:
+                upwind = other_value if positive_uses_center else center_value
+            face_value = (1.0 - upwind_blend) * central + upwind_blend * upwind
+            return float(face_value - center_value)
+
+        for j, rj in enumerate(r_cells):
+            radial_scale = 1.0 / (rj * dr)
+            angular_scale = 1.0 / (rj * dtheta)
+            rin = r_faces[j]
+            rout = r_faces[j + 1]
+            for k in range(ntheta):
+                row = self.grid.index(j, k)
+                omega_center = omega_cells[j, k]
+
+                vr_out = vr_faces[j + 1, k]
+                omega_out = omega_cells[j + 1, k] if j < nr - 1 else boundary[k]
+                add_radial_face(
+                    row,
+                    rout
+                    * radial_scale
+                    * face_value_minus_center(
+                        vr_out,
+                        omega_center,
+                        omega_out,
+                        positive_uses_center=True,
+                    ),
+                    j + 1,
+                    k,
+                )
+
+                vr_in = vr_faces[j, k]
+                if j > 0:
+                    add_radial_face(
+                        row,
+                        -rin
+                        * radial_scale
+                        * face_value_minus_center(
+                            vr_in,
+                            omega_center,
+                            omega_cells[j - 1, k],
+                            positive_uses_center=False,
+                        ),
+                        j,
+                        k,
+                    )
+
+                vtheta_right = vtheta_faces[j, k]
+                add_angular_face(
+                    row,
+                    angular_scale
+                    * face_value_minus_center(
+                        vtheta_right,
+                        omega_center,
+                        omega_cells[j, (k + 1) % ntheta],
+                        positive_uses_center=True,
+                    ),
+                    j,
+                    k,
+                )
+
+                left_index = (k - 1) % ntheta
+                vtheta_left = vtheta_faces[j, left_index]
+                add_angular_face(
+                    row,
+                    -angular_scale
+                    * face_value_minus_center(
+                        vtheta_left,
+                        omega_center,
+                        omega_cells[j, left_index],
+                        positive_uses_center=False,
+                    ),
+                    j,
+                    left_index,
+                )
+
+        return sp.csr_matrix((data, (rows, cols)), shape=(self.grid.size, self.grid.size))
 
     def _omega_advection_operators(
         self,

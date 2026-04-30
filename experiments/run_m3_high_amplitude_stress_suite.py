@@ -24,7 +24,7 @@ from nextgen.diagnostics import sampled_strong_profile_residual
 from nextgen.polar_profile import PolarGrid, PolarProfileParams, PolarProfileProblem
 
 
-RUN_DATE = "2026-04-28"
+RUN_DATE = "2026-04-29"
 PHYSICAL = PhysicalParams(mu=0.8, R=150.0, Rdom=10.0)
 SIGMA_GRID = tuple(float(s) for s in np.linspace(0.0, 1.0, 21))
 NEXTGEN_GRIDS = ((30, 90), (36, 108), (72, 216))
@@ -318,8 +318,8 @@ def append_registry(summary: dict[str, Any]) -> None:
                         case["description"],
                         "nextgen_polar_full_disk_vs_baseline_disk_Rdom10",
                         f"nextgen_nr{grid['nr']}_ntheta{grid['ntheta']}; baseline_ref={baseline_label}",
-                        f"profile_continuation_{NEXTGEN_ADVECTION_SCHEME}_pseudo_transient",
-                        "high-amplitude M3 conservative-FV stress/refinement suite; no eigensolver",
+                        f"profile_continuation_{NEXTGEN_ADVECTION_SCHEME}_exact_psi_jacobian_pseudo_transient",
+                        "high-amplitude M3 conservative-FV psi-Jacobian stress/refinement suite; no eigensolver",
                         f"nextgen={run.get('runtime_sec'):.3f}; baseline_ref={baseline_runtime}",
                         (
                             f"status={run['status']}; "

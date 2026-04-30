@@ -1,0 +1,338 @@
+{
+  "baseline_mesh_difference": {
+    "omega_probe_linf": 3.7256238790617333,
+    "omega_probe_rms": 0.21845221206207965,
+    "psi_probe_linf_offset_removed": 0.07377593924525216,
+    "psi_probe_mean_offset": -3.793672323302802,
+    "psi_probe_rms_offset_removed": 0.017549514721071264,
+    "valid_probe_count": 32400
+  },
+  "baseline_runs": [
+    {
+      "common_residuals": {
+        "lap_psi_l2": 18.958993171195342,
+        "omega_field_l2": 18.25868129146571,
+        "omega_strong_l2": 12.245662132612468,
+        "poisson_strong_l2": 7.519944969474301,
+        "profile_strong_l2": 14.370310136180805,
+        "profile_strong_relative": 0.7579680000103494,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "label": "h0.08_0.12",
+      "mesh": {
+        "h_max": 0.12,
+        "h_min": 0.08
+      },
+      "mesh_cells": 50674,
+      "mesh_vertices": 25600,
+      "residuals": {
+        "meta": {
+          "R": 150.0,
+          "Rdom": 10.0,
+          "eps": 0.0044444444444444444,
+          "mu": 0.8,
+          "sigma": 1.0
+        },
+        "norms": {
+          "Omega_l2": 0.01816629282893861,
+          "Psi_l2": 0.12141633745896958
+        }
+      },
+      "runtime_sec": 178.6376635627821,
+      "status": "completed"
+    },
+    {
+      "common_residuals": {
+        "lap_psi_l2": 17.875600867612132,
+        "omega_field_l2": 18.36824380515615,
+        "omega_strong_l2": 8.023449828666925,
+        "poisson_strong_l2": 2.4289691114903613,
+        "profile_strong_l2": 8.383056608284928,
+        "profile_strong_relative": 0.45638857460786314,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "label": "h0.05_0.08",
+      "mesh": {
+        "h_max": 0.08,
+        "h_min": 0.05
+      },
+      "mesh_cells": 113874,
+      "mesh_vertices": 57331,
+      "residuals": {
+        "meta": {
+          "R": 150.0,
+          "Rdom": 10.0,
+          "eps": 0.0044444444444444444,
+          "mu": 0.8,
+          "sigma": 1.0
+        },
+        "norms": {
+          "Omega_l2": 0.00021049318073966989,
+          "Psi_l2": 0.0004375836043010433
+        }
+      },
+      "runtime_sec": 503.57899643853307,
+      "status": "completed"
+    }
+  ],
+  "case": {
+    "coeffs": {
+      "4": {
+        "imag": 0.0,
+        "real": 100.0
+      },
+      "7": {
+        "imag": 0.0,
+        "real": 40.0
+      }
+    },
+    "description": "large c4/c7 mixed high-amplitude profile validation",
+    "name": "c4_100_c7_40"
+  },
+  "input": {
+    "aborted_probe_grids": [
+      {
+        "nr": 96,
+        "ntheta": 384,
+        "reason": "stopped after extended runtime without completion output"
+      },
+      {
+        "nr": 80,
+        "ntheta": 320,
+        "reason": "stopped after extended runtime without completion output"
+      }
+    ],
+    "baseline_meshes": [
+      {
+        "h_max": 0.12,
+        "h_min": 0.08
+      },
+      {
+        "h_max": 0.08,
+        "h_min": 0.05
+      }
+    ],
+    "nextgen_grids": [
+      {
+        "nr": 64,
+        "ntheta": 256
+      },
+      {
+        "nr": 72,
+        "ntheta": 288
+      }
+    ],
+    "physical": {
+      "R": 150.0,
+      "Rdom": 10.0,
+      "eps": 0.0044444444444444444,
+      "mu": 0.8
+    },
+    "probe_grid": {
+      "nr": 90,
+      "ntheta": 360,
+      "r_max": 8.0,
+      "r_min": 0.5
+    },
+    "sample_grid": {
+      "n": 193,
+      "x_max": 7.0,
+      "x_min": -7.0
+    },
+    "sigma_grid": [
+      0.0,
+      0.025,
+      0.05,
+      0.07500000000000001,
+      0.1,
+      0.125,
+      0.15000000000000002,
+      0.17500000000000002,
+      0.2,
+      0.225,
+      0.25,
+      0.275,
+      0.30000000000000004,
+      0.325,
+      0.35000000000000003,
+      0.375,
+      0.4,
+      0.42500000000000004,
+      0.45,
+      0.47500000000000003,
+      0.5,
+      0.525,
+      0.55,
+      0.5750000000000001,
+      0.6000000000000001,
+      0.625,
+      0.65,
+      0.675,
+      0.7000000000000001,
+      0.7250000000000001,
+      0.75,
+      0.775,
+      0.8,
+      0.8250000000000001,
+      0.8500000000000001,
+      0.875,
+      0.9,
+      0.925,
+      0.9500000000000001,
+      0.9750000000000001,
+      1.0
+    ]
+  },
+  "nextgen_grid_difference": {
+    "omega_probe_linf": 2.2071711286862645,
+    "omega_probe_rms": 0.13038313297704338,
+    "psi_probe_linf_offset_removed": 0.052656285206461456,
+    "psi_probe_mean_offset": 0.008754342983599254,
+    "psi_probe_rms_offset_removed": 0.013765992946649992,
+    "valid_probe_count": 32400
+  },
+  "nextgen_runs": [
+    {
+      "common_residuals": {
+        "lap_psi_l2": 18.363178710655497,
+        "omega_field_l2": 16.919692569928326,
+        "omega_strong_l2": 13.431995106620406,
+        "poisson_strong_l2": 6.802045907561599,
+        "profile_strong_l2": 15.056105773833087,
+        "profile_strong_relative": 0.8199073815633329,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "diagnostics": {
+        "adaptive_retries": 0,
+        "advection_scheme": "fv_upwind",
+        "anchored_attempts": 0,
+        "anchored_linear_solve_time_sec": 0.0,
+        "anchored_successes": 0,
+        "attempted_sigma": 1.0,
+        "completed_sigma_steps": 40,
+        "diffusion_attempts": 0,
+        "diffusion_linear_solve_time_sec": 0.0,
+        "diffusion_successes": 0,
+        "final_sigma": 1.0,
+        "grid_dr": 0.15625,
+        "grid_dtheta": 0.02454369260617026,
+        "grid_nr": 64,
+        "grid_ntheta": 256,
+        "lap_psi_l2": 17.613264233710524,
+        "newton_linear_solve_time_sec": 142.25821207650006,
+        "newton_steps": 157,
+        "omega_field_l2": 17.613131312705942,
+        "omega_residual_norm": 3.144082834322578e-09,
+        "physical_poisson_residual_norm": 0.065204350232436,
+        "poisson_gauge": "mean",
+        "poisson_lambda": 42.62192744498456,
+        "poisson_residual_norm": 1.104900434005802e-11,
+        "relative_residual": 1.7850764099540621e-10,
+        "residual_norm": 3.144102248588427e-09,
+        "runtime_sec": 226.56070437002927,
+        "upwind_blend": 0.01,
+        "upwind_smoothing": 0.001
+      },
+      "grid": {
+        "dr": 0.15625,
+        "dtheta": 0.02454369260617026,
+        "nr": 64,
+        "ntheta": 256
+      },
+      "message": "converged",
+      "probe_errors_vs_fine_baseline": {
+        "omega_probe_linf": 17.110182623983533,
+        "omega_probe_rms": 1.2279700064350767,
+        "psi_probe_linf_offset_removed": 0.5399347242238659,
+        "psi_probe_mean_offset": -2.2960872168854265,
+        "psi_probe_rms_offset_removed": 0.1280164991508221,
+        "valid_probe_count": 32400
+      },
+      "runtime_sec": 226.56070437002927,
+      "status": "completed"
+    },
+    {
+      "common_residuals": {
+        "lap_psi_l2": 18.211081160055194,
+        "omega_field_l2": 17.078568158120643,
+        "omega_strong_l2": 14.880955040770816,
+        "poisson_strong_l2": 6.001131162094878,
+        "profile_strong_l2": 16.04544789496724,
+        "profile_strong_relative": 0.8810815653362675,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "diagnostics": {
+        "adaptive_retries": 0,
+        "advection_scheme": "fv_upwind",
+        "anchored_attempts": 0,
+        "anchored_linear_solve_time_sec": 0.0,
+        "anchored_successes": 0,
+        "attempted_sigma": 1.0,
+        "completed_sigma_steps": 40,
+        "diffusion_attempts": 0,
+        "diffusion_linear_solve_time_sec": 0.0,
+        "diffusion_successes": 0,
+        "final_sigma": 1.0,
+        "grid_dr": 0.1388888888888889,
+        "grid_dtheta": 0.02181661564992912,
+        "grid_nr": 72,
+        "grid_ntheta": 288,
+        "lap_psi_l2": 17.753882844139437,
+        "newton_linear_solve_time_sec": 143.37532394751906,
+        "newton_steps": 162,
+        "omega_field_l2": 17.753720935900734,
+        "omega_residual_norm": 1.4596302540431432e-07,
+        "physical_poisson_residual_norm": 0.07207190076345371,
+        "poisson_gauge": "mean",
+        "poisson_lambda": 59.62411844116937,
+        "poisson_residual_norm": 1.6269039219518183e-11,
+        "relative_residual": 8.221470626588613e-09,
+        "residual_norm": 1.459630263109879e-07,
+        "runtime_sec": 251.74721102416515,
+        "upwind_blend": 0.01,
+        "upwind_smoothing": 0.001
+      },
+      "grid": {
+        "dr": 0.1388888888888889,
+        "dtheta": 0.02181661564992912,
+        "nr": 72,
+        "ntheta": 288
+      },
+      "message": "converged",
+      "probe_errors_vs_fine_baseline": {
+        "omega_probe_linf": 17.000241777708894,
+        "omega_probe_rms": 1.2733637572286747,
+        "psi_probe_linf_offset_removed": 0.5888157685677706,
+        "psi_probe_mean_offset": -2.304841559869025,
+        "psi_probe_rms_offset_removed": 0.14146800392954156,
+        "valid_probe_count": 32400
+      },
+      "runtime_sec": 251.74721102416515,
+      "status": "completed"
+    }
+  ],
+  "norm_definitions": {
+    "common_strong_relative": "fields sampled to the same Cartesian grid; sqrt(||R_Omega||_L2^2+||R_Psi||_L2^2)/max(||Omega||_L2,||Delta psi||_L2)",
+    "probe_rms": "sqrt(mean((field_a-field_b)^2)) over common polar probes r in [0.5,8]",
+    "psi_probe_errors": "streamfunction probe differences after subtracting mean difference to remove gauge offset"
+  },
+  "plot_paths": [
+    "experiments/raw/nextgen/m3_c4_c7_high_amplitude_validation/c4_100_c7_40/nextgen_64_256_omega.png",
+    "experiments/raw/nextgen/m3_c4_c7_high_amplitude_validation/c4_100_c7_40/nextgen_64_256_psi_contours.png",
+    "experiments/raw/nextgen/m3_c4_c7_high_amplitude_validation/c4_100_c7_40/nextgen_72_288_omega.png",
+    "experiments/raw/nextgen/m3_c4_c7_high_amplitude_validation/c4_100_c7_40/nextgen_72_288_psi_contours.png",
+    "experiments/raw/nextgen/m3_c4_c7_high_amplitude_validation/c4_100_c7_40/baseline_h0p08_0p12_omega.png",
+    "experiments/raw/nextgen/m3_c4_c7_high_amplitude_validation/c4_100_c7_40/baseline_h0p08_0p12_psi_contours.png",
+    "experiments/raw/nextgen/m3_c4_c7_high_amplitude_validation/c4_100_c7_40/baseline_h0p05_0p08_omega.png",
+    "experiments/raw/nextgen/m3_c4_c7_high_amplitude_validation/c4_100_c7_40/baseline_h0p05_0p08_psi_contours.png"
+  ],
+  "status": "completed"
+}

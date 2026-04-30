@@ -148,6 +148,68 @@ class PolarProfileTests(unittest.TestCase):
 
         assert_allclose((perturbed - residual) / eps, jac_delta, rtol=2e-5, atol=2e-7)
 
+    def test_polar_fv_upwind_jacobian_matches_finite_difference(self) -> None:
+        grid = PolarGrid(radius=2.0, nr=5, ntheta=12)
+        physical = PhysicalParams(mu=0.8, R=150.0, Rdom=2.0)
+        data = FourierBoundaryData(M=12, coeffs={2: 0.2 + 0.03j, 5: -0.08 + 0.02j})
+        problem = PolarProfileProblem(grid, physical, data, advection_scheme="fv_upwind")
+        rng = np.random.default_rng(3456)
+
+        rr, tt = np.meshgrid(grid.r, grid.theta, indexing="ij")
+        omega = 0.05 * rr + 0.01 * np.cos(tt) + 0.002 * rng.standard_normal(grid.shape)
+        omega[0, :] = float(np.mean(omega[0, :]))
+        psi = 0.2 * rr**2 + 0.001 * np.sin(tt) + 0.0002 * rng.standard_normal(grid.shape)
+        delta = 0.01 * rng.standard_normal(2 * grid.size + 1)
+        sigma = 0.4
+        eps = 1e-7
+
+        lambda_value = 0.01 * rng.standard_normal()
+        residual = problem.residual_vector(omega, psi, sigma, lambda_value)
+        jac_delta = problem.jacobian(omega, psi, sigma) @ delta
+        perturbed = problem.residual_vector(
+            omega.reshape(-1) + eps * delta[: grid.size],
+            psi.reshape(-1) + eps * delta[grid.size : 2 * grid.size],
+            sigma,
+            lambda_value + eps * delta[-1],
+        )
+
+        assert_allclose((perturbed - residual) / eps, jac_delta, rtol=3e-5, atol=5e-7)
+
+    def test_polar_fv_blended_jacobian_matches_finite_difference(self) -> None:
+        grid = PolarGrid(radius=2.0, nr=5, ntheta=12)
+        physical = PhysicalParams(mu=0.8, R=150.0, Rdom=2.0)
+        data = FourierBoundaryData(M=12, coeffs={2: 0.2 + 0.03j, 5: -0.08 + 0.02j})
+        rng = np.random.default_rng(4567)
+
+        rr, tt = np.meshgrid(grid.r, grid.theta, indexing="ij")
+        omega = 0.05 * rr + 0.01 * np.cos(tt) + 0.002 * rng.standard_normal(grid.shape)
+        omega[0, :] = float(np.mean(omega[0, :]))
+        psi = 0.2 * rr**2 + 0.001 * np.sin(tt) + 0.0002 * rng.standard_normal(grid.shape)
+        delta = 0.01 * rng.standard_normal(2 * grid.size + 1)
+        sigma = 0.4
+        eps = 1e-7
+
+        for scheme, blend in (("fv_centered", 0.0), ("fv_blended", 0.2)):
+            with self.subTest(scheme=scheme):
+                problem = PolarProfileProblem(
+                    grid,
+                    physical,
+                    data,
+                    advection_scheme=scheme,
+                    upwind_blend=blend,
+                )
+                lambda_value = 0.01 * rng.standard_normal()
+                residual = problem.residual_vector(omega, psi, sigma, lambda_value)
+                jac_delta = problem.jacobian(omega, psi, sigma) @ delta
+                perturbed = problem.residual_vector(
+                    omega.reshape(-1) + eps * delta[: grid.size],
+                    psi.reshape(-1) + eps * delta[grid.size : 2 * grid.size],
+                    sigma,
+                    lambda_value + eps * delta[-1],
+                )
+
+                assert_allclose((perturbed - residual) / eps, jac_delta, rtol=3e-5, atol=5e-7)
+
     def test_polar_full_disk_c3_data_preserves_threefold_symmetry(self) -> None:
         grid = PolarGrid(radius=2.0, nr=10, ntheta=36)
         physical = PhysicalParams(mu=0.8, R=150.0, Rdom=2.0)
@@ -225,6 +287,33 @@ class PolarProfileTests(unittest.TestCase):
 
         self.assertTrue(result.converged, result.message)
         self.assertEqual(result.diagnostics["advection_scheme"], "fv_upwind")
+        self.assertLess(result.diagnostics["relative_residual"], 1e-8)
+
+    def test_polar_fv_upwind_reduced_poisson_newton_handles_small_mixed_boundary_modes(self) -> None:
+        grid = PolarGrid(radius=2.0, nr=8, ntheta=32)
+        physical = PhysicalParams(mu=0.8, R=150.0, Rdom=2.0)
+        data = FourierBoundaryData(
+            M=10,
+            coeffs={
+                2: 0.18 + 0.04j,
+                5: -0.08 + 0.03j,
+            },
+        )
+        problem = PolarProfileProblem(grid, physical, data, advection_scheme="fv_upwind")
+        result = problem.solve(
+            PolarProfileParams(
+                sigma_grid=(0.0, 0.5, 1.0),
+                tol_step=1e-8,
+                tol_residual=1e-8,
+                tol_residual_only=1e-8,
+                max_iter=24,
+                max_backtracks=16,
+                reduced_poisson_newton=True,
+            )
+        )
+
+        self.assertTrue(result.converged, result.message)
+        self.assertTrue(result.diagnostics["reduced_poisson_newton"])
         self.assertLess(result.diagnostics["relative_residual"], 1e-8)
 
     def test_polar_blended_advection_handles_moderate_mixed_modes(self) -> None:
