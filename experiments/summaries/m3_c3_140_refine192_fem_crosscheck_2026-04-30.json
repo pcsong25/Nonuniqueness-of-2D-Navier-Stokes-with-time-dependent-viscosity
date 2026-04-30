@@ -1,0 +1,829 @@
+{
+  "baseline_pair_distance": {
+    "omega_probe_linf": 38.407955747810504,
+    "omega_probe_rms": 1.2761296794012418,
+    "psi_probe_linf_offset_removed": 0.759357882267442,
+    "psi_probe_mean_offset": -0.0022689693196811587,
+    "psi_probe_rms_offset_removed": 0.04615383098435234,
+    "valid_probe_count": 65520
+  },
+  "baseline_runs": [
+    {
+      "common_residuals": {
+        "lap_psi_l2": 25.418891219129296,
+        "omega_field_l2": 26.03573779267416,
+        "omega_strong_l2": 18.72083627139545,
+        "poisson_strong_l2": 2.491435291899039,
+        "profile_strong_l2": 18.885893161672698,
+        "profile_strong_relative": 0.7253834445585307,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "comparison_to_seed_nextgen": {
+        "omega_probe_linf": 14.708742929660852,
+        "omega_probe_rms": 0.42871392996292534,
+        "psi_probe_linf_offset_removed": 0.0939249277341282,
+        "psi_probe_mean_offset": -0.9359045754192299,
+        "psi_probe_rms_offset_removed": 0.009674725442519239,
+        "valid_probe_count": 65520
+      },
+      "history": [
+        {
+          "alpha": 0.5,
+          "bnorm_after": 0.3285967185346799,
+          "bnorm_before": 0.49432321536763496,
+          "iteration": 1,
+          "rel_omega_step": 0.13396752109267693
+        },
+        {
+          "alpha": 0.5,
+          "bnorm_after": 0.2274848515146113,
+          "bnorm_before": 0.3285967185346799,
+          "iteration": 2,
+          "rel_omega_step": 0.09406047184593175
+        },
+        {
+          "alpha": 1.0,
+          "bnorm_after": 0.14745144179924052,
+          "bnorm_before": 0.2274848515146113,
+          "iteration": 3,
+          "rel_omega_step": 0.10383355363948811
+        },
+        {
+          "alpha": 1.0,
+          "bnorm_after": 0.0033809199870466254,
+          "bnorm_before": 0.14745144179924052,
+          "iteration": 4,
+          "rel_omega_step": 0.020667210811207544
+        },
+        {
+          "alpha": 1.0,
+          "bnorm_after": 2.362212985282662e-06,
+          "bnorm_before": 0.0033809199870466254,
+          "iteration": 5,
+          "rel_omega_step": 0.00046691779271488046
+        },
+        {
+          "alpha": 1.0,
+          "bnorm_after": 1.1552140772763e-12,
+          "bnorm_before": 2.362212985282662e-06,
+          "iteration": 6,
+          "rel_omega_step": 2.841396002167699e-07
+        },
+        {
+          "alpha": 1.0,
+          "bnorm_after": 7.317873740222636e-15,
+          "bnorm_before": 1.1552140772763e-12,
+          "iteration": 7,
+          "rel_omega_step": 1.1983688419578485e-13
+        }
+      ],
+      "label": "baseline_seeded_linesearch_from_symmetric_192_576_h0.06_0.06",
+      "last_alpha": 1.0,
+      "last_linear_residual_norm": 7.317873740222636e-15,
+      "last_relative_update": 1.1983688419578485e-13,
+      "mesh": {
+        "h_max": 0.06,
+        "h_min": 0.06
+      },
+      "mesh_cells": 202248,
+      "mesh_vertices": 101649,
+      "newton_iterations": 7,
+      "residuals": {
+        "meta": {
+          "R": 150.0,
+          "Rdom": 10.0,
+          "eps": 0.0044444444444444444,
+          "mu": 0.8,
+          "sigma": 1.0
+        },
+        "norms": {
+          "Omega_l2": 0.00034417470125064554,
+          "Psi_l2": 6.264093112737928e-05
+        }
+      },
+      "runtime_sec": 50.59384994301945,
+      "status": "completed",
+      "symmetry": {
+        "omega_non_threefold_fraction": 0.015063727558178325,
+        "omega_threefold_defect": 0.02609114148214032,
+        "psi_non_threefold_fraction": 4.6537782432577325e-05,
+        "psi_threefold_defect": 8.060580364481028e-05
+      }
+    },
+    {
+      "common_residuals": {
+        "lap_psi_l2": 25.3686868930765,
+        "omega_field_l2": 25.988217337629518,
+        "omega_strong_l2": 17.22116874255002,
+        "poisson_strong_l2": 2.4886697819437162,
+        "profile_strong_l2": 17.400061210896403,
+        "profile_strong_relative": 0.6695365436128652,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "comparison_to_seed_nextgen": {
+        "omega_probe_linf": 37.25578249347952,
+        "omega_probe_rms": 1.0966681669596328,
+        "psi_probe_linf_offset_removed": 0.6709696259421984,
+        "psi_probe_mean_offset": -0.9381735447389095,
+        "psi_probe_rms_offset_removed": 0.035794893020116854,
+        "valid_probe_count": 65520
+      },
+      "history": [
+        {
+          "alpha": 0.03125,
+          "bnorm_after": 0.4890525220493552,
+          "bnorm_before": 0.4947361284687748,
+          "iteration": 1,
+          "rel_omega_step": 0.11807759899974245
+        },
+        {
+          "alpha": 0.015625,
+          "bnorm_after": 0.4854022465818283,
+          "bnorm_before": 0.4890525220493552,
+          "iteration": 2,
+          "rel_omega_step": 0.05030718147520541
+        },
+        {
+          "alpha": 0.015625,
+          "bnorm_after": 0.48149848608314844,
+          "bnorm_before": 0.4854022465818283,
+          "iteration": 3,
+          "rel_omega_step": 0.051518979614748384
+        },
+        {
+          "alpha": 0.015625,
+          "bnorm_after": 0.4774212126231572,
+          "bnorm_before": 0.48149848608314844,
+          "iteration": 4,
+          "rel_omega_step": 0.05241751404655324
+        },
+        {
+          "alpha": 0.015625,
+          "bnorm_after": 0.4732907745655389,
+          "bnorm_before": 0.4774212126231572,
+          "iteration": 5,
+          "rel_omega_step": 0.052379559997317124
+        },
+        {
+          "alpha": 0.015625,
+          "bnorm_after": 0.46915972096643765,
+          "bnorm_before": 0.4732907745655389,
+          "iteration": 6,
+          "rel_omega_step": 0.051201862211208905
+        },
+        {
+          "alpha": 0.015625,
+          "bnorm_after": 0.46497235564754275,
+          "bnorm_before": 0.46915972096643765,
+          "iteration": 7,
+          "rel_omega_step": 0.04908390211870558
+        },
+        {
+          "alpha": 0.015625,
+          "bnorm_after": 0.46061058623290274,
+          "bnorm_before": 0.46497235564754275,
+          "iteration": 8,
+          "rel_omega_step": 0.046320814416397404
+        },
+        {
+          "alpha": 0.015625,
+          "bnorm_after": 0.4559659596840279,
+          "bnorm_before": 0.46061058623290274,
+          "iteration": 9,
+          "rel_omega_step": 0.04317876388849976
+        },
+        {
+          "alpha": 0.015625,
+          "bnorm_after": 0.45098664648486053,
+          "bnorm_before": 0.4559659596840279,
+          "iteration": 10,
+          "rel_omega_step": 0.03991248019919389
+        },
+        {
+          "alpha": 0.03125,
+          "bnorm_after": 0.4501275689315533,
+          "bnorm_before": 0.45098664648486053,
+          "iteration": 11,
+          "rel_omega_step": 0.07297496555543755
+        },
+        {
+          "alpha": 0.03125,
+          "bnorm_after": 0.44835298611474933,
+          "bnorm_before": 0.4501275689315533,
+          "iteration": 12,
+          "rel_omega_step": 0.060639017250030354
+        },
+        {
+          "alpha": 0.03125,
+          "bnorm_after": 0.4429164457311584,
+          "bnorm_before": 0.44835298611474933,
+          "iteration": 13,
+          "rel_omega_step": 0.04953427418831159
+        },
+        {
+          "alpha": 0.03125,
+          "bnorm_after": 0.4344408727214104,
+          "bnorm_before": 0.4429164457311584,
+          "iteration": 14,
+          "rel_omega_step": 0.04056987115625534
+        },
+        {
+          "alpha": 0.0625,
+          "bnorm_after": 0.42517639819223013,
+          "bnorm_before": 0.4344408727214104,
+          "iteration": 15,
+          "rel_omega_step": 0.06728544234035917
+        },
+        {
+          "alpha": 0.0625,
+          "bnorm_after": 0.40772372094173576,
+          "bnorm_before": 0.42517639819223013,
+          "iteration": 16,
+          "rel_omega_step": 0.04882361828687189
+        },
+        {
+          "alpha": 0.125,
+          "bnorm_after": 0.38430996861095007,
+          "bnorm_before": 0.40772372094173576,
+          "iteration": 17,
+          "rel_omega_step": 0.07564272801193107
+        },
+        {
+          "alpha": 0.25,
+          "bnorm_after": 0.3599803439748261,
+          "bnorm_before": 0.38430996861095007,
+          "iteration": 18,
+          "rel_omega_step": 0.09957801006876978
+        },
+        {
+          "alpha": 0.5,
+          "bnorm_after": 0.281748154240987,
+          "bnorm_before": 0.3599803439748261,
+          "iteration": 19,
+          "rel_omega_step": 0.10336922891508799
+        },
+        {
+          "alpha": 1.0,
+          "bnorm_after": 0.07512908268593652,
+          "bnorm_before": 0.281748154240987,
+          "iteration": 20,
+          "rel_omega_step": 0.0755311910173079
+        },
+        {
+          "alpha": 1.0,
+          "bnorm_after": 0.001764142811533705,
+          "bnorm_before": 0.07512908268593652,
+          "iteration": 21,
+          "rel_omega_step": 0.01250736920988342
+        },
+        {
+          "alpha": 1.0,
+          "bnorm_after": 1.7792291061554521e-06,
+          "bnorm_before": 0.001764142811533705,
+          "iteration": 22,
+          "rel_omega_step": 0.0002876757088120846
+        },
+        {
+          "alpha": 1.0,
+          "bnorm_after": 1.5816535505415325e-12,
+          "bnorm_before": 1.7792291061554521e-06,
+          "iteration": 23,
+          "rel_omega_step": 2.9179923966477427e-07
+        },
+        {
+          "alpha": 1.0,
+          "bnorm_after": 8.478713472326204e-15,
+          "bnorm_before": 1.5816535505415325e-12,
+          "iteration": 24,
+          "rel_omega_step": 2.2083679184066392e-13
+        }
+      ],
+      "label": "baseline_seeded_linesearch_from_broken_m1_192_576_h0.06_0.06",
+      "last_alpha": 1.0,
+      "last_linear_residual_norm": 8.478713472326204e-15,
+      "last_relative_update": 2.2083679184066392e-13,
+      "mesh": {
+        "h_max": 0.06,
+        "h_min": 0.06
+      },
+      "mesh_cells": 202248,
+      "mesh_vertices": 101649,
+      "newton_iterations": 24,
+      "residuals": {
+        "meta": {
+          "R": 150.0,
+          "Rdom": 10.0,
+          "eps": 0.0044444444444444444,
+          "mu": 0.8,
+          "sigma": 1.0
+        },
+        "norms": {
+          "Omega_l2": 0.0003441695831306313,
+          "Psi_l2": 0.00011642838796573768
+        }
+      },
+      "runtime_sec": 206.74139472097158,
+      "status": "completed",
+      "symmetry": {
+        "omega_non_threefold_fraction": 0.5251044889614301,
+        "omega_threefold_defect": 0.9095076541636875,
+        "psi_non_threefold_fraction": 0.009649048671542721,
+        "psi_threefold_defect": 0.016712642543816974
+      }
+    }
+  ],
+  "case": {
+    "coeffs": {
+      "3": {
+        "imag": 0.0,
+        "real": 140.0
+      }
+    },
+    "description": "192/576 branch refinement, bifurcation-window trace, and hmax=0.06 FEM cross-check for c3=140 nonuniqueness",
+    "name": "c3_140_refine192_fem_crosscheck"
+  },
+  "input": {
+    "baseline_mesh": {
+      "h_max": 0.06,
+      "h_min": 0.06
+    },
+    "physical": {
+      "R": 150.0,
+      "Rdom": 10.0,
+      "eps": 0.0044444444444444444,
+      "mu": 0.8
+    },
+    "source_state_dir": "experiments/raw/nextgen/m3_c3_140_nonuniqueness_validation/states",
+    "target_grid": {
+      "nr": 192,
+      "ntheta": 576
+    },
+    "trace_sigmas": [
+      1.0,
+      0.9,
+      0.8,
+      0.75,
+      0.72,
+      0.7,
+      0.695,
+      0.69,
+      0.685,
+      0.68,
+      0.675,
+      0.67,
+      0.665,
+      0.66,
+      0.655,
+      0.65
+    ]
+  },
+  "plot_paths": [
+    "experiments/raw/nextgen/m3_c3_140_refine192_fem_crosscheck/plots/bifurcation_window_non3_192_576.png",
+    "experiments/raw/nextgen/m3_c3_140_refine192_fem_crosscheck/plots/broken_m1_192_576_omega.png",
+    "experiments/raw/nextgen/m3_c3_140_refine192_fem_crosscheck/plots/broken_m1_minus_symmetric_192_576_omega.png",
+    "experiments/raw/nextgen/m3_c3_140_refine192_fem_crosscheck/plots/symmetric_192_576_omega.png"
+  ],
+  "refined_runs": [
+    {
+      "common_residuals": {
+        "lap_psi_l2": 23.78305886397267,
+        "omega_field_l2": 23.862783772166765,
+        "omega_strong_l2": 14.337173447347338,
+        "poisson_strong_l2": 1.892028962983233,
+        "profile_strong_l2": 14.461476966620282,
+        "profile_strong_relative": 0.6060264009720424,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "compatibility": {
+        "neumann_flux_discrete": 1.5501637768927253e-15,
+        "omega_integral": 5.631980342160614e-14,
+        "omega_mean": 1.7927150217024914e-16,
+        "omega_minus_flux": 5.476963964471342e-14,
+        "physical_poisson_residual_norm": 1.1699149818311024e-11,
+        "poisson_lambda": 0.0
+      },
+      "diagnostics": {
+        "advection_scheme": "fv_upwind",
+        "attempted_sigma": 1.0,
+        "final_sigma": 1.0,
+        "grid_dr": 0.052083333333333336,
+        "grid_dtheta": 0.01090830782496456,
+        "grid_nr": 192,
+        "grid_ntheta": 576,
+        "lap_psi_l2": 24.49949732268051,
+        "newton_steps": 0,
+        "omega_field_l2": 24.499497322680693,
+        "omega_residual_norm": 8.087786204756136e-08,
+        "physical_poisson_residual_norm": 1.1699149818311024e-11,
+        "poisson_gauge": "mean",
+        "poisson_lambda": 0.0,
+        "poisson_residual_norm": 1.1699151627242934e-11,
+        "reduced_poisson_newton": false,
+        "relative_residual": 3.3012049932485503e-09,
+        "residual_norm": 8.087786289371471e-08,
+        "runtime_sec": 26.54462500102818,
+        "upwind_blend": 1.0,
+        "upwind_smoothing": 0.001
+      },
+      "grid": {
+        "dr": 0.052083333333333336,
+        "dtheta": 0.01090830782496456,
+        "nr": 192,
+        "ntheta": 576
+      },
+      "label": "symmetric_192_576",
+      "message": "loaded_state",
+      "original_nextgen_metrics_from_registry": {
+        "common": 0.6060264009720424,
+        "omega_non3": 1.3578137935435303e-13,
+        "relative_residual": 3.3012049932485503e-09,
+        "runtime_sec": 26.54462500102818
+      },
+      "runtime_sec": 26.54462500102818,
+      "status": "completed",
+      "symmetry": {
+        "omega_non_threefold_fraction": 1.3578137935435303e-13,
+        "omega_threefold_defect": 2.35179293871966e-13,
+        "psi_non_threefold_fraction": 3.8115413442145763e-14,
+        "psi_threefold_defect": 6.60175730909936e-14
+      }
+    },
+    {
+      "common_residuals": {
+        "lap_psi_l2": 23.077432912742445,
+        "omega_field_l2": 23.14859502418891,
+        "omega_strong_l2": 13.402638389026409,
+        "poisson_strong_l2": 1.9177184840386594,
+        "profile_strong_l2": 13.539141773798956,
+        "profile_strong_relative": 0.5848796335004934,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "compatibility": {
+        "neumann_flux_discrete": 1.5501637768927253e-15,
+        "omega_integral": 6.447080824929785e-14,
+        "omega_mean": 2.052169563601099e-16,
+        "omega_minus_flux": 6.292064447240512e-14,
+        "physical_poisson_residual_norm": 1.1687624865276823e-11,
+        "poisson_lambda": 0.0
+      },
+      "diagnostics": {
+        "advection_scheme": "fv_upwind",
+        "attempted_sigma": 1.0,
+        "final_sigma": 1.0,
+        "grid_dr": 0.052083333333333336,
+        "grid_dtheta": 0.01090830782496456,
+        "grid_nr": 192,
+        "grid_ntheta": 576,
+        "lap_psi_l2": 23.777327639927194,
+        "newton_steps": 0,
+        "omega_field_l2": 23.777327639927364,
+        "omega_residual_norm": 3.7802793146973194e-13,
+        "physical_poisson_residual_norm": 1.1687624865276823e-11,
+        "poisson_gauge": "mean",
+        "poisson_lambda": 0.0,
+        "poisson_residual_norm": 1.1687626535716427e-11,
+        "reduced_poisson_newton": false,
+        "relative_residual": 4.918027937978248e-13,
+        "residual_norm": 1.1693738459336006e-11,
+        "runtime_sec": 55.53893496096134,
+        "upwind_blend": 1.0,
+        "upwind_smoothing": 0.001
+      },
+      "grid": {
+        "dr": 0.052083333333333336,
+        "dtheta": 0.01090830782496456,
+        "nr": 192,
+        "ntheta": 576
+      },
+      "label": "broken_m1_192_576",
+      "message": "loaded_state",
+      "original_nextgen_metrics_from_registry": {
+        "common": 0.5848796335004933,
+        "omega_non3": 0.30733408555038877,
+        "relative_residual": 4.918027937978248e-13,
+        "runtime_sec": 55.53893496096134
+      },
+      "runtime_sec": 55.53893496096134,
+      "status": "completed",
+      "symmetry": {
+        "omega_non_threefold_fraction": 0.30733408555038877,
+        "omega_threefold_defect": 0.5323182510709933,
+        "psi_non_threefold_fraction": 0.003918578391761145,
+        "psi_threefold_defect": 0.0067871768679718435
+      }
+    }
+  ],
+  "status": "completed",
+  "trace_reconstruction_note": "The baseline-only resume clobbered the verbose trace_runs block; this compact trace table is reconstructed from registry rows written by the completed nextgen stage. The bifurcation plot was generated during that stage.",
+  "trace_runs": {},
+  "trace_runs_reconstructed_from_registry": {
+    "broken_m1": [
+      {
+        "common_profile_strong_relative": 0.5848796335004933,
+        "label": "broken_m1_192_576",
+        "omega_non_threefold_fraction": 0.30733408555038877,
+        "relative_residual": 4.918027937978248e-13,
+        "runtime_sec": 55.53893496096134,
+        "sigma": 1.0,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.5513196237679511,
+        "label": "trace_broken_m1_sigma0p9_192_576",
+        "omega_non_threefold_fraction": 0.26473548623870125,
+        "relative_residual": 4.847884131234976e-13,
+        "runtime_sec": 119.345977505669,
+        "sigma": 0.9,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.5080631422436824,
+        "label": "trace_broken_m1_sigma0p8_192_576",
+        "omega_non_threefold_fraction": 0.20705375618429178,
+        "relative_residual": 4.838831958539706e-13,
+        "runtime_sec": 113.7793099693954,
+        "sigma": 0.8,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.486758418635838,
+        "label": "trace_broken_m1_sigma0p75_192_576",
+        "omega_non_threefold_fraction": 0.17007489800328282,
+        "relative_residual": 4.765846737137737e-13,
+        "runtime_sec": 82.41335175093263,
+        "sigma": 0.75,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.4725388026909644,
+        "label": "trace_broken_m1_sigma0p72_192_576",
+        "omega_non_threefold_fraction": 0.14317625588112842,
+        "relative_residual": 3.141053968633008e-10,
+        "runtime_sec": 66.57415528874844,
+        "sigma": 0.72,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.4645551851598372,
+        "label": "trace_broken_m1_sigma0p7_192_576",
+        "omega_non_threefold_fraction": 0.12328003957170795,
+        "relative_residual": 4.848670357944964e-13,
+        "runtime_sec": 68.08933954779059,
+        "sigma": 0.7,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.4622101828665837,
+        "label": "trace_broken_m1_sigma0p695_192_576",
+        "omega_non_threefold_fraction": 0.11718271943927003,
+        "relative_residual": 6.6787548983709234e-09,
+        "runtime_sec": 32.17900619842112,
+        "sigma": 0.695,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.46007431923877423,
+        "label": "trace_broken_m1_sigma0p69_192_576",
+        "omega_non_threefold_fraction": 0.11063597926741052,
+        "relative_residual": 4.735371527938787e-13,
+        "runtime_sec": 43.009629043750465,
+        "sigma": 0.69,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.45808515627304525,
+        "label": "trace_broken_m1_sigma0p685_192_576",
+        "omega_non_threefold_fraction": 0.10563350401076074,
+        "relative_residual": 4.986327746140794e-13,
+        "runtime_sec": 46.57029293291271,
+        "sigma": 0.685,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.4560067459868647,
+        "label": "trace_broken_m1_sigma0p68_192_576",
+        "omega_non_threefold_fraction": 0.09941330086158535,
+        "relative_residual": 6.538800958242011e-09,
+        "runtime_sec": 31.54510186612606,
+        "sigma": 0.68,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.45411632986641143,
+        "label": "trace_broken_m1_sigma0p675_192_576",
+        "omega_non_threefold_fraction": 0.0929820497479299,
+        "relative_residual": 4.35882094067074e-09,
+        "runtime_sec": 31.60917712468654,
+        "sigma": 0.675,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.45222599001659997,
+        "label": "trace_broken_m1_sigma0p67_192_576",
+        "omega_non_threefold_fraction": 0.08480916526568967,
+        "relative_residual": 7.332369681754479e-10,
+        "runtime_sec": 43.57400152925402,
+        "sigma": 0.67,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.4502151913486561,
+        "label": "trace_broken_m1_sigma0p665_192_576",
+        "omega_non_threefold_fraction": 0.08248347686117159,
+        "relative_residual": 2.3302712714355634e-09,
+        "runtime_sec": 31.189909283071756,
+        "sigma": 0.665,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.44921309239630813,
+        "label": "trace_broken_m1_sigma0p66_192_576",
+        "omega_non_threefold_fraction": 0.0696167494973597,
+        "relative_residual": 1.2219690052831556e-09,
+        "runtime_sec": 32.143850684165955,
+        "sigma": 0.66,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.44723600178186873,
+        "label": "trace_broken_m1_sigma0p655_192_576",
+        "omega_non_threefold_fraction": 0.06562386501658926,
+        "relative_residual": 4.727824450733778e-13,
+        "runtime_sec": 53.193446492776275,
+        "sigma": 0.655,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.4453391956725472,
+        "label": "trace_broken_m1_sigma0p65_192_576",
+        "omega_non_threefold_fraction": 0.05971989942635206,
+        "relative_residual": 6.305384656035373e-11,
+        "runtime_sec": 41.9998588655144,
+        "sigma": 0.65,
+        "status": "converged"
+      }
+    ],
+    "symmetric": [
+      {
+        "common_profile_strong_relative": 0.6060264009720424,
+        "label": "symmetric_192_576",
+        "omega_non_threefold_fraction": 1.3578137935435303e-13,
+        "relative_residual": 3.3012049932485503e-09,
+        "runtime_sec": 26.54462500102818,
+        "sigma": 1.0,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.5678017124743454,
+        "label": "trace_symmetric_sigma0p9_192_576",
+        "omega_non_threefold_fraction": 9.09306121297592e-14,
+        "relative_residual": 4.752147359008116e-13,
+        "runtime_sec": 89.80486650578678,
+        "sigma": 0.9,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.5217867011623867,
+        "label": "trace_symmetric_sigma0p8_192_576",
+        "omega_non_threefold_fraction": 8.456146640639487e-14,
+        "relative_residual": 4.739346004657607e-13,
+        "runtime_sec": 90.1479642065242,
+        "sigma": 0.8,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.5000856351665356,
+        "label": "trace_symmetric_sigma0p75_192_576",
+        "omega_non_threefold_fraction": 9.229943717887198e-14,
+        "relative_residual": 4.690623826718748e-13,
+        "runtime_sec": 68.34346973523498,
+        "sigma": 0.75,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.4855758907094654,
+        "label": "trace_symmetric_sigma0p72_192_576",
+        "omega_non_threefold_fraction": 7.156285926941023e-14,
+        "relative_residual": 8.67848265570404e-12,
+        "runtime_sec": 45.76679864805192,
+        "sigma": 0.72,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.47545010170093893,
+        "label": "trace_symmetric_sigma0p7_192_576",
+        "omega_non_threefold_fraction": 9.359340983765952e-13,
+        "relative_residual": 3.7807280818232636e-10,
+        "runtime_sec": 47.092096369713545,
+        "sigma": 0.7,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.4728225695750397,
+        "label": "trace_symmetric_sigma0p695_192_576",
+        "omega_non_threefold_fraction": 1.1673885496576033e-13,
+        "relative_residual": 9.55730340763617e-09,
+        "runtime_sec": 25.646990860812366,
+        "sigma": 0.695,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.4701931163843398,
+        "label": "trace_symmetric_sigma0p69_192_576",
+        "omega_non_threefold_fraction": 7.402439971689395e-14,
+        "relative_residual": 3.091903874955052e-09,
+        "runtime_sec": 28.897192353382707,
+        "sigma": 0.69,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.4676753970480379,
+        "label": "trace_symmetric_sigma0p685_192_576",
+        "omega_non_threefold_fraction": 4.211120033105864e-13,
+        "relative_residual": 5.354560737186521e-10,
+        "runtime_sec": 26.88822158332914,
+        "sigma": 0.685,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.4651421646355667,
+        "label": "trace_symmetric_sigma0p68_192_576",
+        "omega_non_threefold_fraction": 1.517899386047684e-13,
+        "relative_residual": 5.564856814868692e-09,
+        "runtime_sec": 25.809419790282845,
+        "sigma": 0.68,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.4628577134839528,
+        "label": "trace_symmetric_sigma0p675_192_576",
+        "omega_non_threefold_fraction": 9.29619294096208e-14,
+        "relative_residual": 5.089945286821556e-10,
+        "runtime_sec": 26.301242262125015,
+        "sigma": 0.675,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.46034347168395484,
+        "label": "trace_symmetric_sigma0p67_192_576",
+        "omega_non_threefold_fraction": 1.4897205868287833e-13,
+        "relative_residual": 7.205859279054147e-11,
+        "runtime_sec": 37.11985230166465,
+        "sigma": 0.67,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.45776013346553385,
+        "label": "trace_symmetric_sigma0p665_192_576",
+        "omega_non_threefold_fraction": 1.1216659330774767e-13,
+        "relative_residual": 3.4149334412386404e-09,
+        "runtime_sec": 26.004564594477415,
+        "sigma": 0.665,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.4554246551967634,
+        "label": "trace_symmetric_sigma0p66_192_576",
+        "omega_non_threefold_fraction": 2.451017622257517e-13,
+        "relative_residual": 1.4233770162922773e-09,
+        "runtime_sec": 26.091907124966383,
+        "sigma": 0.66,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.45283731100818664,
+        "label": "trace_symmetric_sigma0p655_192_576",
+        "omega_non_threefold_fraction": 1.1195971619172307e-13,
+        "relative_residual": 8.18684541575713e-09,
+        "runtime_sec": 26.04541029687971,
+        "sigma": 0.655,
+        "status": "converged"
+      },
+      {
+        "common_profile_strong_relative": 0.4502797513985624,
+        "label": "trace_symmetric_sigma0p65_192_576",
+        "omega_non_threefold_fraction": 9.493890451108092e-14,
+        "relative_residual": 5.9673021358165e-10,
+        "runtime_sec": 25.92830689623952,
+        "sigma": 0.65,
+        "status": "converged"
+      }
+    ]
+  },
+  "validation_methods": [
+    "nextgen branch refinement from saved 160/480 states to 192/576",
+    "seeded amplitude trace through sigma 0.65 to 0.70 on 192/576",
+    "hmax=0.06 baseline/FEM Newton with residual line search seeded from refined nextgen branches",
+    "common Cartesian strong residuals and threefold-symmetry diagnostics",
+    "Poisson compatibility diagnostics for nextgen branches",
+    "probe comparisons between nextgen and FEM fields"
+  ]
+}

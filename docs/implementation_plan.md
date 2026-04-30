@@ -242,6 +242,55 @@ Validation note:
   collapsed to the symmetric branch between sigma `0.70` and `0.65`. Baseline
   FEM attempts at `h_min=0.08,h_max=0.12` were inconclusive because their
   common sampled residuals were `6.27e4` and `8.38e3`.
+- The c3=140 refinement/cross-check pass pushed the symmetric and m1 broken
+  branches to `192/576`. The symmetric branch had native residual `3.30e-09`,
+  common sampled residual `0.606`, and Omega non-threefold fraction
+  `1.36e-13`; the m1 broken branch had native residual `4.92e-13`, common
+  sampled residual `0.585`, and Omega non-threefold fraction `0.307`.
+  A dense `192/576` amplitude trace showed the broken branch remains separated
+  through sigma `0.650` with Omega non-threefold fraction `0.0597`, so the
+  bifurcation/merge window moved below the earlier `0.65` to `0.70` bracket.
+  Fine FEM line-search Newton cross-checks on a `h_min=h_max=0.06` mesh
+  (`202248` cells) converged from nextgen-seeded symmetric and broken fields:
+  the symmetric-seeded FEM root reached assembled residual norm `7.32e-15`,
+  common sampled residual `0.725`, and Omega non-threefold fraction `0.0151`;
+  the broken-seeded FEM root reached assembled residual norm `8.48e-15`,
+  common sampled residual `0.670`, and Omega non-threefold fraction `0.525`.
+  The two FEM roots are distinct, with Omega probe RMS separation `1.276`.
+- A c3=140 residual-audit pass now records the validation quantities in a
+  reusable table for nextgen `160/480`, nextgen `192/576`, and FEM `h=0.06`.
+  The audit reports native FV residuals, FEM weak residuals, boundary and
+  compatibility defects, common sampled strong residuals, branch separation
+  norms, and symmetry metrics. It also caches FEM samples and produces
+  nextgen-vs-FEM branch plots. The audit confirms nextgen branch separations
+  of Omega RMS `0.478` at `160/480` and `0.607` at `192/576`, and FEM
+  `h=0.06` branch separation Omega RMS `1.390`.
+- A follow-up symmetric-branch discrepancy audit found that the
+  `FEM symmetric - nextgen symmetric` plot difference is real rather than a
+  sampling or boundary-convention bug. Direct FEM cell sampling and generic
+  nodal interpolation agree to roundoff at `h=0.06`, nextgen/baseline boundary
+  data agree to roundoff, and small rotations do not reduce the mismatch. The
+  nextgen symmetric `160/480` vs `192/576` RMS difference is only `0.0649`,
+  but FEM symmetric vs nextgen `192/576` is `0.546` at `h=0.06` and `0.569`
+  at `h=0.05`. The current c3=140 FEM cross-check should therefore be treated
+  as qualitative branch corroboration, not quantitative branch agreement.
+- A symmetric cross-initialization test checked whether the FV and FEM
+  symmetric profiles might represent two distinct symmetric continuum
+  branches. The test was negative at the current resolutions. The FV
+  `192/576` seed had FEM Newton residual norm `4.94e-01` at `h=0.06` and
+  `4.45e-01` at `h=0.05`, then FEM Newton moved to the sharper FEM root. In
+  the reverse direction, the FEM root interpolated to the FV grid had FV
+  relative residual `1.77` at `h=0.06` and `1.34` at `h=0.05`; FV Newton
+  returned to the original FV root with Omega RMS distance about `2.0e-10`.
+  Thus the present discrepancy is best treated as a discretization mismatch,
+  not evidence for symmetric-class nonuniqueness.
+- Added `docs/m3_c3_140_validation_protocol.md` as the M3 paper-level
+  validation checklist for `{c_3=140}`. The protocol separates discrete
+  residual convergence, mesh-refinement evidence, cross-discretization
+  consistency, branch separation, and branch-discovery requirements. It
+  records the current status as strong discrete upwind-FV nonuniqueness
+  evidence plus qualitative FEM corroboration, but not yet quantitative
+  continuum evidence.
 
 ### M4. Linearized operator assembly
 Status: pending
@@ -292,13 +341,17 @@ Required validation:
 ## Current recommended next milestone
 
 Continue M3, now using `{c_3=140}` as the primary nonuniqueness/symmetry-breaking
-target. The `160/480` validation gives strong discrete evidence: distinct
-symmetric and broken branches have the same boundary data, native residuals
-near roundoff, clean Poisson compatibility, a measurable basin split, and a
-broken-branch amplitude trace that appears to merge back into the symmetric
-branch near sigma `0.65` to `0.70`. The next step is continuum and independent
-discretization validation: push at least one symmetric and one broken branch to
-`192/576` or finer, sharpen the suspected bifurcation window, and make a robust
-FEM/baseline path converge instead of using the failed `h_min=0.08,h_max=0.12`
-baseline attempts as evidence. Do not start M4 or the eigensolver while this
-M3 nonuniqueness investigation is active.
+target, but first address the symmetric nextgen/FEM mismatch. The current
+`fv_upwind` nextgen branches are accurate discrete roots of the upwind FV
+system, and FEM has qualitatively matching symmetric/broken branch structure,
+but cross-initialization shows the symmetric FV and FEM roots are not accurate
+solutions of each other's discrete equations. The next M3 step should try a
+baseline-closer nextgen discretization or continuation path, for example
+`fv_centered`/low-upwind-blend continuation from the upwind branch, and re-run
+the residual and cross-initialization audits. After that, move the bifurcation
+search below sigma `0.650` and attempt an independent FEM branch-discovery
+path that does not rely on nextgen branch seeds. Do not start M4 or the
+eigensolver while this M3 nonuniqueness investigation is active.
+
+Use `docs/m3_c3_140_validation_protocol.md` as the acceptance checklist for
+any future `{c_3=140}` paper-level nonuniqueness claim.

@@ -1,0 +1,246 @@
+{
+  "boundary_convention": {
+    "omega_boundary_max_abs_difference": 2.7755575615628914e-16,
+    "omega_boundary_rms_difference": 4.949546691011986e-17,
+    "psi_neumann_max_abs_difference": 1.1102230246251565e-16,
+    "psi_neumann_rms_difference": 3.0084446554575807e-17
+  },
+  "case": {
+    "coeffs": {
+      "3": {
+        "imag": 0.0,
+        "real": 140.0
+      }
+    },
+    "name": "c3_140_symmetric_cross_initialization"
+  },
+  "distances": {
+    "omega_distances": {
+      "fem_final_vs_nextgen_reference_active": {
+        "a_at_max_abs": -30.76699905889443,
+        "a_rms": 2.4002895048939985,
+        "b_at_max_abs": -15.033771131541748,
+        "b_rms": 2.189382642169648,
+        "diff_at_max_abs": -15.733227927352683,
+        "linf": 15.733227927352683,
+        "max_abs_location": [
+          -4.010416666666666,
+          -2.041666666666666
+        ],
+        "relative_to_a_rms": 0.2731215199102936,
+        "relative_to_b_rms": 0.29943176910899116,
+        "rms": 0.655570717801375,
+        "valid_count": 21783
+      },
+      "fem_final_vs_nextgen_reference_full": {
+        "a_at_max_abs": -30.76699905889443,
+        "a_rms": 2.0881728687537757,
+        "b_at_max_abs": -15.033771131541748,
+        "b_rms": 1.9057655902491606,
+        "diff_at_max_abs": -15.733227927352683,
+        "linf": 15.733227927352683,
+        "max_abs_location": [
+          -4.010416666666666,
+          -2.041666666666666
+        ],
+        "relative_to_a_rms": 0.2724988611129656,
+        "relative_to_b_rms": 0.29858064992557853,
+        "rms": 0.5690247285423982,
+        "valid_count": 28917
+      },
+      "fem_to_fv_seed_representation_vs_fem_active": {
+        "a_at_max_abs": 28.82380637878126,
+        "a_rms": 2.3741035191393487,
+        "b_at_max_abs": 31.251264416495907,
+        "b_rms": 2.4002895048939985,
+        "diff_at_max_abs": -2.427458037714647,
+        "linf": 2.427458037714647,
+        "max_abs_location": [
+          -0.21875,
+          4.447916666666668
+        ],
+        "relative_to_a_rms": 0.029523505454091013,
+        "relative_to_b_rms": 0.029201418434307833,
+        "rms": 0.07009185819588723,
+        "valid_count": 21783
+      },
+      "fem_to_fv_seed_representation_vs_fem_full": {
+        "a_at_max_abs": 28.82380637878126,
+        "a_rms": 2.0655034838948554,
+        "b_at_max_abs": 31.251264416495907,
+        "b_rms": 2.0881728687537757,
+        "diff_at_max_abs": -2.427458037714647,
+        "linf": 2.427458037714647,
+        "max_abs_location": [
+          -0.21875,
+          4.447916666666668
+        ],
+        "relative_to_a_rms": 0.02950314965106713,
+        "relative_to_b_rms": 0.029182860912525328,
+        "rms": 0.060938858390150445,
+        "valid_count": 28917
+      },
+      "fv_from_fem_final_vs_fem_seed_active": {
+        "a_at_max_abs": -15.033771132705937,
+        "a_rms": 2.1893826421649227,
+        "b_at_max_abs": -30.76699905889443,
+        "b_rms": 2.4002895048939985,
+        "diff_at_max_abs": 15.733227926188494,
+        "linf": 15.733227926188494,
+        "max_abs_location": [
+          -4.010416666666666,
+          -2.041666666666666
+        ],
+        "relative_to_a_rms": 0.2994317690914211,
+        "relative_to_b_rms": 0.27312151989367794,
+        "rms": 0.6555707177614926,
+        "valid_count": 21783
+      },
+      "fv_from_fem_final_vs_fem_seed_full": {
+        "a_at_max_abs": -15.033771132705937,
+        "a_rms": 1.9057655902450756,
+        "b_at_max_abs": -30.76699905889443,
+        "b_rms": 2.0881728687537757,
+        "diff_at_max_abs": 15.733227926188494,
+        "linf": 15.733227926188494,
+        "max_abs_location": [
+          -4.010416666666666,
+          -2.041666666666666
+        ],
+        "relative_to_a_rms": 0.29858064990805816,
+        "relative_to_b_rms": 0.2724988610963916,
+        "rms": 0.5690247285077887,
+        "valid_count": 28917
+      },
+      "fv_from_fem_final_vs_nextgen_reference_active": {
+        "a_at_max_abs": -16.277203451479767,
+        "a_rms": 2.1893826421649227,
+        "b_at_max_abs": -16.27720344123286,
+        "b_rms": 2.189382642169648,
+        "diff_at_max_abs": -1.0246907322652987e-08,
+        "linf": 1.0246907322652987e-08,
+        "max_abs_location": [
+          3.71875,
+          -2.40625
+        ],
+        "relative_to_a_rms": 1.0507263662171938e-10,
+        "relative_to_b_rms": 1.0507263662149262e-10,
+        "rms": 2.300442067860948e-10,
+        "valid_count": 21783
+      },
+      "fv_from_fem_final_vs_nextgen_reference_full": {
+        "a_at_max_abs": -16.277203451479767,
+        "a_rms": 1.9057655902450756,
+        "b_at_max_abs": -16.27720344123286,
+        "b_rms": 1.9057655902491606,
+        "diff_at_max_abs": -1.0246907322652987e-08,
+        "linf": 1.0246907322652987e-08,
+        "max_abs_location": [
+          3.71875,
+          -2.40625
+        ],
+        "relative_to_a_rms": 1.0476739288866196e-10,
+        "relative_to_b_rms": 1.0476739288843739e-10,
+        "rms": 1.996620923468986e-10,
+        "valid_count": 28917
+      }
+    },
+    "psi_distances": {
+      "fem_final_vs_nextgen_reference_full": {
+        "a_at_max_abs": 1.2519451051755546,
+        "a_rms": 2.6365325956386707,
+        "b_at_max_abs": 1.1506038207218627,
+        "b_rms": 2.643365917695156,
+        "diff_at_max_abs": 0.10134128445369184,
+        "linf": 0.10134128445369184,
+        "max_abs_location": [
+          3.791666666666668,
+          -2.479166666666666
+        ],
+        "relative_to_a_rms": 0.0041278844646941565,
+        "relative_to_b_rms": 0.004117213537990293,
+        "rms": 0.01088330194219663,
+        "valid_count": 28917
+      },
+      "fem_to_fv_seed_representation_vs_fem_full": {
+        "a_at_max_abs": 1.0375533448967118,
+        "a_rms": 2.636688713278891,
+        "b_at_max_abs": 1.0275910615821546,
+        "b_rms": 2.6365325956386707,
+        "diff_at_max_abs": 0.009962283314557174,
+        "linf": 0.009962283314557174,
+        "max_abs_location": [
+          3.791666666666668,
+          -2.40625
+        ],
+        "relative_to_a_rms": 0.00038995498494858317,
+        "relative_to_b_rms": 0.00038997807544712015,
+        "rms": 0.001028189907500769,
+        "valid_count": 28917
+      },
+      "fv_from_fem_final_vs_nextgen_reference_full": {
+        "a_at_max_abs": 1.367381585501364,
+        "a_rms": 2.6433659176947324,
+        "b_at_max_abs": 1.3673815855170226,
+        "b_rms": 2.643365917695156,
+        "diff_at_max_abs": -1.5658585539313208e-11,
+        "linf": 1.5658585539313208e-11,
+        "max_abs_location": [
+          0.29166666666666696,
+          4.302083333333334
+        ],
+        "relative_to_a_rms": 3.1717796479501933e-13,
+        "relative_to_b_rms": 3.171779647949685e-13,
+        "rms": 8.384174219829337e-13,
+        "valid_count": 28917
+      }
+    }
+  },
+  "fem_to_fv": {
+    "final_omega_non3": 1.1640465159757975e-13,
+    "final_relative_residual": 2.1636329334073303e-12,
+    "final_residual_norm": 5.300791925928966e-11,
+    "initial_projected_omega_residual_norm": 35.652576954320324,
+    "initial_projected_poisson_residual_norm": 1.1636650538439647e-11,
+    "initial_projected_relative_residual": 1.3429834897091417,
+    "initial_projected_residual_norm": 35.652576954320324,
+    "message": "converged",
+    "runtime_sec": 63.347789131104946,
+    "sampled_psi_relative_residual": 1.3074911942461251,
+    "sampled_psi_residual_norm": 36.2631869379488,
+    "status": "completed"
+  },
+  "fv_reference": {
+    "native_relative_residual": 3.3012049932486206e-09,
+    "native_residual_norm": 8.087786289371471e-08,
+    "omega_non3": 1.3578137935435303e-13
+  },
+  "fv_to_fem": {
+    "final_newton_bnorm": 2.3421504810759015e-14,
+    "final_weak_residuals": {
+      "Omega_l2": 0.0003333472604678123,
+      "Psi_l2": 6.53725056863966e-05
+    },
+    "initial_newton_bnorm": 0.44517653145079794,
+    "initial_to_final_bnorm_ratio": 19007170335455.965,
+    "newton_iterations": 7,
+    "omega_non3": 0.009255305551905641,
+    "runtime_sec": 85.98439949657768,
+    "status": "completed"
+  },
+  "interpretation_notes": [
+    "If FV and FEM were approximating the same symmetric continuum root, the FV seed should have a small FEM native residual and FEM-to-FV projected seed should have a small FV native residual.",
+    "If they were two genuine symmetric continuum roots, each solver should ideally admit a nearby root after interpolation from the other discretization.",
+    "Large native residuals at the interpolated seeds and Newton convergence back to the solver's own reference root point instead to discretization mismatch at the tested resolutions."
+  ],
+  "mesh": {
+    "h_max": 0.05,
+    "h_min": 0.05
+  },
+  "mesh_label": "h0p05_0p05",
+  "plot_paths": [
+    "experiments/raw/nextgen/m3_c3_140_symmetric_cross_initialization/plots/h0p05_0p05/symmetric_cross_initialization.png"
+  ],
+  "runtime_sec": 396.9654294261709,
+  "status": "completed"
+}

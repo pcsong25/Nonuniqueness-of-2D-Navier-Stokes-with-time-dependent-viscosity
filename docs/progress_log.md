@@ -1603,3 +1603,387 @@ Artifacts:
   `experiments/raw/nextgen/m3_c3_140_nonuniqueness_validation/plots/`.
 - Registry rows appended for the branch refinements, basin sweep, amplitude
   traces, and baseline attempts.
+
+## 2026-04-30 — M3 c3=140 refinement to 192/576 and h=0.06 FEM cross-check
+
+Scope stayed in M3; no M4 operator assembly or eigensolver work was started.
+
+Experiment added:
+- Added `experiments/run_m3_c3_140_refine192_fem_crosscheck.py`.
+- The script refines the saved `160/480` symmetric and m1 broken branches to
+  `192/576`, traces both branches through sigma `0.65` to `0.70` in steps of
+  `0.005`, and runs a fine FEM/baseline cross-check on a uniform
+  `h_min=h_max=0.06` disk mesh.
+- The FEM cross-check is a residual-line-search Newton solve seeded from the
+  refined nextgen branch fields. It is an independent-discretization
+  confirmation of the two branches, not an independent branch-discovery
+  continuation from zero data.
+
+Validation commands:
+- `PYTHONDONTWRITEBYTECODE=1 python -m py_compile experiments/run_m3_c3_140_refine192_fem_crosscheck.py`
+  passed.
+- `PYTHONDONTWRITEBYTECODE=1 python -m pytest tests/test_nextgen_profile.py -q`
+  passed before the long run: `13` tests.
+- `PYTHONDONTWRITEBYTECODE=1 python experiments/run_m3_c3_140_refine192_fem_crosscheck.py --stage nextgen`
+  completed the `192/576` branch refinement and amplitude trace.
+- `PYTHONDONTWRITEBYTECODE=1 conda run --no-capture-output -n femx_spc python experiments/run_m3_c3_140_refine192_fem_crosscheck.py --stage baseline --h-min 0.06 --h-max 0.06`
+  completed the fine FEM cross-checks. The usual non-fatal OpenMPI TCP bind
+  warning appeared during the serial baseline run.
+- `PYTHONDONTWRITEBYTECODE=1 python -m json.tool experiments/summaries/m3_c3_140_refine192_fem_crosscheck_2026-04-30.json`
+  passed.
+
+Nextgen refinement results at sigma `1`:
+
+| run | runtime | native residual | common sampled residual | Omega non-3 fraction | physical Poisson residual |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| symmetric `192/576` | `26.545 s` | `3.30e-09` | `0.606` | `1.36e-13` | `1.17e-11` |
+| m1 broken `192/576` | `55.539 s` | `4.92e-13` | `0.585` | `3.07e-01` | `1.17e-11` |
+
+Bifurcation-window trace on `192/576`:
+- The symmetric branch stayed threefold to roundoff throughout the trace. In
+  the dense window from sigma `0.700` to `0.650`, Omega non-3 remained around
+  `1e-13`.
+- The broken branch did not collapse in the old `160/480` window. It retained
+  Omega non-3 `0.123` at sigma `0.700`, `0.0994` at `0.680`, `0.0848` at
+  `0.670`, `0.0656` at `0.655`, and `0.0597` at `0.650`.
+- Therefore the apparent merge/bifurcation point is below sigma `0.650` on the
+  `192/576` grid. The previous `160/480` collapse near `0.65` was not stable
+  under refinement.
+
+FEM/baseline cross-check:
+- The `h_min=h_max=0.06` disk mesh had `202248` cells and `101649` vertices.
+- The symmetric-seeded FEM Newton solve completed in `50.594 s`. The line
+  search reduced the assembled residual norm from `4.94e-01` to `7.32e-15`
+  in `7` Newton iterations. The common sampled residual was `0.725`, quick
+  weak residual norms were `Omega_l2=3.44e-04`, `Psi_l2=6.26e-05`, and Omega
+  non-3 was `0.0151`.
+- The broken-seeded FEM Newton solve completed in `206.741 s`. It needed
+  damped steps initially, then full Newton steps, reducing the assembled
+  residual norm from `4.95e-01` to `8.48e-15` in `24` iterations. The common
+  sampled residual was `0.670`, quick weak residual norms were
+  `Omega_l2=3.44e-04`, `Psi_l2=1.16e-04`, and Omega non-3 was `0.525`.
+- The two FEM solutions are clearly distinct on a common polar probe:
+  Omega RMS separation `1.276`, Omega Linf separation `38.408`, and
+  offset-removed psi RMS separation `0.0462`.
+
+Assessment:
+- The `192/576` refinement strengthens the nonuniqueness evidence. The broken
+  branch survives refinement with larger non-threefold content than at
+  `160/480`, clean Poisson compatibility, and small native residual.
+- The refined amplitude trace shows the broken branch persists at least to
+  sigma `0.650`; the bifurcation window must be moved lower.
+- The fine FEM line-search Newton runs are the first credible independent
+  discretization cross-check for the c3=140 nonuniqueness. They converge to
+  two distinct FEM roots with small assembled residuals and distinct symmetry
+  diagnostics.
+- Remaining caveat: the FEM runs were seeded from nextgen branch fields. This
+  validates that the FEM discretization has nearby symmetric and broken roots,
+  but it does not yet show that baseline zero-continuation or pseudo-arclength
+  continuation can discover both branches without nextgen branch seeds.
+
+Artifacts:
+- Summary:
+  `experiments/summaries/m3_c3_140_refine192_fem_crosscheck_2026-04-30.json`.
+- State snapshots:
+  `experiments/raw/nextgen/m3_c3_140_refine192_fem_crosscheck/states/`.
+- Plots:
+  `experiments/raw/nextgen/m3_c3_140_refine192_fem_crosscheck/plots/`.
+- Registry rows appended for the `192/576` refinements, amplitude traces, and
+  the two `h=0.06` baseline/FEM cross-checks.
+
+## 2026-04-30 — M3 c3=140 residual-audit table and branch-comparison plots
+
+Scope stayed in M3; no M4 operator assembly or eigensolver work was started.
+
+Experiment added:
+- Added `experiments/run_m3_c3_140_residual_audit.py`.
+- The script audits the existing `{c_3=140}` symmetric and m1 broken branch
+  data at nextgen `160/480`, nextgen `192/576`, and baseline/FEM
+  `h_min=h_max=0.06`.
+- It regenerates and caches the FEM branch fields because the earlier FEM
+  summary intentionally sanitized non-serializable `dolfinx` Function objects.
+  A repo-local FEniCS cache is used under
+  `experiments/raw/nextgen/m3_c3_140_residual_audit/fenics_cache` to keep JIT
+  files inside the writable project tree.
+
+Validation commands:
+- `PYTHONDONTWRITEBYTECODE=1 python -m py_compile experiments/run_m3_c3_140_residual_audit.py experiments/run_m3_c3_140_refine192_fem_crosscheck.py`
+  passed.
+- `PYTHONDONTWRITEBYTECODE=1 python -m pytest tests/test_nextgen_profile.py -q`
+  passed: `13` tests.
+- `PYTHONDONTWRITEBYTECODE=1 conda run --no-capture-output -n femx_spc python experiments/run_m3_c3_140_residual_audit.py --refresh-fem`
+  completed. The usual non-fatal OpenMPI TCP bind warning appeared; conda
+  also printed duplicate-rpath linker warnings while compiling FEniCS forms.
+- `PYTHONDONTWRITEBYTECODE=1 python -m json.tool experiments/summaries/m3_c3_140_residual_audit_2026-04-30.json`
+  passed.
+
+Audit results:
+
+| run | native/weak residual | common sampled residual | Omega non-3 | compatibility defect | branch runtime |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| nextgen symmetric `160/480` | native `3.46e-13` | `0.602` | `6.88e-14` | `-9.23e-14` | loaded |
+| nextgen broken `160/480` | native `3.55e-13` | `0.588` | `0.252` | `-5.79e-14` | loaded |
+| nextgen symmetric `192/576` | native `3.30e-09` | `0.606` | `1.36e-13` | `5.48e-14` | loaded |
+| nextgen broken `192/576` | native `4.92e-13` | `0.585` | `0.307` | `6.29e-14` | loaded |
+| FEM symmetric `h=0.06` | weak `3.44e-04`, `6.26e-05` | `0.725` | `0.0151` | `-6.26e-05` | `50.843 s` |
+| FEM broken `h=0.06` | weak `3.44e-04`, `1.16e-04` | `0.670` | `0.525` | `-1.16e-04` | `209.945 s` |
+
+Branch-separation audit:
+- Nextgen `160/480` symmetric-vs-broken separation on the standard polar
+  probe: Omega RMS `0.478`, Omega Linf `12.331`, offset-removed psi RMS
+  `0.0149`.
+- Nextgen `192/576` symmetric-vs-broken separation: Omega RMS `0.607`, Omega
+  Linf `15.297`, offset-removed psi RMS `0.0190`.
+- FEM `h=0.06` symmetric-vs-broken separation on the common Cartesian audit
+  grid: Omega RMS `1.390`, Omega Linf `37.917`, offset-removed psi RMS
+  `0.0507`.
+- Nextgen-vs-FEM branch agreement is qualitative but branch-consistent:
+  symmetric Omega RMS difference `0.481`, broken Omega RMS difference `1.177`.
+
+Definitions recorded by the audit:
+- Nextgen native residual is the weighted discrete FV residual
+  `sqrt(||R_omega||_w^2 + ||R_poisson||_w^2) / max(||Omega||_w, ||Lap psi||_w)`.
+- FEM weak residuals are raw PETSc vector norms of the assembled Galerkin
+  residuals for the Omega and psi equations.
+- Common sampled strong residual samples both codes onto the same Cartesian
+  grid and evaluates centered-difference strong residuals
+  `v.grad(Omega) - Omega - eps Lap Omega` and `Lap psi - Omega`.
+- Symmetry breaking is the weighted relative norm of
+  `f - (f + rotate_120 f + rotate_240 f)/3`.
+- Compatibility defect is `integral_disk Omega` minus the discrete outer
+  Neumann flux for psi.
+- Branch separation is RMS/Linf difference on common probes; psi differences
+  have their mean offset removed because psi has a Neumann gauge.
+
+Artifacts:
+- Script: `experiments/run_m3_c3_140_residual_audit.py`.
+- Summary:
+  `experiments/summaries/m3_c3_140_residual_audit_2026-04-30.json`.
+- CSV table:
+  `experiments/raw/nextgen/m3_c3_140_residual_audit/tables/c3_140_residual_audit_table.csv`.
+- FEM cache:
+  `experiments/raw/nextgen/m3_c3_140_residual_audit/fem_cache/`.
+- Plots:
+  `experiments/raw/nextgen/m3_c3_140_residual_audit/plots/omega_nextgen_fem_branch_comparison.png`,
+  `experiments/raw/nextgen/m3_c3_140_residual_audit/plots/omega_branch_difference_common_scale.png`.
+- Registry row appended:
+  `m3-c3-140-residual-audit-validation-table`.
+
+Assessment:
+- The residual audit packages the current c3=140 nonuniqueness evidence into a
+  reproducible validation table. The two nextgen branches are discrete roots
+  with small native residuals, near-roundoff compatibility defects, and stable
+  order-one branch separation under refinement.
+- The FEM cross-check again finds two distinct roots with small assembled
+  weak residuals. FEM symmetry metrics differ in magnitude from nextgen, but
+  the branch ordering and broken-vs-symmetric distinction persist.
+- The common sampled strong residual remains a cross-code diagnostic, not the
+  native solver residual. It is useful for comparing both discretizations on a
+  shared grid, but the native FV and FEM weak residuals are the primary
+  discrete accuracy measures.
+
+## 2026-04-30 — M3 c3=140 symmetric nextgen/FEM discrepancy audit
+
+Scope stayed in M3; no M4 operator assembly or eigensolver work was started.
+
+Motivation:
+- Visual inspection of the residual-audit plot showed a large
+  `FEM symmetric - nextgen symmetric` difference, concentrated near the three
+  sharp symmetric cores. This needed to be checked before treating the FEM
+  cross-check as quantitative validation.
+
+Experiment added:
+- Added `experiments/run_m3_c3_140_symmetric_discrepancy_audit.py`.
+- The script compares the nextgen symmetric `160/480` and `192/576` states,
+  reruns the symmetric FEM solve, samples FEM both through the old generic
+  `LinearNDInterpolator` and through direct DOLFINx cell lookup, checks
+  nextgen-vs-baseline boundary conventions, tests small rotation/scale fits,
+  and writes close-up plots.
+
+Validation commands:
+- `PYTHONDONTWRITEBYTECODE=1 python -m py_compile experiments/run_m3_c3_140_symmetric_discrepancy_audit.py`
+  passed.
+- `PYTHONDONTWRITEBYTECODE=1 conda run --no-capture-output -n femx_spc python experiments/run_m3_c3_140_symmetric_discrepancy_audit.py`
+  completed the direct `h_min=h_max=0.06` FEM sampling audit. The usual
+  non-fatal OpenMPI TCP bind warning appeared.
+- `PYTHONDONTWRITEBYTECODE=1 conda run --no-capture-output -n femx_spc python experiments/run_m3_c3_140_symmetric_discrepancy_audit.py --h-min 0.05 --h-max 0.05`
+  completed a finer symmetric FEM check on a `290895`-cell mesh.
+- A quick residual check showed that the nextgen `fv_upwind` symmetric
+  `192/576` state has native relative residual `3.30e-09` in `fv_upwind`, but
+  relative residual `0.371` if evaluated with the `fv_centered` transport
+  discretization.
+
+Results:
+- Boundary conventions are not the source of the discrepancy:
+  nextgen and baseline/FEM Fourier boundary values agree to roundoff
+  (`Omega` max difference `2.78e-16`, psi Neumann max difference `1.11e-16`).
+- FEM boundary enforcement is also not the source: the symmetric FEM rerun had
+  `Omega` Dirichlet max/RMS defect `0`.
+- The old plot interpolation is not the source: direct DOLFINx cell sampling
+  and the old `LinearNDInterpolator` sampling agree to roundoff at `h=0.06`
+  (`3.59e-15` RMS on the audit grid) and to about `1.0e-09` RMS at `h=0.05`.
+- Nextgen self-refinement is much smaller than the FEM/FV discrepancy:
+  nextgen symmetric `160/480` vs `192/576` has Omega RMS `0.0649`
+  (`3.4%` relative to the `192/576` RMS) on the audit grid.
+- FEM vs nextgen symmetric remains large:
+  `h=0.06` direct FEM vs nextgen `192/576` has Omega RMS `0.546`
+  (`28.6%` relative to the nextgen RMS) and Linf `14.68`.
+  `h=0.05` direct FEM vs nextgen `192/576` has Omega RMS `0.569`
+  (`29.9%` relative to the nextgen RMS) and Linf `15.73`.
+- Small rigid rotation does not explain the difference: the best sweep angle
+  was `0` degrees for both full and active masks. A scalar least-squares
+  rescaling improves RMS only mildly.
+- The close-up plots show that FEM is producing sharper/higher core peaks than
+  the current nextgen `fv_upwind` state; the difference is not only a
+  visualization artifact.
+
+Assessment:
+- The user's concern is valid. The symmetric nextgen/FEM discrepancy is real,
+  not an artifact of boundary convention, psi gauge, plotting interpolation,
+  or a small rotational misalignment.
+- The most likely cause is a discretization mismatch: current nextgen
+  `fv_upwind` solves its own upwind-stabilized discrete equation accurately,
+  but for this large-amplitude symmetric profile it appears too diffusive
+  around the sharp cores compared with the baseline/FEM Galerkin equation.
+- Therefore the current FEM cross-check should be interpreted as qualitative
+  evidence that FEM also has separated symmetric and broken roots, not as a
+  high-accuracy quantitative match between nextgen and FEM branches.
+- Before making a paper-level continuum nonuniqueness claim, M3 should either
+  produce a baseline-closer nextgen discretization for `{c_3=140}` or add
+  a direct FEM refinement/branch study showing the nonunique branches in FEM
+  independently of the upwind FV profiles.
+
+Artifacts:
+- Script:
+  `experiments/run_m3_c3_140_symmetric_discrepancy_audit.py`.
+- Summaries:
+  `experiments/summaries/m3_c3_140_symmetric_discrepancy_audit_2026-04-30.json`,
+  `experiments/summaries/m3_c3_140_symmetric_discrepancy_audit_h0p05_0p05_2026-04-30.json`.
+- Plots:
+  `experiments/raw/nextgen/m3_c3_140_symmetric_discrepancy_audit/plots/symmetric_direct_fem_vs_nextgen.png`,
+  `experiments/raw/nextgen/m3_c3_140_symmetric_discrepancy_audit/plots/symmetric_top_core_closeup.png`,
+  `experiments/raw/nextgen/m3_c3_140_symmetric_discrepancy_audit/plots/h0p05_0p05/`.
+- Registry rows appended for the direct `h=0.06` and `h=0.05` discrepancy
+  audits.
+
+## 2026-04-30 — M3 c3=140 symmetric FV/FEM cross-initialization test
+
+Scope stayed in M3; no M4 operator assembly or eigensolver work was started.
+
+Motivation:
+- A possible interpretation of the symmetric nextgen/FEM discrepancy is
+  nonuniqueness even inside the threefold-symmetric class. A direct numerical
+  test is to interpolate each solver's symmetric solution onto the other
+  solver's grid and ask whether it is already a good native discrete solution,
+  or whether Newton moves it to a different root.
+
+Experiment added:
+- Added `experiments/run_m3_c3_140_symmetric_cross_initialization.py`.
+- The script performs both directions:
+  1. FV `192/576` symmetric state seeds the FEM `h=0.06` or `h=0.05`
+     line-search Newton solve.
+  2. The converged FEM symmetric state is interpolated onto the FV `192/576`
+     polar cell centers, projected through the FV Poisson solve, and used as
+     the initial state for the nextgen reduced FV Newton solve.
+- It reports native residuals before and after Newton and distances on the
+  common `193x193` audit grid.
+
+Validation commands:
+- `PYTHONDONTWRITEBYTECODE=1 python -m py_compile experiments/run_m3_c3_140_symmetric_cross_initialization.py`
+  passed.
+- `PYTHONDONTWRITEBYTECODE=1 python -m pytest tests/test_nextgen_profile.py -q`
+  passed: `13` tests.
+- `PYTHONDONTWRITEBYTECODE=1 conda run --no-capture-output -n femx_spc python experiments/run_m3_c3_140_symmetric_cross_initialization.py --h-min 0.06 --h-max 0.06`
+  completed.
+- `PYTHONDONTWRITEBYTECODE=1 conda run --no-capture-output -n femx_spc python experiments/run_m3_c3_140_symmetric_cross_initialization.py --h-min 0.05 --h-max 0.05`
+  completed.
+- JSON validation passed for both summaries. The usual non-fatal OpenMPI TCP
+  bind warning appeared during FEM runs.
+
+Results at FEM `h=0.06`:
+- FV-to-FEM: the FV seed had FEM Newton residual norm `4.94e-01`; FEM Newton
+  converged in `7` iterations to residual norm `7.32e-15`. The final FEM
+  profile stayed far from the FV reference: Omega RMS `0.546`, Linf `14.68`
+  on the audit grid.
+- FEM-to-FV: the FEM state interpolated to the FV grid and Poisson-projected
+  had FV relative residual `1.77` and Omega residual norm `46.84`; FV Newton
+  converged to relative residual `2.95e-12`.
+- The FV final from the FEM seed returned to the original FV reference:
+  Omega RMS `2.00e-10`, Linf `1.02e-08`; psi RMS `8.40e-13`.
+- Interpolating FEM through the FV grid itself was not the limiting error:
+  FEM-to-FV-grid representation vs direct FEM had Omega RMS `0.0551`
+  on the same audit grid, much smaller than the FEM-vs-FV discrepancy.
+
+Results at FEM `h=0.05`:
+- FV-to-FEM: the FV seed had FEM Newton residual norm `4.45e-01`; FEM Newton
+  converged in `7` iterations to residual norm `2.34e-14`. The final FEM
+  profile was still far from FV: Omega RMS `0.569`, Linf `15.73`.
+- FEM-to-FV: the FEM state interpolated to the FV grid and Poisson-projected
+  had FV relative residual `1.34` and Omega residual norm `35.65`; FV Newton
+  converged to relative residual `2.16e-12`.
+- The FV final again returned to the original FV reference: Omega RMS
+  `2.00e-10`, Linf `1.02e-08`; psi RMS `8.38e-13`.
+
+Assessment:
+- This cross-initialization test does not support the hypothesis that the
+  current FV and FEM symmetric profiles are two well-resolved symmetric
+  continuum branches. Each interpolated profile has a large native residual
+  on the other solver's grid, and Newton moves it back to the receiving
+  solver's own symmetric root.
+- The result also strengthens the previous discretization-mismatch diagnosis:
+  current `fv_upwind` gives an accurate root of the upwind FV system, FEM
+  gives an accurate root of the Galerkin baseline system, but these two
+  discrete systems are not yet approximating the same symmetric profile at
+  the tested resolutions/discretizations.
+- This does not prove symmetric-class uniqueness for the PDE. It only says
+  that the present FV/FEM discrepancy is not positive evidence for
+  same-symmetry nonuniqueness.
+
+Artifacts:
+- Script:
+  `experiments/run_m3_c3_140_symmetric_cross_initialization.py`.
+- Summaries:
+  `experiments/summaries/m3_c3_140_symmetric_cross_initialization_h0p06_0p06_2026-04-30.json`,
+  `experiments/summaries/m3_c3_140_symmetric_cross_initialization_h0p05_0p05_2026-04-30.json`.
+- Plots:
+  `experiments/raw/nextgen/m3_c3_140_symmetric_cross_initialization/plots/h0p06_0p06/symmetric_cross_initialization.png`,
+  `experiments/raw/nextgen/m3_c3_140_symmetric_cross_initialization/plots/h0p05_0p05/symmetric_cross_initialization.png`.
+- Registry rows appended for both cross-initialization runs.
+
+## 2026-04-30 — M3 c3=140 paper-level validation protocol
+
+Scope stayed in M3; no M4 operator assembly or eigensolver work was started.
+No numerical experiments were run in this step.
+
+Documentation added:
+- Added `docs/m3_c3_140_validation_protocol.md`.
+- The protocol separates three claims that must not be conflated:
+  1. Newton solved a discrete nonlinear system.
+  2. A mesh sequence approximates a continuum profile.
+  3. Two distinct continuum profiles exist for the same boundary data.
+- It defines five validation gates:
+  discrete solve quality, single-discretization refinement,
+  cross-discretization consistency, nonuniqueness evidence, and branch
+  discovery/continuation.
+
+Main protocol decisions:
+- Small native residual is necessary but not sufficient; it certifies only
+  the chosen discrete equations.
+- The current `{c_3=140}` nextgen `fv_upwind` branches pass discrete-solver
+  quality checks, but the symmetric FV/FEM cross-initialization failure blocks
+  quantitative continuum validation.
+- Paper-level evidence should require refinement error estimates that are
+  much smaller than branch separation, preferably with branch separation at
+  least `5x` to `10x` larger than estimated discretization error.
+- Future evidence bundles should include native residuals, boundary and
+  compatibility defects, refinement tables, cross-initialization tables,
+  branch separation, symmetry metrics, plots, saved states, and exact
+  commands/tolerances.
+
+Assessment:
+- The protocol makes the current M3 blocker explicit: the `{c_3=140}`
+  nonuniqueness evidence is strong for the upwind FV discrete system and
+  qualitatively supported by FEM, but not yet a paper-level continuum claim.
+- The next M3 work should target a baseline-closer nextgen discretization or
+  a FEM-only branch/refinement study, then run the protocol gates before any
+  M4 profile consumption.

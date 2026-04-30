@@ -1,0 +1,151 @@
+{
+  "boundary_convention": {
+    "omega_boundary_max_abs_difference": 2.7755575615628914e-16,
+    "omega_boundary_rms_difference": 4.949546691011986e-17,
+    "psi_neumann_max_abs_difference": 1.1102230246251565e-16,
+    "psi_neumann_rms_difference": 3.0084446554575807e-17
+  },
+  "case": {
+    "coeffs": {
+      "3": {
+        "imag": 0.0,
+        "real": 140.0
+      }
+    },
+    "name": "c3_140_symmetric_discrepancy_audit"
+  },
+  "direct_sampling_note": "direct FEM samples evaluated through dolfinx cell lookup on the actual FEM mesh",
+  "fem_boundary_defects": {
+    "note": "FEM Neumann data are natural flux data; max_abs reports prescribed flux magnitude, not a pointwise recovered flux error.",
+    "omega_dirichlet_max_abs": 0.0,
+    "omega_dirichlet_rms": 0.0,
+    "psi_neumann_data_max_abs": 0.474123449075949
+  },
+  "interpretation_notes": [
+    "The full-mask comparison uses the 193x193 residual-audit Cartesian sample grid restricted to r <= 7.",
+    "The active-mask comparison additionally keeps points where either nextgen 160/480 or nextgen 192/576 has |Omega| > 0.5.",
+    "FEM LinearND samples are the old cached generic nodal interpolation; FEM direct samples use DOLFINx cell lookup on the actual mesh."
+  ],
+  "metrics": {
+    "fem_direct_vs_nextgen_192_active": {
+      "a_at_max_abs": 29.71551757158074,
+      "a_rms": 2.392854816983497,
+      "b_at_max_abs": 15.033771131539917,
+      "b_rms": 2.1883827469925845,
+      "diff_at_max_abs": 14.681746440040824,
+      "linf": 14.681746440040824,
+      "max_abs_location": [
+        4.010416666666668,
+        -2.041666666666666
+      ],
+      "relative_to_a_rms": 0.26268833532796876,
+      "relative_to_b_rms": 0.2872326833223001,
+      "rms": 0.6285750485549062,
+      "valid_count": 21804
+    },
+    "fem_direct_vs_nextgen_192_full": {
+      "a_at_max_abs": 29.71551757158074,
+      "a_rms": 2.0826977451580473,
+      "b_at_max_abs": 15.033771131539917,
+      "b_rms": 1.9057655902491606,
+      "diff_at_max_abs": 14.681746440040824,
+      "linf": 14.681746440040824,
+      "max_abs_location": [
+        4.010416666666668,
+        -2.041666666666666
+      ],
+      "relative_to_a_rms": 0.2620982080403723,
+      "relative_to_b_rms": 0.28643152635801383,
+      "rms": 0.5458713468956482,
+      "valid_count": 28917
+    },
+    "fem_linear_vs_fem_direct_active": {
+      "a_at_max_abs": -6.050188213058381,
+      "a_rms": 2.392854816983497,
+      "b_at_max_abs": -6.050188213058267,
+      "b_rms": 2.392854816983497,
+      "diff_at_max_abs": -1.1368683772161603e-13,
+      "linf": 1.1368683772161603e-13,
+      "max_abs_location": [
+        0.2187500000000009,
+        4.739583333333334
+      ],
+      "relative_to_a_rms": 1.714344039243029e-15,
+      "relative_to_b_rms": 1.714344039243029e-15,
+      "rms": 4.1021763922696276e-15,
+      "valid_count": 21804
+    },
+    "fem_linear_vs_fem_direct_full": {
+      "a_at_max_abs": -6.050188213058381,
+      "a_rms": 2.082697745158047,
+      "b_at_max_abs": -6.050188213058267,
+      "b_rms": 2.0826977451580473,
+      "diff_at_max_abs": -1.1368683772161603e-13,
+      "linf": 1.1368683772161603e-13,
+      "max_abs_location": [
+        0.2187500000000009,
+        4.739583333333334
+      ],
+      "relative_to_a_rms": 1.7224940764429703e-15,
+      "relative_to_b_rms": 1.72249407644297e-15,
+      "rms": 3.587434529055867e-15,
+      "valid_count": 28917
+    },
+    "least_squares_scale_active": {
+      "rms_after_scaling": 0.6162729216225682,
+      "rms_before_scaling": 0.6285750485549062,
+      "scale_a_to_b": 1.0565490062585918
+    },
+    "least_squares_scale_full": {
+      "rms_after_scaling": 0.5352881217863774,
+      "rms_before_scaling": 0.5458713468956482,
+      "scale_a_to_b": 1.0561286263526155
+    },
+    "nextgen_160_vs_192_active": {
+      "a_at_max_abs": -15.468329990915088,
+      "a_rms": 2.164961978278247,
+      "b_at_max_abs": -16.722384259265798,
+      "b_rms": 2.1883827469925845,
+      "diff_at_max_abs": 1.2540542683507105,
+      "linf": 1.2540542683507105,
+      "max_abs_location": [
+        -3.9375,
+        -1.96875
+      ],
+      "relative_to_a_rms": 0.0344935605238426,
+      "relative_to_b_rms": 0.03412439945991394,
+      "rms": 0.07467724702955873,
+      "valid_count": 21804
+    },
+    "nextgen_160_vs_192_full": {
+      "a_at_max_abs": -15.468329990915088,
+      "a_rms": 1.885521078342741,
+      "b_at_max_abs": -16.722384259265798,
+      "b_rms": 1.9057655902491606,
+      "diff_at_max_abs": 1.2540542683507105,
+      "linf": 1.2540542683507105,
+      "max_abs_location": [
+        -3.9375,
+        -1.96875
+      ],
+      "relative_to_a_rms": 0.034395650086136466,
+      "relative_to_b_rms": 0.034030272963545646,
+      "rms": 0.06485372324071162,
+      "valid_count": 28917
+    },
+    "rotation_sweep_active": {
+      "angle_deg": 0.0,
+      "rms": 0.6285750485549062
+    },
+    "rotation_sweep_full": {
+      "angle_deg": 0.0,
+      "rms": 0.5458713468956482
+    }
+  },
+  "plot_paths": [
+    "experiments/raw/nextgen/m3_c3_140_symmetric_discrepancy_audit/plots/symmetric_direct_fem_vs_nextgen.png",
+    "experiments/raw/nextgen/m3_c3_140_symmetric_discrepancy_audit/plots/symmetric_top_core_closeup.png"
+  ],
+  "runtime_sec": 181.07827789802104,
+  "status": "completed"
+}
