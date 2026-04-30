@@ -1,0 +1,3127 @@
+{
+  "baseline_comparisons": {
+    "broken_m1_160_480_vs_baseline_continuation_h0.08_0.12": {
+      "omega_probe_linf": 6102495.551987583,
+      "omega_probe_rms": 646863.0727869635,
+      "psi_probe_linf_offset_removed": 8472.050262384106,
+      "psi_probe_mean_offset": -4474.120354636746,
+      "psi_probe_rms_offset_removed": 1016.3059722352992,
+      "valid_probe_count": 65520
+    },
+    "broken_m2_160_480_vs_baseline_continuation_h0.08_0.12": {
+      "omega_probe_linf": 6102495.551957187,
+      "omega_probe_rms": 646863.0716115626,
+      "psi_probe_linf_offset_removed": 8472.05198163213,
+      "psi_probe_mean_offset": -4474.120354636746,
+      "psi_probe_rms_offset_removed": 1016.308242549585,
+      "valid_probe_count": 65520
+    },
+    "symmetric_160_480_vs_baseline_continuation_h0.08_0.12": {
+      "omega_probe_linf": 6102495.551916882,
+      "omega_probe_rms": 646863.0735329209,
+      "psi_probe_linf_offset_removed": 8472.051788443017,
+      "psi_probe_mean_offset": -4474.120354636746,
+      "psi_probe_rms_offset_removed": 1016.3064361115994,
+      "valid_probe_count": 65520
+    }
+  },
+  "baseline_runs": [
+    {
+      "common_residuals": {
+        "lap_psi_l2": 5486412.6533231735,
+        "omega_field_l2": 9643287.267849393,
+        "omega_strong_l2": 604507480819.1561,
+        "poisson_strong_l2": 4571065.194230092,
+        "profile_strong_l2": 604507480836.4385,
+        "profile_strong_relative": 62686.8684967894,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "label": "baseline_continuation_h0.08_0.12",
+      "mesh": {
+        "h_max": 0.12,
+        "h_min": 0.08
+      },
+      "mesh_cells": 50674,
+      "mesh_vertices": 25600,
+      "residuals": {
+        "meta": {
+          "R": 150.0,
+          "Rdom": 10.0,
+          "eps": 0.0044444444444444444,
+          "mu": 0.8,
+          "sigma": 1.0
+        },
+        "norms": {
+          "Omega_l2": 34615594873.10584,
+          "Psi_l2": 9304.974818690343
+        }
+      },
+      "runtime_sec": 1317.2556017450988,
+      "status": "completed",
+      "symmetry": {
+        "omega_non_threefold_fraction": 0.8176497013560703,
+        "omega_threefold_defect": 1.416210825542233,
+        "psi_non_threefold_fraction": 0.8805366825679075,
+        "psi_threefold_defect": 1.5251342721357644
+      }
+    },
+    {
+      "common_residuals": {
+        "lap_psi_l2": 852000.6231572571,
+        "omega_field_l2": 1482672.1752386815,
+        "omega_strong_l2": 12419005164.454065,
+        "poisson_strong_l2": 698648.6904758849,
+        "profile_strong_l2": 12419005184.1058,
+        "profile_strong_relative": 8376.096477366335,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "label": "baseline_seeded_from_broken_m1_160_480_h0.08_0.12",
+      "last_relative_update": 1.0330135923418495,
+      "mesh": {
+        "h_max": 0.12,
+        "h_min": 0.08
+      },
+      "mesh_cells": 50674,
+      "mesh_vertices": 25600,
+      "newton_iterations": 40,
+      "residuals": {
+        "meta": {
+          "R": 150.0,
+          "Rdom": 10.0,
+          "eps": 0.0044444444444444444,
+          "mu": 0.8,
+          "sigma": 1.0
+        },
+        "norms": {
+          "Omega_l2": 670321089.8460644,
+          "Psi_l2": 68.79442666639991
+        }
+      },
+      "runtime_sec": 36.34816635772586,
+      "status": "nonconverged",
+      "symmetry": {
+        "omega_non_threefold_fraction": 0.822343309836741,
+        "omega_threefold_defect": 1.424340393901591,
+        "psi_non_threefold_fraction": 0.7996744973985148,
+        "psi_threefold_defect": 1.3850768590113336
+      }
+    }
+  ],
+  "basin_runs": [
+    {
+      "branch_class": "symmetric",
+      "branch_distances": {
+        "to_broken": {
+          "omega_probe_linf": 12.33087059406723,
+          "omega_probe_rms": 0.4784389942976513,
+          "psi_probe_linf_offset_removed": 0.296001508799092,
+          "psi_probe_mean_offset": 1.1714115297086833e-15,
+          "psi_probe_rms_offset_removed": 0.014936599003423742,
+          "valid_probe_count": 65520
+        },
+        "to_symmetric": {
+          "omega_probe_linf": 0.0,
+          "omega_probe_rms": 0.0,
+          "psi_probe_linf_offset_removed": 0.0,
+          "psi_probe_mean_offset": 0.0,
+          "psi_probe_rms_offset_removed": 0.0,
+          "valid_probe_count": 65520
+        }
+      },
+      "common_residuals": {
+        "lap_psi_l2": 23.66370233666698,
+        "omega_field_l2": 23.614525004149368,
+        "omega_strong_l2": 13.978141158297822,
+        "poisson_strong_l2": 2.7533376442302258,
+        "profile_strong_l2": 14.246729393949856,
+        "profile_strong_relative": 0.6020498902183411,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "compatibility": {
+        "neumann_flux_discrete": 3.255343931474723e-15,
+        "omega_integral": -8.903522450559587e-14,
+        "omega_mean": -2.834079217872447e-16,
+        "omega_minus_flux": -9.22905684370706e-14,
+        "physical_poisson_residual_norm": 8.390163796180602e-12,
+        "poisson_lambda": -3.7270923850797175e-11
+      },
+      "diagnostics": {
+        "adaptive_retries": 0,
+        "advection_scheme": "fv_upwind",
+        "anchored_attempts": 0,
+        "anchored_linear_solve_time_sec": 0.0,
+        "anchored_successes": 0,
+        "attempted_sigma": 1.0,
+        "completed_sigma_steps": 1,
+        "diffusion_attempts": 0,
+        "diffusion_linear_solve_time_sec": 0.0,
+        "diffusion_successes": 0,
+        "final_sigma": 1.0,
+        "grid_dr": 0.0625,
+        "grid_dtheta": 0.01308996938995747,
+        "grid_nr": 160,
+        "grid_ntheta": 480,
+        "lap_psi_l2": 24.28774269541897,
+        "newton_linear_solve_time_sec": 0.0,
+        "newton_steps": 1,
+        "omega_field_l2": 24.287742695418952,
+        "omega_residual_norm": 3.130844119212146e-13,
+        "physical_poisson_residual_norm": 8.390163796180602e-12,
+        "poisson_gauge": "mean",
+        "poisson_lambda": -3.7270923850797175e-11,
+        "poisson_residual_norm": 8.390152628794923e-12,
+        "reduced_gmres_maxiter": 240,
+        "reduced_gmres_rtol": 1e-08,
+        "reduced_poisson_newton": true,
+        "relative_residual": 3.4568844803171927e-13,
+        "residual_norm": 8.39599207857311e-12,
+        "runtime_sec": 0.6662115715444088,
+        "upwind_blend": 1.0,
+        "upwind_smoothing": 0.001
+      },
+      "grid": {
+        "dr": 0.0625,
+        "dtheta": 0.01308996938995747,
+        "nr": 160,
+        "ntheta": 480
+      },
+      "label": "basin_t0p0_160_480",
+      "message": "converged",
+      "runtime_sec": 0.6662115715444088,
+      "status": "completed",
+      "symmetry": {
+        "omega_non_threefold_fraction": 6.880751526267927e-14,
+        "omega_threefold_defect": 1.1917843214133904e-13,
+        "psi_non_threefold_fraction": 2.449939244126409e-14,
+        "psi_threefold_defect": 4.24337764301961e-14
+      },
+      "t": 0.0
+    },
+    {
+      "branch_class": "symmetric",
+      "branch_distances": {
+        "to_broken": {
+          "omega_probe_linf": 12.330870594067154,
+          "omega_probe_rms": 0.4784389942976491,
+          "psi_probe_linf_offset_removed": 0.2960015087990887,
+          "psi_probe_mean_offset": -1.0982769435451697e-17,
+          "psi_probe_rms_offset_removed": 0.01493659900342356,
+          "valid_probe_count": 65520
+        },
+        "to_symmetric": {
+          "omega_probe_linf": 2.259946247498564e-13,
+          "omega_probe_rms": 9.100221734362696e-15,
+          "psi_probe_linf_offset_removed": 6.811173047489811e-15,
+          "psi_probe_mean_offset": -1.1824327298113162e-15,
+          "psi_probe_rms_offset_removed": 1.3705825824871802e-15,
+          "valid_probe_count": 65520
+        }
+      },
+      "common_residuals": {
+        "lap_psi_l2": 23.66370233666698,
+        "omega_field_l2": 23.614525004149368,
+        "omega_strong_l2": 13.97814115829781,
+        "poisson_strong_l2": 2.753337644230237,
+        "profile_strong_l2": 14.246729393949847,
+        "profile_strong_relative": 0.6020498902183407,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "compatibility": {
+        "neumann_flux_discrete": 3.255343931474723e-15,
+        "omega_integral": -9.46125773212958e-14,
+        "omega_mean": -3.011611871869676e-16,
+        "omega_minus_flux": -9.786792125277053e-14,
+        "physical_poisson_residual_norm": 8.402992025042552e-12,
+        "poisson_lambda": -3.7132799655433224e-11
+      },
+      "diagnostics": {
+        "adaptive_retries": 0,
+        "advection_scheme": "fv_upwind",
+        "anchored_attempts": 0,
+        "anchored_linear_solve_time_sec": 0.0,
+        "anchored_successes": 0,
+        "attempted_sigma": 1.0,
+        "completed_sigma_steps": 1,
+        "diffusion_attempts": 0,
+        "diffusion_linear_solve_time_sec": 0.0,
+        "diffusion_successes": 0,
+        "final_sigma": 1.0,
+        "grid_dr": 0.0625,
+        "grid_dtheta": 0.01308996938995747,
+        "grid_nr": 160,
+        "grid_ntheta": 480,
+        "lap_psi_l2": 24.287742695418974,
+        "newton_linear_solve_time_sec": 15.918679802678525,
+        "newton_steps": 5,
+        "omega_field_l2": 24.287742695418952,
+        "omega_residual_norm": 3.0142188828745264e-13,
+        "physical_poisson_residual_norm": 8.402992025042552e-12,
+        "poisson_gauge": "mean",
+        "poisson_lambda": -3.7132799655433224e-11,
+        "poisson_residual_norm": 8.403002262171597e-12,
+        "reduced_gmres_maxiter": 240,
+        "reduced_gmres_rtol": 1e-08,
+        "reduced_poisson_newton": true,
+        "relative_residual": 3.461995930385651e-13,
+        "residual_norm": 8.40840663697943e-12,
+        "runtime_sec": 29.593473526649177,
+        "upwind_blend": 1.0,
+        "upwind_smoothing": 0.001
+      },
+      "grid": {
+        "dr": 0.0625,
+        "dtheta": 0.01308996938995747,
+        "nr": 160,
+        "ntheta": 480
+      },
+      "label": "basin_t0p1_160_480",
+      "message": "converged",
+      "runtime_sec": 29.593473526649177,
+      "status": "completed",
+      "symmetry": {
+        "omega_non_threefold_fraction": 6.622703798217048e-14,
+        "omega_threefold_defect": 1.147064449992567e-13,
+        "psi_non_threefold_fraction": 2.4386246131728302e-14,
+        "psi_threefold_defect": 4.2237566765396535e-14
+      },
+      "t": 0.1
+    },
+    {
+      "branch_class": "symmetric",
+      "branch_distances": {
+        "to_broken": {
+          "omega_probe_linf": 12.330870598828144,
+          "omega_probe_rms": 0.47843899448143834,
+          "psi_probe_linf_offset_removed": 0.2960015089166398,
+          "psi_probe_mean_offset": -2.4746852579619296e-14,
+          "psi_probe_rms_offset_removed": 0.014936599009409812,
+          "valid_probe_count": 65520
+        },
+        "to_symmetric": {
+          "omega_probe_linf": 2.272302168648821e-08,
+          "omega_probe_rms": 5.150819425816646e-10,
+          "psi_probe_linf_offset_removed": 1.8484821191317133e-10,
+          "psi_probe_mean_offset": -2.591828181287016e-14,
+          "psi_probe_rms_offset_removed": 8.740487805188509e-12,
+          "valid_probe_count": 65520
+        }
+      },
+      "common_residuals": {
+        "lap_psi_l2": 23.66370233687784,
+        "omega_field_l2": 23.61452500443386,
+        "omega_strong_l2": 13.978141159230777,
+        "poisson_strong_l2": 2.7533376441374955,
+        "profile_strong_l2": 14.2467293948473,
+        "profile_strong_relative": 0.6020498902509013,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "compatibility": {
+        "neumann_flux_discrete": 3.255343931474723e-15,
+        "omega_integral": -8.125639917866412e-14,
+        "omega_mean": -2.5864715174265235e-16,
+        "omega_minus_flux": -8.451174311013885e-14,
+        "physical_poisson_residual_norm": 8.435263307615039e-12,
+        "poisson_lambda": -3.405156760670531e-11
+      },
+      "diagnostics": {
+        "adaptive_retries": 0,
+        "advection_scheme": "fv_upwind",
+        "anchored_attempts": 0,
+        "anchored_linear_solve_time_sec": 0.0,
+        "anchored_successes": 0,
+        "attempted_sigma": 1.0,
+        "completed_sigma_steps": 1,
+        "diffusion_attempts": 0,
+        "diffusion_linear_solve_time_sec": 0.0,
+        "diffusion_successes": 0,
+        "final_sigma": 1.0,
+        "grid_dr": 0.0625,
+        "grid_dtheta": 0.01308996938995747,
+        "grid_nr": 160,
+        "grid_ntheta": 480,
+        "lap_psi_l2": 24.287742695623418,
+        "newton_linear_solve_time_sec": 15.96081619989127,
+        "newton_steps": 5,
+        "omega_field_l2": 24.287742695623404,
+        "omega_residual_norm": 1.3222210674687825e-07,
+        "physical_poisson_residual_norm": 8.435263307615039e-12,
+        "poisson_gauge": "mean",
+        "poisson_lambda": -3.405156760670531e-11,
+        "poisson_residual_norm": 8.435264491156427e-12,
+        "reduced_gmres_maxiter": 240,
+        "reduced_gmres_rtol": 1e-08,
+        "reduced_poisson_newton": true,
+        "relative_residual": 5.443985003998461e-09,
+        "residual_norm": 1.3222210701594706e-07,
+        "runtime_sec": 30.157329253852367,
+        "upwind_blend": 1.0,
+        "upwind_smoothing": 0.001
+      },
+      "grid": {
+        "dr": 0.0625,
+        "dtheta": 0.01308996938995747,
+        "nr": 160,
+        "ntheta": 480
+      },
+      "label": "basin_t0p2_160_480",
+      "message": "converged",
+      "runtime_sec": 30.157329253852367,
+      "status": "completed",
+      "symmetry": {
+        "omega_non_threefold_fraction": 3.719159015848882e-10,
+        "omega_threefold_defect": 6.441772360029344e-10,
+        "psi_non_threefold_fraction": 2.0800037468966043e-12,
+        "psi_threefold_defect": 3.6026719165259526e-12
+      },
+      "t": 0.2
+    },
+    {
+      "branch_class": "symmetric",
+      "branch_distances": {
+        "to_broken": {
+          "omega_probe_linf": 12.330870594067829,
+          "omega_probe_rms": 0.4784389942976591,
+          "psi_probe_linf_offset_removed": 0.2960015087991006,
+          "psi_probe_mean_offset": -5.396646364083003e-16,
+          "psi_probe_rms_offset_removed": 0.014936599003423662,
+          "valid_probe_count": 65520
+        },
+        "to_symmetric": {
+          "omega_probe_linf": 2.8963498266421084e-12,
+          "omega_probe_rms": 4.7913973219415683e-14,
+          "psi_probe_linf_offset_removed": 2.458168455241126e-14,
+          "psi_probe_mean_offset": -1.7110902451330348e-15,
+          "psi_probe_rms_offset_removed": 2.3594616617066954e-15,
+          "valid_probe_count": 65520
+        }
+      },
+      "common_residuals": {
+        "lap_psi_l2": 23.663702336666976,
+        "omega_field_l2": 23.614525004149364,
+        "omega_strong_l2": 13.978141158297904,
+        "poisson_strong_l2": 2.753337644230216,
+        "profile_strong_l2": 14.246729393949934,
+        "profile_strong_relative": 0.6020498902183444,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "compatibility": {
+        "neumann_flux_discrete": 3.255343931474723e-15,
+        "omega_integral": -7.423391328725826e-14,
+        "omega_mean": -2.362938848944456e-16,
+        "omega_minus_flux": -7.748925721873299e-14,
+        "physical_poisson_residual_norm": 8.404410664360367e-12,
+        "poisson_lambda": -3.340344638064122e-11
+      },
+      "diagnostics": {
+        "adaptive_retries": 0,
+        "advection_scheme": "fv_upwind",
+        "anchored_attempts": 0,
+        "anchored_linear_solve_time_sec": 0.0,
+        "anchored_successes": 0,
+        "attempted_sigma": 1.0,
+        "completed_sigma_steps": 1,
+        "diffusion_attempts": 0,
+        "diffusion_linear_solve_time_sec": 0.0,
+        "diffusion_successes": 0,
+        "final_sigma": 1.0,
+        "grid_dr": 0.0625,
+        "grid_dtheta": 0.01308996938995747,
+        "grid_nr": 160,
+        "grid_ntheta": 480,
+        "lap_psi_l2": 24.28774269541894,
+        "newton_linear_solve_time_sec": 18.47854596655816,
+        "newton_steps": 6,
+        "omega_field_l2": 24.287742695418945,
+        "omega_residual_norm": 6.020347875326074e-12,
+        "physical_poisson_residual_norm": 8.404410664360367e-12,
+        "poisson_gauge": "mean",
+        "poisson_lambda": -3.340344638064122e-11,
+        "poisson_residual_norm": 8.4044170883925e-12,
+        "reduced_gmres_maxiter": 240,
+        "reduced_gmres_rtol": 1e-08,
+        "reduced_poisson_newton": true,
+        "relative_residual": 4.2565590435551404e-13,
+        "residual_norm": 1.0338221081772581e-11,
+        "runtime_sec": 36.082732752896845,
+        "upwind_blend": 1.0,
+        "upwind_smoothing": 0.001
+      },
+      "grid": {
+        "dr": 0.0625,
+        "dtheta": 0.01308996938995747,
+        "nr": 160,
+        "ntheta": 480
+      },
+      "label": "basin_t0p3_160_480",
+      "message": "converged",
+      "runtime_sec": 36.082732752896845,
+      "status": "completed",
+      "symmetry": {
+        "omega_non_threefold_fraction": 7.651926485436091e-14,
+        "omega_threefold_defect": 1.3253417761858344e-13,
+        "psi_non_threefold_fraction": 2.446578762454676e-14,
+        "psi_threefold_defect": 4.2375973540390077e-14
+      },
+      "t": 0.30000000000000004
+    },
+    {
+      "branch_class": "symmetric",
+      "branch_distances": {
+        "to_broken": {
+          "omega_probe_linf": 12.330870596633208,
+          "omega_probe_rms": 0.4784389943109825,
+          "psi_probe_linf_offset_removed": 0.29600150880505705,
+          "psi_probe_mean_offset": -1.215251952792649e-15,
+          "psi_probe_rms_offset_removed": 0.014936599003029155,
+          "valid_probe_count": 65520
+        },
+        "to_symmetric": {
+          "omega_probe_linf": 1.1900645358053907e-08,
+          "omega_probe_rms": 2.0666831845270043e-10,
+          "psi_probe_linf_offset_removed": 7.073608337634468e-11,
+          "psi_probe_mean_offset": -2.386698695175064e-15,
+          "psi_probe_rms_offset_removed": 2.9375504231281214e-12,
+          "valid_probe_count": 65520
+        }
+      },
+      "common_residuals": {
+        "lap_psi_l2": 23.66370233681101,
+        "omega_field_l2": 23.614525004310796,
+        "omega_strong_l2": 13.978141160044736,
+        "poisson_strong_l2": 2.753337644224975,
+        "profile_strong_l2": 14.246729395662822,
+        "profile_strong_relative": 0.6020498902870646,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "compatibility": {
+        "neumann_flux_discrete": 3.255343931474723e-15,
+        "omega_integral": -6.267393288378331e-14,
+        "omega_mean": -1.9949732442927602e-16,
+        "omega_minus_flux": -6.592927681525804e-14,
+        "physical_poisson_residual_norm": 8.458856771693278e-12,
+        "poisson_lambda": -3.161845677852427e-11
+      },
+      "diagnostics": {
+        "adaptive_retries": 0,
+        "advection_scheme": "fv_upwind",
+        "anchored_attempts": 0,
+        "anchored_linear_solve_time_sec": 0.0,
+        "anchored_successes": 0,
+        "attempted_sigma": 1.0,
+        "completed_sigma_steps": 1,
+        "diffusion_attempts": 0,
+        "diffusion_linear_solve_time_sec": 0.0,
+        "diffusion_successes": 0,
+        "final_sigma": 1.0,
+        "grid_dr": 0.0625,
+        "grid_dtheta": 0.01308996938995747,
+        "grid_nr": 160,
+        "grid_ntheta": 480,
+        "lap_psi_l2": 24.287742695579787,
+        "newton_linear_solve_time_sec": 19.50310772191733,
+        "newton_steps": 6,
+        "omega_field_l2": 24.28774269557976,
+        "omega_residual_norm": 2.7026960439126955e-08,
+        "physical_poisson_residual_norm": 8.458856771693278e-12,
+        "poisson_gauge": "mean",
+        "poisson_lambda": -3.161845677852427e-11,
+        "poisson_residual_norm": 8.458857318923085e-12,
+        "reduced_gmres_maxiter": 240,
+        "reduced_gmres_rtol": 1e-08,
+        "reduced_poisson_newton": true,
+        "relative_residual": 1.1127819534981263e-09,
+        "residual_norm": 2.7026961762847125e-08,
+        "runtime_sec": 38.535145844332874,
+        "upwind_blend": 1.0,
+        "upwind_smoothing": 0.001
+      },
+      "grid": {
+        "dr": 0.0625,
+        "dtheta": 0.01308996938995747,
+        "nr": 160,
+        "ntheta": 480
+      },
+      "label": "basin_t0p4_160_480",
+      "message": "converged",
+      "runtime_sec": 38.535145844332874,
+      "status": "completed",
+      "symmetry": {
+        "omega_non_threefold_fraction": 1.0687038466743308e-10,
+        "omega_threefold_defect": 1.851049352684435e-10,
+        "psi_non_threefold_fraction": 6.389113073007743e-13,
+        "psi_threefold_defect": 1.106627057387544e-12
+      },
+      "t": 0.4
+    },
+    {
+      "branch_class": "broken_m1",
+      "branch_distances": {
+        "to_broken": {
+          "omega_probe_linf": 4.156675004196586e-13,
+          "omega_probe_rms": 1.701249519959559e-14,
+          "psi_probe_linf_offset_removed": 1.0364248091574669e-14,
+          "psi_probe_mean_offset": 2.370642314273542e-15,
+          "psi_probe_rms_offset_removed": 3.195298932699652e-15,
+          "valid_probe_count": 65520
+        },
+        "to_symmetric": {
+          "omega_probe_linf": 12.330870594067306,
+          "omega_probe_rms": 0.47843899429765396,
+          "psi_probe_linf_offset_removed": 0.29600150879909826,
+          "psi_probe_mean_offset": 1.1992153979925078e-15,
+          "psi_probe_rms_offset_removed": 0.014936599003423591,
+          "valid_probe_count": 65520
+        }
+      },
+      "common_residuals": {
+        "lap_psi_l2": 23.06992125610144,
+        "omega_field_l2": 23.0251997978406,
+        "omega_strong_l2": 13.29708131303847,
+        "poisson_strong_l2": 2.7069532728277763,
+        "profile_strong_l2": 13.569818254745709,
+        "profile_strong_relative": 0.5882039259738183,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "compatibility": {
+        "neumann_flux_discrete": 3.255343931474723e-15,
+        "omega_integral": -7.560846480153538e-14,
+        "omega_mean": -2.406692182550787e-16,
+        "omega_minus_flux": -7.886380873301011e-14,
+        "physical_poisson_residual_norm": 8.421463371896445e-12,
+        "poisson_lambda": -3.380101030698e-11
+      },
+      "diagnostics": {
+        "adaptive_retries": 0,
+        "advection_scheme": "fv_upwind",
+        "anchored_attempts": 0,
+        "anchored_linear_solve_time_sec": 0.0,
+        "anchored_successes": 0,
+        "attempted_sigma": 1.0,
+        "completed_sigma_steps": 1,
+        "diffusion_attempts": 0,
+        "diffusion_linear_solve_time_sec": 0.0,
+        "diffusion_successes": 0,
+        "final_sigma": 1.0,
+        "grid_dr": 0.0625,
+        "grid_dtheta": 0.01308996938995747,
+        "grid_nr": 160,
+        "grid_ntheta": 480,
+        "lap_psi_l2": 23.688441582381408,
+        "newton_linear_solve_time_sec": 24.634941237047315,
+        "newton_steps": 7,
+        "omega_field_l2": 23.688441582381397,
+        "omega_residual_norm": 8.778360592056115e-13,
+        "physical_poisson_residual_norm": 8.421463371896445e-12,
+        "poisson_gauge": "mean",
+        "poisson_lambda": -3.380101030698e-11,
+        "poisson_residual_norm": 8.421425228919183e-12,
+        "reduced_gmres_maxiter": 240,
+        "reduced_gmres_rtol": 1e-08,
+        "reduced_poisson_newton": true,
+        "relative_residual": 3.5743397092548586e-13,
+        "residual_norm": 8.467053739826987e-12,
+        "runtime_sec": 49.5919155087322,
+        "upwind_blend": 1.0,
+        "upwind_smoothing": 0.001
+      },
+      "grid": {
+        "dr": 0.0625,
+        "dtheta": 0.01308996938995747,
+        "nr": 160,
+        "ntheta": 480
+      },
+      "label": "basin_t0p5_160_480",
+      "message": "converged",
+      "runtime_sec": 49.5919155087322,
+      "status": "completed",
+      "symmetry": {
+        "omega_non_threefold_fraction": 0.2520599830434201,
+        "omega_threefold_defect": 0.4365806971861532,
+        "psi_non_threefold_fraction": 0.003151290427083536,
+        "psi_threefold_defect": 0.00545819512911411
+      },
+      "t": 0.5
+    },
+    {
+      "branch_class": "broken_m1",
+      "branch_distances": {
+        "to_broken": {
+          "omega_probe_linf": 2.433253598610463e-11,
+          "omega_probe_rms": 1.8622483077082478e-13,
+          "psi_probe_linf_offset_removed": 5.389373304072478e-14,
+          "psi_probe_mean_offset": 1.82427318580494e-15,
+          "psi_probe_rms_offset_removed": 4.2996604663220355e-15,
+          "valid_probe_count": 65520
+        },
+        "to_symmetric": {
+          "omega_probe_linf": 12.330870594066333,
+          "omega_probe_rms": 0.47843899429761455,
+          "psi_probe_linf_offset_removed": 0.29600150879905723,
+          "psi_probe_mean_offset": 6.528838316538235e-16,
+          "psi_probe_rms_offset_removed": 0.014936599003421341,
+          "valid_probe_count": 65520
+        }
+      },
+      "common_residuals": {
+        "lap_psi_l2": 23.069921256101537,
+        "omega_field_l2": 23.025199797840685,
+        "omega_strong_l2": 13.297081313038248,
+        "poisson_strong_l2": 2.706953272827746,
+        "profile_strong_l2": 13.569818254745487,
+        "profile_strong_relative": 0.5882039259738062,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "compatibility": {
+        "neumann_flux_discrete": 3.255343931474723e-15,
+        "omega_integral": -6.822233750147788e-14,
+        "omega_mean": -2.1715844485287579e-16,
+        "omega_minus_flux": -7.147768143295261e-14,
+        "physical_poisson_residual_norm": 8.437737580597932e-12,
+        "poisson_lambda": -3.209039527210395e-11
+      },
+      "diagnostics": {
+        "adaptive_retries": 0,
+        "advection_scheme": "fv_upwind",
+        "anchored_attempts": 0,
+        "anchored_linear_solve_time_sec": 0.0,
+        "anchored_successes": 0,
+        "attempted_sigma": 1.0,
+        "completed_sigma_steps": 1,
+        "diffusion_attempts": 0,
+        "diffusion_linear_solve_time_sec": 0.0,
+        "diffusion_successes": 0,
+        "final_sigma": 1.0,
+        "grid_dr": 0.0625,
+        "grid_dtheta": 0.01308996938995747,
+        "grid_nr": 160,
+        "grid_ntheta": 480,
+        "lap_psi_l2": 23.68844158238152,
+        "newton_linear_solve_time_sec": 21.14556392095983,
+        "newton_steps": 6,
+        "omega_field_l2": 23.68844158238151,
+        "omega_residual_norm": 4.36031050281975e-11,
+        "physical_poisson_residual_norm": 8.437737580597932e-12,
+        "poisson_gauge": "mean",
+        "poisson_lambda": -3.209039527210395e-11,
+        "poisson_residual_norm": 8.437728133050327e-12,
+        "reduced_gmres_maxiter": 240,
+        "reduced_gmres_rtol": 1e-08,
+        "reduced_poisson_newton": true,
+        "relative_residual": 1.8748385367398377e-12,
+        "residual_norm": 4.44120031539593e-11,
+        "runtime_sec": 40.83891822397709,
+        "upwind_blend": 1.0,
+        "upwind_smoothing": 0.001
+      },
+      "grid": {
+        "dr": 0.0625,
+        "dtheta": 0.01308996938995747,
+        "nr": 160,
+        "ntheta": 480
+      },
+      "label": "basin_t0p6_160_480",
+      "message": "converged",
+      "runtime_sec": 40.83891822397709,
+      "status": "completed",
+      "symmetry": {
+        "omega_non_threefold_fraction": 0.2520599830433984,
+        "omega_threefold_defect": 0.43658069718611575,
+        "psi_non_threefold_fraction": 0.003151290427083086,
+        "psi_threefold_defect": 0.005458195129113332
+      },
+      "t": 0.6000000000000001
+    },
+    {
+      "branch_class": "broken_m1",
+      "branch_distances": {
+        "to_broken": {
+          "omega_probe_linf": 9.54195716443314e-13,
+          "omega_probe_rms": 2.9495168843304696e-14,
+          "psi_probe_linf_offset_removed": 1.632343946993863e-14,
+          "psi_probe_mean_offset": 2.932431581877524e-15,
+          "psi_probe_rms_offset_removed": 4.556199485767223e-15,
+          "valid_probe_count": 65520
+        },
+        "to_symmetric": {
+          "omega_probe_linf": 12.330870594067342,
+          "omega_probe_rms": 0.47843899429764936,
+          "psi_probe_linf_offset_removed": 0.29600150879910025,
+          "psi_probe_mean_offset": 1.7610073960721567e-15,
+          "psi_probe_rms_offset_removed": 0.014936599003423348,
+          "valid_probe_count": 65520
+        }
+      },
+      "common_residuals": {
+        "lap_psi_l2": 23.069921256101452,
+        "omega_field_l2": 23.025199797840607,
+        "omega_strong_l2": 13.297081313038476,
+        "poisson_strong_l2": 2.706953272827772,
+        "profile_strong_l2": 13.569818254745714,
+        "profile_strong_relative": 0.5882039259738182,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "compatibility": {
+        "neumann_flux_discrete": 3.255343931474723e-15,
+        "omega_integral": -9.403578176553351e-14,
+        "omega_mean": -2.993251899099075e-16,
+        "omega_minus_flux": -9.729112569700824e-14,
+        "physical_poisson_residual_norm": 8.419883116154909e-12,
+        "poisson_lambda": -3.843348332067834e-11
+      },
+      "diagnostics": {
+        "adaptive_retries": 0,
+        "advection_scheme": "fv_upwind",
+        "anchored_attempts": 0,
+        "anchored_linear_solve_time_sec": 0.0,
+        "anchored_successes": 0,
+        "attempted_sigma": 1.0,
+        "completed_sigma_steps": 1,
+        "diffusion_attempts": 0,
+        "diffusion_linear_solve_time_sec": 0.0,
+        "diffusion_successes": 0,
+        "final_sigma": 1.0,
+        "grid_dr": 0.0625,
+        "grid_dtheta": 0.01308996938995747,
+        "grid_nr": 160,
+        "grid_ntheta": 480,
+        "lap_psi_l2": 23.688441582381422,
+        "newton_linear_solve_time_sec": 21.57399487681687,
+        "newton_steps": 6,
+        "omega_field_l2": 23.688441582381405,
+        "omega_residual_norm": 3.7122080453045576e-13,
+        "physical_poisson_residual_norm": 8.419883116154909e-12,
+        "poisson_gauge": "mean",
+        "poisson_lambda": -3.843348332067834e-11,
+        "poisson_residual_norm": 8.419884271067524e-12,
+        "reduced_gmres_maxiter": 240,
+        "reduced_gmres_rtol": 1e-08,
+        "reduced_poisson_newton": true,
+        "relative_residual": 3.557880145639317e-13,
+        "residual_norm": 8.428063598709167e-12,
+        "runtime_sec": 39.32462255097926,
+        "upwind_blend": 1.0,
+        "upwind_smoothing": 0.001
+      },
+      "grid": {
+        "dr": 0.0625,
+        "dtheta": 0.01308996938995747,
+        "nr": 160,
+        "ntheta": 480
+      },
+      "label": "basin_t0p7_160_480",
+      "message": "converged",
+      "runtime_sec": 39.32462255097926,
+      "status": "completed",
+      "symmetry": {
+        "omega_non_threefold_fraction": 0.252059983043418,
+        "omega_threefold_defect": 0.43658069718614956,
+        "psi_non_threefold_fraction": 0.003151290427083493,
+        "psi_threefold_defect": 0.005458195129114035
+      },
+      "t": 0.7000000000000001
+    },
+    {
+      "branch_class": "broken_m1",
+      "branch_distances": {
+        "to_broken": {
+          "omega_probe_linf": 3.804254411632572e-13,
+          "omega_probe_rms": 2.3101060797687015e-14,
+          "psi_probe_linf_offset_removed": 1.402907350505585e-14,
+          "psi_probe_mean_offset": 1.7846657019487233e-15,
+          "psi_probe_rms_offset_removed": 4.169943979195573e-15,
+          "valid_probe_count": 65520
+        },
+        "to_symmetric": {
+          "omega_probe_linf": 12.33087059406731,
+          "omega_probe_rms": 0.4784389942976529,
+          "psi_probe_linf_offset_removed": 0.29600150879909753,
+          "psi_probe_mean_offset": 6.131898001163439e-16,
+          "psi_probe_rms_offset_removed": 0.014936599003423597,
+          "valid_probe_count": 65520
+        }
+      },
+      "common_residuals": {
+        "lap_psi_l2": 23.06992125610144,
+        "omega_field_l2": 23.025199797840603,
+        "omega_strong_l2": 13.297081313038493,
+        "poisson_strong_l2": 2.7069532728277537,
+        "profile_strong_l2": 13.569818254745726,
+        "profile_strong_relative": 0.588203925973819,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "compatibility": {
+        "neumann_flux_discrete": 3.255343931474723e-15,
+        "omega_integral": -9.345421572021229e-14,
+        "omega_mean": -2.9747400769296193e-16,
+        "omega_minus_flux": -9.670955965168701e-14,
+        "physical_poisson_residual_norm": 8.412190846962445e-12,
+        "poisson_lambda": -3.607474706140864e-11
+      },
+      "diagnostics": {
+        "adaptive_retries": 0,
+        "advection_scheme": "fv_upwind",
+        "anchored_attempts": 0,
+        "anchored_linear_solve_time_sec": 0.0,
+        "anchored_successes": 0,
+        "attempted_sigma": 1.0,
+        "completed_sigma_steps": 1,
+        "diffusion_attempts": 0,
+        "diffusion_linear_solve_time_sec": 0.0,
+        "diffusion_successes": 0,
+        "final_sigma": 1.0,
+        "grid_dr": 0.0625,
+        "grid_dtheta": 0.01308996938995747,
+        "grid_nr": 160,
+        "grid_ntheta": 480,
+        "lap_psi_l2": 23.6884415823814,
+        "newton_linear_solve_time_sec": 19.541508897207677,
+        "newton_steps": 6,
+        "omega_field_l2": 23.688441582381397,
+        "omega_residual_norm": 3.135867906073206e-13,
+        "physical_poisson_residual_norm": 8.412190846962445e-12,
+        "poisson_gauge": "mean",
+        "poisson_lambda": -3.607474706140864e-11,
+        "poisson_residual_norm": 8.412188491545621e-12,
+        "reduced_gmres_maxiter": 240,
+        "reduced_gmres_rtol": 1e-08,
+        "reduced_poisson_newton": true,
+        "relative_residual": 3.5536450659498585e-13,
+        "residual_norm": 8.418031354927112e-12,
+        "runtime_sec": 36.566184553317726,
+        "upwind_blend": 1.0,
+        "upwind_smoothing": 0.001
+      },
+      "grid": {
+        "dr": 0.0625,
+        "dtheta": 0.01308996938995747,
+        "nr": 160,
+        "ntheta": 480
+      },
+      "label": "basin_t0p8_160_480",
+      "message": "converged",
+      "runtime_sec": 36.566184553317726,
+      "status": "completed",
+      "symmetry": {
+        "omega_non_threefold_fraction": 0.2520599830434196,
+        "omega_threefold_defect": 0.4365806971861524,
+        "psi_non_threefold_fraction": 0.0031512904270835445,
+        "psi_threefold_defect": 0.0054581951291141255
+      },
+      "t": 0.8
+    },
+    {
+      "branch_class": "broken_m1",
+      "branch_distances": {
+        "to_broken": {
+          "omega_probe_linf": 4.2423532476573325e-13,
+          "omega_probe_rms": 1.4439389250133747e-14,
+          "psi_probe_linf_offset_removed": 1.5103019495676533e-14,
+          "psi_probe_mean_offset": 6.146090243182392e-16,
+          "psi_probe_rms_offset_removed": 2.492485657274649e-15,
+          "valid_probe_count": 65520
+        },
+        "to_symmetric": {
+          "omega_probe_linf": 12.330870594067475,
+          "omega_probe_rms": 0.4784389942976562,
+          "psi_probe_linf_offset_removed": 0.2960015087991048,
+          "psi_probe_mean_offset": -5.568187004952856e-16,
+          "psi_probe_rms_offset_removed": 0.014936599003423636,
+          "valid_probe_count": 65520
+        }
+      },
+      "common_residuals": {
+        "lap_psi_l2": 23.069921256101445,
+        "omega_field_l2": 23.025199797840603,
+        "omega_strong_l2": 13.29708131303848,
+        "poisson_strong_l2": 2.706953272827752,
+        "profile_strong_l2": 13.569818254745716,
+        "profile_strong_relative": 0.5882039259738184,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "compatibility": {
+        "neumann_flux_discrete": 3.255343931474723e-15,
+        "omega_integral": -5.709213483917619e-14,
+        "omega_mean": -1.8172990942647802e-16,
+        "omega_minus_flux": -6.034747877065092e-14,
+        "physical_poisson_residual_norm": 8.413453677778559e-12,
+        "poisson_lambda": -3.104915133783428e-11
+      },
+      "diagnostics": {
+        "adaptive_retries": 0,
+        "advection_scheme": "fv_upwind",
+        "anchored_attempts": 0,
+        "anchored_linear_solve_time_sec": 0.0,
+        "anchored_successes": 0,
+        "attempted_sigma": 1.0,
+        "completed_sigma_steps": 1,
+        "diffusion_attempts": 0,
+        "diffusion_linear_solve_time_sec": 0.0,
+        "diffusion_successes": 0,
+        "final_sigma": 1.0,
+        "grid_dr": 0.0625,
+        "grid_dtheta": 0.01308996938995747,
+        "grid_nr": 160,
+        "grid_ntheta": 480,
+        "lap_psi_l2": 23.6884415823814,
+        "newton_linear_solve_time_sec": 15.837436087429523,
+        "newton_steps": 5,
+        "omega_field_l2": 23.688441582381397,
+        "omega_residual_norm": 6.187957314805115e-13,
+        "physical_poisson_residual_norm": 8.413453677778559e-12,
+        "poisson_gauge": "mean",
+        "poisson_lambda": -3.104915133783428e-11,
+        "poisson_residual_norm": 8.413447006644964e-12,
+        "reduced_gmres_maxiter": 240,
+        "reduced_gmres_rtol": 1e-08,
+        "reduced_poisson_newton": true,
+        "relative_residual": 3.561303098309076e-13,
+        "residual_norm": 8.436172040144843e-12,
+        "runtime_sec": 29.470125320367515,
+        "upwind_blend": 1.0,
+        "upwind_smoothing": 0.001
+      },
+      "grid": {
+        "dr": 0.0625,
+        "dtheta": 0.01308996938995747,
+        "nr": 160,
+        "ntheta": 480
+      },
+      "label": "basin_t0p9_160_480",
+      "message": "converged",
+      "runtime_sec": 29.470125320367515,
+      "status": "completed",
+      "symmetry": {
+        "omega_non_threefold_fraction": 0.2520599830434214,
+        "omega_threefold_defect": 0.43658069718615555,
+        "psi_non_threefold_fraction": 0.0031512904270835445,
+        "psi_threefold_defect": 0.0054581951291141255
+      },
+      "t": 0.9
+    },
+    {
+      "branch_class": "broken_m1",
+      "branch_distances": {
+        "to_broken": {
+          "omega_probe_linf": 0.0,
+          "omega_probe_rms": 0.0,
+          "psi_probe_linf_offset_removed": 0.0,
+          "psi_probe_mean_offset": 0.0,
+          "psi_probe_rms_offset_removed": 0.0,
+          "valid_probe_count": 65520
+        },
+        "to_symmetric": {
+          "omega_probe_linf": 12.33087059406723,
+          "omega_probe_rms": 0.4784389942976513,
+          "psi_probe_linf_offset_removed": 0.296001508799092,
+          "psi_probe_mean_offset": -1.1714115297086833e-15,
+          "psi_probe_rms_offset_removed": 0.014936599003423742,
+          "valid_probe_count": 65520
+        }
+      },
+      "common_residuals": {
+        "lap_psi_l2": 23.069921256101434,
+        "omega_field_l2": 23.025199797840603,
+        "omega_strong_l2": 13.297081313038476,
+        "poisson_strong_l2": 2.7069532728277,
+        "profile_strong_l2": 13.5698182547457,
+        "profile_strong_relative": 0.5882039259738181,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "compatibility": {
+        "neumann_flux_discrete": 3.255343931474723e-15,
+        "omega_integral": -5.462405701373019e-14,
+        "omega_mean": -1.7387377370937348e-16,
+        "omega_minus_flux": -5.787940094520492e-14,
+        "physical_poisson_residual_norm": 8.403747897646526e-12,
+        "poisson_lambda": -3.042227998964781e-11
+      },
+      "diagnostics": {
+        "adaptive_retries": 0,
+        "advection_scheme": "fv_upwind",
+        "anchored_attempts": 0,
+        "anchored_linear_solve_time_sec": 0.0,
+        "anchored_successes": 0,
+        "attempted_sigma": 1.0,
+        "completed_sigma_steps": 1,
+        "diffusion_attempts": 0,
+        "diffusion_linear_solve_time_sec": 0.0,
+        "diffusion_successes": 0,
+        "final_sigma": 1.0,
+        "grid_dr": 0.0625,
+        "grid_dtheta": 0.01308996938995747,
+        "grid_nr": 160,
+        "grid_ntheta": 480,
+        "lap_psi_l2": 23.68844158238143,
+        "newton_linear_solve_time_sec": 0.0,
+        "newton_steps": 1,
+        "omega_field_l2": 23.688441582381397,
+        "omega_residual_norm": 2.946389280456072e-13,
+        "physical_poisson_residual_norm": 8.403747897646526e-12,
+        "poisson_gauge": "mean",
+        "poisson_lambda": -3.042227998964781e-11,
+        "poisson_residual_norm": 8.403747817105751e-12,
+        "reduced_gmres_maxiter": 240,
+        "reduced_gmres_rtol": 1e-08,
+        "reduced_poisson_newton": true,
+        "relative_residual": 3.549795069400098e-13,
+        "residual_norm": 8.408911313090985e-12,
+        "runtime_sec": 0.6622842866927385,
+        "upwind_blend": 1.0,
+        "upwind_smoothing": 0.001
+      },
+      "grid": {
+        "dr": 0.0625,
+        "dtheta": 0.01308996938995747,
+        "nr": 160,
+        "ntheta": 480
+      },
+      "label": "basin_t1p0_160_480",
+      "message": "converged",
+      "runtime_sec": 0.6622842866927385,
+      "status": "completed",
+      "symmetry": {
+        "omega_non_threefold_fraction": 0.25205998304341876,
+        "omega_threefold_defect": 0.43658069718615095,
+        "psi_non_threefold_fraction": 0.0031512904270836308,
+        "psi_threefold_defect": 0.005458195129114276
+      },
+      "t": 1.0
+    }
+  ],
+  "case": {
+    "coeffs": {
+      "3": {
+        "imag": 0.0,
+        "real": 140.0
+      }
+    },
+    "description": "refinement, basin, amplitude, and FEM cross-checks for c3=140 nonuniqueness",
+    "name": "c3_140"
+  },
+  "input": {
+    "baseline_mesh": {
+      "h_max": 0.12,
+      "h_min": 0.08
+    },
+    "basin_t_values": [
+      0.0,
+      0.1,
+      0.2,
+      0.30000000000000004,
+      0.4,
+      0.5,
+      0.6000000000000001,
+      0.7000000000000001,
+      0.8,
+      0.9,
+      1.0
+    ],
+    "physical": {
+      "R": 150.0,
+      "Rdom": 10.0,
+      "eps": 0.0044444444444444444,
+      "mu": 0.8
+    },
+    "source_grid": {
+      "nr": 128,
+      "ntheta": 384
+    },
+    "target_grid": {
+      "nr": 160,
+      "ntheta": 480
+    },
+    "trace_sigmas": [
+      1.0,
+      0.95,
+      0.9,
+      0.85,
+      0.8,
+      0.75,
+      0.7,
+      0.65,
+      0.6
+    ]
+  },
+  "orbit_checks": {
+    "broken_m1_vs_broken_m2": {
+      "omega_weighted_rms": 0.43641238713877184,
+      "psi_weighted_rms": 0.014191414990441829,
+      "transform": "shift_0"
+    },
+    "symmetric_vs_broken_m1": {
+      "omega_weighted_rms": 0.43504438196042183,
+      "psi_weighted_rms": 0.013526335679352477,
+      "transform": "shift_320"
+    }
+  },
+  "plot_paths": [
+    "experiments/raw/nextgen/m3_c3_140_nonuniqueness_validation/plots/symmetric_160_480_omega.png",
+    "experiments/raw/nextgen/m3_c3_140_nonuniqueness_validation/plots/symmetric_160_480_psi_contours.png",
+    "experiments/raw/nextgen/m3_c3_140_nonuniqueness_validation/plots/broken_m1_160_480_omega.png",
+    "experiments/raw/nextgen/m3_c3_140_nonuniqueness_validation/plots/broken_m1_160_480_psi_contours.png",
+    "experiments/raw/nextgen/m3_c3_140_nonuniqueness_validation/plots/broken_m2_160_480_omega.png",
+    "experiments/raw/nextgen/m3_c3_140_nonuniqueness_validation/plots/broken_m2_160_480_psi_contours.png",
+    "experiments/raw/nextgen/m3_c3_140_nonuniqueness_validation/plots/broken_m1_minus_symmetric_omega.png",
+    "experiments/raw/nextgen/m3_c3_140_nonuniqueness_validation/plots/basin_sweep.png",
+    "experiments/raw/nextgen/m3_c3_140_nonuniqueness_validation/plots/amplitude_trace_non3.png"
+  ],
+  "refined_runs": [
+    {
+      "branch_class": "symmetric",
+      "branch_distances": {
+        "to_broken": {
+          "omega_probe_linf": 12.33087059406723,
+          "omega_probe_rms": 0.4784389942976513,
+          "psi_probe_linf_offset_removed": 0.296001508799092,
+          "psi_probe_mean_offset": 1.1714115297086833e-15,
+          "psi_probe_rms_offset_removed": 0.014936599003423742,
+          "valid_probe_count": 65520
+        },
+        "to_symmetric": {
+          "omega_probe_linf": 0.0,
+          "omega_probe_rms": 0.0,
+          "psi_probe_linf_offset_removed": 0.0,
+          "psi_probe_mean_offset": 0.0,
+          "psi_probe_rms_offset_removed": 0.0,
+          "valid_probe_count": 65520
+        }
+      },
+      "common_residuals": {
+        "lap_psi_l2": 23.66370233666698,
+        "omega_field_l2": 23.614525004149368,
+        "omega_strong_l2": 13.978141158297822,
+        "poisson_strong_l2": 2.7533376442302258,
+        "profile_strong_l2": 14.246729393949856,
+        "profile_strong_relative": 0.6020498902183411,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "compatibility": {
+        "neumann_flux_discrete": 3.255343931474723e-15,
+        "omega_integral": -8.903522450559587e-14,
+        "omega_mean": -2.834079217872447e-16,
+        "omega_minus_flux": -9.22905684370706e-14,
+        "physical_poisson_residual_norm": 8.390163796180602e-12,
+        "poisson_lambda": -3.7270923850797175e-11
+      },
+      "diagnostics": {
+        "adaptive_retries": 0,
+        "advection_scheme": "fv_upwind",
+        "anchored_attempts": 0,
+        "anchored_linear_solve_time_sec": 0.0,
+        "anchored_successes": 0,
+        "attempted_sigma": 1.0,
+        "completed_sigma_steps": 1,
+        "diffusion_attempts": 0,
+        "diffusion_linear_solve_time_sec": 0.0,
+        "diffusion_successes": 0,
+        "final_sigma": 1.0,
+        "grid_dr": 0.0625,
+        "grid_dtheta": 0.01308996938995747,
+        "grid_nr": 160,
+        "grid_ntheta": 480,
+        "lap_psi_l2": 24.28774269541897,
+        "newton_linear_solve_time_sec": 9.07779689412564,
+        "newton_steps": 5,
+        "omega_field_l2": 24.287742695418952,
+        "omega_residual_norm": 3.130844119212146e-13,
+        "physical_poisson_residual_norm": 8.390163796180602e-12,
+        "poisson_gauge": "mean",
+        "poisson_lambda": -3.7270923850797175e-11,
+        "poisson_residual_norm": 8.390152628794923e-12,
+        "reduced_gmres_maxiter": 240,
+        "reduced_gmres_rtol": 1e-08,
+        "reduced_poisson_newton": true,
+        "relative_residual": 3.4568844803171927e-13,
+        "residual_norm": 8.39599207857311e-12,
+        "runtime_sec": 22.798276491463184,
+        "upwind_blend": 1.0,
+        "upwind_smoothing": 0.001
+      },
+      "grid": {
+        "dr": 0.0625,
+        "dtheta": 0.01308996938995747,
+        "nr": 160,
+        "ntheta": 480
+      },
+      "label": "symmetric_160_480",
+      "message": "converged",
+      "runtime_sec": 22.798276491463184,
+      "sigma": 1.0,
+      "state_path": "experiments/raw/nextgen/m3_c3_140_nonuniqueness_validation/states/symmetric_160_480_state.npz",
+      "status": "completed",
+      "symmetry": {
+        "omega_non_threefold_fraction": 6.880751526267927e-14,
+        "omega_threefold_defect": 1.1917843214133904e-13,
+        "psi_non_threefold_fraction": 2.449939244126409e-14,
+        "psi_threefold_defect": 4.24337764301961e-14
+      }
+    },
+    {
+      "branch_class": "broken_m1",
+      "branch_distances": {
+        "to_broken": {
+          "omega_probe_linf": 0.0,
+          "omega_probe_rms": 0.0,
+          "psi_probe_linf_offset_removed": 0.0,
+          "psi_probe_mean_offset": 0.0,
+          "psi_probe_rms_offset_removed": 0.0,
+          "valid_probe_count": 65520
+        },
+        "to_symmetric": {
+          "omega_probe_linf": 12.33087059406723,
+          "omega_probe_rms": 0.4784389942976513,
+          "psi_probe_linf_offset_removed": 0.296001508799092,
+          "psi_probe_mean_offset": -1.1714115297086833e-15,
+          "psi_probe_rms_offset_removed": 0.014936599003423742,
+          "valid_probe_count": 65520
+        }
+      },
+      "common_residuals": {
+        "lap_psi_l2": 23.069921256101434,
+        "omega_field_l2": 23.025199797840603,
+        "omega_strong_l2": 13.297081313038476,
+        "poisson_strong_l2": 2.7069532728277,
+        "profile_strong_l2": 13.5698182547457,
+        "profile_strong_relative": 0.5882039259738181,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "compatibility": {
+        "neumann_flux_discrete": 3.255343931474723e-15,
+        "omega_integral": -5.462405701373019e-14,
+        "omega_mean": -1.7387377370937348e-16,
+        "omega_minus_flux": -5.787940094520492e-14,
+        "physical_poisson_residual_norm": 8.403747897646526e-12,
+        "poisson_lambda": -3.042227998964781e-11
+      },
+      "diagnostics": {
+        "adaptive_retries": 0,
+        "advection_scheme": "fv_upwind",
+        "anchored_attempts": 0,
+        "anchored_linear_solve_time_sec": 0.0,
+        "anchored_successes": 0,
+        "attempted_sigma": 1.0,
+        "completed_sigma_steps": 1,
+        "diffusion_attempts": 0,
+        "diffusion_linear_solve_time_sec": 0.0,
+        "diffusion_successes": 0,
+        "final_sigma": 1.0,
+        "grid_dr": 0.0625,
+        "grid_dtheta": 0.01308996938995747,
+        "grid_nr": 160,
+        "grid_ntheta": 480,
+        "lap_psi_l2": 23.68844158238143,
+        "newton_linear_solve_time_sec": 25.305106326006353,
+        "newton_steps": 7,
+        "omega_field_l2": 23.688441582381397,
+        "omega_residual_norm": 2.946389280456072e-13,
+        "physical_poisson_residual_norm": 8.403747897646526e-12,
+        "poisson_gauge": "mean",
+        "poisson_lambda": -3.042227998964781e-11,
+        "poisson_residual_norm": 8.403747817105751e-12,
+        "reduced_gmres_maxiter": 240,
+        "reduced_gmres_rtol": 1e-08,
+        "reduced_poisson_newton": true,
+        "relative_residual": 3.549795069400098e-13,
+        "residual_norm": 8.408911313090985e-12,
+        "runtime_sec": 47.572692905552685,
+        "upwind_blend": 1.0,
+        "upwind_smoothing": 0.001
+      },
+      "grid": {
+        "dr": 0.0625,
+        "dtheta": 0.01308996938995747,
+        "nr": 160,
+        "ntheta": 480
+      },
+      "label": "broken_m1_160_480",
+      "message": "converged",
+      "runtime_sec": 47.572692905552685,
+      "sigma": 1.0,
+      "state_path": "experiments/raw/nextgen/m3_c3_140_nonuniqueness_validation/states/broken_m1_160_480_state.npz",
+      "status": "completed",
+      "symmetry": {
+        "omega_non_threefold_fraction": 0.25205998304341876,
+        "omega_threefold_defect": 0.43658069718615095,
+        "psi_non_threefold_fraction": 0.0031512904270836308,
+        "psi_threefold_defect": 0.005458195129114276
+      }
+    },
+    {
+      "branch_class": "broken_like",
+      "branch_distances": {
+        "to_broken": {
+          "omega_probe_linf": 12.362192893856168,
+          "omega_probe_rms": 0.47998146027859523,
+          "psi_probe_linf_offset_removed": 0.2966933853706817,
+          "psi_probe_mean_offset": 5.53667815705465e-16,
+          "psi_probe_rms_offset_removed": 0.015436976935880422,
+          "valid_probe_count": 65520
+        },
+        "to_symmetric": {
+          "omega_probe_linf": 12.36419103330837,
+          "omega_probe_rms": 0.48109811798692576,
+          "psi_probe_linf_offset_removed": 0.2960599027925301,
+          "psi_probe_mean_offset": -6.177801453143133e-16,
+          "psi_probe_rms_offset_removed": 0.015613747115372036,
+          "valid_probe_count": 65520
+        }
+      },
+      "common_residuals": {
+        "lap_psi_l2": 23.084230381893104,
+        "omega_field_l2": 23.025089557816624,
+        "omega_strong_l2": 13.710249736601543,
+        "poisson_strong_l2": 2.727166654623571,
+        "profile_strong_l2": 13.978854953181015,
+        "profile_strong_relative": 0.605558631235365,
+        "sample_hx": 0.07291666666666696,
+        "sample_hy": 0.07291666666666696,
+        "sample_points": 36481
+      },
+      "compatibility": {
+        "neumann_flux_discrete": 3.255343931474723e-15,
+        "omega_integral": -7.70987006876167e-14,
+        "omega_mean": -2.4541278640793416e-16,
+        "omega_minus_flux": -8.035404461909143e-14,
+        "physical_poisson_residual_norm": 8.392683885653557e-12,
+        "poisson_lambda": -3.3543958720631864e-11
+      },
+      "diagnostics": {
+        "adaptive_retries": 0,
+        "advection_scheme": "fv_upwind",
+        "anchored_attempts": 0,
+        "anchored_linear_solve_time_sec": 0.0,
+        "anchored_successes": 0,
+        "attempted_sigma": 1.0,
+        "completed_sigma_steps": 1,
+        "diffusion_attempts": 0,
+        "diffusion_linear_solve_time_sec": 0.0,
+        "diffusion_successes": 0,
+        "final_sigma": 1.0,
+        "grid_dr": 0.0625,
+        "grid_dtheta": 0.01308996938995747,
+        "grid_nr": 160,
+        "grid_ntheta": 480,
+        "lap_psi_l2": 23.6851314476412,
+        "newton_linear_solve_time_sec": 22.958758044056594,
+        "newton_steps": 6,
+        "omega_field_l2": 23.685131447641183,
+        "omega_residual_norm": 8.863852424941794e-08,
+        "physical_poisson_residual_norm": 8.392683885653557e-12,
+        "poisson_gauge": "mean",
+        "poisson_lambda": -3.3543958720631864e-11,
+        "poisson_residual_norm": 8.392679325985385e-12,
+        "reduced_gmres_maxiter": 240,
+        "reduced_gmres_rtol": 1e-08,
+        "reduced_poisson_newton": true,
+        "relative_residual": 3.74236996922274e-09,
+        "residual_norm": 8.863852464674556e-08,
+        "runtime_sec": 41.79965354409069,
+        "upwind_blend": 1.0,
+        "upwind_smoothing": 0.001
+      },
+      "grid": {
+        "dr": 0.0625,
+        "dtheta": 0.01308996938995747,
+        "nr": 160,
+        "ntheta": 480
+      },
+      "label": "broken_m2_160_480",
+      "message": "converged",
+      "runtime_sec": 41.79965354409069,
+      "state_path": "experiments/raw/nextgen/m3_c3_140_nonuniqueness_validation/states/broken_m2_160_480_state.npz",
+      "status": "completed",
+      "symmetry": {
+        "omega_non_threefold_fraction": 0.253466527433189,
+        "omega_threefold_defect": 0.43901690353233397,
+        "psi_non_threefold_fraction": 0.003447295718023058,
+        "psi_threefold_defect": 0.00597089133233057
+      }
+    }
+  ],
+  "status": "completed",
+  "trace_runs": {
+    "broken_m1": [
+      {
+        "branch_class": "broken_m1",
+        "branch_distances": {
+          "to_broken": {
+            "omega_probe_linf": 0.0,
+            "omega_probe_rms": 0.0,
+            "psi_probe_linf_offset_removed": 0.0,
+            "psi_probe_mean_offset": 0.0,
+            "psi_probe_rms_offset_removed": 0.0,
+            "valid_probe_count": 65520
+          },
+          "to_symmetric": {
+            "omega_probe_linf": 12.33087059406723,
+            "omega_probe_rms": 0.4784389942976513,
+            "psi_probe_linf_offset_removed": 0.296001508799092,
+            "psi_probe_mean_offset": -1.1714115297086833e-15,
+            "psi_probe_rms_offset_removed": 0.014936599003423742,
+            "valid_probe_count": 65520
+          }
+        },
+        "common_residuals": {
+          "lap_psi_l2": 23.069921256101434,
+          "omega_field_l2": 23.025199797840603,
+          "omega_strong_l2": 13.297081313038476,
+          "poisson_strong_l2": 2.7069532728277,
+          "profile_strong_l2": 13.5698182547457,
+          "profile_strong_relative": 0.5882039259738181,
+          "sample_hx": 0.07291666666666696,
+          "sample_hy": 0.07291666666666696,
+          "sample_points": 36481
+        },
+        "compatibility": {
+          "neumann_flux_discrete": 3.255343931474723e-15,
+          "omega_integral": -5.462405701373019e-14,
+          "omega_mean": -1.7387377370937348e-16,
+          "omega_minus_flux": -5.787940094520492e-14,
+          "physical_poisson_residual_norm": 8.403747897646526e-12,
+          "poisson_lambda": -3.042227998964781e-11
+        },
+        "diagnostics": {
+          "adaptive_retries": 0,
+          "advection_scheme": "fv_upwind",
+          "anchored_attempts": 0,
+          "anchored_linear_solve_time_sec": 0.0,
+          "anchored_successes": 0,
+          "attempted_sigma": 1.0,
+          "completed_sigma_steps": 1,
+          "diffusion_attempts": 0,
+          "diffusion_linear_solve_time_sec": 0.0,
+          "diffusion_successes": 0,
+          "final_sigma": 1.0,
+          "grid_dr": 0.0625,
+          "grid_dtheta": 0.01308996938995747,
+          "grid_nr": 160,
+          "grid_ntheta": 480,
+          "lap_psi_l2": 23.68844158238143,
+          "newton_linear_solve_time_sec": 25.305106326006353,
+          "newton_steps": 7,
+          "omega_field_l2": 23.688441582381397,
+          "omega_residual_norm": 2.946389280456072e-13,
+          "physical_poisson_residual_norm": 8.403747897646526e-12,
+          "poisson_gauge": "mean",
+          "poisson_lambda": -3.042227998964781e-11,
+          "poisson_residual_norm": 8.403747817105751e-12,
+          "reduced_gmres_maxiter": 240,
+          "reduced_gmres_rtol": 1e-08,
+          "reduced_poisson_newton": true,
+          "relative_residual": 3.549795069400098e-13,
+          "residual_norm": 8.408911313090985e-12,
+          "runtime_sec": 47.572692905552685,
+          "upwind_blend": 1.0,
+          "upwind_smoothing": 0.001
+        },
+        "grid": {
+          "dr": 0.0625,
+          "dtheta": 0.01308996938995747,
+          "nr": 160,
+          "ntheta": 480
+        },
+        "label": "broken_m1_160_480",
+        "message": "converged",
+        "runtime_sec": 47.572692905552685,
+        "sigma": 1.0,
+        "state_path": "experiments/raw/nextgen/m3_c3_140_nonuniqueness_validation/states/broken_m1_160_480_state.npz",
+        "status": "completed",
+        "symmetry": {
+          "omega_non_threefold_fraction": 0.25205998304341876,
+          "omega_threefold_defect": 0.43658069718615095,
+          "psi_non_threefold_fraction": 0.0031512904270836308,
+          "psi_threefold_defect": 0.005458195129114276
+        }
+      },
+      {
+        "branch_class": "broken_like",
+        "branch_distances": {
+          "to_broken": {
+            "omega_probe_linf": 9.939727392597451,
+            "omega_probe_rms": 0.34416973363881614,
+            "psi_probe_linf_offset_removed": 0.31332984844335815,
+            "psi_probe_mean_offset": 1.2910714418598844e-15,
+            "psi_probe_rms_offset_removed": 0.14385783984095546,
+            "valid_probe_count": 65520
+          },
+          "to_symmetric": {
+            "omega_probe_linf": 14.193469885235867,
+            "omega_probe_rms": 0.6110476989046364,
+            "psi_probe_linf_offset_removed": 0.39135838227991704,
+            "psi_probe_mean_offset": 1.1963703667679266e-16,
+            "psi_probe_rms_offset_removed": 0.1469650182192457,
+            "valid_probe_count": 65520
+          }
+        },
+        "common_residuals": {
+          "lap_psi_l2": 22.105094773870135,
+          "omega_field_l2": 22.0711527434752,
+          "omega_strong_l2": 12.40876806486093,
+          "poisson_strong_l2": 2.562272072708793,
+          "profile_strong_l2": 12.67054707035556,
+          "profile_strong_relative": 0.573195781333319,
+          "sample_hx": 0.07291666666666696,
+          "sample_hy": 0.07291666666666696,
+          "sample_points": 36481
+        },
+        "compatibility": {
+          "neumann_flux_discrete": 3.255343931474723e-15,
+          "omega_integral": -7.624434937569813e-14,
+          "omega_mean": -2.426933017193564e-16,
+          "omega_minus_flux": -7.949969330717286e-14,
+          "physical_poisson_residual_norm": 8.036871903790645e-12,
+          "poisson_lambda": -3.302774397966651e-11
+        },
+        "diagnostics": {
+          "adaptive_retries": 0,
+          "advection_scheme": "fv_upwind",
+          "anchored_attempts": 0,
+          "anchored_linear_solve_time_sec": 0.0,
+          "anchored_successes": 0,
+          "attempted_sigma": 0.95,
+          "completed_sigma_steps": 1,
+          "diffusion_attempts": 0,
+          "diffusion_linear_solve_time_sec": 0.0,
+          "diffusion_successes": 0,
+          "final_sigma": 0.95,
+          "grid_dr": 0.0625,
+          "grid_dtheta": 0.01308996938995747,
+          "grid_nr": 160,
+          "grid_ntheta": 480,
+          "lap_psi_l2": 22.698599703587902,
+          "newton_linear_solve_time_sec": 32.03903432004154,
+          "newton_steps": 8,
+          "omega_field_l2": 22.698599703587888,
+          "omega_residual_norm": 1.0252973771053785e-11,
+          "physical_poisson_residual_norm": 8.036871903790645e-12,
+          "poisson_gauge": "mean",
+          "poisson_lambda": -3.302774397966651e-11,
+          "poisson_residual_norm": 8.036870831425967e-12,
+          "reduced_gmres_maxiter": 240,
+          "reduced_gmres_rtol": 1e-08,
+          "reduced_poisson_newton": true,
+          "relative_residual": 5.739324048066937e-13,
+          "residual_norm": 1.302746191362471e-11,
+          "runtime_sec": 58.57530157081783,
+          "upwind_blend": 1.0,
+          "upwind_smoothing": 0.001
+        },
+        "grid": {
+          "dr": 0.0625,
+          "dtheta": 0.01308996938995747,
+          "nr": 160,
+          "ntheta": 480
+        },
+        "label": "trace_broken_m1_sigma0p95_160_480",
+        "message": "converged",
+        "runtime_sec": 58.57530157081783,
+        "sigma": 0.95,
+        "status": "completed",
+        "symmetry": {
+          "omega_non_threefold_fraction": 0.23030201087257193,
+          "omega_threefold_defect": 0.3988947839165745,
+          "psi_non_threefold_fraction": 0.0026604393534183438,
+          "psi_threefold_defect": 0.004608016130576264
+        }
+      },
+      {
+        "branch_class": "broken_like",
+        "branch_distances": {
+          "to_broken": {
+            "omega_probe_linf": 15.0655253748097,
+            "omega_probe_rms": 0.5857809588258879,
+            "psi_probe_linf_offset_removed": 0.6256737128209777,
+            "psi_probe_mean_offset": 4.668223479733396e-16,
+            "psi_probe_rms_offset_removed": 0.28745546388721954,
+            "valid_probe_count": 65520
+          },
+          "to_symmetric": {
+            "omega_probe_linf": 15.591191910477294,
+            "omega_probe_rms": 0.7378177560952422,
+            "psi_probe_linf_offset_removed": 0.6286291107289965,
+            "psi_probe_mean_offset": -7.053644061458534e-16,
+            "psi_probe_rms_offset_removed": 0.29009844656217715,
+            "valid_probe_count": 65520
+          }
+        },
+        "common_residuals": {
+          "lap_psi_l2": 21.124944999837574,
+          "omega_field_l2": 21.111992505020538,
+          "omega_strong_l2": 11.468901615369395,
+          "poisson_strong_l2": 2.4146747312583967,
+          "profile_strong_l2": 11.720339513887836,
+          "profile_strong_relative": 0.5548104155527009,
+          "sample_hx": 0.07291666666666696,
+          "sample_hy": 0.07291666666666696,
+          "sample_points": 36481
+        },
+        "compatibility": {
+          "neumann_flux_discrete": 3.255343931474723e-15,
+          "omega_integral": -6.206623756610519e-14,
+          "omega_mean": -1.9756297015523055e-16,
+          "omega_minus_flux": -6.532158149757992e-14,
+          "physical_poisson_residual_norm": 7.68647413535518e-12,
+          "poisson_lambda": -2.8939438896940018e-11
+        },
+        "diagnostics": {
+          "adaptive_retries": 0,
+          "advection_scheme": "fv_upwind",
+          "anchored_attempts": 0,
+          "anchored_linear_solve_time_sec": 0.0,
+          "anchored_successes": 0,
+          "attempted_sigma": 0.9,
+          "completed_sigma_steps": 1,
+          "diffusion_attempts": 0,
+          "diffusion_linear_solve_time_sec": 0.0,
+          "diffusion_successes": 0,
+          "final_sigma": 0.9,
+          "grid_dr": 0.0625,
+          "grid_dtheta": 0.01308996938995747,
+          "grid_nr": 160,
+          "grid_ntheta": 480,
+          "lap_psi_l2": 21.69269468647937,
+          "newton_linear_solve_time_sec": 32.30306752026081,
+          "newton_steps": 8,
+          "omega_field_l2": 21.69269468647936,
+          "omega_residual_norm": 2.638644105628864e-13,
+          "physical_poisson_residual_norm": 7.68647413535518e-12,
+          "poisson_gauge": "mean",
+          "poisson_lambda": -2.8939438896940018e-11,
+          "poisson_residual_norm": 7.68644353600253e-12,
+          "reduced_gmres_maxiter": 240,
+          "reduced_gmres_rtol": 1e-08,
+          "reduced_poisson_newton": true,
+          "relative_residual": 3.545419946239673e-13,
+          "residual_norm": 7.690971242913133e-12,
+          "runtime_sec": 58.112350607290864,
+          "upwind_blend": 1.0,
+          "upwind_smoothing": 0.001
+        },
+        "grid": {
+          "dr": 0.0625,
+          "dtheta": 0.01308996938995747,
+          "nr": 160,
+          "ntheta": 480
+        },
+        "label": "trace_broken_m1_sigma0p9_160_480",
+        "message": "converged",
+        "runtime_sec": 58.112350607290864,
+        "sigma": 0.9,
+        "status": "completed",
+        "symmetry": {
+          "omega_non_threefold_fraction": 0.20645458184272664,
+          "omega_threefold_defect": 0.35758982520698956,
+          "psi_non_threefold_fraction": 0.0021984665557769614,
+          "psi_threefold_defect": 0.003807855773346654
+        }
+      },
+      {
+        "branch_class": "broken_like",
+        "branch_distances": {
+          "to_broken": {
+            "omega_probe_linf": 15.542767406447398,
+            "omega_probe_rms": 0.7211235608362457,
+            "psi_probe_linf_offset_removed": 0.9371331411579248,
+            "psi_probe_mean_offset": 1.686373195475198e-15,
+            "psi_probe_rms_offset_removed": 0.4307385747274602,
+            "valid_probe_count": 65520
+          },
+          "to_symmetric": {
+            "omega_probe_linf": 15.546757323003431,
+            "omega_probe_rms": 0.8095844249185453,
+            "psi_probe_linf_offset_removed": 0.9394180105699016,
+            "psi_probe_mean_offset": 5.142813322128107e-16,
+            "psi_probe_rms_offset_removed": 0.4331767789396894,
+            "valid_probe_count": 65520
+          }
+        },
+        "common_residuals": {
+          "lap_psi_l2": 20.131911910812235,
+          "omega_field_l2": 20.12851519672616,
+          "omega_strong_l2": 10.525251102033648,
+          "poisson_strong_l2": 2.2744058496560515,
+          "profile_strong_l2": 10.76818613926274,
+          "profile_strong_relative": 0.5348814452878405,
+          "sample_hx": 0.07291666666666696,
+          "sample_hy": 0.07291666666666696,
+          "sample_points": 36481
+        },
+        "compatibility": {
+          "neumann_flux_discrete": 3.255343931474723e-15,
+          "omega_integral": -5.4951160809169064e-14,
+          "omega_mean": -1.7491497742833784e-16,
+          "omega_minus_flux": -5.820650474064379e-14,
+          "physical_poisson_residual_norm": 7.246314509620971e-12,
+          "poisson_lambda": -2.8573913396940148e-11
+        },
+        "diagnostics": {
+          "adaptive_retries": 0,
+          "advection_scheme": "fv_upwind",
+          "anchored_attempts": 0,
+          "anchored_linear_solve_time_sec": 0.0,
+          "anchored_successes": 0,
+          "attempted_sigma": 0.85,
+          "completed_sigma_steps": 1,
+          "diffusion_attempts": 0,
+          "diffusion_linear_solve_time_sec": 0.0,
+          "diffusion_successes": 0,
+          "final_sigma": 0.85,
+          "grid_dr": 0.0625,
+          "grid_dtheta": 0.01308996938995747,
+          "grid_nr": 160,
+          "grid_ntheta": 480,
+          "lap_psi_l2": 20.68068804132687,
+          "newton_linear_solve_time_sec": 24.517360747791827,
+          "newton_steps": 7,
+          "omega_field_l2": 20.680688041326864,
+          "omega_residual_norm": 1.508740162280718e-10,
+          "physical_poisson_residual_norm": 7.246314509620971e-12,
+          "poisson_gauge": "mean",
+          "poisson_lambda": -2.8573913396940148e-11,
+          "poisson_residual_norm": 7.246314327307057e-12,
+          "reduced_gmres_maxiter": 240,
+          "reduced_gmres_rtol": 1e-08,
+          "reduced_poisson_newton": true,
+          "relative_residual": 7.303815616372062e-12,
+          "residual_norm": 1.5104793227356213e-10,
+          "runtime_sec": 46.42575085815042,
+          "upwind_blend": 1.0,
+          "upwind_smoothing": 0.001
+        },
+        "grid": {
+          "dr": 0.0625,
+          "dtheta": 0.01308996938995747,
+          "nr": 160,
+          "ntheta": 480
+        },
+        "label": "trace_broken_m1_sigma0p85_160_480",
+        "message": "converged",
+        "runtime_sec": 46.42575085815042,
+        "sigma": 0.85,
+        "status": "completed",
+        "symmetry": {
+          "omega_non_threefold_fraction": 0.17728510407496048,
+          "omega_threefold_defect": 0.30706680768296774,
+          "psi_non_threefold_fraction": 0.0017283234333854086,
+          "psi_threefold_defect": 0.002993543998535412
+        }
+      },
+      {
+        "branch_class": "broken_like",
+        "branch_distances": {
+          "to_broken": {
+            "omega_probe_linf": 15.580164563799089,
+            "omega_probe_rms": 0.8014298459545807,
+            "psi_probe_linf_offset_removed": 1.2477649367627477,
+            "psi_probe_mean_offset": 1.5549358029627986e-15,
+            "psi_probe_rms_offset_removed": 0.5737282654897493,
+            "valid_probe_count": 65520
+          },
+          "to_symmetric": {
+            "omega_probe_linf": 15.582818933239617,
+            "omega_probe_rms": 0.8608897923395159,
+            "psi_probe_linf_offset_removed": 1.2494996259984705,
+            "psi_probe_mean_offset": 3.85392436997475e-16,
+            "psi_probe_rms_offset_removed": 0.5760474927798925,
+            "valid_probe_count": 65520
+          }
+        },
+        "common_residuals": {
+          "lap_psi_l2": 19.12757640589576,
+          "omega_field_l2": 19.14499889388388,
+          "omega_strong_l2": 9.586093815268429,
+          "poisson_strong_l2": 2.1181640997878985,
+          "profile_strong_l2": 9.817322129214151,
+          "profile_strong_relative": 0.5127878138635162,
+          "sample_hx": 0.07291666666666696,
+          "sample_hy": 0.07291666666666696,
+          "sample_points": 36481
+        },
+        "compatibility": {
+          "neumann_flux_discrete": 3.255343931474723e-15,
+          "omega_integral": -5.1814347083734e-14,
+          "omega_mean": -1.6493018922910796e-16,
+          "omega_minus_flux": -5.5069691015208725e-14,
+          "physical_poisson_residual_norm": 6.931437151395066e-12,
+          "poisson_lambda": -2.5744949602386346e-11
+        },
+        "diagnostics": {
+          "adaptive_retries": 0,
+          "advection_scheme": "fv_upwind",
+          "anchored_attempts": 0,
+          "anchored_linear_solve_time_sec": 0.0,
+          "anchored_successes": 0,
+          "attempted_sigma": 0.8,
+          "completed_sigma_steps": 1,
+          "diffusion_attempts": 0,
+          "diffusion_linear_solve_time_sec": 0.0,
+          "diffusion_successes": 0,
+          "final_sigma": 0.8,
+          "grid_dr": 0.0625,
+          "grid_dtheta": 0.01308996938995747,
+          "grid_nr": 160,
+          "grid_ntheta": 480,
+          "lap_psi_l2": 19.65139103750176,
+          "newton_linear_solve_time_sec": 29.405685017816722,
+          "newton_steps": 8,
+          "omega_field_l2": 19.651391037501753,
+          "omega_residual_norm": 6.434095796912923e-13,
+          "physical_poisson_residual_norm": 6.931437151395066e-12,
+          "poisson_gauge": "mean",
+          "poisson_lambda": -2.5744949602386346e-11,
+          "poisson_residual_norm": 6.931448885223827e-12,
+          "reduced_gmres_maxiter": 240,
+          "reduced_gmres_rtol": 1e-08,
+          "reduced_poisson_newton": true,
+          "relative_residual": 3.542368562149605e-13,
+          "residual_norm": 6.961246981375475e-12,
+          "runtime_sec": 55.401962040923536,
+          "upwind_blend": 1.0,
+          "upwind_smoothing": 0.001
+        },
+        "grid": {
+          "dr": 0.0625,
+          "dtheta": 0.01308996938995747,
+          "nr": 160,
+          "ntheta": 480
+        },
+        "label": "trace_broken_m1_sigma0p8_160_480",
+        "message": "converged",
+        "runtime_sec": 55.401962040923536,
+        "sigma": 0.8,
+        "status": "completed",
+        "symmetry": {
+          "omega_non_threefold_fraction": 0.14433626305322114,
+          "omega_threefold_defect": 0.24999774098280556,
+          "psi_non_threefold_fraction": 0.0012868497978002333,
+          "psi_threefold_defect": 0.0022288892314997403
+        }
+      },
+      {
+        "branch_class": "broken_like",
+        "branch_distances": {
+          "to_broken": {
+            "omega_probe_linf": 15.635147245479246,
+            "omega_probe_rms": 0.8668693847276358,
+            "psi_probe_linf_offset_removed": 1.55763881911603,
+            "psi_probe_mean_offset": 8.277736114250374e-16,
+            "psi_probe_rms_offset_removed": 0.7164221211200953,
+            "valid_probe_count": 65520
+          },
+          "to_symmetric": {
+            "omega_probe_linf": 15.634725982069636,
+            "omega_probe_rms": 0.9178270033269728,
+            "psi_probe_linf_offset_removed": 1.5589481112486525,
+            "psi_probe_mean_offset": -3.4431825183735015e-16,
+            "psi_probe_rms_offset_removed": 0.7186651430986389,
+            "valid_probe_count": 65520
+          }
+        },
+        "common_residuals": {
+          "lap_psi_l2": 18.10749591590145,
+          "omega_field_l2": 18.14002402177073,
+          "omega_strong_l2": 8.735402878913783,
+          "poisson_strong_l2": 1.957730157647003,
+          "profile_strong_l2": 8.952093097544047,
+          "profile_strong_relative": 0.49349951724431024,
+          "sample_hx": 0.07291666666666696,
+          "sample_hy": 0.07291666666666696,
+          "sample_points": 36481
+        },
+        "compatibility": {
+          "neumann_flux_discrete": 3.255343931474723e-15,
+          "omega_integral": -4.266639125338756e-14,
+          "omega_mean": -1.3581134143738877e-16,
+          "omega_minus_flux": -4.592173518486228e-14,
+          "physical_poisson_residual_norm": 6.458735317970873e-12,
+          "poisson_lambda": -2.4143569293514215e-11
+        },
+        "diagnostics": {
+          "adaptive_retries": 0,
+          "advection_scheme": "fv_upwind",
+          "anchored_attempts": 0,
+          "anchored_linear_solve_time_sec": 0.0,
+          "anchored_successes": 0,
+          "attempted_sigma": 0.75,
+          "completed_sigma_steps": 1,
+          "diffusion_attempts": 0,
+          "diffusion_linear_solve_time_sec": 0.0,
+          "diffusion_successes": 0,
+          "final_sigma": 0.75,
+          "grid_dr": 0.0625,
+          "grid_dtheta": 0.01308996938995747,
+          "grid_nr": 160,
+          "grid_ntheta": 480,
+          "lap_psi_l2": 18.610623942807724,
+          "newton_linear_solve_time_sec": 26.85357256885618,
+          "newton_steps": 8,
+          "omega_field_l2": 18.610623942807738,
+          "omega_residual_norm": 2.1971853834451103e-13,
+          "physical_poisson_residual_norm": 6.458735317970873e-12,
+          "poisson_gauge": "mean",
+          "poisson_lambda": -2.4143569293514215e-11,
+          "poisson_residual_norm": 6.458745799170409e-12,
+          "reduced_gmres_maxiter": 240,
+          "reduced_gmres_rtol": 1e-08,
+          "reduced_poisson_newton": true,
+          "relative_residual": 3.472469281394772e-13,
+          "residual_norm": 6.462481994898992e-12,
+          "runtime_sec": 51.989886860363185,
+          "upwind_blend": 1.0,
+          "upwind_smoothing": 0.001
+        },
+        "grid": {
+          "dr": 0.0625,
+          "dtheta": 0.01308996938995747,
+          "nr": 160,
+          "ntheta": 480
+        },
+        "label": "trace_broken_m1_sigma0p75_160_480",
+        "message": "converged",
+        "runtime_sec": 51.989886860363185,
+        "sigma": 0.75,
+        "status": "completed",
+        "symmetry": {
+          "omega_non_threefold_fraction": 0.10362156862303869,
+          "omega_threefold_defect": 0.179477821615088,
+          "psi_non_threefold_fraction": 0.0008437487883349172,
+          "psi_threefold_defect": 0.0014614157702207546
+        }
+      },
+      {
+        "branch_class": "broken_like",
+        "branch_distances": {
+          "to_broken": {
+            "omega_probe_linf": 15.687646815507652,
+            "omega_probe_rms": 0.9315183823184031,
+            "psi_probe_linf_offset_removed": 1.866830465321679,
+            "psi_probe_mean_offset": 9.605069419246672e-15,
+            "psi_probe_rms_offset_removed": 0.8588378537613626,
+            "valid_probe_count": 65520
+          },
+          "to_symmetric": {
+            "omega_probe_linf": 15.685978665024765,
+            "omega_probe_rms": 0.980626554972998,
+            "psi_probe_linf_offset_removed": 1.8678277606370508,
+            "psi_probe_mean_offset": 8.433194449371268e-15,
+            "psi_probe_rms_offset_removed": 0.8610286694296002,
+            "valid_probe_count": 65520
+          }
+        },
+        "common_residuals": {
+          "lap_psi_l2": 17.07664700109423,
+          "omega_field_l2": 17.122913248267437,
+          "omega_strong_l2": 7.9476033981664616,
+          "poisson_strong_l2": 1.8191830177633455,
+          "profile_strong_l2": 8.153148264729744,
+          "profile_strong_relative": 0.47615427039290237,
+          "sample_hx": 0.07291666666666696,
+          "sample_hy": 0.07291666666666696,
+          "sample_points": 36481
+        },
+        "compatibility": {
+          "neumann_flux_discrete": 3.255343931474723e-15,
+          "omega_integral": -4.419045424725043e-14,
+          "omega_mean": -1.4066258461852294e-16,
+          "omega_minus_flux": -4.7445798178725155e-14,
+          "physical_poisson_residual_norm": 6.051736174144254e-12,
+          "poisson_lambda": -2.2985312482672658e-11
+        },
+        "diagnostics": {
+          "adaptive_retries": 0,
+          "advection_scheme": "fv_upwind",
+          "anchored_attempts": 0,
+          "anchored_linear_solve_time_sec": 0.0,
+          "anchored_successes": 0,
+          "attempted_sigma": 0.7,
+          "completed_sigma_steps": 1,
+          "diffusion_attempts": 0,
+          "diffusion_linear_solve_time_sec": 0.0,
+          "diffusion_successes": 0,
+          "final_sigma": 0.7,
+          "grid_dr": 0.0625,
+          "grid_dtheta": 0.01308996938995747,
+          "grid_nr": 160,
+          "grid_ntheta": 480,
+          "lap_psi_l2": 17.553178947947668,
+          "newton_linear_solve_time_sec": 23.28383464924991,
+          "newton_steps": 7,
+          "omega_field_l2": 17.553178947947675,
+          "omega_residual_norm": 1.167662974487341e-07,
+          "physical_poisson_residual_norm": 6.051736174144254e-12,
+          "poisson_gauge": "mean",
+          "poisson_lambda": -2.2985312482672658e-11,
+          "poisson_residual_norm": 6.051699927576532e-12,
+          "reduced_gmres_maxiter": 240,
+          "reduced_gmres_rtol": 1e-08,
+          "reduced_poisson_newton": true,
+          "relative_residual": 6.652145343690498e-09,
+          "residual_norm": 1.167662976055562e-07,
+          "runtime_sec": 45.07259336207062,
+          "upwind_blend": 1.0,
+          "upwind_smoothing": 0.001
+        },
+        "grid": {
+          "dr": 0.0625,
+          "dtheta": 0.01308996938995747,
+          "nr": 160,
+          "ntheta": 480
+        },
+        "label": "trace_broken_m1_sigma0p7_160_480",
+        "message": "converged",
+        "runtime_sec": 45.07259336207062,
+        "sigma": 0.7,
+        "status": "completed",
+        "symmetry": {
+          "omega_non_threefold_fraction": 0.05094180451977895,
+          "omega_threefold_defect": 0.08823379365749899,
+          "psi_non_threefold_fraction": 0.00038174770557746537,
+          "psi_threefold_defect": 0.0006612064217330152
+        }
+      },
+      {
+        "branch_class": "other_root_candidate",
+        "branch_distances": {
+          "to_broken": {
+            "omega_probe_linf": 15.76392631450191,
+            "omega_probe_rms": 0.9980011851444991,
+            "psi_probe_linf_offset_removed": 2.1758940113402967,
+            "psi_probe_mean_offset": -4.395073370500223e-15,
+            "psi_probe_rms_offset_removed": 1.0010653868309713,
+            "valid_probe_count": 65520
+          },
+          "to_symmetric": {
+            "omega_probe_linf": 15.732037919056193,
+            "omega_probe_rms": 1.0454741436602428,
+            "psi_probe_linf_offset_removed": 2.176228323803314,
+            "psi_probe_mean_offset": -5.567924360617055e-15,
+            "psi_probe_rms_offset_removed": 1.0032180095045105,
+            "valid_probe_count": 65520
+          }
+        },
+        "common_residuals": {
+          "lap_psi_l2": 15.973558389485213,
+          "omega_field_l2": 16.02872385990825,
+          "omega_strong_l2": 7.126723673692143,
+          "poisson_strong_l2": 1.677809134839872,
+          "profile_strong_l2": 7.321559520629205,
+          "profile_strong_relative": 0.4567774443318106,
+          "sample_hx": 0.07291666666666696,
+          "sample_hy": 0.07291666666666696,
+          "sample_points": 36481
+        },
+        "compatibility": {
+          "neumann_flux_discrete": 3.255343931474723e-15,
+          "omega_integral": -3.454333173669166e-14,
+          "omega_mean": -1.0995483993515247e-16,
+          "omega_minus_flux": -3.7798675668166385e-14,
+          "physical_poisson_residual_norm": 5.629025168781421e-12,
+          "poisson_lambda": -2.1215887890027107e-11
+        },
+        "diagnostics": {
+          "adaptive_retries": 0,
+          "advection_scheme": "fv_upwind",
+          "anchored_attempts": 0,
+          "anchored_linear_solve_time_sec": 0.0,
+          "anchored_successes": 0,
+          "attempted_sigma": 0.65,
+          "completed_sigma_steps": 1,
+          "diffusion_attempts": 0,
+          "diffusion_linear_solve_time_sec": 0.0,
+          "diffusion_successes": 0,
+          "final_sigma": 0.65,
+          "grid_dr": 0.0625,
+          "grid_dtheta": 0.01308996938995747,
+          "grid_nr": 160,
+          "grid_ntheta": 480,
+          "lap_psi_l2": 16.42947336909779,
+          "newton_linear_solve_time_sec": 30.343829005025327,
+          "newton_steps": 9,
+          "omega_field_l2": 16.429473369097796,
+          "omega_residual_norm": 6.072281331542263e-09,
+          "physical_poisson_residual_norm": 5.629025168781421e-12,
+          "poisson_gauge": "mean",
+          "poisson_lambda": -2.1215887890027107e-11,
+          "poisson_residual_norm": 5.629015132835408e-12,
+          "reduced_gmres_maxiter": 240,
+          "reduced_gmres_rtol": 1e-08,
+          "reduced_poisson_newton": true,
+          "relative_residual": 3.695969921967414e-10,
+          "residual_norm": 6.072283940595009e-09,
+          "runtime_sec": 59.33624750934541,
+          "upwind_blend": 1.0,
+          "upwind_smoothing": 0.001
+        },
+        "grid": {
+          "dr": 0.0625,
+          "dtheta": 0.01308996938995747,
+          "nr": 160,
+          "ntheta": 480
+        },
+        "label": "trace_broken_m1_sigma0p65_160_480",
+        "message": "converged",
+        "runtime_sec": 59.33624750934541,
+        "sigma": 0.65,
+        "status": "completed",
+        "symmetry": {
+          "omega_non_threefold_fraction": 1.4194612364134364e-09,
+          "omega_threefold_defect": 2.4585789809783694e-09,
+          "psi_non_threefold_fraction": 9.866580635289919e-12,
+          "psi_threefold_defect": 1.7089419445650053e-11
+        }
+      },
+      {
+        "branch_class": "other_root_candidate",
+        "branch_distances": {
+          "to_broken": {
+            "omega_probe_linf": 15.8468758970236,
+            "omega_probe_rms": 1.0628637837153057,
+            "psi_probe_linf_offset_removed": 2.484033952276203,
+            "psi_probe_mean_offset": 1.7240855331370685e-15,
+            "psi_probe_rms_offset_removed": 1.1429969665144677,
+            "valid_probe_count": 65520
+          },
+          "to_symmetric": {
+            "omega_probe_linf": 15.77265057259027,
+            "omega_probe_rms": 1.107882623960462,
+            "psi_probe_linf_offset_removed": 2.4843682647392202,
+            "psi_probe_mean_offset": 5.51993669874681e-16,
+            "psi_probe_rms_offset_removed": 1.1451211591384514,
+            "valid_probe_count": 65520
+          }
+        },
+        "common_residuals": {
+          "lap_psi_l2": 14.844893130232789,
+          "omega_field_l2": 14.912321397179765,
+          "omega_strong_l2": 6.262013831498979,
+          "poisson_strong_l2": 1.535957462995082,
+          "profile_strong_l2": 6.447633872515933,
+          "profile_strong_relative": 0.4323695621082387,
+          "sample_hx": 0.07291666666666696,
+          "sample_hy": 0.07291666666666696,
+          "sample_points": 36481
+        },
+        "compatibility": {
+          "neumann_flux_discrete": 3.255343931474723e-15,
+          "omega_integral": -4.3045211492453994e-14,
+          "omega_mean": -1.3701716370920228e-16,
+          "omega_minus_flux": -4.6300555423928717e-14,
+          "physical_poisson_residual_norm": 5.195414554533163e-12,
+          "poisson_lambda": -2.1298138275817854e-11
+        },
+        "diagnostics": {
+          "adaptive_retries": 0,
+          "advection_scheme": "fv_upwind",
+          "anchored_attempts": 0,
+          "anchored_linear_solve_time_sec": 0.0,
+          "anchored_successes": 0,
+          "attempted_sigma": 0.6,
+          "completed_sigma_steps": 1,
+          "diffusion_attempts": 0,
+          "diffusion_linear_solve_time_sec": 0.0,
+          "diffusion_successes": 0,
+          "final_sigma": 0.6,
+          "grid_dr": 0.0625,
+          "grid_dtheta": 0.01308996938995747,
+          "grid_nr": 160,
+          "grid_ntheta": 480,
+          "lap_psi_l2": 15.266599400615071,
+          "newton_linear_solve_time_sec": 16.349662160500884,
+          "newton_steps": 8,
+          "omega_field_l2": 15.266599400615089,
+          "omega_residual_norm": 2.255602856810929e-13,
+          "physical_poisson_residual_norm": 5.195414554533163e-12,
+          "poisson_gauge": "mean",
+          "poisson_lambda": -2.1298138275817854e-11,
+          "poisson_residual_norm": 5.195396718841851e-12,
+          "reduced_gmres_maxiter": 240,
+          "reduced_gmres_rtol": 1e-08,
+          "reduced_poisson_newton": true,
+          "relative_residual": 3.4063190325123286e-13,
+          "residual_norm": 5.200290810005649e-12,
+          "runtime_sec": 41.9688703333959,
+          "upwind_blend": 1.0,
+          "upwind_smoothing": 0.001
+        },
+        "grid": {
+          "dr": 0.0625,
+          "dtheta": 0.01308996938995747,
+          "nr": 160,
+          "ntheta": 480
+        },
+        "label": "trace_broken_m1_sigma0p6_160_480",
+        "message": "converged",
+        "runtime_sec": 41.9688703333959,
+        "sigma": 0.6,
+        "status": "completed",
+        "symmetry": {
+          "omega_non_threefold_fraction": 9.197571836008898e-14,
+          "omega_threefold_defect": 1.5930421999035735e-13,
+          "psi_non_threefold_fraction": 2.5746313452662106e-14,
+          "psi_threefold_defect": 4.459422275762444e-14
+        }
+      }
+    ],
+    "symmetric": [
+      {
+        "branch_class": "symmetric",
+        "branch_distances": {
+          "to_broken": {
+            "omega_probe_linf": 12.33087059406723,
+            "omega_probe_rms": 0.4784389942976513,
+            "psi_probe_linf_offset_removed": 0.296001508799092,
+            "psi_probe_mean_offset": 1.1714115297086833e-15,
+            "psi_probe_rms_offset_removed": 0.014936599003423742,
+            "valid_probe_count": 65520
+          },
+          "to_symmetric": {
+            "omega_probe_linf": 0.0,
+            "omega_probe_rms": 0.0,
+            "psi_probe_linf_offset_removed": 0.0,
+            "psi_probe_mean_offset": 0.0,
+            "psi_probe_rms_offset_removed": 0.0,
+            "valid_probe_count": 65520
+          }
+        },
+        "common_residuals": {
+          "lap_psi_l2": 23.66370233666698,
+          "omega_field_l2": 23.614525004149368,
+          "omega_strong_l2": 13.978141158297822,
+          "poisson_strong_l2": 2.7533376442302258,
+          "profile_strong_l2": 14.246729393949856,
+          "profile_strong_relative": 0.6020498902183411,
+          "sample_hx": 0.07291666666666696,
+          "sample_hy": 0.07291666666666696,
+          "sample_points": 36481
+        },
+        "compatibility": {
+          "neumann_flux_discrete": 3.255343931474723e-15,
+          "omega_integral": -8.903522450559587e-14,
+          "omega_mean": -2.834079217872447e-16,
+          "omega_minus_flux": -9.22905684370706e-14,
+          "physical_poisson_residual_norm": 8.390163796180602e-12,
+          "poisson_lambda": -3.7270923850797175e-11
+        },
+        "diagnostics": {
+          "adaptive_retries": 0,
+          "advection_scheme": "fv_upwind",
+          "anchored_attempts": 0,
+          "anchored_linear_solve_time_sec": 0.0,
+          "anchored_successes": 0,
+          "attempted_sigma": 1.0,
+          "completed_sigma_steps": 1,
+          "diffusion_attempts": 0,
+          "diffusion_linear_solve_time_sec": 0.0,
+          "diffusion_successes": 0,
+          "final_sigma": 1.0,
+          "grid_dr": 0.0625,
+          "grid_dtheta": 0.01308996938995747,
+          "grid_nr": 160,
+          "grid_ntheta": 480,
+          "lap_psi_l2": 24.28774269541897,
+          "newton_linear_solve_time_sec": 9.07779689412564,
+          "newton_steps": 5,
+          "omega_field_l2": 24.287742695418952,
+          "omega_residual_norm": 3.130844119212146e-13,
+          "physical_poisson_residual_norm": 8.390163796180602e-12,
+          "poisson_gauge": "mean",
+          "poisson_lambda": -3.7270923850797175e-11,
+          "poisson_residual_norm": 8.390152628794923e-12,
+          "reduced_gmres_maxiter": 240,
+          "reduced_gmres_rtol": 1e-08,
+          "reduced_poisson_newton": true,
+          "relative_residual": 3.4568844803171927e-13,
+          "residual_norm": 8.39599207857311e-12,
+          "runtime_sec": 22.798276491463184,
+          "upwind_blend": 1.0,
+          "upwind_smoothing": 0.001
+        },
+        "grid": {
+          "dr": 0.0625,
+          "dtheta": 0.01308996938995747,
+          "nr": 160,
+          "ntheta": 480
+        },
+        "label": "symmetric_160_480",
+        "message": "converged",
+        "runtime_sec": 22.798276491463184,
+        "sigma": 1.0,
+        "state_path": "experiments/raw/nextgen/m3_c3_140_nonuniqueness_validation/states/symmetric_160_480_state.npz",
+        "status": "completed",
+        "symmetry": {
+          "omega_non_threefold_fraction": 6.880751526267927e-14,
+          "omega_threefold_defect": 1.1917843214133904e-13,
+          "psi_non_threefold_fraction": 2.449939244126409e-14,
+          "psi_threefold_defect": 4.24337764301961e-14
+        }
+      },
+      {
+        "branch_class": "symmetric_like",
+        "branch_distances": {
+          "to_broken": {
+            "omega_probe_linf": 10.99645088503192,
+            "omega_probe_rms": 0.43663658385749177,
+            "psi_probe_linf_offset_removed": 0.3130413129505058,
+            "psi_probe_mean_offset": 1.6193802505704663e-16,
+            "psi_probe_rms_offset_removed": 0.14241601108697605,
+            "valid_probe_count": 65520
+          },
+          "to_symmetric": {
+            "omega_probe_linf": 9.95116710397536,
+            "omega_probe_rms": 0.39110154292553434,
+            "psi_probe_linf_offset_removed": 0.3134072134954523,
+            "psi_probe_mean_offset": -1.0097200514313725e-15,
+            "psi_probe_rms_offset_removed": 0.14443351149714864,
+            "valid_probe_count": 65520
+          }
+        },
+        "common_residuals": {
+          "lap_psi_l2": 22.592475709207626,
+          "omega_field_l2": 22.55855636787749,
+          "omega_strong_l2": 12.967291214130247,
+          "poisson_strong_l2": 2.5826038277278625,
+          "profile_strong_l2": 13.221969745958962,
+          "profile_strong_relative": 0.5852377542037286,
+          "sample_hx": 0.07291666666666696,
+          "sample_hy": 0.07291666666666696,
+          "sample_points": 36481
+        },
+        "compatibility": {
+          "neumann_flux_discrete": 3.255343931474723e-15,
+          "omega_integral": -4.0164703160594506e-14,
+          "omega_mean": -1.2784822091654576e-16,
+          "omega_minus_flux": -4.342004709206923e-14,
+          "physical_poisson_residual_norm": 8.075152579983799e-12,
+          "poisson_lambda": -2.627082961014216e-11
+        },
+        "diagnostics": {
+          "adaptive_retries": 0,
+          "advection_scheme": "fv_upwind",
+          "anchored_attempts": 0,
+          "anchored_linear_solve_time_sec": 0.0,
+          "anchored_successes": 0,
+          "attempted_sigma": 0.95,
+          "completed_sigma_steps": 1,
+          "diffusion_attempts": 0,
+          "diffusion_linear_solve_time_sec": 0.0,
+          "diffusion_successes": 0,
+          "final_sigma": 0.95,
+          "grid_dr": 0.0625,
+          "grid_dtheta": 0.01308996938995747,
+          "grid_nr": 160,
+          "grid_ntheta": 480,
+          "lap_psi_l2": 23.194773317109632,
+          "newton_linear_solve_time_sec": 16.251298491843045,
+          "newton_steps": 8,
+          "omega_field_l2": 23.194773317109625,
+          "omega_residual_norm": 4.596774969251825e-13,
+          "physical_poisson_residual_norm": 8.075152579983799e-12,
+          "poisson_gauge": "mean",
+          "poisson_lambda": -2.627082961014216e-11,
+          "poisson_residual_norm": 8.075146709112077e-12,
+          "reduced_gmres_maxiter": 240,
+          "reduced_gmres_rtol": 1e-08,
+          "reduced_poisson_newton": true,
+          "relative_residual": 3.4870871901738977e-13,
+          "residual_norm": 8.088219691308032e-12,
+          "runtime_sec": 42.76333771273494,
+          "upwind_blend": 1.0,
+          "upwind_smoothing": 0.001
+        },
+        "grid": {
+          "dr": 0.0625,
+          "dtheta": 0.01308996938995747,
+          "nr": 160,
+          "ntheta": 480
+        },
+        "label": "trace_symmetric_sigma0p95_160_480",
+        "message": "converged",
+        "runtime_sec": 42.76333771273494,
+        "sigma": 0.95,
+        "status": "completed",
+        "symmetry": {
+          "omega_non_threefold_fraction": 6.303274353457436e-14,
+          "omega_threefold_defect": 1.091769670198721e-13,
+          "psi_non_threefold_fraction": 2.4980613906653093e-14,
+          "psi_threefold_defect": 4.326729855306983e-14
+        }
+      },
+      {
+        "branch_class": "other_root_candidate",
+        "branch_distances": {
+          "to_broken": {
+            "omega_probe_linf": 15.059127728860604,
+            "omega_probe_rms": 0.5667765510206558,
+            "psi_probe_linf_offset_removed": 0.6254920912142601,
+            "psi_probe_mean_offset": 1.3637985056830098e-15,
+            "psi_probe_rms_offset_removed": 0.28616337853656026,
+            "valid_probe_count": 65520
+          },
+          "to_symmetric": {
+            "omega_probe_linf": 15.057016347115779,
+            "omega_probe_rms": 0.647403398385934,
+            "psi_probe_linf_offset_removed": 0.6258579917591913,
+            "psi_probe_mean_offset": 1.9143552568689208e-16,
+            "psi_probe_rms_offset_removed": 0.2884901249681565,
+            "valid_probe_count": 65520
+          }
+        },
+        "common_residuals": {
+          "lap_psi_l2": 21.511556475270076,
+          "omega_field_l2": 21.49810221072748,
+          "omega_strong_l2": 11.937936167695927,
+          "poisson_strong_l2": 2.4247064957222166,
+          "profile_strong_l2": 12.18168795916149,
+          "profile_strong_relative": 0.5662857531097619,
+          "sample_hx": 0.07291666666666696,
+          "sample_hy": 0.07291666666666696,
+          "sample_points": 36481
+        },
+        "compatibility": {
+          "neumann_flux_discrete": 3.255343931474723e-15,
+          "omega_integral": -5.938522243398303e-14,
+          "omega_mean": -1.8902903393960231e-16,
+          "omega_minus_flux": -6.264056636545776e-14,
+          "physical_poisson_residual_norm": 7.667873693592533e-12,
+          "poisson_lambda": -2.919774044262447e-11
+        },
+        "diagnostics": {
+          "adaptive_retries": 0,
+          "advection_scheme": "fv_upwind",
+          "anchored_attempts": 0,
+          "anchored_linear_solve_time_sec": 0.0,
+          "anchored_successes": 0,
+          "attempted_sigma": 0.9,
+          "completed_sigma_steps": 1,
+          "diffusion_attempts": 0,
+          "diffusion_linear_solve_time_sec": 0.0,
+          "diffusion_successes": 0,
+          "final_sigma": 0.9,
+          "grid_dr": 0.0625,
+          "grid_dtheta": 0.01308996938995747,
+          "grid_nr": 160,
+          "grid_ntheta": 480,
+          "lap_psi_l2": 22.09172857422112,
+          "newton_linear_solve_time_sec": 19.810885538347065,
+          "newton_steps": 9,
+          "omega_field_l2": 22.091728574221104,
+          "omega_residual_norm": 2.5763321845607277e-13,
+          "physical_poisson_residual_norm": 7.667873693592533e-12,
+          "poisson_gauge": "mean",
+          "poisson_lambda": -2.919774044262447e-11,
+          "poisson_residual_norm": 7.667870917094434e-12,
+          "reduced_gmres_maxiter": 240,
+          "reduced_gmres_rtol": 1e-08,
+          "reduced_poisson_newton": true,
+          "relative_residual": 3.472882525637002e-13,
+          "residual_norm": 7.672197812652816e-12,
+          "runtime_sec": 52.62416621763259,
+          "upwind_blend": 1.0,
+          "upwind_smoothing": 0.001
+        },
+        "grid": {
+          "dr": 0.0625,
+          "dtheta": 0.01308996938995747,
+          "nr": 160,
+          "ntheta": 480
+        },
+        "label": "trace_symmetric_sigma0p9_160_480",
+        "message": "converged",
+        "runtime_sec": 52.62416621763259,
+        "sigma": 0.9,
+        "status": "completed",
+        "symmetry": {
+          "omega_non_threefold_fraction": 5.726333453759984e-14,
+          "omega_threefold_defect": 9.918283546216995e-14,
+          "psi_non_threefold_fraction": 2.482179778514834e-14,
+          "psi_threefold_defect": 4.299161724311032e-14
+        }
+      },
+      {
+        "branch_class": "other_root_candidate",
+        "branch_distances": {
+          "to_broken": {
+            "omega_probe_linf": 15.542817750014516,
+            "omega_probe_rms": 0.6928449346727688,
+            "psi_probe_linf_offset_removed": 0.9370587917147671,
+            "psi_probe_mean_offset": 9.825866887196545e-15,
+            "psi_probe_rms_offset_removed": 0.429815323460051,
+            "valid_probe_count": 65520
+          },
+          "to_symmetric": {
+            "omega_probe_linf": 15.540706368270072,
+            "omega_probe_rms": 0.7701535192813322,
+            "psi_probe_linf_offset_removed": 0.9374246922596983,
+            "psi_probe_mean_offset": 8.654778155848958e-15,
+            "psi_probe_rms_offset_removed": 0.4321557557152426,
+            "valid_probe_count": 65520
+          }
+        },
+        "common_residuals": {
+          "lap_psi_l2": 20.423249329862227,
+          "omega_field_l2": 20.424412347367326,
+          "omega_strong_l2": 10.932303969972816,
+          "poisson_strong_l2": 2.2737452650344454,
+          "profile_strong_l2": 11.166252174393607,
+          "profile_strong_relative": 0.5467110624523265,
+          "sample_hx": 0.07291666666666696,
+          "sample_hy": 0.07291666666666696,
+          "sample_points": 36481
+        },
+        "compatibility": {
+          "neumann_flux_discrete": 3.255343931474723e-15,
+          "omega_integral": -6.717890133067783e-14,
+          "omega_mean": -2.1383708436520163e-16,
+          "omega_minus_flux": -7.043424526215256e-14,
+          "physical_poisson_residual_norm": 7.280693968090225e-12,
+          "poisson_lambda": -2.965334769140549e-11
+        },
+        "diagnostics": {
+          "adaptive_retries": 0,
+          "advection_scheme": "fv_upwind",
+          "anchored_attempts": 0,
+          "anchored_linear_solve_time_sec": 0.0,
+          "anchored_successes": 0,
+          "attempted_sigma": 0.85,
+          "completed_sigma_steps": 1,
+          "diffusion_attempts": 0,
+          "diffusion_linear_solve_time_sec": 0.0,
+          "diffusion_successes": 0,
+          "final_sigma": 0.85,
+          "grid_dr": 0.0625,
+          "grid_dtheta": 0.01308996938995747,
+          "grid_nr": 160,
+          "grid_ntheta": 480,
+          "lap_psi_l2": 20.979814111592002,
+          "newton_linear_solve_time_sec": 16.15746138896793,
+          "newton_steps": 8,
+          "omega_field_l2": 20.979814111592017,
+          "omega_residual_norm": 1.6704309707632935e-07,
+          "physical_poisson_residual_norm": 7.280693968090225e-12,
+          "poisson_gauge": "mean",
+          "poisson_lambda": -2.965334769140549e-11,
+          "poisson_residual_norm": 7.280694076183985e-12,
+          "reduced_gmres_maxiter": 240,
+          "reduced_gmres_rtol": 1e-08,
+          "reduced_poisson_newton": true,
+          "relative_residual": 7.962086620333775e-09,
+          "residual_norm": 1.670430972349965e-07,
+          "runtime_sec": 43.912301594391465,
+          "upwind_blend": 1.0,
+          "upwind_smoothing": 0.001
+        },
+        "grid": {
+          "dr": 0.0625,
+          "dtheta": 0.01308996938995747,
+          "nr": 160,
+          "ntheta": 480
+        },
+        "label": "trace_symmetric_sigma0p85_160_480",
+        "message": "converged",
+        "runtime_sec": 43.912301594391465,
+        "sigma": 0.85,
+        "status": "completed",
+        "symmetry": {
+          "omega_non_threefold_fraction": 4.93736293013049e-13,
+          "omega_threefold_defect": 8.551765838308731e-13,
+          "psi_non_threefold_fraction": 2.3252554674113743e-14,
+          "psi_threefold_defect": 4.027483791393853e-14
+        }
+      },
+      {
+        "branch_class": "other_root_candidate",
+        "branch_distances": {
+          "to_broken": {
+            "omega_probe_linf": 15.580137578352565,
+            "omega_probe_rms": 0.7799486768970827,
+            "psi_probe_linf_offset_removed": 1.2478034665893765,
+            "psi_probe_mean_offset": 2.0838032154502938e-16,
+            "psi_probe_rms_offset_removed": 0.5731562599824523,
+            "valid_probe_count": 65520
+          },
+          "to_symmetric": {
+            "omega_probe_linf": 15.57802619660807,
+            "omega_probe_rms": 0.8393924763096721,
+            "psi_probe_linf_offset_removed": 1.2481692587658575,
+            "psi_probe_mean_offset": -9.646875619587867e-16,
+            "psi_probe_rms_offset_removed": 0.575446052379754,
+            "valid_probe_count": 65520
+          }
+        },
+        "common_residuals": {
+          "lap_psi_l2": 19.327019986363272,
+          "omega_field_l2": 19.346534771253648,
+          "omega_strong_l2": 9.965257723941644,
+          "poisson_strong_l2": 2.1201203173274985,
+          "profile_strong_l2": 10.188290909888833,
+          "profile_strong_relative": 0.5266209701298686,
+          "sample_hx": 0.07291666666666696,
+          "sample_hy": 0.07291666666666696,
+          "sample_points": 36481
+        },
+        "compatibility": {
+          "neumann_flux_discrete": 3.255343931474723e-15,
+          "omega_integral": -3.205302776670971e-14,
+          "omega_mean": -1.0202795620267249e-16,
+          "omega_minus_flux": -3.530837169818443e-14,
+          "physical_poisson_residual_norm": 6.889783840384614e-12,
+          "poisson_lambda": -2.266788465483587e-11
+        },
+        "diagnostics": {
+          "adaptive_retries": 0,
+          "advection_scheme": "fv_upwind",
+          "anchored_attempts": 0,
+          "anchored_linear_solve_time_sec": 0.0,
+          "anchored_successes": 0,
+          "attempted_sigma": 0.8,
+          "completed_sigma_steps": 1,
+          "diffusion_attempts": 0,
+          "diffusion_linear_solve_time_sec": 0.0,
+          "diffusion_successes": 0,
+          "final_sigma": 0.8,
+          "grid_dr": 0.0625,
+          "grid_dtheta": 0.01308996938995747,
+          "grid_nr": 160,
+          "grid_ntheta": 480,
+          "lap_psi_l2": 19.85784084024673,
+          "newton_linear_solve_time_sec": 16.550506158731878,
+          "newton_steps": 8,
+          "omega_field_l2": 19.85784084024671,
+          "omega_residual_norm": 1.0180086479410488e-11,
+          "physical_poisson_residual_norm": 6.889783840384614e-12,
+          "poisson_gauge": "mean",
+          "poisson_lambda": -2.266788465483587e-11,
+          "poisson_residual_norm": 6.889783721302742e-12,
+          "reduced_gmres_maxiter": 240,
+          "reduced_gmres_rtol": 1e-08,
+          "reduced_poisson_newton": true,
+          "relative_residual": 6.190203421454453e-13,
+          "residual_norm": 1.2292407431199329e-11,
+          "runtime_sec": 43.738310938701034,
+          "upwind_blend": 1.0,
+          "upwind_smoothing": 0.001
+        },
+        "grid": {
+          "dr": 0.0625,
+          "dtheta": 0.01308996938995747,
+          "nr": 160,
+          "ntheta": 480
+        },
+        "label": "trace_symmetric_sigma0p8_160_480",
+        "message": "converged",
+        "runtime_sec": 43.738310938701034,
+        "sigma": 0.8,
+        "status": "completed",
+        "symmetry": {
+          "omega_non_threefold_fraction": 6.551592376274834e-14,
+          "omega_threefold_defect": 1.1347664503754831e-13,
+          "psi_non_threefold_fraction": 2.5036977356380802e-14,
+          "psi_threefold_defect": 4.3364422333251175e-14
+        }
+      },
+      {
+        "branch_class": "other_root_candidate",
+        "branch_distances": {
+          "to_broken": {
+            "omega_probe_linf": 15.635122006268706,
+            "omega_probe_rms": 0.8555032817077544,
+            "psi_probe_linf_offset_removed": 1.5578336884638684,
+            "psi_probe_mean_offset": 1.589801414920502e-15,
+            "psi_probe_rms_offset_removed": 0.716147027178797,
+            "valid_probe_count": 65520
+          },
+          "to_symmetric": {
+            "omega_probe_linf": 15.633010624524223,
+            "omega_probe_rms": 0.9078875430715154,
+            "psi_probe_linf_offset_removed": 1.558168000926886,
+            "psi_probe_mean_offset": 4.1714020651728104e-16,
+            "psi_probe_rms_offset_removed": 0.7183811722930831,
+            "valid_probe_count": 65520
+          }
+        },
+        "common_residuals": {
+          "lap_psi_l2": 18.21766891373928,
+          "omega_field_l2": 18.25106143079366,
+          "omega_strong_l2": 9.00684900749956,
+          "poisson_strong_l2": 1.9590659937496893,
+          "profile_strong_l2": 9.21744371351202,
+          "profile_strong_relative": 0.5050360357650275,
+          "sample_hx": 0.07291666666666696,
+          "sample_hy": 0.07291666666666696,
+          "sample_points": 36481
+        },
+        "compatibility": {
+          "neumann_flux_discrete": 3.255343931474723e-15,
+          "omega_integral": -4.897839946116367e-14,
+          "omega_mean": -1.5590308757947243e-16,
+          "omega_minus_flux": -5.223374339263839e-14,
+          "physical_poisson_residual_norm": 6.407464218037049e-12,
+          "poisson_lambda": -2.5075765466579442e-11
+        },
+        "diagnostics": {
+          "adaptive_retries": 0,
+          "advection_scheme": "fv_upwind",
+          "anchored_attempts": 0,
+          "anchored_linear_solve_time_sec": 0.0,
+          "anchored_successes": 0,
+          "attempted_sigma": 0.75,
+          "completed_sigma_steps": 1,
+          "diffusion_attempts": 0,
+          "diffusion_linear_solve_time_sec": 0.0,
+          "diffusion_successes": 0,
+          "final_sigma": 0.75,
+          "grid_dr": 0.0625,
+          "grid_dtheta": 0.01308996938995747,
+          "grid_nr": 160,
+          "grid_ntheta": 480,
+          "lap_psi_l2": 18.724293550651954,
+          "newton_linear_solve_time_sec": 17.981799924746156,
+          "newton_steps": 8,
+          "omega_field_l2": 18.72429355065196,
+          "omega_residual_norm": 2.13715653585516e-13,
+          "physical_poisson_residual_norm": 6.407464218037049e-12,
+          "poisson_gauge": "mean",
+          "poisson_lambda": -2.5075765466579442e-11,
+          "poisson_residual_norm": 6.407480095112947e-12,
+          "reduced_gmres_maxiter": 240,
+          "reduced_gmres_rtol": 1e-08,
+          "reduced_poisson_newton": true,
+          "relative_residual": 3.423917293532647e-13,
+          "residual_norm": 6.411043249725906e-12,
+          "runtime_sec": 47.055422216653824,
+          "upwind_blend": 1.0,
+          "upwind_smoothing": 0.001
+        },
+        "grid": {
+          "dr": 0.0625,
+          "dtheta": 0.01308996938995747,
+          "nr": 160,
+          "ntheta": 480
+        },
+        "label": "trace_symmetric_sigma0p75_160_480",
+        "message": "converged",
+        "runtime_sec": 47.055422216653824,
+        "sigma": 0.75,
+        "status": "completed",
+        "symmetry": {
+          "omega_non_threefold_fraction": 5.520568667303616e-14,
+          "omega_threefold_defect": 9.562184128195953e-14,
+          "psi_non_threefold_fraction": 2.539042116347024e-14,
+          "psi_threefold_defect": 4.3977783805191734e-14
+        }
+      },
+      {
+        "branch_class": "other_root_candidate",
+        "branch_distances": {
+          "to_broken": {
+            "omega_probe_linf": 15.687634064731139,
+            "omega_probe_rms": 0.9288309602040739,
+            "psi_probe_linf_offset_removed": 1.867178977201975,
+            "psi_probe_mean_offset": 1.395871615283292e-15,
+            "psi_probe_rms_offset_removed": 0.8587838238807297,
+            "valid_probe_count": 65520
+          },
+          "to_symmetric": {
+            "omega_probe_linf": 15.68552268298666,
+            "omega_probe_rms": 0.9787138077118668,
+            "psi_probe_linf_offset_removed": 1.8675132896649924,
+            "psi_probe_mean_offset": 2.2296640181971397e-16,
+            "psi_probe_rms_offset_removed": 0.8609722073477738,
+            "valid_probe_count": 65520
+          }
+        },
+        "common_residuals": {
+          "lap_psi_l2": 17.103039757450563,
+          "omega_field_l2": 17.147841321942966,
+          "omega_strong_l2": 8.028866523887169,
+          "poisson_strong_l2": 1.8210090873603189,
+          "profile_strong_l2": 8.232786390684803,
+          "profile_strong_relative": 0.4801062848738778,
+          "sample_hx": 0.07291666666666696,
+          "sample_hy": 0.07291666666666696,
+          "sample_points": 36481
+        },
+        "compatibility": {
+          "neumann_flux_discrete": 3.255343931474723e-15,
+          "omega_integral": -6.831232628179418e-14,
+          "omega_mean": -2.1744488803707876e-16,
+          "omega_minus_flux": -7.156767021326891e-14,
+          "physical_poisson_residual_norm": 6.021875853177047e-12,
+          "poisson_lambda": -2.6674599784826318e-11
+        },
+        "diagnostics": {
+          "adaptive_retries": 0,
+          "advection_scheme": "fv_upwind",
+          "anchored_attempts": 0,
+          "anchored_linear_solve_time_sec": 0.0,
+          "anchored_successes": 0,
+          "attempted_sigma": 0.7,
+          "completed_sigma_steps": 1,
+          "diffusion_attempts": 0,
+          "diffusion_linear_solve_time_sec": 0.0,
+          "diffusion_successes": 0,
+          "final_sigma": 0.7,
+          "grid_dr": 0.0625,
+          "grid_dtheta": 0.01308996938995747,
+          "grid_nr": 160,
+          "grid_ntheta": 480,
+          "lap_psi_l2": 17.58111149296435,
+          "newton_linear_solve_time_sec": 17.00449995417148,
+          "newton_steps": 8,
+          "omega_field_l2": 17.58111149296435,
+          "omega_residual_norm": 2.4370295375569306e-13,
+          "physical_poisson_residual_norm": 6.021875853177047e-12,
+          "poisson_gauge": "mean",
+          "poisson_lambda": -2.6674599784826318e-11,
+          "poisson_residual_norm": 6.02189839693539e-12,
+          "reduced_gmres_maxiter": 240,
+          "reduced_gmres_rtol": 1e-08,
+          "reduced_poisson_newton": true,
+          "relative_residual": 3.428012867636425e-13,
+          "residual_norm": 6.026827642523243e-12,
+          "runtime_sec": 43.418439868837595,
+          "upwind_blend": 1.0,
+          "upwind_smoothing": 0.001
+        },
+        "grid": {
+          "dr": 0.0625,
+          "dtheta": 0.01308996938995747,
+          "nr": 160,
+          "ntheta": 480
+        },
+        "label": "trace_symmetric_sigma0p7_160_480",
+        "message": "converged",
+        "runtime_sec": 43.418439868837595,
+        "sigma": 0.7,
+        "status": "completed",
+        "symmetry": {
+          "omega_non_threefold_fraction": 9.456808818798173e-14,
+          "omega_threefold_defect": 1.6379196320209663e-13,
+          "psi_non_threefold_fraction": 2.4823842315118858e-14,
+          "psi_threefold_defect": 4.299654217428588e-14
+        }
+      },
+      {
+        "branch_class": "other_root_candidate",
+        "branch_distances": {
+          "to_broken": {
+            "omega_probe_linf": 15.763926314488543,
+            "omega_probe_rms": 0.9980011851485373,
+            "psi_probe_linf_offset_removed": 2.175894011326349,
+            "psi_probe_mean_offset": 1.277502049336688e-16,
+            "psi_probe_rms_offset_removed": 1.0010653868306665,
+            "valid_probe_count": 65520
+          },
+          "to_symmetric": {
+            "omega_probe_linf": 15.732037919050097,
+            "omega_probe_rms": 1.045474143648832,
+            "psi_probe_linf_offset_removed": 2.176228323789367,
+            "psi_probe_mean_offset": -1.0453719019168935e-15,
+            "psi_probe_rms_offset_removed": 1.0032180095042509,
+            "valid_probe_count": 65520
+          }
+        },
+        "common_residuals": {
+          "lap_psi_l2": 15.973558389242589,
+          "omega_field_l2": 16.028723859665785,
+          "omega_strong_l2": 7.1267236729381205,
+          "poisson_strong_l2": 1.677809134920286,
+          "profile_strong_l2": 7.321559519913675,
+          "profile_strong_relative": 0.4567774442940798,
+          "sample_hx": 0.07291666666666696,
+          "sample_hy": 0.07291666666666696,
+          "sample_points": 36481
+        },
+        "compatibility": {
+          "neumann_flux_discrete": 3.255343931474723e-15,
+          "omega_integral": -3.432594920110832e-14,
+          "omega_mean": -1.092628898335537e-16,
+          "omega_minus_flux": -3.758129313258304e-14,
+          "physical_poisson_residual_norm": 5.623134844993215e-12,
+          "poisson_lambda": -1.972839656189435e-11
+        },
+        "diagnostics": {
+          "adaptive_retries": 0,
+          "advection_scheme": "fv_upwind",
+          "anchored_attempts": 0,
+          "anchored_linear_solve_time_sec": 0.0,
+          "anchored_successes": 0,
+          "attempted_sigma": 0.65,
+          "completed_sigma_steps": 1,
+          "diffusion_attempts": 0,
+          "diffusion_linear_solve_time_sec": 0.0,
+          "diffusion_successes": 0,
+          "final_sigma": 0.65,
+          "grid_dr": 0.0625,
+          "grid_dtheta": 0.01308996938995747,
+          "grid_nr": 160,
+          "grid_ntheta": 480,
+          "lap_psi_l2": 16.429473368877634,
+          "newton_linear_solve_time_sec": 13.83713620621711,
+          "newton_steps": 7,
+          "omega_field_l2": 16.42947336887765,
+          "omega_residual_norm": 9.197631859879494e-11,
+          "physical_poisson_residual_norm": 5.623134844993215e-12,
+          "poisson_gauge": "mean",
+          "poisson_lambda": -1.972839656189435e-11,
+          "poisson_residual_norm": 5.6231415156573624e-12,
+          "reduced_gmres_maxiter": 240,
+          "reduced_gmres_rtol": 1e-08,
+          "reduced_poisson_newton": true,
+          "relative_residual": 5.608703746175522e-12,
+          "residual_norm": 9.214804883171506e-11,
+          "runtime_sec": 35.51915269717574,
+          "upwind_blend": 1.0,
+          "upwind_smoothing": 0.001
+        },
+        "grid": {
+          "dr": 0.0625,
+          "dtheta": 0.01308996938995747,
+          "nr": 160,
+          "ntheta": 480
+        },
+        "label": "trace_symmetric_sigma0p65_160_480",
+        "message": "converged",
+        "runtime_sec": 35.51915269717574,
+        "sigma": 0.65,
+        "status": "completed",
+        "symmetry": {
+          "omega_non_threefold_fraction": 3.67637110300183e-13,
+          "omega_threefold_defect": 6.367630257849128e-13,
+          "psi_non_threefold_fraction": 2.436516142092282e-14,
+          "psi_threefold_defect": 4.2201554862482565e-14
+        }
+      },
+      {
+        "branch_class": "other_root_candidate",
+        "branch_distances": {
+          "to_broken": {
+            "omega_probe_linf": 15.8468758970236,
+            "omega_probe_rms": 1.0628637837153054,
+            "psi_probe_linf_offset_removed": 2.4840339522762025,
+            "psi_probe_mean_offset": 2.2267359574728536e-15,
+            "psi_probe_rms_offset_removed": 1.1429969665144677,
+            "valid_probe_count": 65520
+          },
+          "to_symmetric": {
+            "omega_probe_linf": 15.77265057259027,
+            "omega_probe_rms": 1.107882623960462,
+            "psi_probe_linf_offset_removed": 2.48436826473922,
+            "psi_probe_mean_offset": 1.0607171090460226e-15,
+            "psi_probe_rms_offset_removed": 1.1451211591384514,
+            "valid_probe_count": 65520
+          }
+        },
+        "common_residuals": {
+          "lap_psi_l2": 14.844893130232787,
+          "omega_field_l2": 14.912321397179765,
+          "omega_strong_l2": 6.262013831498977,
+          "poisson_strong_l2": 1.5359574629950599,
+          "profile_strong_l2": 6.447633872515926,
+          "profile_strong_relative": 0.4323695621082382,
+          "sample_hx": 0.07291666666666696,
+          "sample_hy": 0.07291666666666696,
+          "sample_points": 36481
+        },
+        "compatibility": {
+          "neumann_flux_discrete": 3.255343931474723e-15,
+          "omega_integral": -4.694931509535705e-14,
+          "omega_mean": -1.4944431144410027e-16,
+          "omega_minus_flux": -5.020465902683177e-14,
+          "physical_poisson_residual_norm": 5.196912944028148e-12,
+          "poisson_lambda": -2.1478762223599556e-11
+        },
+        "diagnostics": {
+          "adaptive_retries": 0,
+          "advection_scheme": "fv_upwind",
+          "anchored_attempts": 0,
+          "anchored_linear_solve_time_sec": 0.0,
+          "anchored_successes": 0,
+          "attempted_sigma": 0.6,
+          "completed_sigma_steps": 1,
+          "diffusion_attempts": 0,
+          "diffusion_linear_solve_time_sec": 0.0,
+          "diffusion_successes": 0,
+          "final_sigma": 0.6,
+          "grid_dr": 0.0625,
+          "grid_dtheta": 0.01308996938995747,
+          "grid_nr": 160,
+          "grid_ntheta": 480,
+          "lap_psi_l2": 15.26659940061508,
+          "newton_linear_solve_time_sec": 15.613415831699967,
+          "newton_steps": 8,
+          "omega_field_l2": 15.266599400615089,
+          "omega_residual_norm": 2.1627909037120155e-13,
+          "physical_poisson_residual_norm": 5.196912944028148e-12,
+          "poisson_gauge": "mean",
+          "poisson_lambda": -2.1478762223599556e-11,
+          "poisson_residual_norm": 5.196905102408933e-12,
+          "reduced_gmres_maxiter": 240,
+          "reduced_gmres_rtol": 1e-08,
+          "reduced_poisson_newton": true,
+          "relative_residual": 3.4070479298029016e-13,
+          "residual_norm": 5.201403588299586e-12,
+          "runtime_sec": 42.12036871910095,
+          "upwind_blend": 1.0,
+          "upwind_smoothing": 0.001
+        },
+        "grid": {
+          "dr": 0.0625,
+          "dtheta": 0.01308996938995747,
+          "nr": 160,
+          "ntheta": 480
+        },
+        "label": "trace_symmetric_sigma0p6_160_480",
+        "message": "converged",
+        "runtime_sec": 42.12036871910095,
+        "sigma": 0.6,
+        "status": "completed",
+        "symmetry": {
+          "omega_non_threefold_fraction": 1.0212166950192556e-13,
+          "omega_threefold_defect": 1.7687979855281653e-13,
+          "psi_non_threefold_fraction": 2.5531762714847152e-14,
+          "psi_threefold_defect": 4.422244909294115e-14
+        }
+      }
+    ]
+  },
+  "validation_methods": [
+    "branch refinement by prolongation from saved 128/384 states to 160/480 followed by reduced FV Newton",
+    "fixed-sigma Newton basin map from convex combinations of symmetric and broken branch Omega fields with Poisson-projected psi",
+    "seeded amplitude trace on both branches by stepping sigma downward and re-solving the same FV equations",
+    "C3/reflection orbit distance checks between candidate branches",
+    "independent sampled strong residuals on a common Cartesian grid",
+    "Poisson compatibility diagnostics: Omega integral, Neumann flux, Poisson multiplier, physical Poisson residual",
+    "FEM baseline zero-continuation cross-check and seeded fixed-sigma FEM Newton attempt from the broken nextgen branch"
+  ]
+}

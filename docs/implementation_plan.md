@@ -218,6 +218,30 @@ Validation note:
   and has a larger Poisson compatibility defect. The discrepancy is localized
   mainly to the inner core (`r < 3`), while the outer boundary layer is already
   close.
+- The large single-mode probe `{c_3=140}` gives cleaner evidence for discrete
+  nonuniqueness/symmetry breaking. A threefold-symmetric branch reaches
+  `128/384` with native residual `2.16e-13`, common sampled residual `0.598`,
+  and Omega non-threefold fraction `5.35e-14`. Fixed-sigma reduced Newton
+  seeded with larger non-threefold interior perturbations converges to
+  broken-symmetry candidates with the same boundary data, native residuals
+  between `2.19e-13` and `3.43e-09`, common sampled residuals `0.586` to
+  `0.602`, Omega non-threefold fraction about `0.168`, and Omega RMS
+  separation from the symmetric branch about `0.293`. Unlike the c4/c7 branch
+  mismatch, these c3=140 candidates have Poisson compatibility defects near
+  roundoff, so they should be treated as potential nonunique discrete profiles
+  rather than solver failures until refinement says otherwise.
+- The c3=140 validation pass refined the symmetric, m1 broken, and m2 broken
+  candidates to `160/480`. The symmetric branch converged with native residual
+  `3.46e-13`, common sampled residual `0.602`, and Omega non-threefold fraction
+  `6.88e-14`. The m1 broken branch converged with native residual `3.55e-13`,
+  common sampled residual `0.588`, Omega non-threefold fraction `0.252`, and
+  physical Poisson residual `8.40e-12`; the m2 broken-like branch also retained
+  Omega non-threefold fraction `0.253`. A basin sweep between symmetric and m1
+  states split between interpolation parameters `t=0.4` and `t=0.5`. A seeded
+  amplitude trace kept the broken branch distinct down to sigma `0.70` and
+  collapsed to the symmetric branch between sigma `0.70` and `0.65`. Baseline
+  FEM attempts at `h_min=0.08,h_max=0.12` were inconclusive because their
+  common sampled residuals were `6.27e4` and `8.38e3`.
 
 ### M4. Linearized operator assembly
 Status: pending
@@ -267,11 +291,14 @@ Required validation:
 
 ## Current recommended next milestone
 
-Continue M3 for general large-boundary profile generation. The nested reduced
-path reaches `128/512` for `{c_4=100,c_7=40}`, and a baseline-seeded
-`128/512` reduced FV correction proves that a baseline-close nextgen branch
-exists. The remaining blocker is a baseline-free branch-selection continuation
-strategy, not the Fourier boundary convention or the Poisson sign/gauge. Do
-not start M4 or the eigensolver until arbitrary large-boundary profiles either
-use that branch-selection path or are explicitly excluded from the M3
-acceptance envelope.
+Continue M3, now using `{c_3=140}` as the primary nonuniqueness/symmetry-breaking
+target. The `160/480` validation gives strong discrete evidence: distinct
+symmetric and broken branches have the same boundary data, native residuals
+near roundoff, clean Poisson compatibility, a measurable basin split, and a
+broken-branch amplitude trace that appears to merge back into the symmetric
+branch near sigma `0.65` to `0.70`. The next step is continuum and independent
+discretization validation: push at least one symmetric and one broken branch to
+`192/576` or finer, sharpen the suspected bifurcation window, and make a robust
+FEM/baseline path converge instead of using the failed `h_min=0.08,h_max=0.12`
+baseline attempts as evidence. Do not start M4 or the eigensolver while this
+M3 nonuniqueness investigation is active.

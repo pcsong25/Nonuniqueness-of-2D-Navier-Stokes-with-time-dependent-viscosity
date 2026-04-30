@@ -631,3 +631,74 @@ It should implement a way to reach the baseline-close branch without using the b
 oracle, such as anchored or pseudo-arclength continuation, an explicit circulation/compatibility
 constraint, or a coarse Galerkin/less-dissipative predictor followed by reduced FV correction.
 M4 remains pending for arbitrary large-boundary profiles.
+
+### 2026-04-29 — c3=140 is the cleaner M3 nonuniqueness target
+Decision:
+Treat `{c_3=140}` as the primary near-term M3 nonuniqueness/symmetry-breaking investigation.
+Do not reinterpret the broken-symmetry roots as solver failures unless refinement or independent
+discretizations invalidate them.
+
+Why:
+The c4/c7 case showed path-dependent branches, but one branch had a larger Poisson compatibility
+defect. The c3=140 experiment is cleaner: the boundary data has exact threefold symmetry, the
+zero-continuation solution keeps that symmetry, and several deliberately symmetry-breaking
+initial guesses converge to distinct non-threefold roots with the same boundary data and
+roundoff-level Poisson compatibility.
+
+Evidence:
+`experiments/run_m3_c3_140_symmetry_probe.py` constructed the symmetric branch at `72/216`,
+`96/288`, and `128/384`, then ran fixed-sigma reduced Newton from five non-threefold
+perturbations. The `128/384` symmetric branch had native residual `2.16e-13`, common sampled
+strong residual `0.598`, Omega non-threefold fraction `5.35e-14`, and Poisson compatibility
+mismatch about `6e-14`. A small m1 perturbation and an m4 perturbation returned to the symmetric
+branch. Larger m1, m2, and mixed non-threefold perturbations converged to symmetry-breaking
+candidates with Omega non-threefold fractions about `0.168`, Omega RMS distance from the
+symmetric branch about `0.293`, local Omega Linf separation about `8.3`, and common sampled
+strong residuals `0.586` to `0.602`. Their Omega integral/Neumann-flux mismatches were around
+`1e-14` to `1e-12`, with physical Poisson residual norms around `5e-12`. A quick orbit check
+showed the m1 and mixed perturbations reach the same broken branch to numerical precision, while
+the m2 candidate is not identical under the tested C3 rotations/reflections.
+
+Consequences:
+The next M3 work should verify persistence, not remove the effect. Refine the symmetric and
+broken branches to at least `160/480`, map the Newton basin boundary by interpolating between
+branches, and trace both branches in amplitude. If the broken branch survives refinement and
+independent discretization/FEM checks, it becomes strong numerical evidence for nonuniqueness of
+profiles with symmetric boundary data.
+
+### 2026-04-29 — c3=140 survives 160/480 as strong discrete nonuniqueness evidence
+Decision:
+Treat the `{c_3=140}` symmetric and symmetry-breaking nextgen FV roots as genuine discrete branch
+candidates. Keep M3 focused on continuum/refinement and independent-discretization validation
+before making a final continuum nonuniqueness claim.
+
+Why:
+The `160/480` refinement keeps both the symmetric branch and the m1 broken branch at native
+residuals near roundoff and Poisson compatibility near roundoff, while the broken branch retains
+order-one non-threefold structure. A fixed-sigma basin sweep and a downward amplitude trace show
+organized branch behavior rather than an isolated Newton artifact.
+
+Evidence:
+`experiments/run_m3_c3_140_nonuniqueness_validation.py` refined the saved `128/384` states to
+`160/480`. The symmetric branch converged in `22.798 s` with native residual `3.46e-13`, common
+sampled residual `0.602`, Omega non-threefold fraction `6.88e-14`, and physical Poisson residual
+`8.39e-12`. The m1 broken branch converged in `47.573 s` with native residual `3.55e-13`, common
+sampled residual `0.588`, Omega non-threefold fraction `0.252`, and physical Poisson residual
+`8.40e-12`. The m2 broken-like branch also retained Omega non-threefold fraction `0.253` with
+native residual `3.74e-09`. Basin interpolation from symmetric to m1 broken converged to the
+symmetric branch for `t <= 0.4` and the broken branch for `t >= 0.5`. The m1 broken amplitude
+trace stayed non-threefold through sigma `0.70` and collapsed to an essentially symmetric state
+between sigma `0.70` and `0.65`.
+
+FEM caveat:
+The `h_min=0.08,h_max=0.12` baseline/FEM checks did not provide independent validation. The
+zero-continuation baseline run took `1317.256 s` but had common sampled residual `6.27e4`; the
+nextgen-seeded FEM fixed-sigma run was nonconverged with last relative update `1.033` and common
+sampled residual `8.38e3`. These are failed stress checks, not counterevidence against the FV
+branches.
+
+Consequences:
+The next M3 step should push the branches to `192/576` or finer, sharpen the apparent bifurcation
+window near sigma `0.65` to `0.70`, and improve the FEM/baseline continuation so it converges to
+a credible solution for the same boundary data. M4 and the eigensolver remain blocked for this
+nonuniqueness investigation.

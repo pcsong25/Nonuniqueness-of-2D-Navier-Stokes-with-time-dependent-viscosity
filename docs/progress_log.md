@@ -1421,3 +1421,185 @@ Assessment:
   for example an anchored/arclength continuation path, a circulation/Poisson
   compatibility constraint, or a coarse Galerkin/less-dissipative predictor
   that lands on the baseline-close branch before the reduced FV correction.
+
+## 2026-04-29 — M3 c3=140 symmetry-breaking probe
+
+Scope stayed in M3; no M4 operator assembly or eigensolver work was started.
+
+Experiment added:
+- Added `experiments/run_m3_c3_140_symmetry_probe.py` for the large single-mode
+  boundary data `{c_3=140}`.
+- The script first constructs the threefold-symmetric branch by full-disk
+  `fv_upwind` continuation on `72/216`, then nested reduced corrections on
+  `96/288` and `128/384`.
+- At fixed sigma `1`, it seeds reduced Newton from non-threefold interior
+  perturbations of the `128/384` symmetric state and classifies each converged
+  root by weighted threefold defect, distance to the symmetric state,
+  independent sampled strong residual, and Poisson compatibility.
+
+Validation:
+- `PYTHONDONTWRITEBYTECODE=1 python -m py_compile experiments/run_m3_c3_140_symmetry_probe.py`
+  passed.
+- `PYTHONDONTWRITEBYTECODE=1 python -m pytest tests/test_nextgen_profile.py -q`
+  passed: `13` tests.
+- `PYTHONDONTWRITEBYTECODE=1 python experiments/run_m3_c3_140_symmetry_probe.py`
+  completed the nested symmetric branch and five fixed-sigma perturbed starts.
+- `PYTHONDONTWRITEBYTECODE=1 python -m json.tool experiments/summaries/m3_c3_140_symmetry_probe_2026-04-29.json`
+  passed.
+
+Results:
+
+| run | class | runtime | native residual | common sampled residual | Omega non-3 fraction | Omega RMS to symmetric |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| nested `72/216` | symmetric | `465.654 s` | `4.42e-14` | `0.695` | `6.02e-14` | n/a |
+| nested `96/288` | symmetric | `7.311 s` | `3.19e-13` | `0.627` | `1.28e-13` | n/a |
+| nested `128/384` | symmetric | `13.267 s` | `2.16e-13` | `0.598` | `5.35e-14` | reference |
+| m1 perturb amp `0.5` | symmetric | `27.885 s` | `2.26e-13` | `0.598` | `5.82e-14` | `1.91e-14` |
+| m1 perturb amp `1.5` | symmetry-breaking candidate | `42.330 s` | `3.43e-09` | `0.586` | `1.68e-01` | `2.93e-01` |
+| m2 perturb amp `1.5` | symmetry-breaking candidate | `52.198 s` | `2.19e-13` | `0.602` | `1.69e-01` | `2.96e-01` |
+| m4 perturb amp `1.5` | symmetric | `35.556 s` | `2.16e-13` | `0.598` | `5.09e-14` | `1.59e-14` |
+| mixed non-3 perturb amp `1.0` | symmetry-breaking candidate | `45.219 s` | `3.24e-10` | `0.586` | `1.68e-01` | `2.93e-01` |
+
+Assessment:
+- This is a much cleaner clue of discrete nonuniqueness than the c4/c7 branch
+  mismatch. For `{c_3=140}`, both the symmetric branch and the
+  symmetry-breaking candidates satisfy the discrete Poisson compatibility to
+  roundoff: Omega integral and Neumann flux mismatch are around `1e-14` to
+  `1e-12`, and physical Poisson residual norms are around `5e-12`.
+- The symmetry-breaking candidates preserve the same boundary data but have a
+  measurable non-threefold interior component: Omega non-3 fraction about
+  `0.168`, Omega RMS separation from the symmetric branch about `0.293`, and
+  local Omega Linf separation about `8.3`.
+- The small m1 perturbation and the m4 perturbation return to the symmetric
+  branch, while larger m1, m2, and mixed non-3 perturbations converge to
+  broken-symmetry roots. This suggests distinct basins of attraction at fixed
+  boundary data.
+- A quick orbit check showed the m1 and mixed perturbations converge to the
+  same broken branch to numerical precision, while the m2 result is not the
+  same under the tested C3 rotations/reflections. This needs a formal orbit and
+  refinement check before claiming more than "symmetry-breaking candidates."
+
+Artifacts:
+- Summary:
+  `experiments/summaries/m3_c3_140_symmetry_probe_2026-04-29.json`.
+- State snapshots:
+  `experiments/raw/nextgen/m3_c3_140_symmetry_probe/states/`.
+- Plots:
+  `experiments/raw/nextgen/m3_c3_140_symmetry_probe/plots/`.
+- Registry rows appended for all eight c3=140 runs.
+
+Next numerical step:
+- Treat `{c_3=140}` as the primary M3 nonuniqueness target. Refine the
+  symmetric and broken branches to `160/480` or finer, run a basin sweep between
+  the symmetric and broken states, and trace both branches in amplitude with
+  pseudo-arclength or seeded continuation. Only after persistence under
+  refinement should this be called evidence for continuum nonuniqueness.
+
+## 2026-04-29 — M3 c3=140 nonuniqueness validation at 160/480
+
+Scope stayed in M3; no M4 operator assembly or eigensolver work was started.
+
+Experiment added:
+- Added `experiments/run_m3_c3_140_nonuniqueness_validation.py`.
+- The script loads the saved `128/384` symmetric and broken candidates,
+  prolongs them to `160/480`, solves the reduced `fv_upwind` equations at
+  sigma `1`, maps a fixed-sigma Newton basin between the symmetric and m1
+  broken branches, traces both branches downward in amplitude, runs orbit
+  comparisons under C3 rotations/reflections, and attempts FEM baseline
+  cross-checks at `h_min=0.08,h_max=0.12`.
+
+Validation methods adopted:
+- Branch refinement: `128/384 -> 160/480` prolongation followed by reduced
+  Poisson Newton on the same FV equations.
+- Basin mapping: convex combinations of the symmetric and broken Omega fields,
+  with psi recomputed by Poisson projection before Newton.
+- Amplitude tracing: seeded continuation on each branch for sigma
+  `1.00, 0.95, ..., 0.60`.
+- Symmetry/orbit diagnostics: weighted threefold defect plus best C3/reflection
+  orbit distance between branches.
+- Independent residual checks: sampled strong residuals on a common Cartesian
+  grid and Poisson compatibility diagnostics including Omega integral,
+  Neumann flux, Poisson multiplier, and physical Poisson residual.
+- FEM/baseline cross-checks: zero-continuation baseline run and a seeded
+  fixed-sigma FEM Newton attempt from the broken nextgen state.
+
+Validation commands:
+- `PYTHONDONTWRITEBYTECODE=1 python -m py_compile experiments/run_m3_c3_140_nonuniqueness_validation.py`
+  passed.
+- `PYTHONDONTWRITEBYTECODE=1 conda run --no-capture-output -n femx_spc python experiments/run_m3_c3_140_nonuniqueness_validation.py`
+  completed.
+- `PYTHONDONTWRITEBYTECODE=1 python -m json.tool experiments/summaries/m3_c3_140_nonuniqueness_validation_2026-04-29.json`
+  passed.
+- `PYTHONDONTWRITEBYTECODE=1 python -m pytest tests/test_nextgen_profile.py -q`
+  passed: `13` tests.
+- `git diff --check` passed.
+
+Refined sigma `1` results:
+
+| run | class | runtime | native residual | common sampled residual | Omega non-3 fraction | physical Poisson residual |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| symmetric `160/480` | symmetric | `22.798 s` | `3.46e-13` | `0.602` | `6.88e-14` | `8.39e-12` |
+| m1 broken `160/480` | broken m1 | `47.573 s` | `3.55e-13` | `0.588` | `2.52e-01` | `8.40e-12` |
+| m2 broken `160/480` | broken-like | `41.800 s` | `3.74e-09` | `0.606` | `2.53e-01` | `8.39e-12` |
+
+Basin map:
+- Interpolants with `t=0.0` through `0.4` converged back to the symmetric
+  branch; interpolants with `t=0.5` through `1.0` converged to the m1 broken
+  branch.
+- The fixed-sigma basin boundary is therefore bracketed between `t=0.4` and
+  `t=0.5`. Both endpoints have small native residuals and the same boundary
+  data, so this is not just a transient from the initial guess.
+
+Amplitude trace:
+- The symmetric branch remains threefold to roundoff throughout sigma
+  `1.00` down to `0.60`, with Omega non-3 fractions between about `5e-14` and
+  `5e-13`.
+- The broken branch persists with clear non-threefold content from sigma
+  `1.00` down to at least `0.70`: Omega non-3 fractions decrease from `0.252`
+  at sigma `1.00` to `0.0509` at sigma `0.70`.
+- The broken trace collapses back to an essentially symmetric solution between
+  sigma `0.70` and `0.65`: Omega non-3 falls to `1.42e-09` at sigma `0.65`
+  and `9.20e-14` at sigma `0.60`. This is consistent with a symmetry-breaking
+  branch that merges into the symmetric branch near that amplitude range.
+
+Orbit and branch separation:
+- The best C3/reflection distance between the symmetric and m1 broken branches
+  at `160/480` is weighted Omega RMS `0.435` and psi RMS `0.0135`.
+- The best tested distance between m1 and m2 broken branches is weighted Omega
+  RMS `0.436` and psi RMS `0.0142`, so m2 is not the same branch under the
+  tested C3/reflection orbit. This may indicate multiple broken branches, but
+  it still needs a more systematic orbit/finer-grid check.
+
+FEM/baseline cross-check:
+- The baseline zero-continuation run at `h_min=0.08,h_max=0.12` took
+  `1317.256 s`, but the result is not a credible validation solution: common
+  sampled residual was `6.27e4`, and the baseline Newton printout reached
+  high-amplitude steps with relative updates near `1`.
+- The baseline run seeded from the nextgen broken branch took `36.348 s` and
+  ended nonconverged with last relative update `1.033` and common sampled
+  residual `8.38e3`.
+- These FEM checks are therefore inconclusive stress tests, not evidence
+  against the nextgen nonuniqueness. A more robust FEM continuation or seeded
+  line-search path is still needed for independent discretization validation.
+
+Assessment:
+- The `160/480` data gives strong numerical evidence for discrete
+  nonuniqueness and symmetry breaking for `{c_3=140}`. The symmetric and
+  broken branches solve the same nextgen FV problem with the same boundary
+  data, native residuals near roundoff, Poisson compatibility near roundoff,
+  and order-one separation in the interior symmetry diagnostic.
+- The basin split and amplitude trace strengthen the interpretation as a
+  branch phenomenon rather than a single isolated bad Newton endpoint.
+- The continuum claim remains open until the branches are pushed to another
+  refinement level, for example `192/576` or finer, and a robust independent
+  FEM/baseline check is made to converge to at least one of the branches.
+
+Artifacts:
+- Summary:
+  `experiments/summaries/m3_c3_140_nonuniqueness_validation_2026-04-29.json`.
+- State snapshots:
+  `experiments/raw/nextgen/m3_c3_140_nonuniqueness_validation/states/`.
+- Plots:
+  `experiments/raw/nextgen/m3_c3_140_nonuniqueness_validation/plots/`.
+- Registry rows appended for the branch refinements, basin sweep, amplitude
+  traces, and baseline attempts.
