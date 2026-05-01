@@ -1,0 +1,653 @@
+{
+  "baseline_failures_to_beat": {
+    "fem_to_fv_projected_residual_h0p05": 1.34,
+    "fem_to_fv_projected_residual_h0p06": 1.77,
+    "fem_vs_fv_omega_rms_h0p05": 0.569,
+    "fem_vs_fv_omega_rms_h0p06": 0.546,
+    "fv_to_fem_seed_residual_h0p05": 0.445,
+    "fv_to_fem_seed_residual_h0p06": 0.494
+  },
+  "boundary_convention": {
+    "omega_boundary_max_abs_difference": 2.7755575615628914e-16,
+    "omega_boundary_rms_difference": 4.949546691011986e-17,
+    "psi_neumann_max_abs_difference": 1.1102230246251565e-16,
+    "psi_neumann_rms_difference": 3.0084446554575807e-17
+  },
+  "case": {
+    "coeffs": {
+      "3": {
+        "imag": 0.0,
+        "real": 140.0
+      }
+    },
+    "name": "c3_140_baseline_closer_fv_homotopy"
+  },
+  "cross_initialization": {
+    "h0p05_0p05": {
+      "distances": {
+        "omega_distances": {
+          "fem_final_vs_selected_active": {
+            "a_at_max_abs": 31.251264416491672,
+            "a_rms": 2.4027523089553364,
+            "b_at_max_abs": 25.287466075208705,
+            "b_rms": 2.356370848605217,
+            "diff_at_max_abs": 5.963798341282967,
+            "linf": 5.963798341282967,
+            "max_abs_location": [
+              -0.21875,
+              4.447916666666668
+            ],
+            "relative_to_a_rms": 0.09213033961284577,
+            "relative_to_b_rms": 0.09394378069166645,
+            "rms": 0.22136638622960444,
+            "valid_count": 21736
+          },
+          "fem_final_vs_selected_full": {
+            "a_at_max_abs": 31.251264416491672,
+            "a_rms": 2.0881728687537167,
+            "b_at_max_abs": 25.287466075208705,
+            "b_rms": 2.048089596812553,
+            "diff_at_max_abs": 5.963798341282967,
+            "linf": 5.963798341282967,
+            "max_abs_location": [
+              -0.21875,
+              4.447916666666668
+            ],
+            "relative_to_a_rms": 0.0919631090677483,
+            "relative_to_b_rms": 0.09376292403436609,
+            "rms": 0.1920348692815109,
+            "valid_count": 28917
+          },
+          "fem_to_fv_seed_representation_vs_fem_full": {
+            "a_at_max_abs": 28.823806378777757,
+            "a_rms": 2.065503483894793,
+            "b_at_max_abs": 31.251264416491672,
+            "b_rms": 2.0881728687537167,
+            "diff_at_max_abs": -2.427458037713915,
+            "linf": 2.427458037713915,
+            "max_abs_location": [
+              -0.21875,
+              4.447916666666668
+            ],
+            "relative_to_a_rms": 0.02950314965107616,
+            "relative_to_b_rms": 0.02918286091253421,
+            "rms": 0.060938858390167265,
+            "valid_count": 28917
+          },
+          "fv_from_fem_final_vs_fem_seed_full": {
+            "a_at_max_abs": 25.287466075208624,
+            "a_rms": 2.048089596812553,
+            "b_at_max_abs": 31.251264416491672,
+            "b_rms": 2.0881728687537167,
+            "diff_at_max_abs": -5.963798341283049,
+            "linf": 5.963798341283049,
+            "max_abs_location": [
+              -0.21875,
+              4.447916666666668
+            ],
+            "relative_to_a_rms": 0.09376292403436526,
+            "relative_to_b_rms": 0.09196310906774749,
+            "rms": 0.1920348692815092,
+            "valid_count": 28917
+          },
+          "fv_from_fem_final_vs_selected_full": {
+            "a_at_max_abs": -17.149169380238234,
+            "a_rms": 2.048089596812553,
+            "b_at_max_abs": -17.149169380238014,
+            "b_rms": 2.048089596812553,
+            "diff_at_max_abs": -2.2026824808563106e-13,
+            "linf": 2.2026824808563106e-13,
+            "max_abs_location": [
+              0.29166666666666696,
+              4.375
+            ],
+            "relative_to_a_rms": 4.5571320285341114e-15,
+            "relative_to_b_rms": 4.5571320285341114e-15,
+            "rms": 9.333414698942e-15,
+            "valid_count": 28917
+          }
+        },
+        "psi_distances": {
+          "fem_final_vs_selected_full": {
+            "a_at_max_abs": -0.8869281554260313,
+            "a_rms": 2.636532595638645,
+            "b_at_max_abs": -0.9214039812481066,
+            "b_rms": 2.644915726218714,
+            "diff_at_max_abs": 0.03447582582207531,
+            "linf": 0.03447582582207531,
+            "max_abs_location": [
+              4.229166666666668,
+              -2.1875
+            ],
+            "relative_to_a_rms": 0.003336217053621638,
+            "relative_to_b_rms": 0.003325642825139906,
+            "rms": 0.00879604500799897,
+            "valid_count": 28917
+          },
+          "fv_from_fem_final_vs_selected_full": {
+            "a_at_max_abs": -4.823898859937976,
+            "a_rms": 2.6449157262187137,
+            "b_at_max_abs": -4.8238988599379695,
+            "b_rms": 2.644915726218714,
+            "diff_at_max_abs": -6.217248937900877e-15,
+            "linf": 6.217248937900877e-15,
+            "max_abs_location": [
+              -3.208333333333333,
+              -6.197916666666667
+            ],
+            "relative_to_a_rms": 7.216870400107304e-16,
+            "relative_to_b_rms": 7.216870400107303e-16,
+            "rms": 1.908801401532615e-15,
+            "valid_count": 28917
+          }
+        }
+      },
+      "fem_to_fv": {
+        "final_relative_residual": 4.422040352640808e-13,
+        "initial_projected_omega_residual_norm": 12.535008365679039,
+        "initial_projected_relative_residual": 0.4721765077470352,
+        "initial_projected_residual_norm": 12.535008365679039,
+        "message": "converged",
+        "sampled_psi_relative_residual": 0.5849103323271511,
+        "sampled_psi_residual_norm": 16.222451681861624,
+        "status": "completed"
+      },
+      "fv_to_fem": {
+        "fem_status": "completed",
+        "final_newton_bnorm": 2.0740937880488595e-14,
+        "final_weak_residuals": {
+          "Omega_l2": 0.0003333472604677873,
+          "Psi_l2": 6.537250290395216e-05
+        },
+        "initial_newton_bnorm": 0.36777344610425183,
+        "newton_iterations": 5,
+        "omega_non3": 0.009255305551915798,
+        "runtime_sec": 63.885403159074485
+      },
+      "status": "completed"
+    },
+    "h0p06_0p06": {
+      "distances": {
+        "omega_distances": {
+          "fem_final_vs_selected_active": {
+            "a_at_max_abs": -30.168817578841345,
+            "a_rms": 2.396368260285951,
+            "b_at_max_abs": -24.004180811598307,
+            "b_rms": 2.356318291480187,
+            "diff_at_max_abs": -6.164636767243039,
+            "linf": 6.164636767243039,
+            "max_abs_location": [
+              3.71875,
+              -2.40625
+            ],
+            "relative_to_a_rms": 0.1044137477933178,
+            "relative_to_b_rms": 0.10618845172747449,
+            "rms": 0.250213791149409,
+            "valid_count": 21737
+          },
+          "fem_final_vs_selected_full": {
+            "a_at_max_abs": -30.168817578841345,
+            "a_rms": 2.0826977451580455,
+            "b_at_max_abs": -24.004180811598307,
+            "b_rms": 2.048089596812553,
+            "diff_at_max_abs": -6.164636767243039,
+            "linf": 6.164636767243039,
+            "max_abs_location": [
+              3.71875,
+              -2.40625
+            ],
+            "relative_to_a_rms": 0.10421910598186657,
+            "relative_to_b_rms": 0.1059801765355515,
+            "rms": 0.21705689703082087,
+            "valid_count": 28917
+          },
+          "fem_to_fv_seed_representation_vs_fem_full": {
+            "a_at_max_abs": -27.955847702722796,
+            "a_rms": 2.0623299366055536,
+            "b_at_max_abs": -30.168817578841345,
+            "b_rms": 2.0826977451580455,
+            "diff_at_max_abs": 2.2129698761185495,
+            "linf": 2.2129698761185495,
+            "max_abs_location": [
+              3.71875,
+              -2.40625
+            ],
+            "relative_to_a_rms": 0.026702091946368377,
+            "relative_to_b_rms": 0.026440957992591805,
+            "rms": 0.05506852359098956,
+            "valid_count": 28917
+          },
+          "fv_from_fem_final_vs_fem_seed_full": {
+            "a_at_max_abs": -24.004180811598488,
+            "a_rms": 2.048089596812553,
+            "b_at_max_abs": -30.168817578841345,
+            "b_rms": 2.0826977451580455,
+            "diff_at_max_abs": 6.1646367672428575,
+            "linf": 6.1646367672428575,
+            "max_abs_location": [
+              3.71875,
+              -2.40625
+            ],
+            "relative_to_a_rms": 0.10598017653554878,
+            "relative_to_b_rms": 0.1042191059818639,
+            "rms": 0.21705689703081532,
+            "valid_count": 28917
+          },
+          "fv_from_fem_final_vs_selected_full": {
+            "a_at_max_abs": -17.149169380238522,
+            "a_rms": 2.048089596812553,
+            "b_at_max_abs": -17.149169380238014,
+            "b_rms": 2.048089596812553,
+            "diff_at_max_abs": -5.080380560684716e-13,
+            "linf": 5.080380560684716e-13,
+            "max_abs_location": [
+              0.29166666666666696,
+              4.375
+            ],
+            "relative_to_a_rms": 9.458871256879045e-15,
+            "relative_to_b_rms": 9.458871256879045e-15,
+            "rms": 1.937261581880325e-14,
+            "valid_count": 28917
+          }
+        },
+        "psi_distances": {
+          "fem_final_vs_selected_full": {
+            "a_at_max_abs": 0.8361495466231607,
+            "a_rms": 2.6364408913589514,
+            "b_at_max_abs": 0.8816460731794028,
+            "b_rms": 2.644915726218714,
+            "diff_at_max_abs": -0.045496526556242145,
+            "linf": 0.045496526556242145,
+            "max_abs_location": [
+              4.010416666666668,
+              -2.552083333333333
+            ],
+            "relative_to_a_rms": 0.00341023667386301,
+            "relative_to_b_rms": 0.0033993095988121107,
+            "rms": 0.00899088741618438,
+            "valid_count": 28917
+          },
+          "fv_from_fem_final_vs_selected_full": {
+            "a_at_max_abs": -3.7607297563916135e-05,
+            "a_rms": 2.644915726218714,
+            "b_at_max_abs": -3.760729755128496e-05,
+            "b_rms": 2.644915726218714,
+            "diff_at_max_abs": -1.2631172149890624e-14,
+            "linf": 1.2631172149890624e-14,
+            "max_abs_location": [
+              0.0,
+              0.0
+            ],
+            "relative_to_a_rms": 7.526026048224464e-16,
+            "relative_to_b_rms": 7.526026048224464e-16,
+            "rms": 1.990570465088057e-15,
+            "valid_count": 28917
+          }
+        }
+      },
+      "fem_to_fv": {
+        "final_relative_residual": 4.456779909250805e-13,
+        "initial_projected_omega_residual_norm": 15.124872244719404,
+        "initial_projected_relative_residual": 0.5707646706977523,
+        "initial_projected_residual_norm": 15.124872244719404,
+        "message": "converged",
+        "sampled_psi_relative_residual": 0.693040724631397,
+        "sampled_psi_residual_norm": 20.570441127277384,
+        "status": "completed"
+      },
+      "fv_to_fem": {
+        "fem_status": "completed",
+        "final_newton_bnorm": 6.5519939121569156e-15,
+        "final_weak_residuals": {
+          "Omega_l2": 0.000344174701250657,
+          "Psi_l2": 6.2640939734614e-05
+        },
+        "initial_newton_bnorm": 0.3827409942746372,
+        "newton_iterations": 5,
+        "omega_non3": 0.01506372755817335,
+        "runtime_sec": 37.461451614275575
+      },
+      "status": "completed"
+    }
+  },
+  "grid": {
+    "nr": 192,
+    "ntheta": 576
+  },
+  "grid_label": "192/576",
+  "homotopy_rows": [
+    {
+      "advection_scheme": "fv_upwind",
+      "branch": "symmetric",
+      "common_profile_strong_relative": 0.6060264009720424,
+      "compatibility_omega_minus_flux": 5.476963964471342e-14,
+      "final_relative_update": null,
+      "grid": "192/576",
+      "label": "symmetric_fv_upwind_reference_192_576",
+      "native_relative_residual": 3.3012049932486206e-09,
+      "native_residual_norm": 8.087786289371471e-08,
+      "omega_non3": 1.3578137935435303e-13,
+      "omega_residual_norm": 8.087786204756136e-08,
+      "omega_rms_from_fv_upwind_reference": 0.0,
+      "omega_rms_to_fem_h0p05": 0.5690247285423982,
+      "omega_rms_to_fem_h0p06": 0.5458713468956484,
+      "physical_poisson_residual_norm": 1.1699149818311024e-11,
+      "poisson_residual_norm": 1.1699151627242934e-11,
+      "psi_non3": 3.8115413442145763e-14,
+      "runtime_sec": 0.0,
+      "status": "completed",
+      "transport_label": "fv_upwind_reference",
+      "upwind_blend": 1.0
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "symmetric",
+      "common_profile_strong_relative": 0.5953186299483411,
+      "compatibility_omega_minus_flux": 7.00403790635182e-14,
+      "final_relative_update": 7.786788912117678e-07,
+      "grid": "192/576",
+      "label": "symmetric_fv_blend_0p5_192_576",
+      "native_relative_residual": 1.4261540623925335e-11,
+      "native_residual_norm": 3.607033291295471e-10,
+      "omega_non3": 9.264114288199648e-14,
+      "omega_residual_norm": 3.6051350492021417e-10,
+      "omega_rms_from_fv_upwind_reference": 0.2230686553844893,
+      "omega_rms_to_fem_h0p05": 0.3772203756005553,
+      "omega_rms_to_fem_h0p06": 0.358052941729878,
+      "physical_poisson_residual_norm": 1.170059850419725e-11,
+      "poisson_residual_norm": 1.1700616021436084e-11,
+      "psi_non3": 3.5938705952125334e-14,
+      "runtime_sec": 42.11713890172541,
+      "status": "completed",
+      "transport_label": "fv_blend_0p5",
+      "upwind_blend": 0.5
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "symmetric",
+      "common_profile_strong_relative": 0.5998519164307982,
+      "compatibility_omega_minus_flux": 6.589796612903693e-14,
+      "final_relative_update": 3.9675468150516573e-07,
+      "grid": "192/576",
+      "label": "symmetric_fv_blend_0p25_192_576",
+      "native_relative_residual": 2.8770349248881476e-12,
+      "native_residual_norm": 7.449989886026386e-11,
+      "omega_non3": 8.982970996203981e-14,
+      "omega_residual_norm": 7.358006661701676e-11,
+      "omega_rms_from_fv_upwind_reference": 0.3924307493998123,
+      "omega_rms_to_fem_h0p05": 0.2395122649838838,
+      "omega_rms_to_fem_h0p06": 0.23746391665212296,
+      "physical_poisson_residual_norm": 1.167082083675739e-11,
+      "poisson_residual_norm": 1.1670849447444677e-11,
+      "psi_non3": 3.6206785785837627e-14,
+      "runtime_sec": 43.21142393909395,
+      "status": "completed",
+      "transport_label": "fv_blend_0p25",
+      "upwind_blend": 0.25
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "symmetric",
+      "common_profile_strong_relative": 0.61932471469814,
+      "compatibility_omega_minus_flux": 7.560105125938785e-14,
+      "final_relative_update": 1.8904529300637128e-08,
+      "grid": "192/576",
+      "label": "symmetric_fv_blend_0p125_192_576",
+      "native_relative_residual": 4.4178499438085216e-13,
+      "native_residual_norm": 1.1628850040281653e-11,
+      "omega_non3": 8.992424107194754e-14,
+      "omega_residual_norm": 4.027891484598877e-13,
+      "omega_rms_from_fv_upwind_reference": 0.5071167033443895,
+      "omega_rms_to_fem_h0p05": 0.1920348692816153,
+      "omega_rms_to_fem_h0p06": 0.21705689703089376,
+      "physical_poisson_residual_norm": 1.1621852052474957e-11,
+      "poisson_residual_norm": 1.1621872231324933e-11,
+      "psi_non3": 3.5639318060891766e-14,
+      "runtime_sec": 46.594560283236206,
+      "status": "completed",
+      "transport_label": "fv_blend_0p125",
+      "upwind_blend": 0.125
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "symmetric",
+      "common_profile_strong_relative": 0.6403578400739363,
+      "compatibility_omega_minus_flux": 7.788257346633288e-14,
+      "final_relative_update": 1.6472591530683788e-05,
+      "grid": "192/576",
+      "label": "symmetric_fv_blend_0p0625_192_576",
+      "native_relative_residual": 4.6983072598978526e-09,
+      "native_residual_norm": 1.2495939685597572e-07,
+      "omega_non3": 9.633355917834071e-14,
+      "omega_residual_norm": 1.2495939631235476e-07,
+      "omega_rms_from_fv_upwind_reference": 0.5776361339532793,
+      "omega_rms_to_fem_h0p05": 0.20821578455267223,
+      "omega_rms_to_fem_h0p06": 0.24769648556573906,
+      "physical_poisson_residual_norm": 1.165590768850238e-11,
+      "poisson_residual_norm": 1.1655946626056e-11,
+      "psi_non3": 3.6399895598030266e-14,
+      "runtime_sec": 35.16190215758979,
+      "status": "completed",
+      "transport_label": "fv_blend_0p0625",
+      "upwind_blend": 0.0625
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "symmetric",
+      "common_profile_strong_relative": 0.6558734491401877,
+      "compatibility_omega_minus_flux": 6.68948442868582e-14,
+      "final_relative_update": 1.8753760390403955e-06,
+      "grid": "192/576",
+      "label": "symmetric_fv_blend_0p03125_192_576",
+      "native_relative_residual": 4.767206259006474e-11,
+      "native_residual_norm": 1.2755561021847102e-09,
+      "omega_non3": 1.0006732333063408e-13,
+      "omega_residual_norm": 1.275502794725448e-09,
+      "omega_rms_from_fv_upwind_reference": 0.6174661969798465,
+      "omega_rms_to_fem_h0p05": 0.2338483882620816,
+      "omega_rms_to_fem_h0p06": 0.27803102578152855,
+      "physical_poisson_residual_norm": 1.1661441139020909e-11,
+      "poisson_residual_norm": 1.1661495110944687e-11,
+      "psi_non3": 3.544149083610166e-14,
+      "runtime_sec": 33.370424159802496,
+      "status": "completed",
+      "transport_label": "fv_blend_0p03125",
+      "upwind_blend": 0.03125
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "symmetric",
+      "common_profile_strong_relative": 0.6655206989443497,
+      "compatibility_omega_minus_flux": 7.709169033315207e-14,
+      "final_relative_update": 1.4203909449770837e-07,
+      "grid": "192/576",
+      "label": "symmetric_fv_blend_0p015625_192_576",
+      "native_relative_residual": 5.068687276463526e-13,
+      "native_residual_norm": 1.3606677138475487e-11,
+      "omega_non3": 9.965455174857714e-14,
+      "omega_residual_norm": 6.931196343757295e-12,
+      "omega_rms_from_fv_upwind_reference": 0.638707143593774,
+      "omega_rms_to_fem_h0p05": 0.2512384434626132,
+      "omega_rms_to_fem_h0p06": 0.29705347109287117,
+      "physical_poisson_residual_norm": 1.170899822334428e-11,
+      "poisson_residual_norm": 1.1708978605967174e-11,
+      "psi_non3": 3.588856408609916e-14,
+      "runtime_sec": 35.914956364780664,
+      "status": "completed",
+      "transport_label": "fv_blend_0p015625",
+      "upwind_blend": 0.015625
+    }
+  ],
+  "notes": [
+    "This script stays in M3 and does not assemble or run the eigensolver.",
+    "The symmetric branch is the validation blocker; broken-branch evidence should not be used to excuse a failed symmetric cross-discretization test."
+  ],
+  "passes_symmetric_gate": true,
+  "plot_paths": [
+    "experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/plots/symmetric_selected_full_domain.png",
+    "experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/plots/symmetric_selected_top_core_closeup.png",
+    "experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/plots/symmetric_blend_vs_fem_rms.png"
+  ],
+  "residual_scan_rows": [
+    {
+      "advection_scheme": "fv_upwind",
+      "branch": "symmetric",
+      "grid": "192/576",
+      "omega_residual_norm": 8.087786204756136e-08,
+      "physical_poisson_residual_norm": 1.1699149818311024e-11,
+      "poisson_residual_norm": 1.1699151627242934e-11,
+      "relative_residual": 3.3012049932486206e-09,
+      "residual_norm": 8.087786289371471e-08,
+      "status": "evaluated_without_newton",
+      "transport_label": "fv_upwind_reference",
+      "upwind_blend": 1.0
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "symmetric",
+      "grid": "192/576",
+      "omega_residual_norm": 4.545865015519172,
+      "physical_poisson_residual_norm": 1.1699149818311024e-11,
+      "poisson_residual_norm": 1.1699151627242934e-11,
+      "relative_residual": 0.18554931783481063,
+      "residual_norm": 4.545865015519172,
+      "status": "evaluated_without_newton",
+      "transport_label": "fv_blend_0p5",
+      "upwind_blend": 0.5
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "symmetric",
+      "grid": "192/576",
+      "omega_residual_norm": 6.818797524784678,
+      "physical_poisson_residual_norm": 1.1699149818311024e-11,
+      "poisson_residual_norm": 1.1699151627242934e-11,
+      "relative_residual": 0.2783239768136833,
+      "residual_norm": 6.818797524784678,
+      "status": "evaluated_without_newton",
+      "transport_label": "fv_blend_0p25",
+      "upwind_blend": 0.25
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "symmetric",
+      "grid": "192/576",
+      "omega_residual_norm": 7.9552637794174315,
+      "physical_poisson_residual_norm": 1.1699149818311024e-11,
+      "poisson_residual_norm": 1.1699151627242934e-11,
+      "relative_residual": 0.32471130630311973,
+      "residual_norm": 7.9552637794174315,
+      "status": "evaluated_without_newton",
+      "transport_label": "fv_blend_0p125",
+      "upwind_blend": 0.125
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "symmetric",
+      "grid": "192/576",
+      "omega_residual_norm": 8.523496906733808,
+      "physical_poisson_residual_norm": 1.1699149818311024e-11,
+      "poisson_residual_norm": 1.1699151627242934e-11,
+      "relative_residual": 0.34790497104783785,
+      "residual_norm": 8.523496906733808,
+      "status": "evaluated_without_newton",
+      "transport_label": "fv_blend_0p0625",
+      "upwind_blend": 0.0625
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "symmetric",
+      "grid": "192/576",
+      "omega_residual_norm": 8.807613470391995,
+      "physical_poisson_residual_norm": 1.1699149818311024e-11,
+      "poisson_residual_norm": 1.1699151627242934e-11,
+      "relative_residual": 0.35950180342019694,
+      "residual_norm": 8.807613470391995,
+      "status": "evaluated_without_newton",
+      "transport_label": "fv_blend_0p03125",
+      "upwind_blend": 0.03125
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "symmetric",
+      "grid": "192/576",
+      "omega_residual_norm": 8.94967175222109,
+      "physical_poisson_residual_norm": 1.1699149818311024e-11,
+      "poisson_residual_norm": 1.1699151627242934e-11,
+      "relative_residual": 0.3653002196063765,
+      "residual_norm": 8.94967175222109,
+      "status": "evaluated_without_newton",
+      "transport_label": "fv_blend_0p015625",
+      "upwind_blend": 0.015625
+    }
+  ],
+  "runtime_sec": 1590.7494878107682,
+  "selected_blend": {
+    "advection_scheme": "fv_blended",
+    "branch": "symmetric",
+    "common_profile_strong_relative": 0.61932471469814,
+    "compatibility_omega_minus_flux": 7.560105125938785e-14,
+    "final_relative_update": 1.8904529300637128e-08,
+    "grid": "192/576",
+    "label": "symmetric_fv_blend_0p125_192_576",
+    "native_relative_residual": 4.4178499438085216e-13,
+    "native_residual_norm": 1.1628850040281653e-11,
+    "omega_non3": 8.992424107194754e-14,
+    "omega_residual_norm": 4.027891484598877e-13,
+    "omega_rms_from_fv_upwind_reference": 0.5071167033443895,
+    "omega_rms_to_fem_h0p05": 0.1920348692816153,
+    "omega_rms_to_fem_h0p06": 0.21705689703089376,
+    "physical_poisson_residual_norm": 1.1621852052474957e-11,
+    "poisson_residual_norm": 1.1621872231324933e-11,
+    "psi_non3": 3.5639318060891766e-14,
+    "runtime_sec": 46.594560283236206,
+    "status": "completed",
+    "transport_label": "fv_blend_0p125",
+    "upwind_blend": 0.125
+  },
+  "stage": "symmetric",
+  "state_dir": "experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/states",
+  "status": "completed",
+  "table_paths": {
+    "baseline_closeness": "experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/tables/symmetric_baseline_closeness_table.csv",
+    "blend_homotopy": "experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/tables/symmetric_blend_homotopy_table.csv",
+    "residual_scan": "experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/tables/symmetric_residual_scan_table.csv"
+  },
+  "transport_path": [
+    {
+      "advection_scheme": "fv_upwind",
+      "label": "fv_upwind_reference",
+      "upwind_blend": 1.0
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "label": "fv_blend_0p5",
+      "upwind_blend": 0.5
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "label": "fv_blend_0p25",
+      "upwind_blend": 0.25
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "label": "fv_blend_0p125",
+      "upwind_blend": 0.125
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "label": "fv_blend_0p0625",
+      "upwind_blend": 0.0625
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "label": "fv_blend_0p03125",
+      "upwind_blend": 0.03125
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "label": "fv_blend_0p015625",
+      "upwind_blend": 0.015625
+    }
+  ]
+}

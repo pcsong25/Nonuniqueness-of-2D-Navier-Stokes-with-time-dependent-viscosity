@@ -1,0 +1,653 @@
+{
+  "baseline_failures_to_beat": {
+    "fem_to_fv_projected_residual_h0p05": 1.34,
+    "fem_to_fv_projected_residual_h0p06": 1.77,
+    "fem_vs_fv_omega_rms_h0p05": 0.569,
+    "fem_vs_fv_omega_rms_h0p06": 0.546,
+    "fv_to_fem_seed_residual_h0p05": 0.445,
+    "fv_to_fem_seed_residual_h0p06": 0.494
+  },
+  "boundary_convention": {
+    "omega_boundary_max_abs_difference": 2.7755575615628914e-16,
+    "omega_boundary_rms_difference": 4.949546691011986e-17,
+    "psi_neumann_max_abs_difference": 1.1102230246251565e-16,
+    "psi_neumann_rms_difference": 3.0084446554575807e-17
+  },
+  "case": {
+    "coeffs": {
+      "3": {
+        "imag": 0.0,
+        "real": 140.0
+      }
+    },
+    "name": "c3_140_baseline_closer_fv_homotopy"
+  },
+  "cross_initialization": {
+    "h0p05_0p05": {
+      "distances": {
+        "omega_distances": {
+          "fem_final_vs_selected_active": {
+            "a_at_max_abs": 20.587280063239888,
+            "a_rms": 2.4006630980699017,
+            "b_at_max_abs": 15.165704491408375,
+            "b_rms": 2.3933094913848034,
+            "diff_at_max_abs": 5.421575571831513,
+            "linf": 5.421575571831513,
+            "max_abs_location": [
+              -0.2916666666666661,
+              4.375
+            ],
+            "relative_to_a_rms": 0.10186184086624582,
+            "relative_to_b_rms": 0.10217481832137514,
+            "rms": 0.244535962469065,
+            "valid_count": 21699
+          },
+          "fem_final_vs_selected_full": {
+            "a_at_max_abs": 20.587280063239888,
+            "a_rms": 2.084625223691309,
+            "b_at_max_abs": 15.165704491408375,
+            "b_rms": 2.078289069448993,
+            "diff_at_max_abs": 5.421575571831513,
+            "linf": 5.421575571831513,
+            "max_abs_location": [
+              -0.2916666666666661,
+              4.375
+            ],
+            "relative_to_a_rms": 0.1017025218735467,
+            "relative_to_b_rms": 0.10201258599065921,
+            "rms": 0.21201164241061252,
+            "valid_count": 28917
+          },
+          "fem_to_fv_seed_representation_vs_fem_full": {
+            "a_at_max_abs": 28.901167155695255,
+            "a_rms": 2.0633220350919155,
+            "b_at_max_abs": 31.34130270268424,
+            "b_rms": 2.084625223691309,
+            "diff_at_max_abs": -2.4401355469889836,
+            "linf": 2.4401355469889836,
+            "max_abs_location": [
+              -0.21875,
+              4.447916666666668
+            ],
+            "relative_to_a_rms": 0.02797381445442912,
+            "relative_to_b_rms": 0.027687944630733947,
+            "rms": 0.05771898776939633,
+            "valid_count": 28917
+          },
+          "fv_from_fem_final_vs_fem_seed_full": {
+            "a_at_max_abs": 15.165704491408189,
+            "a_rms": 2.078289069293099,
+            "b_at_max_abs": 20.587280063239888,
+            "b_rms": 2.084625223691309,
+            "diff_at_max_abs": -5.421575571831699,
+            "linf": 5.421575571831699,
+            "max_abs_location": [
+              -0.2916666666666661,
+              4.375
+            ],
+            "relative_to_a_rms": 0.10201258616112538,
+            "relative_to_b_rms": 0.10170252203586595,
+            "rms": 0.21201164274898734,
+            "valid_count": 28917
+          },
+          "fv_from_fem_final_vs_selected_full": {
+            "a_at_max_abs": -2.31825974913737,
+            "a_rms": 2.078289069293099,
+            "b_at_max_abs": -2.3182596998142597,
+            "b_rms": 2.078289069448993,
+            "diff_at_max_abs": -4.9323110484778e-08,
+            "linf": 4.9323110484778e-08,
+            "max_abs_location": [
+              3.791666666666668,
+              -2.041666666666666
+            ],
+            "relative_to_a_rms": 5.188169790230092e-10,
+            "relative_to_b_rms": 5.188169789840924e-10,
+            "rms": 1.0782516564671871e-09,
+            "valid_count": 28917
+          }
+        },
+        "psi_distances": {
+          "fem_final_vs_selected_full": {
+            "a_at_max_abs": 0.8976351866126882,
+            "a_rms": 2.6320296528743303,
+            "b_at_max_abs": 0.9503429902401147,
+            "b_rms": 2.6402632558875667,
+            "diff_at_max_abs": -0.05270780362742655,
+            "linf": 0.05270780362742655,
+            "max_abs_location": [
+              0.2187500000000009,
+              4.739583333333334
+            ],
+            "relative_to_a_rms": 0.0033762241714876393,
+            "relative_to_b_rms": 0.0033656954905124624,
+            "rms": 0.008886322134106535,
+            "valid_count": 28917
+          },
+          "fv_from_fem_final_vs_selected_full": {
+            "a_at_max_abs": -0.08233477893804773,
+            "a_rms": 2.640263255887979,
+            "b_at_max_abs": -0.08233477911736067,
+            "b_rms": 2.6402632558875667,
+            "diff_at_max_abs": 1.793129394966897e-10,
+            "linf": 1.793129394966897e-10,
+            "max_abs_location": [
+              3.791666666666668,
+              -2.041666666666666
+            ],
+            "relative_to_a_rms": 3.1854228214425805e-12,
+            "relative_to_b_rms": 3.1854228214430777e-12,
+            "rms": 8.410354829921859e-12,
+            "valid_count": 28917
+          }
+        }
+      },
+      "fem_to_fv": {
+        "final_relative_residual": 1.6425242991214e-11,
+        "initial_projected_omega_residual_norm": 12.170909822135787,
+        "initial_projected_relative_residual": 0.4591772692275548,
+        "initial_projected_residual_norm": 12.170909822135787,
+        "message": "converged",
+        "sampled_psi_relative_residual": 0.574997881620885,
+        "sampled_psi_residual_norm": 15.954116419494015,
+        "status": "completed"
+      },
+      "fv_to_fem": {
+        "fem_status": "completed",
+        "final_newton_bnorm": 2.453184092874866e-14,
+        "final_weak_residuals": {
+          "Omega_l2": 0.00033334343128328133,
+          "Psi_l2": 4.917943623185613e-05
+        },
+        "initial_newton_bnorm": 0.3933341440880137,
+        "newton_iterations": 5,
+        "omega_non3": 0.5251549611630257,
+        "runtime_sec": 63.59107234887779
+      },
+      "status": "completed"
+    },
+    "h0p06_0p06": {
+      "distances": {
+        "omega_distances": {
+          "fem_final_vs_selected_active": {
+            "a_at_max_abs": -25.743417048310135,
+            "a_rms": 2.3939108424639493,
+            "b_at_max_abs": -19.123285080750243,
+            "b_rms": 2.393253088246134,
+            "diff_at_max_abs": -6.620131967559892,
+            "linf": 6.620131967559892,
+            "max_abs_location": [
+              0.2187500000000009,
+              4.375
+            ],
+            "relative_to_a_rms": 0.10843221105513538,
+            "relative_to_b_rms": 0.10846201222598473,
+            "rms": 0.2595770457172279,
+            "valid_count": 21700
+          },
+          "fem_final_vs_selected_full": {
+            "a_at_max_abs": -25.743417048310135,
+            "a_rms": 2.078834765976689,
+            "b_at_max_abs": -19.123285080750243,
+            "b_rms": 2.078289069448993,
+            "diff_at_max_abs": -6.620131967559892,
+            "linf": 6.620131967559892,
+            "max_abs_location": [
+              0.2187500000000009,
+              4.375
+            ],
+            "relative_to_a_rms": 0.10822522745208263,
+            "relative_to_b_rms": 0.10825364415873708,
+            "rms": 0.2249823653831241,
+            "valid_count": 28917
+          },
+          "fem_to_fv_seed_representation_vs_fem_full": {
+            "a_at_max_abs": -23.69657699423231,
+            "a_rms": 2.0597939814270894,
+            "b_at_max_abs": -25.743417048310135,
+            "b_rms": 2.078834765976689,
+            "diff_at_max_abs": 2.046840054077826,
+            "linf": 2.046840054077826,
+            "max_abs_location": [
+              0.2187500000000009,
+              4.375
+            ],
+            "relative_to_a_rms": 0.028111140692247794,
+            "relative_to_b_rms": 0.027853660789503774,
+            "rms": 0.05790315840894215,
+            "valid_count": 28917
+          },
+          "fv_from_fem_final_vs_fem_seed_full": {
+            "a_at_max_abs": -19.123285080927616,
+            "a_rms": 2.0782890692941063,
+            "b_at_max_abs": -25.743417048310135,
+            "b_rms": 2.078834765976689,
+            "diff_at_max_abs": 6.62013196738252,
+            "linf": 6.62013196738252,
+            "max_abs_location": [
+              0.2187500000000009,
+              4.375
+            ],
+            "relative_to_a_rms": 0.1082536442954046,
+            "relative_to_b_rms": 0.10822522758064868,
+            "rms": 0.22498236565039167,
+            "valid_count": 28917
+          },
+          "fv_from_fem_final_vs_selected_full": {
+            "a_at_max_abs": -2.3182597491252244,
+            "a_rms": 2.0782890692941063,
+            "b_at_max_abs": -2.3182596998142597,
+            "b_rms": 2.078289069448993,
+            "diff_at_max_abs": -4.93109646448886e-08,
+            "linf": 4.93109646448886e-08,
+            "max_abs_location": [
+              3.791666666666668,
+              -2.041666666666666
+            ],
+            "relative_to_a_rms": 5.19025752561662e-10,
+            "relative_to_b_rms": 5.19025752522981e-10,
+            "rms": 1.0786855482310496e-09,
+            "valid_count": 28917
+          }
+        },
+        "psi_distances": {
+          "fem_final_vs_selected_full": {
+            "a_at_max_abs": 0.8873130374302067,
+            "a_rms": 2.6319557257986483,
+            "b_at_max_abs": 0.9503429902401147,
+            "b_rms": 2.6402632558875667,
+            "diff_at_max_abs": -0.06302995280990797,
+            "linf": 0.06302995280990797,
+            "max_abs_location": [
+              0.2187500000000009,
+              4.739583333333334
+            ],
+            "relative_to_a_rms": 0.0034193077872835004,
+            "relative_to_b_rms": 0.003408549010762717,
+            "rms": 0.008999466709008716,
+            "valid_count": 28917
+          },
+          "fv_from_fem_final_vs_selected_full": {
+            "a_at_max_abs": -0.08233477893808722,
+            "a_rms": 2.6402632558879824,
+            "b_at_max_abs": -0.08233477911736067,
+            "b_rms": 2.6402632558875667,
+            "diff_at_max_abs": 1.7927345719037646e-10,
+            "linf": 1.7927345719037646e-10,
+            "max_abs_location": [
+              3.791666666666668,
+              -2.041666666666666
+            ],
+            "relative_to_a_rms": 3.186342963363873e-12,
+            "relative_to_b_rms": 3.1863429633643747e-12,
+            "rms": 8.412784246826862e-12,
+            "valid_count": 28917
+          }
+        }
+      },
+      "fem_to_fv": {
+        "final_relative_residual": 2.1621328421587323e-10,
+        "initial_projected_omega_residual_norm": 13.437105731262902,
+        "initial_projected_relative_residual": 0.5077601120485605,
+        "initial_projected_residual_norm": 13.437105731262902,
+        "message": "converged",
+        "sampled_psi_relative_residual": 0.6536203050276119,
+        "sampled_psi_residual_norm": 19.415292345030814,
+        "status": "completed"
+      },
+      "fv_to_fem": {
+        "fem_status": "completed",
+        "final_newton_bnorm": 6.971922987477675e-15,
+        "final_weak_residuals": {
+          "Omega_l2": 0.00034416958313061895,
+          "Psi_l2": 0.0001164283892011609
+        },
+        "initial_newton_bnorm": 0.41556708981481566,
+        "newton_iterations": 5,
+        "omega_non3": 0.5251044889614491,
+        "runtime_sec": 37.17841189261526
+      },
+      "status": "completed"
+    }
+  },
+  "grid": {
+    "nr": 192,
+    "ntheta": 576
+  },
+  "grid_label": "192/576",
+  "homotopy_rows": [
+    {
+      "advection_scheme": "fv_upwind",
+      "branch": "broken_m1",
+      "common_profile_strong_relative": 0.5848796335004934,
+      "compatibility_omega_minus_flux": 6.292064447240512e-14,
+      "final_relative_update": null,
+      "grid": "192/576",
+      "label": "broken_m1_fv_upwind_reference_192_576",
+      "native_relative_residual": 4.918020492639234e-13,
+      "native_residual_norm": 1.1693738459336006e-11,
+      "omega_non3": 0.30733408555038877,
+      "omega_residual_norm": 3.7802793146973194e-13,
+      "omega_rms_from_fv_upwind_reference": 0.0,
+      "omega_rms_to_fem_h0p05": 1.3461635188852916,
+      "omega_rms_to_fem_h0p06": 1.3356852300644637,
+      "physical_poisson_residual_norm": 1.1687624865276823e-11,
+      "poisson_residual_norm": 1.1687626535716427e-11,
+      "psi_non3": 0.003918578391761145,
+      "runtime_sec": 0.0,
+      "status": "completed",
+      "transport_label": "fv_upwind_reference",
+      "upwind_blend": 1.0
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "broken_m1",
+      "common_profile_strong_relative": 0.5748460599206183,
+      "compatibility_omega_minus_flux": 5.765146257170704e-14,
+      "final_relative_update": 7.69306855397381e-09,
+      "grid": "192/576",
+      "label": "broken_m1_fv_blend_0p5_192_576",
+      "native_relative_residual": 4.764325487955919e-13,
+      "native_residual_norm": 1.1645591505914858e-11,
+      "omega_non3": 0.43231088321163913,
+      "omega_residual_norm": 3.691475104700898e-13,
+      "omega_rms_from_fv_upwind_reference": 0.5273835059529928,
+      "omega_rms_to_fem_h0p05": 1.1130057124836827,
+      "omega_rms_to_fem_h0p06": 1.1007624424811044,
+      "physical_poisson_residual_norm": 1.1639692395089066e-11,
+      "poisson_residual_norm": 1.1639739328616859e-11,
+      "psi_non3": 0.0060807617207944845,
+      "runtime_sec": 126.17391183134168,
+      "status": "completed",
+      "transport_label": "fv_blend_0p5",
+      "upwind_blend": 0.5
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "broken_m1",
+      "common_profile_strong_relative": 0.5750806266150257,
+      "compatibility_omega_minus_flux": 3.5338812254917016e-14,
+      "final_relative_update": 1.2931628614882073e-08,
+      "grid": "192/576",
+      "label": "broken_m1_fv_blend_0p25_192_576",
+      "native_relative_residual": 4.638109216034634e-13,
+      "native_residual_norm": 1.1683244172494904e-11,
+      "omega_non3": 0.4807795339735355,
+      "omega_residual_norm": 4.1051872578508767e-13,
+      "omega_rms_from_fv_upwind_reference": 0.8902781390057674,
+      "omega_rms_to_fem_h0p05": 0.8323340526637133,
+      "omega_rms_to_fem_h0p06": 0.8199147304751191,
+      "physical_poisson_residual_norm": 1.1676010420493013e-11,
+      "poisson_residual_norm": 1.1676029666368441e-11,
+      "psi_non3": 0.0074068671849857,
+      "runtime_sec": 104.99166015908122,
+      "status": "completed",
+      "transport_label": "fv_blend_0p25",
+      "upwind_blend": 0.25
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "broken_m1",
+      "common_profile_strong_relative": 0.5872916199582726,
+      "compatibility_omega_minus_flux": 8.7934516739307e-14,
+      "final_relative_update": 1.9395232024779524e-09,
+      "grid": "192/576",
+      "label": "broken_m1_fv_blend_0p125_192_576",
+      "native_relative_residual": 4.528333625245855e-13,
+      "native_residual_norm": 1.169716532064905e-11,
+      "omega_non3": 0.5019194323059128,
+      "omega_residual_norm": 4.581702506239869e-13,
+      "omega_rms_from_fv_upwind_reference": 1.1065914155195105,
+      "omega_rms_to_fem_h0p05": 0.5653736761316961,
+      "omega_rms_to_fem_h0p06": 0.5555861964378912,
+      "physical_poisson_residual_norm": 1.1688166927715682e-11,
+      "poisson_residual_norm": 1.1688188763022179e-11,
+      "psi_non3": 0.008188427877397722,
+      "runtime_sec": 93.28291372116655,
+      "status": "completed",
+      "transport_label": "fv_blend_0p125",
+      "upwind_blend": 0.125
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "broken_m1",
+      "common_profile_strong_relative": 0.6042823560656407,
+      "compatibility_omega_minus_flux": 7.720384257756622e-14,
+      "final_relative_update": 2.0354877851199668e-08,
+      "grid": "192/576",
+      "label": "broken_m1_fv_blend_0p0625_192_576",
+      "native_relative_residual": 4.4141530880159907e-13,
+      "native_residual_norm": 1.1602979429955945e-11,
+      "omega_non3": 0.5137519536786602,
+      "omega_residual_norm": 5.46264196315825e-13,
+      "omega_rms_from_fv_upwind_reference": 1.2271461732016178,
+      "omega_rms_to_fem_h0p05": 0.37052104406763403,
+      "omega_rms_to_fem_h0p06": 0.36693688724453005,
+      "physical_poisson_residual_norm": 1.1590063321721388e-11,
+      "poisson_residual_norm": 1.1590113333345978e-11,
+      "psi_non3": 0.008624580637264541,
+      "runtime_sec": 75.57919653784484,
+      "status": "completed",
+      "transport_label": "fv_blend_0p0625",
+      "upwind_blend": 0.0625
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "broken_m1",
+      "common_profile_strong_relative": 0.62235930416506,
+      "compatibility_omega_minus_flux": 8.115841579159847e-14,
+      "final_relative_update": 1.115238272021209e-05,
+      "grid": "192/576",
+      "label": "broken_m1_fv_blend_0p03125_192_576",
+      "native_relative_residual": 1.7791888563909481e-09,
+      "native_residual_norm": 4.727097523961327e-08,
+      "omega_non3": 0.5209499145502575,
+      "omega_residual_norm": 4.727097380159569e-08,
+      "omega_rms_from_fv_upwind_reference": 1.2922848026872855,
+      "omega_rms_to_fem_h0p05": 0.2607986318479414,
+      "omega_rms_to_fem_h0p06": 0.26594424454189786,
+      "physical_poisson_residual_norm": 1.1659882189816972e-11,
+      "poisson_residual_norm": 1.1659887847265622e-11,
+      "psi_non3": 0.008860996708862078,
+      "runtime_sec": 62.0289268232882,
+      "status": "completed",
+      "transport_label": "fv_blend_0p03125",
+      "upwind_blend": 0.03125
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "broken_m1",
+      "common_profile_strong_relative": 0.6411887879121133,
+      "compatibility_omega_minus_flux": 1.0258360597262765e-13,
+      "final_relative_update": 1.2488682856850276e-05,
+      "grid": "192/576",
+      "label": "broken_m1_fv_blend_0p015625_192_576",
+      "native_relative_residual": 2.321537590102578e-09,
+      "native_residual_norm": 6.205105237544323e-08,
+      "omega_non3": 0.525042776106012,
+      "omega_residual_norm": 6.205105128728898e-08,
+      "omega_rms_from_fv_upwind_reference": 1.3262809801744722,
+      "omega_rms_to_fem_h0p05": 0.21201164241059994,
+      "omega_rms_to_fem_h0p06": 0.2249823653830084,
+      "physical_poisson_residual_norm": 1.162073515933731e-11,
+      "poisson_residual_norm": 1.1620767257147333e-11,
+      "psi_non3": 0.008983315221827649,
+      "runtime_sec": 42.132770718075335,
+      "status": "completed",
+      "transport_label": "fv_blend_0p015625",
+      "upwind_blend": 0.015625
+    }
+  ],
+  "notes": [
+    "This script stays in M3 and does not assemble or run the eigensolver.",
+    "The symmetric branch is the validation blocker; broken-branch evidence should not be used to excuse a failed symmetric cross-discretization test."
+  ],
+  "passes_symmetric_gate": null,
+  "plot_paths": [
+    "experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/plots/broken_m1_selected_full_domain.png",
+    "experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/plots/broken_m1_selected_top_core_closeup.png",
+    "experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/plots/broken_m1_blend_vs_fem_rms.png"
+  ],
+  "residual_scan_rows": [
+    {
+      "advection_scheme": "fv_upwind",
+      "branch": "broken_m1",
+      "grid": "192/576",
+      "omega_residual_norm": 3.7802793146973194e-13,
+      "physical_poisson_residual_norm": 1.1687624865276823e-11,
+      "poisson_residual_norm": 1.1687626535716427e-11,
+      "relative_residual": 4.918020492639234e-13,
+      "residual_norm": 1.1693738459336006e-11,
+      "status": "evaluated_without_newton",
+      "transport_label": "fv_upwind_reference",
+      "upwind_blend": 1.0
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "broken_m1",
+      "grid": "192/576",
+      "omega_residual_norm": 4.73531314422058,
+      "physical_poisson_residual_norm": 1.1687624865276823e-11,
+      "poisson_residual_norm": 1.1687626535716427e-11,
+      "relative_residual": 0.19915245379673985,
+      "residual_norm": 4.73531314422058,
+      "status": "evaluated_without_newton",
+      "transport_label": "fv_blend_0p5",
+      "upwind_blend": 0.5
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "broken_m1",
+      "grid": "192/576",
+      "omega_residual_norm": 7.102969716330867,
+      "physical_poisson_residual_norm": 1.1687624865276823e-11,
+      "poisson_residual_norm": 1.1687626535716427e-11,
+      "relative_residual": 0.29872868069510966,
+      "residual_norm": 7.102969716330867,
+      "status": "evaluated_without_newton",
+      "transport_label": "fv_blend_0p25",
+      "upwind_blend": 0.25
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "broken_m1",
+      "grid": "192/576",
+      "omega_residual_norm": 8.286798002386012,
+      "physical_poisson_residual_norm": 1.1687624865276823e-11,
+      "poisson_residual_norm": 1.1687626535716427e-11,
+      "relative_residual": 0.34851679414429465,
+      "residual_norm": 8.286798002386012,
+      "status": "evaluated_without_newton",
+      "transport_label": "fv_blend_0p125",
+      "upwind_blend": 0.125
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "broken_m1",
+      "grid": "192/576",
+      "omega_residual_norm": 8.878712145413584,
+      "physical_poisson_residual_norm": 1.1687624865276823e-11,
+      "poisson_residual_norm": 1.1687626535716427e-11,
+      "relative_residual": 0.3734108508688871,
+      "residual_norm": 8.878712145413584,
+      "status": "evaluated_without_newton",
+      "transport_label": "fv_blend_0p0625",
+      "upwind_blend": 0.0625
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "broken_m1",
+      "grid": "192/576",
+      "omega_residual_norm": 9.17466921692737,
+      "physical_poisson_residual_norm": 1.1687624865276823e-11,
+      "poisson_residual_norm": 1.1687626535716427e-11,
+      "relative_residual": 0.3858578792311833,
+      "residual_norm": 9.17466921692737,
+      "status": "evaluated_without_newton",
+      "transport_label": "fv_blend_0p03125",
+      "upwind_blend": 0.03125
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "branch": "broken_m1",
+      "grid": "192/576",
+      "omega_residual_norm": 9.322647752684263,
+      "physical_poisson_residual_norm": 1.1687624865276823e-11,
+      "poisson_residual_norm": 1.1687626535716427e-11,
+      "relative_residual": 0.39208139341233145,
+      "residual_norm": 9.322647752684263,
+      "status": "evaluated_without_newton",
+      "transport_label": "fv_blend_0p015625",
+      "upwind_blend": 0.015625
+    }
+  ],
+  "runtime_sec": 2212.1366111189127,
+  "selected_blend": {
+    "advection_scheme": "fv_blended",
+    "branch": "broken_m1",
+    "common_profile_strong_relative": 0.6411887879121133,
+    "compatibility_omega_minus_flux": 1.0258360597262765e-13,
+    "final_relative_update": 1.2488682856850276e-05,
+    "grid": "192/576",
+    "label": "broken_m1_fv_blend_0p015625_192_576",
+    "native_relative_residual": 2.321537590102578e-09,
+    "native_residual_norm": 6.205105237544323e-08,
+    "omega_non3": 0.525042776106012,
+    "omega_residual_norm": 6.205105128728898e-08,
+    "omega_rms_from_fv_upwind_reference": 1.3262809801744722,
+    "omega_rms_to_fem_h0p05": 0.21201164241059994,
+    "omega_rms_to_fem_h0p06": 0.2249823653830084,
+    "physical_poisson_residual_norm": 1.162073515933731e-11,
+    "poisson_residual_norm": 1.1620767257147333e-11,
+    "psi_non3": 0.008983315221827649,
+    "runtime_sec": 42.132770718075335,
+    "status": "completed",
+    "transport_label": "fv_blend_0p015625",
+    "upwind_blend": 0.015625
+  },
+  "stage": "broken_m1",
+  "state_dir": "experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/states",
+  "status": "completed",
+  "table_paths": {
+    "baseline_closeness": "experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/tables/broken_m1_baseline_closeness_table.csv",
+    "blend_homotopy": "experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/tables/broken_m1_blend_homotopy_table.csv",
+    "residual_scan": "experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/tables/broken_m1_residual_scan_table.csv"
+  },
+  "transport_path": [
+    {
+      "advection_scheme": "fv_upwind",
+      "label": "fv_upwind_reference",
+      "upwind_blend": 1.0
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "label": "fv_blend_0p5",
+      "upwind_blend": 0.5
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "label": "fv_blend_0p25",
+      "upwind_blend": 0.25
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "label": "fv_blend_0p125",
+      "upwind_blend": 0.125
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "label": "fv_blend_0p0625",
+      "upwind_blend": 0.0625
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "label": "fv_blend_0p03125",
+      "upwind_blend": 0.03125
+    },
+    {
+      "advection_scheme": "fv_blended",
+      "label": "fv_blend_0p015625",
+      "upwind_blend": 0.015625
+    }
+  ]
+}

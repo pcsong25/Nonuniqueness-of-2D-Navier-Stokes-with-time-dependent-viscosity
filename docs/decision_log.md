@@ -852,3 +852,87 @@ Consequences:
 Future `{c_3=140}` experiments should emit the evidence bundle specified in the protocol. M4 and
 the eigensolver remain blocked for this nonuniqueness target until the symmetric FV/FEM mismatch
 is resolved or an independent FEM-only branch/refinement study establishes the branch structure.
+
+### 2026-04-30 — Use conservative FV blend homotopy as next c3=140 discretization test
+Decision:
+The next baseline-closer nextgen experiment for `{c_3=140}` should be a conservative FV transport
+homotopy from the existing `fv_upwind` symmetric `192/576` state through decreasing
+`fv_blended` upwind blends, with `fv_centered` attempted only after the low-blend stages converge.
+
+Why:
+The current evidence points to a transport-discretization mismatch, not a boundary, sampling,
+gauge, or rotation bug. A quick check already showed that the saved `fv_upwind` symmetric state has
+relative residual about `0.371` when evaluated with `fv_centered`, so a direct centered solve from
+the upwind state is likely too abrupt. A blend homotopy changes the suspected diffusion mechanism
+while keeping the successful full-disk grid, Fourier boundary convention, mean-gauge Poisson solve,
+and reduced Poisson Newton machinery fixed.
+
+Experiment gate:
+Run the symmetric branch first. The broken branch is unlocked only if the selected low-blend
+symmetric state both remains a clean native root and materially improves the symmetric FV/FEM
+cross-initialization diagnostics. The current `fv_upwind` baselines to beat are FEM-vs-FV Omega RMS
+`0.546` at `h=0.06` and `0.569` at `h=0.05`, FV-to-FEM seed residuals `4.94e-01` and `4.45e-01`,
+and FEM-to-FV projected residuals `1.77` and `1.34`.
+
+Consequences:
+`docs/m3_c3_140_validation_protocol.md` now records the detailed experiment design and planned
+artifacts. No experiment has been run yet, and no registry row should be added until the script is
+implemented and executed. M4 and the eigensolver remain blocked.
+
+### 2026-04-30 — fv_blend_0p125 is the first baseline-closer symmetric candidate
+Decision:
+Treat `fv_blend_0p125` on `192/576` as the current best baseline-closer nextgen symmetric
+candidate for `{c_3=140}`, and use it to unlock the next conditional broken-branch homotopy test.
+
+Why:
+The symmetric blend homotopy kept native FV solve quality clean while moving the profile much
+closer to the FEM symmetric roots. It improved the cross-discretization metrics enough to justify
+testing whether the same lower-upwind transport preserves the broken branch.
+
+Evidence:
+`experiments/run_m3_c3_140_baseline_closer_fv_homotopy.py --stage symmetric --grid 192 576`
+completed in `1590.749 s`. The selected `fv_blend_0p125` state had native relative residual
+`4.42e-13`, physical Poisson residual `1.16e-11`, compatibility defect `7.56e-14`, and Omega
+non-threefold fraction `8.99e-14`. FEM-vs-FV Omega RMS improved from `0.546` to `0.217` at
+`h=0.06` and from `0.569` to `0.192` at `h=0.05`. FEM-to-FV projected residuals improved from
+`1.77` to `0.571` and from `1.34` to `0.472`.
+
+Caveat:
+Gate 3 is improved but not fully closed. FV-to-FEM seed residuals remain `3.83e-01` at `h=0.06`
+and `3.68e-01` at `h=0.05`, and reverse FV Newton from the FEM projected seed still returns to the
+selected FV root. This is not yet paper-level cross-discretization validation.
+
+Consequences:
+Run the conditional broken `m1` blend homotopy/cross-initialization stage next, but keep M4 and
+the eigensolver blocked. If the broken branch is retained, a refinement and independent FEM branch
+study are still needed before making a continuum nonuniqueness claim.
+
+### 2026-04-30 — Baseline-closer FV path preserves a broken branch
+Decision:
+Treat the baseline-closer FV homotopy as preserving the `{c_3=140}` broken branch at `192/576`.
+The current best broken candidate from this run is `fv_blend_0p015625`, while the current best
+symmetric candidate remains `fv_blend_0p125`.
+
+Why:
+The broken homotopy converged for every requested blend, moved monotonically closer to FEM under
+the common-grid Omega RMS metric, and retained a large non-threefold component. The selected
+broken and selected symmetric FV profiles remain order-one separated.
+
+Evidence:
+`experiments/run_m3_c3_140_baseline_closer_fv_homotopy.py --stage broken_m1 --grid 192 576`
+completed in `2212.137 s`. The selected `fv_blend_0p015625` broken state had native relative
+residual `2.32e-09`, physical Poisson residual `1.16e-11`, compatibility defect `1.03e-13`,
+Omega non-threefold fraction `0.525`, and FEM-vs-FV Omega RMS `0.225` at `h=0.06` and `0.212` at
+`h=0.05`. The selected symmetric-vs-broken FV separation was Omega probe RMS `1.254`.
+
+Caveat:
+Gate 3 remains only partially improved. Broken FV-to-FEM seed residuals are still `0.416` and
+`0.393`, FEM-to-FV projected residuals are still `0.508` and `0.459`, and reverse FV Newton still
+returns to the FV root. The selected broken solve also ended with final relative update `1.25e-05`,
+so it needs a tightened fixed-blend recheck before paper-level use.
+
+Consequences:
+Do not start M4. The next M3 action should tighten or recheck the selected broken
+`fv_blend_0p015625` solve and package a compact selected-branch audit for symmetric
+`fv_blend_0p125` versus broken `fv_blend_0p015625`, including branch separation and
+cross-initialization diagnostics.

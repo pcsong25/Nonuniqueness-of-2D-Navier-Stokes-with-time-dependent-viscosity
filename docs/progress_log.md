@@ -1987,3 +1987,261 @@ Assessment:
 - The next M3 work should target a baseline-closer nextgen discretization or
   a FEM-only branch/refinement study, then run the protocol gates before any
   M4 profile consumption.
+
+## 2026-04-30 — M3 c3=140 baseline-closer FV experiment design
+
+Scope stayed in M3; no M4 operator assembly or eigensolver work was started.
+No numerical experiments were run in this step.
+
+Documentation updated:
+- Extended `docs/m3_c3_140_validation_protocol.md` with the next concrete
+  baseline-closer nextgen experiment design.
+- The selected experiment is a conservative FV transport homotopy from the
+  existing `fv_upwind` symmetric `192/576` state toward lower upwind blends
+  and, if reachable, `fv_centered`.
+
+Design summary:
+- Fixed ingredients stay unchanged: `{c_3=140}` boundary data, full-disk
+  polar `192/576` grid, mean-gauge Poisson solve, reduced Poisson Newton,
+  and the existing common `193x193` audit grid.
+- Candidate transports are `fv_blended` with upwind blends
+  `0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625`, followed by `fv_centered`
+  only if the low-blend stages converge cleanly.
+- The first pass is symmetric-only because the current validation blocker is
+  the symmetric FV/FEM mismatch. The broken `m1` branch is intentionally
+  conditional on a material symmetric improvement.
+- The acceptance target is not just a smaller common-grid difference. The
+  selected blend must keep Gate 1 residual, update, Poisson, compatibility,
+  boundary, and symmetry diagnostics clean, then improve Gate 3
+  cross-initialization in both FV-to-FEM and FEM-to-FV directions.
+
+Comparison baselines to beat:
+- Current symmetric `fv_upwind` vs FEM Omega RMS is `0.546` at `h=0.06` and
+  `0.569` at `h=0.05`.
+- Current FV-to-FEM seed residuals are `4.94e-01` at `h=0.06` and `4.45e-01`
+  at `h=0.05`.
+- Current FEM-to-FV projected residuals are `1.77` at `h=0.06` and `1.34` at
+  `h=0.05`.
+
+Planned artifacts after implementation and execution:
+- Script:
+  `experiments/run_m3_c3_140_baseline_closer_fv_homotopy.py`.
+- Summary:
+  `experiments/summaries/m3_c3_140_baseline_closer_fv_homotopy_2026-04-30.json`.
+- Raw outputs under
+  `experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/`,
+  including blend tables, selected-state snapshots, cross-initialization
+  diagnostics, and full-domain/core-close-up comparison plots.
+
+Recommended next step:
+- Implement the planned script but do not broaden to the broken branch until
+  the symmetric low-blend result has been assessed against Gate 3.
+
+## 2026-04-30 — M3 c3=140 baseline-closer FV homotopy script
+
+Scope stayed in M3; no M4 operator assembly or eigensolver work was started.
+The experiment script was implemented but not run.
+
+Implemented:
+- Added `experiments/run_m3_c3_140_baseline_closer_fv_homotopy.py`.
+- The script implements the protocol's conservative FV transport homotopy for
+  `{c_3=140}`:
+  `fv_upwind` reference, decreasing `fv_blended` stages, and optional
+  `fv_centered`.
+- It supports `--stage symmetric` as the first validation path and
+  `--stage broken_m1` only after a saved symmetric result passes the gate, or
+  with an explicit `--allow-broken` diagnostic override.
+- It writes residual-scan, blend-homotopy, and baseline-closeness CSV tables;
+  saved states for converged blends; selected-state full-domain/core-close-up
+  plots; JSON summaries; and a registry row when an actual run completes.
+- It can perform the selected symmetric cross-initialization audit against the
+  requested FEM meshes unless `--skip-cross-initialization` is supplied.
+
+Validation performed:
+- `PYTHONDONTWRITEBYTECODE=1 python -m py_compile experiments/run_m3_c3_140_baseline_closer_fv_homotopy.py`
+  passed.
+
+Not performed:
+- The homotopy experiment was not run.
+- No FEM solve was launched.
+- No registry row was appended.
+
+Recommended next step:
+- Run only the symmetric first pass when ready:
+  `PYTHONDONTWRITEBYTECODE=1 conda run --no-capture-output -n femx_spc python experiments/run_m3_c3_140_baseline_closer_fv_homotopy.py --stage symmetric --grid 192 576`.
+
+## 2026-04-30 — M3 c3=140 baseline-closer FV homotopy symmetric run
+
+Scope stayed in M3; no M4 operator assembly or eigensolver work was started.
+
+Command:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 conda run --no-capture-output -n femx_spc \
+  python experiments/run_m3_c3_140_baseline_closer_fv_homotopy.py \
+  --stage symmetric --grid 192 576
+```
+
+Validation commands:
+- `PYTHONDONTWRITEBYTECODE=1 python -m json.tool experiments/summaries/m3_c3_140_baseline_closer_fv_homotopy_2026-04-30.json`
+  passed.
+
+Runtime and artifacts:
+- Total runtime: `1590.749 s`.
+- Summary:
+  `experiments/summaries/m3_c3_140_baseline_closer_fv_homotopy_2026-04-30.json`.
+- Tables:
+  `experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/tables/symmetric_residual_scan_table.csv`,
+  `experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/tables/symmetric_blend_homotopy_table.csv`,
+  `experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/tables/symmetric_baseline_closeness_table.csv`.
+- Saved states were written for all six blend stages from `0.5` down to
+  `0.015625`.
+- Plots:
+  `symmetric_selected_full_domain.png`,
+  `symmetric_selected_top_core_closeup.png`,
+  `symmetric_blend_vs_fem_rms.png`.
+- Registry row appended:
+  `m3-c3-140-baseline-closer-fv-homotopy`.
+- The usual non-fatal OpenMPI TCP bind warning appeared during FEM setup.
+
+Residual scan:
+- The saved `fv_upwind` state is not a small-residual state for lower-blend
+  transports without Newton. Re-evaluated residuals rose from `0.1855` at
+  blend `0.5` to `0.3653` at blend `0.015625`, consistent with the earlier
+  centered-FV residual diagnostic.
+- Newton nevertheless converged for every requested blend stage.
+
+Gate 1 results:
+- The selected blend was `fv_blend_0p125`.
+- Native relative residual: `4.42e-13`.
+- Native residual norm: `1.16e-11`.
+- Final relative update: `1.89e-08`.
+- Physical Poisson residual norm: `1.16e-11`.
+- Compatibility defect `int Omega - flux`: `7.56e-14`.
+- Omega non-threefold fraction: `8.99e-14`; psi non-threefold fraction:
+  `3.56e-14`.
+- Boundary convention agreement with FEM remained at roundoff:
+  Omega max difference `2.78e-16`, psi Neumann max difference `1.11e-16`.
+
+Gate 3 results:
+- Symmetric FEM-vs-FV Omega RMS improved substantially:
+  - `h=0.06`: from `0.546` for `fv_upwind` to `0.217` for `fv_blend_0p125`.
+  - `h=0.05`: from `0.569` for `fv_upwind` to `0.192` for `fv_blend_0p125`.
+- FV-to-FEM seed residuals improved, but not by a factor of two:
+  - `h=0.06`: from `4.94e-01` to `3.83e-01`.
+  - `h=0.05`: from `4.45e-01` to `3.68e-01`.
+- FEM-to-FV projected residuals improved by about a factor of three:
+  - `h=0.06`: from `1.77` to `0.571`.
+  - `h=0.05`: from `1.34` to `0.472`.
+- Reverse FV Newton from the FEM projected seed still returned to the
+  selected FV root: final-vs-selected Omega RMS was `1.94e-14` at `h=0.06`
+  and `9.33e-15` at `h=0.05`.
+
+Assessment:
+- Gate 1 passes for the selected symmetric `fv_blend_0p125` branch.
+- Gate 3 is materially improved but not fully paper-level by itself. The
+  profile mismatch is now much smaller and satisfies the scripted symmetric
+  gate, but cross-initialized native residuals remain non-small and Newton
+  still moves each cross seed to the receiving method's own root.
+- This is a positive baseline-closer nextgen result, not yet a final
+  continuum-validation result.
+
+Recommended next step:
+- Run the conditional broken `m1` homotopy/cross-initialization stage for
+  `fv_blend_0p125` evidence, while continuing to treat the symmetric Gate 3
+  residuals as an unresolved quantitative validation risk.
+
+## 2026-04-30 — M3 c3=140 baseline-closer FV homotopy broken m1 run
+
+Scope stayed in M3; no M4 operator assembly or eigensolver work was started.
+
+Command:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 conda run --no-capture-output -n femx_spc \
+  python experiments/run_m3_c3_140_baseline_closer_fv_homotopy.py \
+  --stage broken_m1 --grid 192 576
+```
+
+Validation commands:
+- `PYTHONDONTWRITEBYTECODE=1 python -m json.tool experiments/summaries/m3_c3_140_baseline_closer_fv_homotopy_broken_m1_2026-04-30.json`
+  passed.
+- A lightweight post-run comparison of the selected symmetric and selected
+  broken saved states gave Omega probe RMS separation `1.254` and
+  offset-removed psi RMS separation `0.0466`.
+
+Runtime and artifacts:
+- Total runtime: `2212.137 s`.
+- Summary:
+  `experiments/summaries/m3_c3_140_baseline_closer_fv_homotopy_broken_m1_2026-04-30.json`.
+- Tables:
+  `experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/tables/broken_m1_residual_scan_table.csv`,
+  `experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/tables/broken_m1_blend_homotopy_table.csv`,
+  `experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/tables/broken_m1_baseline_closeness_table.csv`.
+- Saved states were written for all six broken blend stages from `0.5` down
+  to `0.015625`.
+- Plots:
+  `broken_m1_selected_full_domain.png`,
+  `broken_m1_selected_top_core_closeup.png`,
+  `broken_m1_blend_vs_fem_rms.png`.
+- Registry row appended:
+  `m3-c3-140-baseline-closer-fv-homotopy` for branch `broken_m1`.
+- The usual non-fatal OpenMPI TCP bind warning appeared during FEM setup.
+
+Residual scan and homotopy:
+- Re-evaluating the saved broken `fv_upwind` state under lower-blend
+  transports gave large native residuals, rising from `0.199` at blend `0.5`
+  to `0.392` at blend `0.015625`.
+- Newton converged for every requested broken blend stage.
+- FEM closeness improved monotonically as the upwind blend decreased. The
+  script selected `fv_blend_0p015625`, not the symmetric selected blend
+  `fv_blend_0p125`.
+
+Selected broken candidate:
+- Transport: `fv_blend_0p015625`.
+- Native relative residual: `2.32e-09`.
+- Native residual norm: `6.21e-08`.
+- Final relative update: `1.25e-05`.
+- Physical Poisson residual norm: `1.16e-11`.
+- Compatibility defect `int Omega - flux`: `1.03e-13`.
+- Omega non-threefold fraction: `0.525`; psi non-threefold fraction:
+  `0.00898`.
+- Common sampled strong residual: `0.641`.
+- FEM-vs-FV Omega RMS:
+  - `h=0.06`: improved from `1.336` for broken `fv_upwind` to `0.225`.
+  - `h=0.05`: improved from `1.346` for broken `fv_upwind` to `0.212`.
+
+Broken cross-initialization:
+- FV-to-FEM seed residuals:
+  - `h=0.06`: `4.16e-01`; FEM converged in `5` iterations.
+  - `h=0.05`: `3.93e-01`; FEM converged in `5` iterations.
+- FEM-to-FV projected residuals:
+  - `h=0.06`: `0.508`.
+  - `h=0.05`: `0.459`.
+- Reverse FV Newton from the FEM projected seed returned to the selected
+  broken FV root, with final-vs-selected Omega RMS about `1.08e-09`.
+
+Branch separation:
+- Selected symmetric `fv_blend_0p125` versus selected broken
+  `fv_blend_0p015625` has Omega probe RMS `1.254`, Omega Linf `36.06`,
+  offset-removed psi RMS `0.0466`, and offset-removed psi Linf `0.768`.
+- If comparing same blend `0.125` on both branches, the separation is still
+  large: Omega probe RMS `1.185`.
+
+Assessment:
+- The baseline-closer FV path preserves a strongly broken branch with
+  non-threefold fraction near the FEM broken value.
+- Cross-discretization agreement improves dramatically relative to broken
+  `fv_upwind`, but Gate 3 is still not fully closed because cross-seed native
+  residuals remain order `0.4` to `0.5`, and reverse FV Newton still returns
+  to the FV root.
+- Gate 1 is mostly positive for residual, Poisson, compatibility, and
+  symmetry diagnostics. However, the selected broken candidate's final update
+  `1.25e-05` is looser than the strict Newton update target and should be
+  tightened or checked at the selected blend before paper-level use.
+
+Recommended next step:
+- Re-run/tighten the selected `fv_blend_0p015625` broken solve at fixed
+  `192/576` to reduce the final update, then run a compact selected-blend
+  branch audit comparing symmetric `0.125` and broken `0.015625` with branch
+  separation, residuals, and cross-initialization in one table.

@@ -345,13 +345,25 @@ target, but first address the symmetric nextgen/FEM mismatch. The current
 `fv_upwind` nextgen branches are accurate discrete roots of the upwind FV
 system, and FEM has qualitatively matching symmetric/broken branch structure,
 but cross-initialization shows the symmetric FV and FEM roots are not accurate
-solutions of each other's discrete equations. The next M3 step should try a
-baseline-closer nextgen discretization or continuation path, for example
-`fv_centered`/low-upwind-blend continuation from the upwind branch, and re-run
-the residual and cross-initialization audits. After that, move the bifurcation
-search below sigma `0.650` and attempt an independent FEM branch-discovery
-path that does not rely on nextgen branch seeds. Do not start M4 or the
-eigensolver while this M3 nonuniqueness investigation is active.
+solutions of each other's discrete equations. The baseline-closer
+conservative FV blend homotopy is now implemented in
+`experiments/run_m3_c3_140_baseline_closer_fv_homotopy.py` and documented in
+`docs/m3_c3_140_validation_protocol.md`. The symmetric `192/576` first pass
+completed and selected `fv_blend_0p125`: Gate 1 passes, FEM-vs-FV symmetric
+Omega RMS improved from `0.546` to `0.217` at FEM `h=0.06` and from `0.569`
+to `0.192` at FEM `h=0.05`, and FEM-to-FV projected residuals improved from
+`1.77/1.34` to `0.571/0.472`. The cross-initialized residuals are still not
+small enough for paper-level Gate 3, but the result is a material
+baseline-closer improvement. The conditional broken `m1` stage also
+completed; it selected `fv_blend_0p015625`, with Omega non-threefold fraction
+`0.525`, FEM-vs-FV Omega RMS improved from about `1.34` to `0.225/0.212`,
+and selected symmetric-vs-broken Omega probe RMS separation `1.254`. The next
+M3 step is to tighten or recheck the selected broken solve because its final
+relative update is `1.25e-05`, then run a compact selected-blend branch audit.
+After that, move the bifurcation search below sigma `0.650` and attempt an
+independent FEM branch-discovery path that does not rely on nextgen branch
+seeds. Do not start M4 or the eigensolver while this M3 nonuniqueness
+investigation is active.
 
 Use `docs/m3_c3_140_validation_protocol.md` as the acceptance checklist for
 any future `{c_3=140}` paper-level nonuniqueness claim.

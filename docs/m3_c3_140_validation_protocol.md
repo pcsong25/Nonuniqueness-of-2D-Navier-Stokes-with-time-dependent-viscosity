@@ -256,4 +256,169 @@ Before making a continuum nonuniqueness claim for `{c_3=140}`:
 6. Attempt FEM branch discovery or FEM pseudo-arclength continuation that does
    not rely exclusively on nextgen branch seeds.
 
+## Next Experiment Design: Baseline-Closer FV Homotopy
+
+Purpose: test whether the current symmetric FV/FEM mismatch is caused mainly
+by excess numerical diffusion in the conservative `fv_upwind` transport. This
+experiment stays inside M3 and changes only the nextgen transport
+discretization; it does not run M4 or the eigensolver.
+
+Primary hypothesis:
+
+- The saved `fv_upwind` symmetric branch is too diffusive near the three sharp
+  cores. A conservative low-upwind-blend or centered FV transport should move
+  the symmetric nextgen profile toward the sharper FEM root if the mismatch is
+  primarily a transport-discretization artifact.
+
+Fixed ingredients:
+
+- Boundary data: `{c_3=140}` and all other Fourier modes zero.
+- Domain and physical parameters: same `R`, `Rdom`, `mu`, and `eps` as the
+  current c3=140 runs.
+- Grid: start on full-disk nextgen `192/576`, using the saved symmetric
+  `fv_upwind` state from
+  `experiments/raw/nextgen/m3_c3_140_refine192_fem_crosscheck/states/`.
+- Poisson treatment: keep the mean-gauge Poisson solve and reduced Poisson
+  Newton path unchanged.
+- Sampling/comparison grid: keep the current `193x193` audit grid and the
+  same psi mean-removal convention.
+- FEM references: compare first against existing `h=0.06` and `h=0.05`
+  symmetric FEM audit data; refresh FEM only if the script needs field objects
+  not present in existing summaries/caches.
+
+Transport candidates:
+
+- Reference: `fv_upwind`, equivalent to `upwind_blend=1.0`.
+- Homotopy path: `fv_blended` with
+  `upwind_blend = 0.5, 0.25, 0.125, 0.0625, 0.03125, 0.015625`.
+- Endpoint attempt: `fv_centered`, equivalent to `upwind_blend=0.0`, only
+  after the low-blend stages converge cleanly.
+
+Execution phases:
+
+1. Residual scan without Newton:
+   - Load the saved symmetric `fv_upwind` `192/576` state.
+   - Re-evaluate its native residual under each candidate transport.
+   - Record the known reference that the same state has centered-FV residual
+     about `0.371`, so large residuals in this scan are expected rather than
+     failures.
+2. Symmetric blend homotopy:
+   - Starting from the `fv_upwind` state, solve fixed `sigma=1` Newton at each
+     decreasing blend.
+   - Seed each stage from the previous converged stage, with `psi` reprojected
+     by the unchanged FV Poisson solve.
+   - Save every converged stage, even if later lower-blend stages fail.
+3. Symmetric baseline-closeness audit:
+   - For each converged blend, report Gate 1 quantities: native residual,
+     final update, physical Poisson residual, compatibility defect, boundary
+     defects, and non-threefold fraction.
+   - Compare against FEM symmetric `h=0.06` and `h=0.05` on the audit grid.
+   - Compare against the current `fv_upwind` symmetric state to quantify how
+     far the transport homotopy moved the profile.
+   - Generate full-domain and core-close-up plots using the same visual
+     windows as the discrepancy audit.
+4. Symmetric cross-initialization gate:
+   - Select the best converged blend by FEM-closeness and native residual.
+   - Re-run FV-to-FEM and FEM-to-FV cross-initialization for that one selected
+     blend.
+   - Use the current failures as baselines: FEM seed residuals about
+     `4.94e-01` at `h=0.06` and `4.45e-01` at `h=0.05`, FEM-to-FV projected
+     residuals about `1.77` and `1.34`, and FEM-vs-FV symmetric Omega RMS
+     about `0.546` and `0.569`.
+5. Broken branch extension, conditional:
+   - Only if the symmetric selected blend improves cross-discretization
+     agreement materially, repeat the blend homotopy for the saved
+     `broken_m1_192_576` branch.
+   - Then report branch separation, broken non-threefold fraction, and broken
+     cross-initialization. Do not use broken-branch results to excuse a
+     failed symmetric comparison.
+6. Refinement extension, conditional:
+   - If both symmetric and broken branches pass the first-pass blend checks,
+     repeat the selected blend at `160/480` and `192/576`, then consider a
+     finer `224/672` or `256/768` run.
+
+Suggested acceptance for this experiment:
+
+- Selected blend converges with nextgen native relative residual at or below
+  `1e-8` and a final relative update at or below the Newton tolerance.
+- Symmetric non-threefold fraction remains near roundoff or at least below
+  `1e-6`.
+- Compatibility and physical Poisson defects remain far below the branch
+  separation observables.
+- Symmetric FEM-vs-nextgen Omega RMS improves by at least a factor of two
+  relative to the current `fv_upwind` values before proceeding to the broken
+  branch.
+- Cross-initialization native residuals decrease substantially in both
+  directions. If the selected blend still gives order-one FEM-to-FV residuals
+  or FEM-vs-FV RMS near the current `fv_upwind` mismatch, treat the experiment
+  as a negative result.
+
+Planned artifacts when the experiment is implemented and run:
+
+- Script:
+  `experiments/run_m3_c3_140_baseline_closer_fv_homotopy.py`.
+- Summary:
+  `experiments/summaries/m3_c3_140_baseline_closer_fv_homotopy_2026-04-30.json`.
+- Raw output directory:
+  `experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/`.
+- Tables:
+  `blend_homotopy_table.csv`, `symmetric_baseline_closeness_table.csv`, and,
+  if unlocked, `broken_branch_table.csv`.
+- Plots:
+  symmetric full-domain comparisons, top-core close-ups, blend-vs-FEM RMS
+  trend, and, if unlocked, branch-difference plots.
+- Saved states for every converged blend and branch.
+
+Planned first run command, after the script is implemented:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 conda run --no-capture-output -n femx_spc \
+  python experiments/run_m3_c3_140_baseline_closer_fv_homotopy.py \
+  --stage symmetric --grid 192 576
+```
+
+Do not proceed to the broken branch, refinement extension, M4, or the
+eigensolver until the symmetric blend result is assessed against Gate 3.
+
+Latest symmetric first-pass result:
+
+- The symmetric `192/576` first pass completed on 2026-04-30 and selected
+  `fv_blend_0p125`.
+- Gate 1 passed for the selected blend: native relative residual `4.42e-13`,
+  physical Poisson residual `1.16e-11`, compatibility defect `7.56e-14`,
+  and Omega non-threefold fraction `8.99e-14`.
+- Symmetric FEM-vs-FV Omega RMS improved from `0.546` to `0.217` at
+  `h=0.06`, and from `0.569` to `0.192` at `h=0.05`.
+- Cross-initialization improved but did not fully close Gate 3:
+  FV-to-FEM seed residuals improved from `4.94e-01` to `3.83e-01` at
+  `h=0.06` and from `4.45e-01` to `3.68e-01` at `h=0.05`; FEM-to-FV
+  projected residuals improved from `1.77` to `0.571` at `h=0.06` and from
+  `1.34` to `0.472` at `h=0.05`.
+- Reverse FV Newton from the FEM projected seed still returned to the selected
+  FV root, so this is a positive baseline-closer result but not yet a
+  paper-level cross-discretization validation.
+
+Latest broken-branch first-pass result:
+
+- The conditional broken `m1` `192/576` first pass completed on 2026-04-30
+  and selected `fv_blend_0p015625`.
+- The selected broken branch retained strong symmetry breaking:
+  Omega non-threefold fraction `0.525` and psi non-threefold fraction
+  `0.00898`.
+- Residual, Poisson, and compatibility diagnostics were clean enough for a
+  first pass: native relative residual `2.32e-09`, physical Poisson residual
+  `1.16e-11`, and compatibility defect `1.03e-13`.
+- The final relative update was `1.25e-05`, looser than the strict Gate 1
+  target. Tighten or recheck the selected broken solve before using it as
+  paper-level evidence.
+- Broken FEM-vs-FV Omega RMS improved from `1.336` to `0.225` at `h=0.06`,
+  and from `1.346` to `0.212` at `h=0.05`.
+- Broken cross-initialization improved but did not fully close Gate 3:
+  FV-to-FEM seed residuals were `0.416` at `h=0.06` and `0.393` at
+  `h=0.05`; FEM-to-FV projected residuals were `0.508` at `h=0.06` and
+  `0.459` at `h=0.05`.
+- The selected symmetric and selected broken FV branches remain well
+  separated: Omega probe RMS `1.254`, Omega Linf `36.06`, and offset-removed
+  psi RMS `0.0466`.
+
 Do not start M4 or the eigensolver while this validation gap is unresolved.
