@@ -421,4 +421,196 @@ Latest broken-branch first-pass result:
   separated: Omega probe RMS `1.254`, Omega Linf `36.06`, and offset-removed
   psi RMS `0.0466`.
 
+Latest selected-branch tightening audit:
+
+- The fixed selected broken `fv_blend_0p015625` `192/576` solve was tightened
+  on 2026-05-01 by
+  `experiments/run_m3_c3_140_selected_branch_audit.py`.
+- The tightening pass disabled residual-only convergence and required both
+  residual and update convergence at the selected transport.
+- The tightened broken branch now passes the strict fixed-branch Gate 1 check:
+  native relative residual `4.36e-13`, native residual norm `1.17e-11`, final
+  relative update `5.13e-10`, physical Poisson residual `1.16e-11`, and
+  compatibility defect `8.30e-14`.
+- Strong symmetry breaking was preserved: Omega non-threefold fraction
+  `0.525` and psi non-threefold fraction `0.00898`.
+- The polish moved only Omega RMS `1.08e-09` from the previous selected broken
+  state on the compact audit grid, so it did not change branch identity.
+- Compact selected-branch separation between tightened broken
+  `fv_blend_0p015625` and selected symmetric `fv_blend_0p125` is order one:
+  Omega full-grid RMS `1.554`, Omega active RMS `1.790`, Omega Linf `36.29`,
+  and offset-removed psi RMS `0.0581`.
+- The compact Gate 3 table inherits the completed homotopy cross-initialization
+  metrics. Symmetric selected residuals are FV-to-FEM `0.383/0.368` and
+  FEM-to-FV projected `0.571/0.472` at `h=0.06/h=0.05`; broken selected
+  residuals are FV-to-FEM `0.416/0.393` and FEM-to-FV projected `0.508/0.459`.
+- Therefore the selected broken branch no longer has a Newton-update quality
+  caveat, but Gate 3 remains unresolved because cross-discretization residuals
+  are still order `0.4` to `0.6`.
+
+## Next Design: Independent FEM Branch-Discovery Sigma Ladder
+
+Status: implemented as `experiments/run_m3_c3_140_fem_branch_discovery.py`
+on 2026-05-01. A coarse mechanics smoke pass completed. A constrained first
+real pass at `h_min=h_max=0.06`, `sigma=1.0`, `m1_core` amplitudes
+`0.2, 0.8, 1.6`, and phases `0, pi/3` also completed from a cached
+`h=0.06` FEM symmetric source. That pass did not discover an independent FEM
+broken branch.
+
+Choice:
+
+- Prioritize an independent FEM branch-discovery/bifurcation path before a
+  nextgen refinement repeat.
+- Rationale: selected baseline-closer FV roots are now clean and separated,
+  but Gate 3 remains blocked by cross-discretization residuals. Refining FV
+  selected branches would test discrete FV stability, but it would not answer
+  whether FEM can discover the same broken structure without inheriting a
+  nextgen seed.
+
+Proposed script:
+
+- `experiments/run_m3_c3_140_fem_branch_discovery.py`
+
+Implementation note:
+
+- The script has a compile-only check:
+  `PYTHONDONTWRITEBYTECODE=1 python -m py_compile experiments/run_m3_c3_140_fem_branch_discovery.py`.
+- Heavy FEM imports remain inside runtime helpers.
+- Selected FV states are loaded only by the post-discovery comparison helper,
+  not by the analytic FEM discovery start generation.
+- Smoke controls `--family` and `--phase` allow a one-start mechanics check.
+- The 2026-05-01 smoke command used coarse `h=0.12/0.18`, `sigma=0.2`,
+  `m1_core` amplitude `0.05`, phase `0`, `--max-newton 4`,
+  `--skip-confirmation`, and `--no-registry`. It completed and wrote JSON,
+  CSV, plot, and sampled-field artifacts, but it is not validation evidence.
+- The 2026-05-01 constrained first real command used `h=0.06/0.06`,
+  `sigma=1.0`, `--symmetric-source cached_h0p06`, `m1_core` amplitudes
+  `0.2, 0.8, 1.6`, phases `0, pi/3`, `--max-newton 24`, and
+  `--skip-confirmation`. It appended a registry row and wrote the planned
+  summary, CSV, plot, and sampled-field artifacts.
+
+Hard scope:
+
+- M3 only.
+- No M4 operator assembly and no eigensolver.
+- No nextgen field may be used as an initial condition for FEM discovery.
+- Selected baseline-closer FV states may be loaded only after FEM roots are
+  found, for comparison tables and plots.
+
+Primary mesh and controls:
+
+- First pass: FEM `h_min=h_max=0.06`.
+- Confirmation pass, only if discovery succeeds: FEM `h_min=h_max=0.05` on
+  the selected starts and selected sigma values.
+- Newton tolerance: keep the current baseline `tol_newton=1e-9` and record
+  final relative update, weak residual norms, boundary defects, symmetry, and
+  compatibility diagnostics for every accepted root.
+- Sigma ladder:
+  - Coarse trace: `1.00, 0.90, 0.80, 0.70, 0.65`.
+  - Dense lower window: `0.64, 0.63, 0.62, 0.60, 0.575, 0.55`.
+  - Stop below the first interval where all non-threefold starts collapse to
+    the symmetric root, unless a lower-sigma broken candidate remains clean.
+
+Discovery starts:
+
+1. Build or load the FEM symmetric root on each sigma in the ladder using
+   zero-start FEM continuation restricted to that sigma path.
+2. From each symmetric FEM root, generate analytic interior perturbation
+   starts, not nextgen-sampled starts:
+   - `m1_core`: `A r exp(-(r/w)^2) cos(theta + phase)`.
+   - `m2_core`: same envelope with `cos(2 theta + phase)`.
+   - `mixed_non3`: a fixed linear combination of `m1`, `m2`, and `m4`.
+3. Enforce zero perturbation on the outer boundary so the Dirichlet
+   `Omega` data remain unchanged.
+4. Recompute `psi` with the baseline FEM Poisson solve at that sigma before
+   fixed-sigma Newton.
+5. Use amplitudes `A = 0.05, 0.1, 0.2, 0.4, 0.8, 1.2, 1.6, 2.0` and phases
+   `0, pi/3, 2pi/3` for `m1_core`; use fewer phases for the secondary
+   perturbations unless `m1_core` fails.
+
+Continuation after discovery:
+
+- If any analytic perturbation converges to a clean non-threefold FEM root,
+  treat that root as the FEM-discovered broken branch for that mesh.
+- Continue it in sigma with nearest-neighbor seeding along the ladder, both
+  upward toward `sigma=1` and downward through the dense lower window.
+- At each sigma, also solve the symmetric FEM root and classify the candidate
+  by:
+  - native FEM convergence and residual diagnostics,
+  - Omega non-threefold fraction,
+  - orbit-aware distance to the symmetric FEM root under `C3` rotations and
+    reflection,
+  - distance to any previously discovered FEM broken root.
+
+Compact outputs:
+
+- Summary:
+  `experiments/summaries/m3_c3_140_fem_branch_discovery_2026-05-01.json`.
+- Raw directory:
+  `experiments/raw/baseline/m3_c3_140_fem_branch_discovery/`.
+- Tables:
+  - `fem_discovery_start_table.csv`: every perturbation start, status,
+    final update, residuals, and branch classification.
+  - `fem_sigma_ladder_table.csv`: symmetric and broken FEM roots by sigma.
+  - `fem_branch_separation_table.csv`: FEM symmetric-vs-broken distances,
+    orbit-aware distances, and non-threefold fractions.
+  - `fem_vs_selected_fv_table.csv`: after-the-fact comparison to selected
+    baseline-closer FV branches at `sigma=1` only.
+- Plots:
+  - Omega panels for discovered symmetric and broken FEM roots at `sigma=1`.
+  - FEM branch-difference panels.
+  - Non-threefold fraction versus sigma.
+  - Newton basin/discovery heatmap by perturbation type, amplitude, and phase.
+
+Acceptance for the first FEM discovery pass:
+
+- A discovered FEM broken candidate must be produced from an analytic
+  perturbation of a FEM symmetric root, not from a nextgen seed.
+- The candidate must satisfy final relative update `<=1e-8`, clean weak
+  residuals, clean boundary defects, and clean compatibility diagnostics.
+- It must have Omega non-threefold fraction `>=1e-3` and orbit-aware Omega
+  RMS separation from the FEM symmetric root well above the mesh-to-mesh FEM
+  noise floor.
+- The same perturbation family must reproduce a broken candidate on the
+  confirmation mesh or on at least two adjacent sigma values before claiming
+  independent FEM branch discovery.
+- The lower sigma ladder should bracket the collapse/merge by two adjacent
+  sigma values with different classifications, preferably with spacing
+  `<=0.02`.
+
+Failure interpretation:
+
+- If all analytic perturbation starts converge to the symmetric root, do not
+  reinterpret nextgen-seeded FEM roots as independent discovery.
+- The next design step would then be a genuine FEM branch-following method
+  such as deflated Newton or pseudo-arclength continuation, still in M3.
+
+Constrained first-pass outcome:
+
+- The polished cached `h=0.06` FEM symmetric reference at `sigma=1` completed
+  with final relative update `6.34e-14`.
+- Analytic `m1_core` starts with amplitudes `0.2` and `0.8`, phases `0` and
+  `pi/3`, all converged back to the symmetric reference. Their Omega
+  orbit-aware RMS separations from the symmetric root were
+  `3.61e-12`, `3.98e-12`, `5.68e-12`, and `4.84e-12`.
+- Analytic `m1_core` starts with amplitude `1.6` at both phases were
+  nonconverged after `24` Newton iterations, with final relative updates
+  `2.59e-01` and `7.08e-02`; they are not Gate 1 roots.
+- No `broken_candidate` was produced in this constrained subset.
+- Direct zero-start symmetric construction at `h=0.06` was too slow for this
+  pass and was terminated before a checkpoint, so the completed result should
+  be treated as a cached-symmetric-source discovery subset, not a pure
+  zero-start FEM ladder.
+
+Deferred refinement repeat:
+
+- After independent FEM discovery succeeds or fails cleanly, repeat selected
+  baseline-closer FV branches on a finer grid as a separate milestone:
+  symmetric `fv_blend_0p125`, broken `fv_blend_0p015625`, target grid
+  `224/672` first, then `256/768` only if runtime and residual behavior
+  justify it.
+- That refinement repeat should use the tightened selected broken state and
+  selected symmetric state as prolongation seeds, but it should not replace
+  the independent FEM discovery evidence.
+
 Do not start M4 or the eigensolver while this validation gap is unresolved.

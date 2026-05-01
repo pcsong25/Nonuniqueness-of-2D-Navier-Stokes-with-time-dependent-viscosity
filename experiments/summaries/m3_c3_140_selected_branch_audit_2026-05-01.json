@@ -1,0 +1,182 @@
+{
+  "branch": "broken_m1",
+  "branch_separation": [
+    {
+      "a_label": "broken_m1_fv_blend_0p015625_192_576_previous",
+      "b_label": "symmetric_fv_blend_0p125_192_576",
+      "omega_active_linf": 36.28849098796877,
+      "omega_active_rms": 1.790231874927285,
+      "omega_full_linf": 36.28849098796877,
+      "omega_full_rms": 1.5536448705303525,
+      "pair": "previous_broken_vs_symmetric_selected",
+      "psi_offset_removed_linf": 0.7617827560546976,
+      "psi_offset_removed_rms": 0.058092193252641144,
+      "valid_count": 28917
+    },
+    {
+      "a_label": "broken_m1_fv_blend_0p015625_tight_192_576",
+      "b_label": "symmetric_fv_blend_0p125_192_576",
+      "omega_active_linf": 36.28849097220569,
+      "omega_active_rms": 1.7902318747423371,
+      "omega_full_linf": 36.28849097220569,
+      "omega_full_rms": 1.5536448703698544,
+      "pair": "tightened_broken_vs_symmetric_selected",
+      "psi_offset_removed_linf": 0.7617827560026245,
+      "psi_offset_removed_rms": 0.05809219325057074,
+      "valid_count": 28917
+    },
+    {
+      "a_label": "broken_m1_fv_blend_0p015625_tight_192_576",
+      "b_label": "broken_m1_fv_blend_0p015625_192_576_previous",
+      "omega_active_linf": 4.930877750553009e-08,
+      "omega_active_rms": 1.1944181784291324e-09,
+      "omega_full_linf": 4.930877750553009e-08,
+      "omega_full_rms": 1.0780387080003175e-09,
+      "pair": "tightened_broken_vs_previous_broken",
+      "psi_offset_removed_linf": 1.7926780893073868e-10,
+      "psi_offset_removed_rms": 8.407330576471571e-12,
+      "valid_count": 28917
+    }
+  ],
+  "case": {
+    "coeffs": {
+      "3": 140.0
+    },
+    "name": "m3_c3_140_selected_branch_audit"
+  },
+  "gate3": [
+    {
+      "branch": "symmetric",
+      "fem_to_fv_projected_residual_h0p05": 0.4721765077470352,
+      "fem_to_fv_projected_residual_h0p06": 0.5707646706977523,
+      "fv_to_fem_seed_residual_h0p05": 0.36777344610425183,
+      "fv_to_fem_seed_residual_h0p06": 0.3827409942746372,
+      "omega_rms_to_fem_h0p05": 0.1920348692816153,
+      "omega_rms_to_fem_h0p06": 0.21705689703089376,
+      "source": "experiments/summaries/m3_c3_140_baseline_closer_fv_homotopy_2026-04-30.json",
+      "transport_label": "fv_blend_0p125"
+    },
+    {
+      "branch": "broken_m1",
+      "fem_to_fv_projected_residual_h0p05": 0.4591772692275548,
+      "fem_to_fv_projected_residual_h0p06": 0.5077601120485605,
+      "fv_to_fem_seed_residual_h0p05": 0.3933341440880137,
+      "fv_to_fem_seed_residual_h0p06": 0.41556708981481566,
+      "note": "Gate 3 values inherited from the completed homotopy summary; the tightened state moved by the listed Omega RMS.",
+      "omega_rms_to_fem_h0p05": 0.21201164241059994,
+      "omega_rms_to_fem_h0p06": 0.2249823653830084,
+      "source": "experiments/summaries/m3_c3_140_baseline_closer_fv_homotopy_broken_m1_2026-04-30.json",
+      "tightened_vs_previous_omega_rms": 1.0780387080003175e-09,
+      "transport_label": "fv_blend_0p015625"
+    }
+  ],
+  "grid": {
+    "nr": 192,
+    "ntheta": 576
+  },
+  "notes": [
+    "This audit stays in M3 and does not assemble or run the eigensolver.",
+    "The tightening solve disables residual-only convergence so the selected broken state must satisfy both residual and update gates.",
+    "Gate 3 FEM values are inherited from the completed homotopy summary because this run is scoped to selected-branch tightening."
+  ],
+  "previous_broken": {
+    "branch": "broken_m1",
+    "common_profile_strong_relative": 0.6411887879121133,
+    "compatibility_omega_minus_flux": 1.0258360597262765e-13,
+    "final_relative_update": 1.2488682856850276e-05,
+    "gate1_broken_symmetry_present": true,
+    "gate1_compatibility_pass": true,
+    "gate1_poisson_pass": true,
+    "gate1_residual_pass": true,
+    "gate1_update_pass": false,
+    "label": "broken_m1_fv_blend_0p015625_192_576_previous",
+    "message": "loaded_state:experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/states/broken_m1_fv_blend_0p015625_192_576_state.npz",
+    "native_relative_residual": 2.321537590102343e-09,
+    "native_residual_norm": 6.205105237543695e-08,
+    "newton_steps": null,
+    "omega_non3": 0.525042776106012,
+    "omega_residual_norm": 6.205105128728898e-08,
+    "physical_poisson_residual_norm": 1.162073515933731e-11,
+    "poisson_residual_norm": 1.1620733707986603e-11,
+    "psi_non3": 0.008983315221827649,
+    "runtime_sec": 0.0,
+    "source": "saved_selected_broken_before_tightening",
+    "status": "completed",
+    "transport_label": "fv_blend_0p015625",
+    "upwind_blend": 0.015625
+  },
+  "runtime_sec": 90.25389085896313,
+  "selected_symmetric": {
+    "branch": "symmetric",
+    "common_profile_strong_relative": 0.61932471469814,
+    "compatibility_omega_minus_flux": 7.560105125938785e-14,
+    "final_relative_update": 1.8904529300637128e-08,
+    "gate1_broken_symmetry_present": false,
+    "gate1_compatibility_pass": true,
+    "gate1_poisson_pass": true,
+    "gate1_residual_pass": true,
+    "gate1_update_pass": false,
+    "label": "symmetric_fv_blend_0p125_192_576",
+    "message": "loaded_state:experiments/raw/nextgen/m3_c3_140_baseline_closer_fv_homotopy/states/symmetric_fv_blend_0p125_192_576_state.npz",
+    "native_relative_residual": 4.417841620054202e-13,
+    "native_residual_norm": 1.1628828130146184e-11,
+    "newton_steps": null,
+    "omega_non3": 8.992424107194754e-14,
+    "omega_residual_norm": 4.027891484598877e-13,
+    "physical_poisson_residual_norm": 1.1621852052474957e-11,
+    "poisson_residual_norm": 1.1621850308034523e-11,
+    "psi_non3": 3.5639318060891766e-14,
+    "runtime_sec": 0.0,
+    "source": "saved_selected_symmetric",
+    "status": "completed",
+    "transport_label": "fv_blend_0p125",
+    "upwind_blend": 0.125
+  },
+  "state_path": "experiments/raw/nextgen/m3_c3_140_selected_branch_audit/states/broken_m1_fv_blend_0p015625_tight_192_576_state.npz",
+  "status": "completed",
+  "table_paths": {
+    "branch_separation": "experiments/raw/nextgen/m3_c3_140_selected_branch_audit/tables/selected_branch_separation_table.csv",
+    "gate1": "experiments/raw/nextgen/m3_c3_140_selected_branch_audit/tables/selected_branch_gate1_table.csv",
+    "gate3": "experiments/raw/nextgen/m3_c3_140_selected_branch_audit/tables/selected_branch_gate3_table.csv"
+  },
+  "tightened_broken": {
+    "branch": "broken_m1",
+    "common_profile_strong_relative": 0.6411887875962294,
+    "compatibility_omega_minus_flux": 8.304698755585097e-14,
+    "final_relative_update": 5.1255965929276e-10,
+    "gate1_broken_symmetry_present": true,
+    "gate1_compatibility_pass": true,
+    "gate1_poisson_pass": true,
+    "gate1_residual_pass": true,
+    "gate1_update_pass": true,
+    "label": "broken_m1_fv_blend_0p015625_tight_192_576",
+    "message": "converged",
+    "native_relative_residual": 4.3610043092790895e-13,
+    "native_residual_norm": 1.1656279352818895e-11,
+    "newton_steps": 2,
+    "omega_non3": 0.5250427760560219,
+    "omega_residual_norm": 5.681590697186752e-13,
+    "physical_poisson_residual_norm": 1.1642394542906428e-11,
+    "poisson_residual_norm": 1.1642424301770163e-11,
+    "psi_non3": 0.008983315221705103,
+    "runtime_sec": 19.11369603034109,
+    "source": "tightened_selected_broken",
+    "status": "completed",
+    "transport_label": "fv_blend_0p015625",
+    "upwind_blend": 0.015625
+  },
+  "tightening_controls": {
+    "gmres_maxiter": 540,
+    "gmres_restart": 180,
+    "gmres_rtol": 1e-09,
+    "max_iter": 80,
+    "tol_residual": 1e-10,
+    "tol_residual_only": null,
+    "tol_step": 1e-08
+  },
+  "transport": {
+    "advection_scheme": "fv_blended",
+    "label": "fv_blend_0p015625",
+    "upwind_blend": 0.015625
+  }
+}

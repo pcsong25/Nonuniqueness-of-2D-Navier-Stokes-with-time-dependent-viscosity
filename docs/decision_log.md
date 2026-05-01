@@ -936,3 +936,94 @@ Do not start M4. The next M3 action should tighten or recheck the selected broke
 `fv_blend_0p015625` solve and package a compact selected-branch audit for symmetric
 `fv_blend_0p125` versus broken `fv_blend_0p015625`, including branch separation and
 cross-initialization diagnostics.
+
+### 2026-05-01 — Tightened selected broken FV blend is the current broken candidate
+Decision:
+Treat the tightened `broken_m1 fv_blend_0p015625` state at `192/576` as the current selected
+broken baseline-closer FV candidate for M3 `{c_3=140}` audits.
+
+Why:
+The previous selected broken state was already a clean residual root but had stopped through
+residual-only convergence with final relative update `1.25e-05`. A fixed-transport polish with
+residual-only convergence disabled reduced the update below the strict Gate 1 target without
+changing the branch.
+
+Evidence:
+`experiments/run_m3_c3_140_selected_branch_audit.py` completed on 2026-05-01. The tightened
+state had native relative residual `4.36e-13`, native residual norm `1.17e-11`, final relative
+update `5.13e-10`, physical Poisson residual `1.16e-11`, compatibility defect `8.30e-14`, Omega
+non-threefold fraction `0.525`, and psi non-threefold fraction `0.00898`. It moved only Omega
+RMS `1.08e-09` from the previous selected broken state. Against the selected symmetric
+`fv_blend_0p125` state, the compact audit measured Omega full-grid RMS separation `1.554`, active
+RMS `1.790`, Omega Linf `36.29`, and offset-removed psi RMS `0.0581`.
+
+Caveat:
+This removes the selected broken Newton-update caveat but does not close Gate 3. Inherited
+selected-branch cross-initialization residuals remain order `0.4` to `0.6`, so the current
+evidence is still a baseline-closer M3 result rather than paper-level continuum validation.
+
+Consequences:
+Keep M4 and the eigensolver blocked. The next M3 work should either repeat the selected
+baseline-closer branches on a refinement or build an independent FEM branch-discovery/bifurcation
+path below sigma `0.650` that does not rely on nextgen branch seeds.
+
+### 2026-05-01 — Prioritize independent FEM discovery before FV refinement repeat
+Decision:
+Make the next M3 milestone an independent FEM branch-discovery sigma ladder for `{c_3=140}`.
+Defer selected baseline-closer FV refinement until the FEM discovery attempt either succeeds or
+fails cleanly.
+
+Why:
+The selected baseline-closer FV branches are now native-clean and strongly separated, so another FV
+grid primarily tests FV robustness. The unresolved blocker is Gate 3: the FEM and FV roots still do
+not solve each other's discrete equations with small residuals. Independent FEM discovery, using
+analytic perturbations of FEM symmetric roots rather than nextgen seeds, directly tests whether the
+broken branch is present in FEM as an independently found structure.
+
+Design:
+Implement `experiments/run_m3_c3_140_fem_branch_discovery.py` as an M3-only design. The first pass
+uses `h_min=h_max=0.06`, analytic interior `m1_core`, `m2_core`, and `mixed_non3` perturbations of
+FEM symmetric roots, a coarse sigma trace `1.00, 0.90, 0.80, 0.70, 0.65`, and a dense lower window
+`0.64, 0.63, 0.62, 0.60, 0.575, 0.55`. Selected FV states may be used only after discovery, for
+comparison tables and plots; they must not be used as FEM initial conditions.
+
+Caveat:
+If analytic perturbation starts all return to the symmetric FEM root, that is not evidence against
+the branch by itself. It means the next M3 design should use deflated Newton or pseudo-arclength
+FEM continuation rather than reclassifying nextgen-seeded FEM solves as independent discovery.
+
+Consequences:
+No registry row is added for the design-only step. Do not run M4 or the eigensolver. The next
+action is script implementation only, followed by a compile/artifact-path check before any solver
+run.
+
+### 2026-05-01 — First constrained FEM discovery subset finds no broken root
+Decision:
+Do not count the constrained `h=0.06`, `sigma=1.0` analytic `m1_core` FEM discovery subset as
+independent broken-branch evidence for `{c_3=140}`.
+
+Why:
+The completed run used analytic perturbations of a FEM symmetric root, satisfying the intended
+seed-independence rule, but all converged smaller starts returned to the same symmetric FEM root
+to roundoff-level orbit-aware separation. The larger perturbations did not converge and therefore
+do not pass Gate 1.
+
+Evidence:
+`experiments/run_m3_c3_140_fem_branch_discovery.py` completed with
+`--mesh 0.06 0.06 --sigma 1.0 --symmetric-source cached_h0p06 --amplitude 0.2 0.8 1.6
+--family m1_core --phase 0.0 1.0471975511965976 --max-newton 24 --skip-confirmation`.
+The cached symmetric FEM reference polished to final relative update `6.34e-14`. The four
+converged starts at amplitudes `0.2` and `0.8` had Omega orbit RMS distance to the symmetric
+reference between `3.61e-12` and `5.68e-12`. The two amplitude `1.6` starts were nonconverged,
+with final relative updates `2.59e-01` and `7.08e-02`.
+
+Caveat:
+The direct zero-start `h=0.06` symmetric construction was too slow and was terminated before a
+checkpoint, so the completed pass used a cached/polished symmetric FEM source. This is a practical
+first real discovery subset, not a full independent FEM sigma ladder.
+
+Consequences:
+Keep M4 and the eigensolver blocked. The next M3 design should use a stronger FEM
+branch-following method, such as deflated Newton, amplitude continuation, or pseudo-arclength
+continuation near the suspected lower-sigma split, rather than reclassifying nextgen-seeded FEM
+roots as independent discovery.

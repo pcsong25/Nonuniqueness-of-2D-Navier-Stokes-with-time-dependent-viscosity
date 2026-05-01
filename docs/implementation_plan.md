@@ -357,13 +357,33 @@ small enough for paper-level Gate 3, but the result is a material
 baseline-closer improvement. The conditional broken `m1` stage also
 completed; it selected `fv_blend_0p015625`, with Omega non-threefold fraction
 `0.525`, FEM-vs-FV Omega RMS improved from about `1.34` to `0.225/0.212`,
-and selected symmetric-vs-broken Omega probe RMS separation `1.254`. The next
-M3 step is to tighten or recheck the selected broken solve because its final
-relative update is `1.25e-05`, then run a compact selected-blend branch audit.
-After that, move the bifurcation search below sigma `0.650` and attempt an
-independent FEM branch-discovery path that does not rely on nextgen branch
-seeds. Do not start M4 or the eigensolver while this M3 nonuniqueness
-investigation is active.
+and selected symmetric-vs-broken Omega probe RMS separation `1.254`. The
+selected broken solve has now been tightened by
+`experiments/run_m3_c3_140_selected_branch_audit.py`: the fixed
+`fv_blend_0p015625` rerun reduced native relative residual to `4.36e-13` and
+final relative update to `5.13e-10` while preserving Omega non-threefold
+fraction `0.525`. The compact selected-branch audit records order-one
+selected symmetric-vs-broken separation, with Omega full-grid RMS `1.554` and
+Omega active RMS `1.790`. Gate 3 remains the blocker: inherited
+cross-initialized residuals are still order `0.4` to `0.6`, even though
+baseline-closer FV greatly improved FEM agreement. The independent FEM
+branch-discovery script `experiments/run_m3_c3_140_fem_branch_discovery.py`
+is now implemented and has passed both a coarse smoke test and a constrained
+first real pass on `h_min=h_max=0.06`, `sigma=1.0`. The first direct
+zero-start symmetric construction at `h=0.06` was too slow and was terminated
+before a checkpoint, so the completed constrained pass used the cached
+`h=0.06` FEM symmetric field from the residual-audit bundle as the symmetric
+source, then polished it at fixed `sigma=1`. Analytic `m1_core` starts with
+amplitudes `0.2` and `0.8` and phases `0, pi/3` all converged back to the
+same FEM symmetric root with Omega orbit RMS separation `3.6e-12` to
+`5.7e-12`; amplitude `1.6` starts at both phases did not converge within
+`24` Newton iterations. No independent FEM broken branch was discovered in
+this constrained subset. The next M3 milestone should therefore be a stronger
+FEM branch-following design, such as deflated Newton, amplitude continuation,
+or pseudo-arclength continuation near the suspected lower-sigma split. A
+selected FV refinement repeat at `224/672` remains deferred until this
+independent FEM path succeeds or fails more decisively. Do not start M4 or
+the eigensolver while this M3 nonuniqueness investigation is active.
 
 Use `docs/m3_c3_140_validation_protocol.md` as the acceptance checklist for
 any future `{c_3=140}` paper-level nonuniqueness claim.
