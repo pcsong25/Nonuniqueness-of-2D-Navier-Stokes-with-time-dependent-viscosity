@@ -1,0 +1,44 @@
+{
+  "boundary_cases": {
+    "s20": {
+      "analytic": "barOmega(theta) = s cos(3 theta)",
+      "baseline_coeffs": {
+        "3": 10.0
+      },
+      "note": "FourierBC mirrors positive modes, so c3=s/2 gives exact s cos(3 theta).",
+      "s": 20.0
+    },
+    "s30": {
+      "analytic": "barOmega(theta) = s cos(3 theta)",
+      "baseline_coeffs": {
+        "3": 15.0
+      },
+      "note": "FourierBC mirrors positive modes, so c3=s/2 gives exact s cos(3 theta).",
+      "s": 30.0
+    }
+  },
+  "branch": "A_c3_spectrum_continuation",
+  "eig_shift": -1.0,
+  "k": 10,
+  "mesh": {
+    "h_max": 0.24,
+    "h_min": 0.18
+  },
+  "notes": [
+    "No FEM solve is launched by the scaffold mode.",
+    "Exact s cos(3 theta) uses baseline coefficient c3=s/2.",
+    "The next milestone wires baseline profile/eigen solves and checkpointing."
+  ],
+  "planned_outputs": {
+    "checkpoint_dir": "experiments/fem_manuscript/c3_spectrum_continuation/checkpoints/scaffold_branchA",
+    "data_csv": "experiments/fem_manuscript/c3_spectrum_continuation/data/scaffold_branchA_eigenvalues.csv",
+    "debug_plot_dir": "experiments/fem_manuscript/c3_spectrum_continuation/plots/scaffold_branchA",
+    "log_file": "experiments/fem_manuscript/c3_spectrum_continuation/logs/scaffold_branchA.log"
+  },
+  "run_tag": "scaffold_branchA",
+  "s_values": [
+    20.0,
+    30.0
+  ],
+  "status": "scaffold_dry_run"
+}

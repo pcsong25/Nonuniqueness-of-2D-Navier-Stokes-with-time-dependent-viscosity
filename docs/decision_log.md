@@ -1027,3 +1027,204 @@ Keep M4 and the eigensolver blocked. The next M3 design should use a stronger FE
 branch-following method, such as deflated Newton, amplitude continuation, or pseudo-arclength
 continuation near the suspected lower-sigma split, rather than reclassifying nextgen-seeded FEM
 roots as independent discovery.
+
+### 2026-05-22 — Open a manuscript-oriented FEM branch
+Decision:
+Use the baseline FEM code in `src/baseline/` as the main computational engine for the new
+manuscript experiment branch. Preserve the previous nextgen finite-difference / finite-volume
+work as documented reference material, but do not start the Branch A/B manuscript workflow from
+the unfinished nextgen eigensolver direction.
+
+Why:
+The new user direction prioritizes carefully validated numerical data and plots for a manuscript.
+The baseline FEM workflow already has profile solves, linearized eigenvalue assembly/solve, weak
+residual diagnostics, and debug visualization hooks. The nextgen path has useful historical
+evidence but no finished eigensolver and unresolved cross-discretization caveats for some
+large-amplitude cases.
+
+Evidence:
+Direct inspection of `src/baseline/driver.py` shows the active reusable workflow:
+`SimulationParams -> build_disk -> create_spaces -> FourierBC -> PoissonNeumann ->
+NewtonAssembler -> ContinuationSolver.run -> residuals_quick ->
+eigs_linearized_new.ManifoldEigenSolver.solve`.
+
+Boundary convention:
+For the new manuscript branch, `s` means the analytic amplitude in
+`barOmega(theta)=s cos(3 theta)`. Since baseline `FourierBC` mirrors positive modes, scripts
+should pass `coeffs={3: s/2 + 0j}` for exact amplitude `s`.
+
+Consequences:
+New work is organized under `experiments/fem_manuscript/` and documented in
+`docs/fem_manuscript_experiments_plan.md`. Long runs must be checkpointed/resumable and
+registered in `experiments/registry.csv`. The immediate next milestone is a coarse Branch A
+smoke-test implementation, not a production `h_max=0.06` run.
+
+### 2026-05-22 — Branch A runner starts with amplitude-level resume
+Decision:
+Make the first Branch A runner resumable at the amplitude point level using per-amplitude metadata
+JSON files and profile XDMF/HDF5 checkpoints. Completed amplitude metadata are skipped unless
+`--force` is passed.
+
+Why:
+The immediate need is reliable experiment plumbing before production continuation. Amplitude-level
+resume is simple, robust, and enough for coarse smoke and exploratory scans; full in-Newton
+checkpoint/restart can be added later if production runtimes require it.
+
+Evidence:
+`experiments/fem_manuscript/c3_spectrum_continuation/run_spectrum_continuation.py --execute`
+completed the coarse `s=10`, `h=0.30/0.45`, `k=3` smoke test, wrote CSV rows, checkpoint metadata,
+profile XDMF/HDF5, a manifest, and a registry row.
+
+Consequences:
+This decision was superseded later on 2026-05-22 for Branch A spectral work: the runner now
+allows and defaults to `h_min=h_max=0.06`, and eigenpair residual diagnostics remain deferred.
+
+### 2026-05-22 — Branch A should use h0.06 directly
+Decision:
+Use `h_min=h_max=0.06` directly for Branch A spectral continuation, and tune the continuation
+through the `s` step sizes rather than through coarse meshes. Keep eigenpair residual diagnostics
+deferred for now and use the existing profile/weak residual norms plus eigensolver tolerances.
+
+Why:
+The user has already tested `h_max=0.06` as the suitable FEM parameter, and the coarse
+`h=0.30/0.45` smoke run produced qualitatively different left-edge eigenvalues. Coarse meshes are
+therefore useful only for plumbing, not for spectral decisions.
+
+Evidence:
+At `s=10`, the coarse `h=0.30/0.45`, `k=3` run returned negative left-edge real parts near
+`-0.024`, while the direct `h=0.06`, `k=10` run returned `min Re(lambda)=0.581307` with weak
+profile residuals `||R_Omega||_2=1.175e-05` and `||R_Psi||_2=4.781e-14`.
+
+Consequences:
+The Branch A runner now defaults to `h_min=h_max=0.06`, default `k=10`, and no longer blocks
+`h_max <= 0.06`. The next experiment should continue the `h=0.06`, `k=10` amplitude ladder,
+starting with wider `s` steps and refining only near spectral crossings or sharp changes.
+
+### 2026-05-22 — Branch A coarse ladder crossed threshold by s160
+Decision:
+Stop the current coarse Branch A ladder after detecting completed eigenvalues with
+`Re(lambda)<-0.1`, and refine the next run in `[120,160]`.
+
+Why:
+The Branch A stop criterion is satisfied by the accepted `s=160` result. Continuing to `s=240`
+and `s=280` would overshoot the first instability region and spend substantial time on points that
+are not needed for the initial crossing bracket.
+
+Evidence:
+Accepted `h=0.06`, `k=10` results gave `min Re(lambda)=0.03443505064` at `s=120`,
+`min Re(lambda)=-0.3325082663` at `s=160`, and `min Re(lambda)=-0.55734849` at `s=200`.
+The first failed `s=160` attempt had a catastrophic profile residual and is not accepted; the
+accepted `s=160` row came from the stronger retry with `sigma_steps=21` and `max_newton=48`.
+
+Consequences:
+Do not use `s=240` or `s=280` for the next Branch A decision. The `s=240` profile-only checkpoint
+exists but has no accepted eigenvalues because the eigensolve was intentionally terminated after
+the threshold was found. The next ladder should target the crossing and stop threshold in
+`[120,160]`, for example `s=125,130,135,140,145,150,155,160`.
+
+### 2026-05-22 — Branch A zero crossing is bracketed in [120,125]
+
+Decision:
+Use the completed `h=0.06`, `k=10`, `sigma_steps=21`, `max_newton=48`
+refinement to treat `s in [120,125]` as the current zero-crossing bracket and
+`s in [130,135]` as the current `min Re(lambda)<-0.1` threshold bracket.
+
+Why:
+The refinement was run with the manuscript mesh scale and existing weak/profile
+diagnostics only, matching the current Branch A policy. It avoids extending to
+larger amplitudes after the stop criterion has already been met.
+
+Evidence:
+Accepted minimum real parts are `0.03443505064` at `s=120`,
+`-0.02405962688` at `s=125`, `-0.07827701465` at `s=130`,
+`-0.12848232279` at `s=135`, and `-0.17510578024` at `s=140`. The
+corresponding profile weak `R_Omega` values remain small, from
+`1.4218e-04` at `s=120` through `1.6636e-04` at `s=140`, with `R_Psi`
+near `1e-12`.
+
+Consequences:
+The next Branch A run should refine `[120,125]`, for example with unit or
+sub-unit spacing depending on runtime, before any new large-amplitude search.
+The current plots in
+`experiments/fem_manuscript/c3_spectrum_continuation/plots/branchA_h006_s10_160/`
+are useful diagnostics but show sorted eigenvalue ranks, not branch-tracked
+continuations.
+
+### 2026-05-23 — Treat the s140 broken profile as a candidate, not yet a claim
+
+Decision:
+Use the `s=140`, `h=0.06` fixed-boundary Newton result from the positive
+`j=1` eigenmode perturbation as the first Branch B symmetry-breaking candidate,
+but do not yet claim bifurcation or nonuniqueness.
+
+Why:
+The run preserved the boundary exactly, converged to a residual-clean state,
+and produced large separation from the symmetric profile with increased non-C3
+content. However, a single mesh and a single perturbation direction are not
+enough to rule out numerical artifacts, branch-mixing inside a near-degenerate
+subspace, or mesh-dependent symmetry defects.
+
+Evidence:
+For `Omega_0 = Omega_sym + 0.5*rms(Omega_sym)/rms(deltaOmega_1)*deltaOmega_1`,
+Newton converged in `7` iterations with final residual `1.48e-15`, boundary
+difference `0.0`, candidate weak residuals `R_Omega=1.66e-04` and
+`R_Psi=1.62e-11`, `Omega` relative RMS separation about `0.428`, and `Omega`
+C3 defect increase from `0.0158` to `0.2346`.
+
+Consequences:
+The next Branch B milestone should track this candidate in `sigma`, repeat from
+multiple signs/modes/perturbation amplitudes, and perform mesh-refinement and
+orbit-aware validation before using it as manuscript evidence for bifurcation.
+
+### 2026-05-23 — Prefer bias-reduced symmetry diagnostics for Branch B
+
+Decision:
+Use raw C3 defect only as a supporting diagnostic. For Branch B classification,
+prefer the C3-defect excess over the symmetric reference and the non-C3 fraction
+of the difference field `candidate - symmetric` on the same polar probe.
+
+Why:
+The symmetric FEM profile itself has a nonzero raw C3 defect on the polar
+interpolation probe, likely from mesh/interpolation asymmetry. Difference-field
+metrics cancel much of this common floor and better isolate the symmetry content
+of the branch separation.
+
+Evidence:
+The artificial localized `m=1`, `eta=0.25`, `phase=0`, `r0=2.5` perturbation at
+`sigma=140` converged to a candidate with raw `Omega` C3 defect `0.2351` versus
+symmetric floor `0.0158`, but the more decisive metric was non-C3 fraction
+`0.8171` for `Omega_candidate - Omega_sym` and `0.8923` for
+`psi_candidate - psi_sym`.
+
+Consequences:
+Future Branch B tables should include raw symmetric/candidate C3 fractions,
+excess over the symmetric floor, difference-field non-C3 fraction, and
+orbit-aware separation norms. Manuscript claims should not rely on raw C3 defect
+alone.
+
+### 2026-05-23 — Broken branch persists above the spectral crossing and collapses by sigma120
+
+Decision:
+Treat the `sigma=140` artificial-perturbation broken profile as a usable seed
+for local broken-branch tracking. The first tracking run supports the working
+picture that the broken branch exists above the Branch A zero crossing and
+returns to the symmetric branch by `sigma=120`.
+
+Why:
+Fixed-boundary Newton continuation from the broken seed produced residual-clean,
+same-boundary profiles at `sigma=150,130,125`, with substantial separation from
+the symmetric profile. Continuing downward gave roundoff-level separation at
+`120,115,110`, consistent with the eigenvalue crossing bracket `[120,125]`.
+
+Evidence:
+Relative `Omega` RMS separation from the symmetric profile was `0.314` at
+`150`, `0.350` at `140`, `0.218` at `130`, and `0.115` at `125`, but only
+`2.36e-12` at `120`. Boundary mismatch was `0.0` for every tracked point and
+profile weak residuals remained comparable to the symmetric runs.
+
+Consequences:
+The next Branch B validation should refine the tracking interval `[120,125]`,
+repeat with other artificial perturbations and phases, and then perform mesh
+refinement. Normalized non-C3 fractions of the difference field should not be
+interpreted when the difference norm is near zero.
+

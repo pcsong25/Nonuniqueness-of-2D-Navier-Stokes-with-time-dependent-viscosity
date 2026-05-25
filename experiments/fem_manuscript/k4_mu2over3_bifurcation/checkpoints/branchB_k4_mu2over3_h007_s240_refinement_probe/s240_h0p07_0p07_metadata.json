@@ -1,0 +1,26 @@
+{
+  "boundary": {
+    "analytic": "barOmega(theta) = s cos(4 theta)",
+    "baseline_coeffs": {
+      "4": 120.0
+    },
+    "note": "FourierBC mirrors positive modes, so c4=s/2 gives exact s cos(4 theta).",
+    "s": 240.0
+  },
+  "mesh": {
+    "h_max": 0.07,
+    "h_min": 0.07
+  },
+  "mesh_stats": {
+    "cells": 148544,
+    "dofs_omega": 74722,
+    "dofs_psi": 74722,
+    "vertices": 74722
+  },
+  "mode": 4,
+  "mu": 0.6666666666666666,
+  "profile_checkpoint": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h007_s240_refinement_probe/s240_h0p07_0p07_profile.xdmf",
+  "s": 240.0,
+  "started_at": "2026-05-23T22:41:43.381232",
+  "status": "started"
+}

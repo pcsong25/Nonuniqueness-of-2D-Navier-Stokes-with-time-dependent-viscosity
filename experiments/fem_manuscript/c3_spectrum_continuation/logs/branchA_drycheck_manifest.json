@@ -1,0 +1,48 @@
+{
+  "boundary_cases": {
+    "s10": {
+      "analytic": "barOmega(theta) = s cos(3 theta)",
+      "baseline_coeffs": {
+        "3": 5.0
+      },
+      "note": "FourierBC mirrors positive modes, so c3=s/2 gives exact s cos(3 theta).",
+      "s": 10.0
+    }
+  },
+  "branch": "A_c3_spectrum_continuation",
+  "eig_max_it": 200,
+  "eig_shift": -1.0,
+  "eig_tol": 1e-08,
+  "k": 3,
+  "mesh": {
+    "h_max": 0.45,
+    "h_min": 0.3
+  },
+  "newton": {
+    "max_newton": 24,
+    "sigma_steps": 11,
+    "tol_newton": 1e-08
+  },
+  "notes": [
+    "Exact s cos(3 theta) uses baseline coefficient c3=s/2.",
+    "Default settings are deliberately coarse smoke-test settings, not manuscript data.",
+    "Eigenpair residuals are recorded as n/a in this first smoke runner."
+  ],
+  "physical": {
+    "M": 48,
+    "R": 150.0,
+    "Rdom": 10.0,
+    "mu": 0.8
+  },
+  "planned_outputs": {
+    "checkpoint_dir": "experiments/fem_manuscript/c3_spectrum_continuation/checkpoints/branchA_drycheck",
+    "data_csv": "experiments/fem_manuscript/c3_spectrum_continuation/data/branchA_drycheck_eigenvalues.csv",
+    "debug_plot_dir": "experiments/fem_manuscript/c3_spectrum_continuation/plots/branchA_drycheck",
+    "log_file": "experiments/fem_manuscript/c3_spectrum_continuation/logs/branchA_drycheck.log"
+  },
+  "run_tag": "branchA_drycheck",
+  "s_values": [
+    10.0
+  ],
+  "status": "dry_run"
+}

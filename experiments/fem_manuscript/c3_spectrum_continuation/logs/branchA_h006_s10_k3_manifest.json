@@ -1,0 +1,90 @@
+{
+  "boundary_cases": {
+    "s10": {
+      "analytic": "barOmega(theta) = s cos(3 theta)",
+      "baseline_coeffs": {
+        "3": 5.0
+      },
+      "note": "FourierBC mirrors positive modes, so c3=s/2 gives exact s cos(3 theta).",
+      "s": 10.0
+    }
+  },
+  "branch": "A_c3_spectrum_continuation",
+  "eig_max_it": 200,
+  "eig_shift": -1.0,
+  "eig_tol": 1e-08,
+  "executed_at": "2026-05-22T10:40:06.159763",
+  "k": 3,
+  "mesh": {
+    "h_max": 0.06,
+    "h_min": 0.06
+  },
+  "newton": {
+    "max_newton": 24,
+    "sigma_steps": 11,
+    "tol_newton": 1e-08
+  },
+  "notes": [
+    "Exact s cos(3 theta) uses baseline coefficient c3=s/2.",
+    "Default mesh is h_min=h_max=0.06 because this is the tested FEM manuscript scale.",
+    "Eigenpair residuals are recorded as n/a in this first smoke runner."
+  ],
+  "outputs": {
+    "data_csv": "experiments/fem_manuscript/c3_spectrum_continuation/data/branchA_h006_s10_k3_eigenvalues.csv",
+    "log_file": "experiments/fem_manuscript/c3_spectrum_continuation/logs/branchA_h006_s10_k3.log"
+  },
+  "physical": {
+    "M": 48,
+    "R": 150.0,
+    "Rdom": 10.0,
+    "mu": 0.8
+  },
+  "planned_outputs": {
+    "checkpoint_dir": "experiments/fem_manuscript/c3_spectrum_continuation/checkpoints/branchA_h006_s10_k3",
+    "data_csv": "experiments/fem_manuscript/c3_spectrum_continuation/data/branchA_h006_s10_k3_eigenvalues.csv",
+    "debug_plot_dir": "experiments/fem_manuscript/c3_spectrum_continuation/plots/branchA_h006_s10_k3",
+    "log_file": "experiments/fem_manuscript/c3_spectrum_continuation/logs/branchA_h006_s10_k3.log"
+  },
+  "run_tag": "branchA_h006_s10_k3",
+  "runs": [
+    {
+      "eigenvalues": [
+        {
+          "imag": 0.0,
+          "index": 1,
+          "real": 0.5813070066410537
+        },
+        {
+          "imag": -1.0371399533678168e-08,
+          "index": 2,
+          "real": 1.4013986793969453
+        },
+        {
+          "imag": 1.0371399533678168e-08,
+          "index": 3,
+          "real": 1.4013986793969453
+        }
+      ],
+      "mesh_stats": {
+        "cells": 202248,
+        "dofs_omega": 101649,
+        "dofs_psi": 101649,
+        "vertices": 101649
+      },
+      "metadata_checkpoint": "/Users/caltech/Peicong/euler-selfsimilar-eigs/experiments/fem_manuscript/c3_spectrum_continuation/checkpoints/branchA_h006_s10_k3/s10_h0p06_0p06_metadata.json",
+      "profile_checkpoint": "/Users/caltech/Peicong/euler-selfsimilar-eigs/experiments/fem_manuscript/c3_spectrum_continuation/checkpoints/branchA_h006_s10_k3/s10_h0p06_0p06_profile.xdmf",
+      "profile_residuals": {
+        "Omega_l2": 1.1754230723063259e-05,
+        "Psi_l2": 4.78069220898102e-14
+      },
+      "s": 10.0,
+      "status": "completed",
+      "wall_time_sec": 366.8804952381179
+    }
+  ],
+  "s_values": [
+    10.0
+  ],
+  "status": "completed",
+  "wall_time_sec": 385.5026034936309
+}

@@ -1,0 +1,12 @@
+{
+  "class_threshold": 0.08,
+  "outputs": {
+    "class_csv": "experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_c3_orbit_classes_with_spectra_class_summary.csv",
+    "class_representative_plot": "experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_c3_orbit_classes_with_spectra/s140_c3_orbit_class_representatives.png",
+    "member_csv": "experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_c3_orbit_classes_with_spectra_class_members_spectra.csv",
+    "pairwise_csv": "experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_c3_orbit_classes_with_spectra_pairwise_c3_distances.csv"
+  },
+  "rotation_group": "C3 rotations only: 0, 120, 240 degrees",
+  "run_tag": "branchB_s140_c3_orbit_classes_with_spectra",
+  "status": "completed"
+}

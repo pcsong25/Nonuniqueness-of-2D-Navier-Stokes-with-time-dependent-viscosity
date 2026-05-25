@@ -1,0 +1,92 @@
+{
+  "boundary": {
+    "analytic": "barOmega(theta) = s cos(4 theta)",
+    "baseline_coeffs": {
+      "4": 110.0
+    },
+    "note": "FourierBC mirrors positive modes, so c4=s/2 gives exact s cos(4 theta).",
+    "s": 220.0
+  },
+  "completed_at": "2026-05-23T21:21:56.121022",
+  "eigs": {
+    "eigenvalues": [
+      {
+        "imag": -0.7118182641099132,
+        "index": 1,
+        "real": 0.0823265695327755
+      },
+      {
+        "imag": 0.7118182641099132,
+        "index": 2,
+        "real": 0.0823265695327755
+      },
+      {
+        "imag": 0.0,
+        "index": 3,
+        "real": 0.08233003549663254
+      },
+      {
+        "imag": 0.0,
+        "index": 4,
+        "real": 0.08495141952668073
+      },
+      {
+        "imag": 0.0,
+        "index": 5,
+        "real": 0.08688286956449076
+      },
+      {
+        "imag": 0.0,
+        "index": 6,
+        "real": 0.08722493662187558
+      },
+      {
+        "imag": -0.8582544179552279,
+        "index": 7,
+        "real": 0.19887086090547923
+      },
+      {
+        "imag": 0.8582544179552279,
+        "index": 8,
+        "real": 0.19887086090547923
+      },
+      {
+        "imag": -0.8582714440884895,
+        "index": 9,
+        "real": 0.2002372749807
+      },
+      {
+        "imag": 0.0,
+        "index": 10,
+        "real": 0.3047520683518068
+      }
+    ],
+    "k_requested": 10,
+    "unstable_count_re_lt_0": 0,
+    "wall_time_sec": 614.6315559456125
+  },
+  "mesh": {
+    "h_max": 0.08,
+    "h_min": 0.08
+  },
+  "mesh_stats": {
+    "cells": 113874,
+    "dofs_omega": 57331,
+    "dofs_psi": 57331,
+    "vertices": 57331
+  },
+  "mode": 4,
+  "mu": 0.6666666666666666,
+  "profile": {
+    "wall_time_sec": 389.5547744706273,
+    "weak_residuals": {
+      "Omega_l2": 8.067257706192452e-05,
+      "Psi_l2": 2.468672448855172e-13
+    }
+  },
+  "profile_checkpoint": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s220_h0p08_0p08_profile.xdmf",
+  "s": 220.0,
+  "started_at": "2026-05-23T21:05:08.781063",
+  "status": "completed",
+  "wall_time_sec": 1004.2563889687881
+}

@@ -1,0 +1,34 @@
+{
+  "boundary": {
+    "analytic": "barOmega(theta) = s cos(3 theta)",
+    "baseline_coeffs": {
+      "3": 120.0
+    },
+    "note": "FourierBC mirrors positive modes, so c3=s/2 gives exact s cos(3 theta).",
+    "s": 240.0
+  },
+  "mesh": {
+    "h_max": 0.06,
+    "h_min": 0.06
+  },
+  "mesh_stats": {
+    "cells": 202248,
+    "dofs_omega": 101649,
+    "dofs_psi": 101649,
+    "vertices": 101649
+  },
+  "profile": {
+    "status": "completed",
+    "wall_time_sec": 632.8966910494491,
+    "weak_residuals": {
+      "Omega_l2": 0.000291457305073787,
+      "Psi_l2": 1.2231775200103672e-12
+    }
+  },
+  "profile_checkpoint": "experiments/fem_manuscript/c3_spectrum_continuation/checkpoints/branchA_h006_ladder_s160_280_k10_cont21/s240_h0p06_0p06_profile.xdmf",
+  "run_tag": "branchA_h006_ladder_s160_280_k10_cont21",
+  "s": 240.0,
+  "started_at": "2026-05-22T13:00:26.641008",
+  "status": "stopped_before_eigs_threshold_already_hit",
+  "stopped_reason": "Completed eigenvalues at s=160 already had real parts below -0.1; s=240 eigensolve was terminated to avoid overshooting."
+}

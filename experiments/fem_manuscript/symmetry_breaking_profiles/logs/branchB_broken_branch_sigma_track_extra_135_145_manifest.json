@@ -1,0 +1,14 @@
+{
+  "csv": "experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_broken_branch_sigma_track_extra_135_145_results.csv",
+  "downward": [
+    135.0
+  ],
+  "run_tag": "branchB_broken_branch_sigma_track_extra_135_145",
+  "seed_h5": "experiments/fem_manuscript/symmetry_breaking_profiles/checkpoints/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_profile.h5",
+  "seed_sigma": 140.0,
+  "status": "completed",
+  "upward": [
+    145.0
+  ],
+  "wall_time_sec": 667.3886275626719
+}

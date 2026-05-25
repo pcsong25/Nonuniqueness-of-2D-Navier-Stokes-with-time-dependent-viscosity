@@ -1,0 +1,53 @@
+{
+  "analytic_perturbations": {
+    "etas": [
+      0.25
+    ],
+    "formula": "(r/Rdom)^m exp(-(r/r0)^2) (1-(r/Rdom)^2)^2 cos(m theta + phase)",
+    "modes": [
+      2,
+      4,
+      5
+    ],
+    "phases": [
+      0.0
+    ],
+    "r0": 2.5
+  },
+  "boundary_data": "140 cos(3 theta), encoded as c3=70",
+  "eigs": {
+    "k": 10,
+    "shift": -1.0,
+    "tol": 1e-08
+  },
+  "mesh": {
+    "h_max": 0.06,
+    "h_min": 0.06
+  },
+  "mesh_stats": {
+    "cells": 202248,
+    "dofs_omega": 101649,
+    "dofs_psi": 101649,
+    "vertices": 101649
+  },
+  "outputs": {
+    "checkpoints": "experiments/fem_manuscript/symmetry_breaking_profiles/checkpoints/branchB_s140_broken_profile_spectra",
+    "eigenvalue_csv": "experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_broken_profile_spectra_eigenvalues.csv",
+    "plots": "experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_broken_profile_spectra",
+    "profile_csv": "experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_broken_profile_spectra_profile_summary.csv"
+  },
+  "profile_checkpoint_geometry_diff": 0.0,
+  "run_tag": "branchB_s140_broken_profile_spectra",
+  "s": 140.0,
+  "status": "completed",
+  "symmetric_profile_metrics": {
+    "boundary_max_abs_diff": 0.0,
+    "omega_difference_non3_fraction": 0.0,
+    "omega_linf_separation": 0.0,
+    "omega_relative_rms_separation": 0.0,
+    "omega_rms_separation": 0.0,
+    "profile_residual_omega_l2": 0.00016636230645579475,
+    "profile_residual_psi_l2": 6.916208267157059e-13
+  },
+  "wall_time_sec": 1171.4352318970487
+}

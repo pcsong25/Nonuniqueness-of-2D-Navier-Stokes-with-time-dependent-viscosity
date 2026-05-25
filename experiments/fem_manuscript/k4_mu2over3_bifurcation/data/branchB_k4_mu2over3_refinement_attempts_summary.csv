@@ -1,0 +1,10 @@
+mesh_id,s,status,unstable_count,min_real_lambda,profile_residual_omega_l2,profile_residual_psi_l2,notes
+h0p08_0p08,200,completed,0,0.10089511074682322,7.332238964043216e-05,2.2429695571964134e-13,coarse scout stable side
+h0p06_0p06,200,completed,0,0.10027535482071004,7.854949889027409e-05,1.8066695452226702e-13,fine stable-side check; no unstable modes
+h0p08_0p08,220,completed,0,0.0823265695327755,8.067257706192452e-05,2.468672448855172e-13,coarse scout stable side
+h0p06_0p06,220,completed,0,0.039186064401882215,8.64257027072867e-05,1.9701859419039948e-13,fine stable-side check; no unstable modes
+h0p08_0p08,240,completed,4,-0.08592165458506607,8.804428726734365e-05,2.7139570838104736e-13,coarse scout unstable point; four negative real eigenvalues
+h0p08_0p08,240,completed_distinct_symmetry_breaking_candidate,4,-0.08592165458506607,8.805079047492506e-05,7.681250691735767e-13,broken profile relOmega=0.25700140992316395; diffNon4=0.6301208599316804; checkpoint=experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s240_m3_phase0_eta0p5_profile.xdmf
+h0p06_0p06,240,failed_nonconverged,n/a,n/a,n/a,n/a,direct interpolation transfer from h=0.08 symmetric profile failed Newton after 64 iterations; residual about 4.21e9
+h0p06_0p06,225,failed_nonconverged,n/a,n/a,n/a,n/a,same-mesh continuation from accepted h=0.06 s=220 profile failed Newton after 96 iterations; residual about 5.42e8
+h0p07_0p07,240,terminated_no_checkpoint,n/a,n/a,n/a,n/a,zero-start continuation with sigma_steps=61 ran long without profile checkpoint and was terminated

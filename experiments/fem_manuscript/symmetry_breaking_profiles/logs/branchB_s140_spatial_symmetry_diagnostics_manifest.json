@@ -1,0 +1,9 @@
+{
+  "notes": "C3 residuals and reflection even/odd residuals for s=140 profile classes.",
+  "outputs": {
+    "axis_csv": "experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_spatial_symmetry_diagnostics_axis_residuals.csv",
+    "summary_csv": "experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_spatial_symmetry_diagnostics_summary.csv"
+  },
+  "run_tag": "branchB_s140_spatial_symmetry_diagnostics",
+  "status": "completed"
+}

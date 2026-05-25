@@ -1,5 +1,35 @@
 # Implementation plan
 
+## 2026-05-22 Current Branch Direction
+
+Active work is now a manuscript-oriented FEM experiment branch. The verified
+baseline FEM code in `src/baseline/` is the main computational engine for the
+next experiments. The previous `src/nextgen/` finite-difference /
+finite-volume work remains documented for reference and should not be erased,
+but it is not the starting point for the current Branch A / Branch B
+manuscript workflow.
+
+New branch deliverables:
+
+- `docs/fem_manuscript_experiments_plan.md`
+- `experiments/fem_manuscript/c3_spectrum_continuation/`
+- `experiments/fem_manuscript/symmetry_breaking_profiles/`
+
+The first new milestone is a coarse, resumable Branch A smoke test around the
+baseline FEM profile and eigensolver path. It should validate experiment
+plumbing only: exact `s cos(3 theta)` boundary parameterization, CSV output,
+JSON manifest/checkpoint conventions, weak profile residuals, eigenvalue
+capture, and registry logging. This milestone was implemented and run on
+2026-05-22. A very coarse test showed large spectral error, so active Branch A
+runs now use the tested FEM scale `h_min=h_max=0.06` directly.
+
+Boundary convention for this branch: the analytic amplitude is
+`barOmega(theta) = s cos(3 theta)`. Because `src/baseline/FourierBC` mirrors
+positive Fourier modes, scripts should pass `coeffs={3: s/2 + 0j}` to obtain
+exact amplitude `s`. Historical labels such as `{c_3=140}` refer to previous
+coefficient-dictionary conventions and should not be silently mixed with the
+new manuscript `s` amplitude.
+
 ## Goal
 
 Build a new sparse-matrix finite-difference codebase that reproduces the verified baseline
@@ -339,6 +369,17 @@ Required validation:
 - Use `docs/progress_log.md` for narrative status and `experiments/registry.csv` for run-by-run records.
 
 ## Current recommended next milestone
+
+Continue Branch A at `h_min=h_max=0.06`, `k=10`, tuning only the `s` step
+sizes. Use existing profile/weak residual norms for now and keep eigenpair
+residual diagnostics deferred. The `[120,140]` refinement has bracketed the
+first zero crossing in `s in [120,125]` and the stop threshold
+`min Re(lambda)<-0.1` in `s in [130,135]`. The next milestone should refine
+`[120,125]` for the zero crossing, then optionally refine `[130,135]` for the
+`-0.1` threshold; do not continue to larger `s` until these local brackets are
+documented well enough for manuscript figures.
+
+## Previous recommended nextgen milestone (superseded on 2026-05-22)
 
 Continue M3, now using `{c_3=140}` as the primary nonuniqueness/symmetry-breaking
 target, but first address the symmetric nextgen/FEM mismatch. The current

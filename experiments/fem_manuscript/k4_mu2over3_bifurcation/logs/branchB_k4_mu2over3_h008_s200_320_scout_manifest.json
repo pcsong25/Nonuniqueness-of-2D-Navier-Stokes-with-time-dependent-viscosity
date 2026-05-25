@@ -1,0 +1,435 @@
+{
+  "boundary": {
+    "analytic": "barOmega(theta) = s cos(4 theta)",
+    "baseline_coeffs": {
+      "4": 100.0
+    },
+    "note": "FourierBC mirrors positive modes, so c4=s/2 gives exact s cos(4 theta).",
+    "s": 200.0
+  },
+  "completed_at": "2026-05-23T21:57:43.510061",
+  "eigenvalue_csv": "experiments/fem_manuscript/k4_mu2over3_bifurcation/data/branchB_k4_mu2over3_h008_s200_320_scout_eigenvalues.csv",
+  "mesh": {
+    "h_max": 0.08,
+    "h_min": 0.08
+  },
+  "mode": 4,
+  "mu": 0.6666666666666666,
+  "outputs": {
+    "checkpoints": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout",
+    "data": "experiments/fem_manuscript/k4_mu2over3_bifurcation/data",
+    "logs": "experiments/fem_manuscript/k4_mu2over3_bifurcation/logs",
+    "plots": "experiments/fem_manuscript/k4_mu2over3_bifurcation/plots/branchB_k4_mu2over3_h008_s200_320_scout"
+  },
+  "perturbation_csv": "experiments/fem_manuscript/k4_mu2over3_bifurcation/data/branchB_k4_mu2over3_h008_s200_320_scout_perturbations.csv",
+  "perturbation_trials": [
+    {
+      "boundary_max_abs_diff": 0.0,
+      "eta": 0.25,
+      "final_newton_residual": 1.7575911813712102,
+      "final_relative_step": 0.24155359284040848,
+      "m_mode": 1,
+      "message": "initial_boundary_diff=0.000e+00",
+      "mode": 4,
+      "mu": 0.6666666666666666,
+      "newton_iterations": 24,
+      "omega_c4_fraction_candidate": 0.49859499771497895,
+      "omega_c4_fraction_excess": 0.47167889597978946,
+      "omega_c4_fraction_symmetric": 0.02691610173518948,
+      "omega_difference_non4_fraction": 0.868102948888362,
+      "omega_linf_separation": 64.36676744812183,
+      "omega_relative_rms_separation": 0.7927266069095814,
+      "omega_rms_separation": 0.486386428551398,
+      "phase": 0.0,
+      "plot_path": "experiments/fem_manuscript/k4_mu2over3_bifurcation/plots/branchB_k4_mu2over3_h008_s200_320_scout/s240_m1_phase0_eta0p25_omega_comparison.png",
+      "profile_checkpoint": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s240_m1_phase0_eta0p25_profile.xdmf",
+      "profile_residual_omega_l2": 1.7575911836207552,
+      "profile_residual_psi_l2": 8.704761711443324e-13,
+      "psi_c4_fraction_candidate": 0.140310432321955,
+      "psi_c4_fraction_excess": 0.14011136053059622,
+      "psi_c4_fraction_symmetric": 0.0001990717913587882,
+      "psi_difference_non4_fraction": 0.996646254162844,
+      "psi_linf_separation": 0.24662818891934024,
+      "psi_relative_rms_separation": 0.1349273803227158,
+      "psi_rms_separation": 0.12575062389002845,
+      "s": 240.0,
+      "scale": 7.886898576348058,
+      "status": "nonconverged",
+      "trial_id": "m1_phase0_eta0p25",
+      "wall_time_sec": 176.4770595021546
+    },
+    {
+      "boundary_max_abs_diff": 0.0,
+      "eta": 0.5,
+      "final_newton_residual": 113.37364314062418,
+      "final_relative_step": 0.49277856003844245,
+      "m_mode": 1,
+      "message": "initial_boundary_diff=0.000e+00",
+      "mode": 4,
+      "mu": 0.6666666666666666,
+      "newton_iterations": 24,
+      "omega_c4_fraction_candidate": 0.8584530319441904,
+      "omega_c4_fraction_excess": 0.831536930209001,
+      "omega_c4_fraction_symmetric": 0.02691610173518948,
+      "omega_difference_non4_fraction": 0.8640471079955814,
+      "omega_linf_separation": 707.4244402932532,
+      "omega_relative_rms_separation": 14.557842376238769,
+      "omega_rms_separation": 8.93212981509097,
+      "phase": 0.0,
+      "plot_path": "experiments/fem_manuscript/k4_mu2over3_bifurcation/plots/branchB_k4_mu2over3_h008_s200_320_scout/s240_m1_phase0_eta0p5_omega_comparison.png",
+      "profile_checkpoint": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s240_m1_phase0_eta0p5_profile.xdmf",
+      "profile_residual_omega_l2": 113.37364315608458,
+      "profile_residual_psi_l2": 6.353177495041778e-12,
+      "psi_c4_fraction_candidate": 0.4383164073609134,
+      "psi_c4_fraction_excess": 0.43811733556955457,
+      "psi_c4_fraction_symmetric": 0.0001990717913587882,
+      "psi_difference_non4_fraction": 0.9917959145309605,
+      "psi_linf_separation": 1.1382737618722687,
+      "psi_relative_rms_separation": 0.49019738528038664,
+      "psi_rms_separation": 0.4568578066277877,
+      "s": 240.0,
+      "scale": 15.773797152696115,
+      "status": "nonconverged",
+      "trial_id": "m1_phase0_eta0p5",
+      "wall_time_sec": 175.61574962269515
+    },
+    {
+      "boundary_max_abs_diff": 0.0,
+      "eta": 0.25,
+      "final_newton_residual": 3.6390389136129255,
+      "final_relative_step": 1.2871944788058707,
+      "m_mode": 2,
+      "message": "initial_boundary_diff=0.000e+00",
+      "mode": 4,
+      "mu": 0.6666666666666666,
+      "newton_iterations": 24,
+      "omega_c4_fraction_candidate": 0.591029851387239,
+      "omega_c4_fraction_excess": 0.5641137496520495,
+      "omega_c4_fraction_symmetric": 0.02691610173518948,
+      "omega_difference_non4_fraction": 0.8806228308361876,
+      "omega_linf_separation": 64.61777564691617,
+      "omega_relative_rms_separation": 1.199322162749663,
+      "omega_rms_separation": 0.7358577576908332,
+      "phase": 0.0,
+      "plot_path": "experiments/fem_manuscript/k4_mu2over3_bifurcation/plots/branchB_k4_mu2over3_h008_s200_320_scout/s240_m2_phase0_eta0p25_omega_comparison.png",
+      "profile_checkpoint": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s240_m2_phase0_eta0p25_profile.xdmf",
+      "profile_residual_omega_l2": 3.63903891484481,
+      "profile_residual_psi_l2": 3.200481212958993e-13,
+      "psi_c4_fraction_candidate": 0.0031269454582514766,
+      "psi_c4_fraction_excess": 0.0029278736668926883,
+      "psi_c4_fraction_symmetric": 0.0001990717913587882,
+      "psi_difference_non4_fraction": 0.6431803502669908,
+      "psi_linf_separation": 0.1450835394953256,
+      "psi_relative_rms_separation": 0.0024326639611009218,
+      "psi_rms_separation": 0.0022672122595989307,
+      "s": 240.0,
+      "scale": 33.63298693186056,
+      "status": "nonconverged",
+      "trial_id": "m2_phase0_eta0p25",
+      "wall_time_sec": 175.0563956554979
+    },
+    {
+      "boundary_max_abs_diff": 0.0,
+      "eta": 0.5,
+      "final_newton_residual": 2.4524558938633905,
+      "final_relative_step": 0.15338769784758413,
+      "m_mode": 2,
+      "message": "initial_boundary_diff=0.000e+00",
+      "mode": 4,
+      "mu": 0.6666666666666666,
+      "newton_iterations": 24,
+      "omega_c4_fraction_candidate": 0.6047634276843974,
+      "omega_c4_fraction_excess": 0.577847325949208,
+      "omega_c4_fraction_symmetric": 0.02691610173518948,
+      "omega_difference_non4_fraction": 0.7291442981677615,
+      "omega_linf_separation": 48.26802502054447,
+      "omega_relative_rms_separation": 1.2965522935657148,
+      "omega_rms_separation": 0.7955144106440735,
+      "phase": 0.0,
+      "plot_path": "experiments/fem_manuscript/k4_mu2over3_bifurcation/plots/branchB_k4_mu2over3_h008_s200_320_scout/s240_m2_phase0_eta0p5_omega_comparison.png",
+      "profile_checkpoint": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s240_m2_phase0_eta0p5_profile.xdmf",
+      "profile_residual_omega_l2": 2.452455895773178,
+      "profile_residual_psi_l2": 9.611608676531361e-13,
+      "psi_c4_fraction_candidate": 0.4310657582454137,
+      "psi_c4_fraction_excess": 0.4308666864540549,
+      "psi_c4_fraction_symmetric": 0.0001990717913587882,
+      "psi_difference_non4_fraction": 0.7909411090695105,
+      "psi_linf_separation": 0.994622736565544,
+      "psi_relative_rms_separation": 0.41899906342021626,
+      "psi_rms_separation": 0.3905018648432117,
+      "s": 240.0,
+      "scale": 67.26597386372111,
+      "status": "nonconverged",
+      "trial_id": "m2_phase0_eta0p5",
+      "wall_time_sec": 181.62799556739628
+    },
+    {
+      "boundary_max_abs_diff": 0.0,
+      "eta": 0.25,
+      "final_newton_residual": 1.624496625314018e-15,
+      "final_relative_step": 3.3014375206148214e-12,
+      "m_mode": 3,
+      "message": "initial_boundary_diff=0.000e+00",
+      "mode": 4,
+      "mu": 0.6666666666666666,
+      "newton_iterations": 11,
+      "omega_c4_fraction_candidate": 0.02691610173517748,
+      "omega_c4_fraction_excess": -1.2000817006807551e-14,
+      "omega_c4_fraction_symmetric": 0.02691610173518948,
+      "omega_difference_non4_fraction": 0.6350306016397768,
+      "omega_linf_separation": 2.8030466836526102e-11,
+      "omega_relative_rms_separation": 6.038055141371226e-13,
+      "omega_rms_separation": 3.7047174271809606e-13,
+      "phase": 0.0,
+      "plot_path": "experiments/fem_manuscript/k4_mu2over3_bifurcation/plots/branchB_k4_mu2over3_h008_s200_320_scout/s240_m3_phase0_eta0p25_omega_comparison.png",
+      "profile_checkpoint": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s240_m3_phase0_eta0p25_profile.xdmf",
+      "profile_residual_omega_l2": 8.804428726734285e-05,
+      "profile_residual_psi_l2": 2.9303000334036283e-13,
+      "psi_c4_fraction_candidate": 0.00019907179135853262,
+      "psi_c4_fraction_excess": -2.5557355710914553e-16,
+      "psi_c4_fraction_symmetric": 0.0001990717913587882,
+      "psi_difference_non4_fraction": 0.06535054011616347,
+      "psi_linf_separation": 2.8199664825478976e-13,
+      "psi_relative_rms_separation": 2.1600398413671402e-13,
+      "psi_rms_separation": 2.0131300039292772e-13,
+      "s": 240.0,
+      "scale": 117.32688552400869,
+      "status": "completed",
+      "trial_id": "m3_phase0_eta0p25",
+      "wall_time_sec": 101.48519779089838
+    },
+    {
+      "boundary_max_abs_diff": 0.0,
+      "eta": 0.5,
+      "final_newton_residual": 1.6219892235261555e-15,
+      "final_relative_step": 1.2017739196802236e-14,
+      "m_mode": 3,
+      "message": "initial_boundary_diff=0.000e+00",
+      "mode": 4,
+      "mu": 0.6666666666666666,
+      "newton_iterations": 18,
+      "omega_c4_fraction_candidate": 0.14696869114183161,
+      "omega_c4_fraction_excess": 0.12005258940664214,
+      "omega_c4_fraction_symmetric": 0.02691610173518948,
+      "omega_difference_non4_fraction": 0.6301208599316804,
+      "omega_linf_separation": 10.073286855269489,
+      "omega_relative_rms_separation": 0.25700140992316395,
+      "omega_rms_separation": 0.15768613897358347,
+      "phase": 0.0,
+      "plot_path": "experiments/fem_manuscript/k4_mu2over3_bifurcation/plots/branchB_k4_mu2over3_h008_s200_320_scout/s240_m3_phase0_eta0p5_omega_comparison.png",
+      "profile_checkpoint": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s240_m3_phase0_eta0p5_profile.xdmf",
+      "profile_residual_omega_l2": 8.805079047492506e-05,
+      "profile_residual_psi_l2": 7.681250691735767e-13,
+      "psi_c4_fraction_candidate": 0.0017687548601196213,
+      "psi_c4_fraction_excess": 0.001569683068760833,
+      "psi_c4_fraction_symmetric": 0.0001990717913587882,
+      "psi_difference_non4_fraction": 0.4980007943746534,
+      "psi_linf_separation": 0.06580645903955484,
+      "psi_relative_rms_separation": 0.001470672769101372,
+      "psi_rms_separation": 0.001370648550429448,
+      "s": 240.0,
+      "scale": 234.65377104801738,
+      "status": "completed_distinct_symmetry_breaking_candidate",
+      "trial_id": "m3_phase0_eta0p5",
+      "wall_time_sec": 127.71363857388496
+    }
+  ],
+  "run_tag": "branchB_k4_mu2over3_h008_s200_320_scout",
+  "s_policy": {
+    "max": 320.0,
+    "required_unstable_re_lt_0": 4,
+    "start": 200.0,
+    "step": 20.0
+  },
+  "selected_s": 240.0,
+  "spectra": [
+    {
+      "eigenvalues": [
+        {
+          "imag": -0.72254470941775,
+          "index": 1,
+          "real": 0.10089511074682322
+        },
+        {
+          "imag": 0.72254470941775,
+          "index": 2,
+          "real": 0.10089511074682322
+        },
+        {
+          "imag": -0.8674994732354727,
+          "index": 3,
+          "real": 0.21283975105490405
+        },
+        {
+          "imag": 0.8674994732354727,
+          "index": 4,
+          "real": 0.21283975105490405
+        },
+        {
+          "imag": -0.8674255910723783,
+          "index": 5,
+          "real": 0.2143269541778854
+        },
+        {
+          "imag": 0.0,
+          "index": 6,
+          "real": 0.2913214744025747
+        },
+        {
+          "imag": 0.0,
+          "index": 7,
+          "real": 0.30157675371562087
+        },
+        {
+          "imag": 0.0,
+          "index": 8,
+          "real": 0.3035070449574737
+        },
+        {
+          "imag": 0.0,
+          "index": 9,
+          "real": 0.3053515793266668
+        },
+        {
+          "imag": 0.0,
+          "index": 10,
+          "real": 0.3074203972187197
+        }
+      ],
+      "metadata_checkpoint": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s200_h0p08_0p08_metadata.json",
+      "profile_checkpoint": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s200_h0p08_0p08_profile.xdmf",
+      "profile_residuals": {
+        "Omega_l2": 7.332238964043216e-05,
+        "Psi_l2": 2.2429695571964134e-13
+      },
+      "s": 200.0,
+      "unstable_count": 0
+    },
+    {
+      "eigenvalues": [
+        {
+          "imag": -0.7118182641099132,
+          "index": 1,
+          "real": 0.0823265695327755
+        },
+        {
+          "imag": 0.7118182641099132,
+          "index": 2,
+          "real": 0.0823265695327755
+        },
+        {
+          "imag": 0.0,
+          "index": 3,
+          "real": 0.08233003549663254
+        },
+        {
+          "imag": 0.0,
+          "index": 4,
+          "real": 0.08495141952668073
+        },
+        {
+          "imag": 0.0,
+          "index": 5,
+          "real": 0.08688286956449076
+        },
+        {
+          "imag": 0.0,
+          "index": 6,
+          "real": 0.08722493662187558
+        },
+        {
+          "imag": -0.8582544179552279,
+          "index": 7,
+          "real": 0.19887086090547923
+        },
+        {
+          "imag": 0.8582544179552279,
+          "index": 8,
+          "real": 0.19887086090547923
+        },
+        {
+          "imag": -0.8582714440884895,
+          "index": 9,
+          "real": 0.2002372749807
+        },
+        {
+          "imag": 0.0,
+          "index": 10,
+          "real": 0.3047520683518068
+        }
+      ],
+      "metadata_checkpoint": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s220_h0p08_0p08_metadata.json",
+      "profile_checkpoint": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s220_h0p08_0p08_profile.xdmf",
+      "profile_residuals": {
+        "Omega_l2": 8.067257706192452e-05,
+        "Psi_l2": 2.468672448855172e-13
+      },
+      "s": 220.0,
+      "unstable_count": 0
+    },
+    {
+      "eigenvalues": [
+        {
+          "imag": 0.0,
+          "index": 1,
+          "real": -0.08592165458506607
+        },
+        {
+          "imag": 0.0,
+          "index": 2,
+          "real": -0.0839021914088176
+        },
+        {
+          "imag": 0.0,
+          "index": 3,
+          "real": -0.08247361844066048
+        },
+        {
+          "imag": 0.0,
+          "index": 4,
+          "real": -0.0785959650902962
+        },
+        {
+          "imag": -0.706528478214265,
+          "index": 5,
+          "real": 0.06713768853595692
+        },
+        {
+          "imag": 0.706528478214265,
+          "index": 6,
+          "real": 0.06713768853595692
+        },
+        {
+          "imag": -0.8523141008187347,
+          "index": 7,
+          "real": 0.18565148729388214
+        },
+        {
+          "imag": 0.8523141008187347,
+          "index": 8,
+          "real": 0.18565148729388214
+        },
+        {
+          "imag": -0.852340075554962,
+          "index": 9,
+          "real": 0.18686587069131289
+        },
+        {
+          "imag": 0.0,
+          "index": 10,
+          "real": 0.302498358315646
+        }
+      ],
+      "metadata_checkpoint": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s240_h0p08_0p08_metadata.json",
+      "profile_checkpoint": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s240_h0p08_0p08_profile.xdmf",
+      "profile_residuals": {
+        "Omega_l2": 8.804428726734365e-05,
+        "Psi_l2": 2.7139570838104736e-13
+      },
+      "s": 240.0,
+      "unstable_count": 4
+    }
+  ],
+  "status": "completed",
+  "wall_time_sec": 4088.8142432644963
+}

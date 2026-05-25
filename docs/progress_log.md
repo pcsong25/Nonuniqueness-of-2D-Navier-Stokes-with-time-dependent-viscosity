@@ -2,9 +2,11 @@
 
 ## Current objective
 
-Build and validate a new sparse-matrix finite-difference implementation for the self-similar
-2D Euler time-dependent-viscosity eigenvalue workflow, while preserving the logic and outputs
-of the verified baseline implementation.
+Use the verified baseline FEM workflow to run manuscript-oriented numerical
+experiments for self-similar Euler profiles and linearized eigenvalues. The
+previous nextgen finite-difference / finite-volume work remains documented and
+available for reference, but the active branch now uses `src/baseline/` as the
+main computational engine.
 
 ## Current status
 
@@ -12,16 +14,333 @@ Baseline reference run completed on 2026-04-25 using `conda run -n femx_spc`.
 The default shell Python still lacks `gmsh`, but the `femx_spc` environment has
 the required FEniCSx/gmsh/PETSc/SLEPc stack.
 
-The `src/nextgen/` foundation now includes configuration, Fourier boundary
-data, square-grid sparse operators, diagnostics, a sparse Neumann Poisson
-solve with gauge handling, the original square M3 sparse Newton profile
-solver, and a general full-disk polar profile solver for disk validation. No
-nextgen eigensolver has been implemented yet.
+The `src/nextgen/` foundation and later FV work are historical/supporting
+references. They are not being erased, but new production manuscript data
+should be generated through baseline FEM scripts unless a later decision
+explicitly changes that.
 
 The current authoritative `src/baseline/driver.py` input now uses
 `c_3=60+0j` and `c_4=0+0j`, with `h_min=0.05` and `h_max=0.10`.
 Older m4 or mixed m3/m4 baseline rows and summaries are historical references,
 not the current active driver state.
+
+## 2026-05-22 — FEM manuscript branch intake and scaffold
+
+Scope:
+- Switched the active project direction to a manuscript-oriented FEM branch
+  without deleting or overwriting previous nextgen/FV documentation.
+- Inspected `src/baseline/driver.py` and the active baseline modules it uses:
+  `config.py`, `mesh.py`, `spaces.py`, `boundary_data_fourier.py`,
+  `poisson_neumann.py`, `newton_block.py`, `continuation.py`,
+  `newton_direct.py`, `residuals_quick.py`, `eigs_linearized_new.py`,
+  `io_utils.py`, and `viz.py`.
+
+Baseline workflow to reuse:
+- Build `SimulationParams`, gmsh disk mesh, and CG1 Omega/psi spaces.
+- Build `FourierBC`, `PoissonNeumann`, and `NewtonAssembler`.
+- Use `ContinuationSolver.run` for zero-start profile continuation.
+- Use `DirectNewtonSolver.run_from` for seeded fixed-sigma profile solves in
+  symmetry-breaking tests.
+- Use `residuals_quick` for raw weak residual diagnostics.
+- Use `eigs_linearized_new.ManifoldEigenSolver.solve` for the reduced
+  manifold eigenproblem.
+
+Important boundary convention:
+- The manuscript amplitude is analytic:
+  `barOmega(theta) = s cos(3 theta)`.
+- Baseline `FourierBC` mirrors positive modes, so exact analytic amplitude
+  `s` must be encoded as `coeffs={3: s/2 + 0j}`.
+- Historical labels such as `{c_3=140}` used the coefficient dictionary
+  convention directly and should not be silently mixed with the new amplitude
+  convention.
+
+Added scaffold:
+- `docs/AGENTS.md` now has a top-level note that the active branch is the
+  FEM manuscript branch and that the older nextgen instructions are historical
+  unless explicitly resumed.
+- `docs/fem_manuscript_experiments_plan.md`.
+- `experiments/fem_manuscript/README.md`.
+- `experiments/fem_manuscript/common.py`.
+- Branch A dry-run scaffold:
+  `experiments/fem_manuscript/c3_spectrum_continuation/run_spectrum_continuation.py`.
+- Branch B dry-run scaffold:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/run_profile_comparison.py`.
+- Persistent `data/`, `checkpoints/`, `logs/`, and `plots/` directories for
+  both branch projects.
+
+What was not run:
+- No profile solve, eigensolve, or production computation was launched.
+- The new scripts are scaffold/dry-run only until the next milestone wires the
+  actual coarse smoke-test execution.
+
+Scaffold validation:
+- `PYTHONPYCACHEPREFIX=/private/tmp/pycache-euler python -m py_compile
+  experiments/fem_manuscript/common.py
+  experiments/fem_manuscript/c3_spectrum_continuation/run_spectrum_continuation.py
+  experiments/fem_manuscript/symmetry_breaking_profiles/run_profile_comparison.py`
+  passed.
+- Branch A dry-run manifest written to
+  `experiments/fem_manuscript/c3_spectrum_continuation/logs/scaffold_branchA_manifest.json`.
+- Branch B dry-run manifest written to
+  `experiments/fem_manuscript/symmetry_breaking_profiles/logs/scaffold_branchB_manifest.json`.
+- Both dry-run manifests passed `python -m json.tool`.
+
+Recommended next step:
+- Implement the Branch A smoke-test execution path around the baseline FEM
+  profile/eigensolver workflow at a coarse mesh, with amplitude-level resume,
+  CSV/JSON outputs, weak residuals, eigenvalue capture, and a registry row.
+
+## 2026-05-22 — Branch A coarse FEM smoke-test runner
+
+Implemented:
+- `experiments/fem_manuscript/c3_spectrum_continuation/run_spectrum_continuation.py`
+  now has an `--execute` path for coarse Branch A smoke tests.
+- The runner uses the baseline FEM modules only. It encodes exact
+  `s cos(3 theta)` as `coeffs={3: s/2 + 0j}`.
+- It writes amplitude-level metadata checkpoints, profile XDMF/HDF5
+  checkpoints, per-eigenvalue CSV rows, a manifest JSON, and a registry row.
+- It is resumable at the amplitude level: completed metadata checkpoints are
+  skipped unless `--force` is passed.
+- The runner refuses `h_max <= 0.06` in the smoke path to avoid accidentally
+  launching production runs.
+
+Validation:
+- `PYTHONPYCACHEPREFIX=/private/tmp/pycache-euler python -m py_compile
+  experiments/fem_manuscript/c3_spectrum_continuation/run_spectrum_continuation.py`
+  passed.
+- Dry-run manifest validation passed for `branchA_drycheck`.
+
+Executed coarse smoke command:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 conda run --no-capture-output -n femx_spc \
+  python experiments/fem_manuscript/c3_spectrum_continuation/run_spectrum_continuation.py \
+  --execute \
+  --run-tag branchA_smoke_s10_h0p30_0p45 \
+  --s-values 10 \
+  --mesh 0.30 0.45 \
+  --k 3 \
+  --eig-tol 1e-8 \
+  --eig-max-it 200 \
+  --force
+```
+
+Smoke result:
+- Status: completed.
+- Mesh: `h_min=0.30`, `h_max=0.45`, `1901` vertices, `3660` cells.
+- Boundary: exact analytic `s=10` in `s cos(3 theta)`, encoded as baseline
+  coefficient `c_3=5`.
+- Profile continuation reached `sigma=1`; profile solve wall time recorded in
+  metadata: `2.394 s`.
+- Weak residual diagnostics: `||R_Omega||_2=8.853e-01`,
+  `||R_Psi||_2=6.846e-14`.
+- Eigensolver returned `k=3` modes in `1.374 s`:
+  `-2.4025115069e-02 - 2.6074274674e-01 i`,
+  `-1.0766337004e-02 - 1.2949525957e-01 i`,
+  `-1.0766337004e-02 + 1.2949525957e-01 i`.
+- Eigenpair residuals are still recorded as `n/a` in this first smoke runner.
+
+Artifacts:
+- CSV:
+  `experiments/fem_manuscript/c3_spectrum_continuation/data/branchA_smoke_s10_h0p30_0p45_eigenvalues.csv`.
+- Manifest:
+  `experiments/fem_manuscript/c3_spectrum_continuation/logs/branchA_smoke_s10_h0p30_0p45_manifest.json`.
+- Checkpoint metadata:
+  `experiments/fem_manuscript/c3_spectrum_continuation/checkpoints/branchA_smoke_s10_h0p30_0p45/s10_h0p3_0p45_metadata.json`.
+- Profile checkpoint:
+  `experiments/fem_manuscript/c3_spectrum_continuation/checkpoints/branchA_smoke_s10_h0p30_0p45/s10_h0p3_0p45_profile.xdmf`
+  and `.h5`.
+- Registry row:
+  `fem-branchA-smoke-branchA_smoke_s10_h0p30_0p45`.
+
+Caveats:
+- This run is deliberately coarse and is not manuscript data.
+- Eigenpair residual diagnostics and adaptive `s` sampling are not implemented
+  yet.
+- A non-fatal OpenMPI TCP bind warning appeared in the sandboxed environment.
+
+Recommended next step:
+- Add eigenpair residual diagnostics to the Branch A runner and run a slightly
+  broader coarse exploratory smoke with `s` values on both sides of the current
+  `s=10` point, still avoiding production meshes.
+
+## 2026-05-22 — Branch A direct h0.06 FEM point
+
+User direction update:
+- Do not spend effort on coarse meshes for Branch A because they give large
+  computational errors.
+- Use `h_max=0.06` directly, consistent with previous tested FEM parameters.
+- Keep using the existing profile/weak error norms for now; do not add
+  eigenpair residual diagnostics at this stage because eigensolver tolerances
+  are already set.
+
+Implemented changes:
+- `experiments/fem_manuscript/c3_spectrum_continuation/run_spectrum_continuation.py`
+  now defaults to `h_min=h_max=0.06`.
+- Removed the previous smoke-run guard that refused `h_max <= 0.06`.
+- Default `k` is now `10`.
+- Resume checks now include `s`, mesh, requested `k`, and eigensolver shift,
+  so changing `k` does not accidentally reuse an incompatible metadata
+  checkpoint.
+
+Executed h0.06 runs:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 conda run --no-capture-output -n femx_spc \
+  python experiments/fem_manuscript/c3_spectrum_continuation/run_spectrum_continuation.py \
+  --execute \
+  --run-tag branchA_h006_s10_k3 \
+  --s-values 10 \
+  --mesh 0.06 0.06 \
+  --k 3 \
+  --eig-tol 1e-8 \
+  --eig-max-it 200 \
+  --force
+```
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 conda run --no-capture-output -n femx_spc \
+  python experiments/fem_manuscript/c3_spectrum_continuation/run_spectrum_continuation.py \
+  --execute \
+  --run-tag branchA_h006_s10_k10 \
+  --s-values 10 \
+  --mesh 0.06 0.06 \
+  --k 10 \
+  --eig-tol 1e-8 \
+  --eig-max-it 300 \
+  --force
+```
+
+Key h0.06 k=10 result:
+- Status: completed.
+- Mesh: `h_min=h_max=0.06`, `101649` vertices, `202248` cells.
+- Boundary: exact analytic `s=10` in `s cos(3 theta)`, encoded as baseline
+  coefficient `c_3=5`.
+- Profile wall time: `177.289 s`.
+- Eigensolver wall time: `177.034 s`.
+- Total amplitude-point wall time in metadata: `360.735 s`.
+- Weak residual diagnostics: `||R_Omega||_2=1.175e-05`,
+  `||R_Psi||_2=4.781e-14`.
+- First ten eigenvalues by increasing real part:
+  `0.5813070066 + 0 i`,
+  `1.4013986794 - 1.037e-08 i`,
+  `1.4013986794 + 1.037e-08 i`,
+  `1.9158454221 - 0.8724754615 i`,
+  `1.9158454221 + 0.8724754615 i`,
+  `1.9158459288 - 0.8724385884 i`,
+  `1.9158459288 + 0.8724385884 i`,
+  `2.1998819032 + 0 i`,
+  `2.4478924690 - 0.7995206837 i`,
+  `2.4478924690 + 0.7995206837 i`.
+
+Artifacts:
+- CSV:
+  `experiments/fem_manuscript/c3_spectrum_continuation/data/branchA_h006_s10_k10_eigenvalues.csv`.
+- Manifest:
+  `experiments/fem_manuscript/c3_spectrum_continuation/logs/branchA_h006_s10_k10_manifest.json`.
+- Metadata:
+  `experiments/fem_manuscript/c3_spectrum_continuation/checkpoints/branchA_h006_s10_k10/s10_h0p06_0p06_metadata.json`.
+- Profile checkpoint:
+  `experiments/fem_manuscript/c3_spectrum_continuation/checkpoints/branchA_h006_s10_k10/s10_h0p06_0p06_profile.xdmf`
+  and `.h5`.
+- Registry row:
+  `fem-branchA-smoke-branchA_h006_s10_k10` was appended by the runner.
+
+Interpretation:
+- The previous coarse `h=0.30/0.45` eigenvalues were qualitatively wrong for
+  this purpose; at `h=0.06`, the `s=10` left edge is positive, with
+  `min Re(lambda)=0.5813`.
+- This supports the user correction that Branch A should tune `s` step sizes
+  at the tested FEM mesh rather than use very coarse meshes for spectral
+  decisions.
+
+Recommended next step:
+- Continue at `h_min=h_max=0.06`, `k=10`, using a coarse amplitude ladder such
+  as `s=40, 80, 120` first. If the left edge remains well above zero, continue
+  with larger steps; once the minimum real part moves near zero or changes
+  sharply, reduce the `s` step size.
+
+## 2026-05-22 — Branch A h0.06 coarse amplitude ladder stopped at threshold
+
+Command launched:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 conda run --no-capture-output -n femx_spc \
+  python experiments/fem_manuscript/c3_spectrum_continuation/run_spectrum_continuation.py \
+  --execute \
+  --run-tag branchA_h006_ladder_s40_280_k10 \
+  --s-values 40 80 120 160 200 240 280 \
+  --mesh 0.06 0.06 \
+  --k 10 \
+  --eig-tol 1e-8 \
+  --eig-max-it 300
+```
+
+The first ladder completed accepted eigenvalue rows for `s=40,80,120`, then
+failed at `s=160`: the profile residual was catastrophic
+(`||R_Omega||_2 approximately 1.5e13`), and the eigensolver inner KSP failed.
+Those `s=160` eigenvalues from the first ladder are not accepted.
+
+Retried high amplitudes with stronger baseline-like continuation:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 conda run --no-capture-output -n femx_spc \
+  python experiments/fem_manuscript/c3_spectrum_continuation/run_spectrum_continuation.py \
+  --execute \
+  --run-tag branchA_h006_ladder_s160_280_k10_cont21 \
+  --s-values 160 200 240 280 \
+  --mesh 0.06 0.06 \
+  --k 10 \
+  --eig-tol 1e-8 \
+  --eig-max-it 300 \
+  --max-newton 48 \
+  --sigma-steps 21
+```
+
+Accepted completed spectral points:
+
+| s | source | min Re(lambda) | note |
+| ---: | --- | ---: | --- |
+| `40` | first ladder | `5.2679987759e-01` | completed |
+| `80` | first ladder | `4.5746687490e-01` | completed |
+| `120` | first ladder | `3.4435050640e-02` | completed |
+| `160` | stronger retry | `-3.3250826633e-01` | completed; threshold crossed |
+| `200` | stronger retry | `-5.5734848997e-01` | completed; already beyond stop criterion |
+
+The active `s=240` eigensolve was manually terminated after checking the
+completed CSV rows, because the stop criterion had already been met at
+`s=160`. The `s=240` profile had been checkpointed before termination and had
+weak residuals `||R_Omega||_2=2.9145730507e-04`,
+`||R_Psi||_2=1.2231775200e-12`, but no accepted eigenvalues were computed.
+`s=280` was not launched.
+
+Artifacts:
+- Accepted first ladder CSV:
+  `experiments/fem_manuscript/c3_spectrum_continuation/data/branchA_h006_ladder_s40_280_k10_eigenvalues.csv`.
+- Accepted retry CSV:
+  `experiments/fem_manuscript/c3_spectrum_continuation/data/branchA_h006_ladder_s160_280_k10_cont21_eigenvalues.csv`.
+- Combined minimum-real-part summary:
+  `experiments/fem_manuscript/c3_spectrum_continuation/data/branchA_h006_ladder_min_re_summary.csv`.
+- Checkpoints for accepted spectral points:
+  `s40`, `s80`, `s120` under
+  `checkpoints/branchA_h006_ladder_s40_280_k10/`, and `s160`, `s200` under
+  `checkpoints/branchA_h006_ladder_s160_280_k10_cont21/`.
+- Profile-only stopped checkpoint:
+  `checkpoints/branchA_h006_ladder_s160_280_k10_cont21/s240_h0p06_0p06_metadata.json`.
+- Registry row:
+  `fem-branchA-h006-threshold-stop`.
+
+Interpretation:
+- The stop criterion `min Re(lambda) < -0.1` is already met at `s=160`, not
+  only near `s=280`.
+- The zero crossing and the `-0.1` threshold both lie between `s=120` and
+  `s=160` based on the accepted coarse ladder.
+
+Recommended next step:
+- Refine `s` in `[120,160]`, not `[200,280]`. A practical next ladder is
+  `s=125,130,135,140,145,150,155,160` at `h_min=h_max=0.06`, `k=10`, using
+  `sigma_steps=21`, `max_newton=48`, and the existing weak/profile residual
+  diagnostics.
 
 ## 2026-04-27 M3 general full-disk polar validation
 
@@ -2641,3 +2960,722 @@ Recommended next step:
   Newton, amplitude continuation, or pseudo-arclength continuation near the
   suspected lower-sigma split. Do not reclassify nextgen-seeded FEM roots as
   independent discovery, and do not start M4 or the eigensolver.
+
+## 2026-05-22 — Branch A h0.06 refinement in [120,140]
+
+Command:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 conda run --no-capture-output -n femx_spc \
+  python experiments/fem_manuscript/c3_spectrum_continuation/run_spectrum_continuation.py \
+  --execute \
+  --run-tag branchA_h006_refine_s125_140_k10 \
+  --s-values 125 130 135 140 \
+  --mesh 0.06 0.06 \
+  --k 10 \
+  --eig-tol 1e-8 \
+  --eig-max-it 300 \
+  --max-newton 48 \
+  --sigma-steps 21
+```
+
+Result:
+- Completed all four amplitudes with `h_min=h_max=0.06`, `k=10`,
+  `sigma_steps=21`, and `max_newton=48`.
+- Each amplitude wrote per-eigenvalue CSV rows, per-amplitude metadata JSON,
+  and profile XDMF/HDF5 checkpoints under
+  `experiments/fem_manuscript/c3_spectrum_continuation/checkpoints/branchA_h006_refine_s125_140_k10/`.
+- The run manifest validated with `python -m json.tool`.
+
+Minimum real parts:
+
+| s | min Re(lambda) | profile weak R_Omega | profile weak R_Psi |
+| ---: | ---: | ---: | ---: |
+| 120 | 0.03443505064 | 1.421789405e-04 | 6.083688074e-13 |
+| 125 | -0.02405962688 | 1.482052024e-04 | 6.356802584e-13 |
+| 130 | -0.07827701465 | 1.542441491e-04 | 6.570239379e-13 |
+| 135 | -0.12848232279 | 1.602963392e-04 | 6.709594762e-13 |
+| 140 | -0.17510578024 | 1.663623065e-04 | 6.916208267e-13 |
+
+Interpretation:
+- The first zero crossing is bracketed by `s in [120,125]`.
+- Linear interpolation of the rank-1 real part gives a rough crossing estimate
+  near `s=122.94`; this is only a guide for the next sampling pass.
+- The Branch A stop threshold `min Re(lambda)<-0.1` is bracketed by
+  `s in [130,135]`, with a rough interpolation near `s=132.16`.
+
+Combined artifacts for the current manuscript-range plot:
+- `experiments/fem_manuscript/c3_spectrum_continuation/data/branchA_h006_combined_s10_160_k10_eigenvalues.csv`
+- `experiments/fem_manuscript/c3_spectrum_continuation/data/branchA_h006_combined_s10_160_min_re_summary.csv`
+- `experiments/fem_manuscript/c3_spectrum_continuation/plots/branchA_h006_s10_160/branchA_h006_Re_lambda_first10_s10_160.png`
+- `experiments/fem_manuscript/c3_spectrum_continuation/plots/branchA_h006_s10_160/branchA_h006_Re_lambda_first10_s10_160.pdf`
+- `experiments/fem_manuscript/c3_spectrum_continuation/plots/branchA_h006_s10_160/branchA_h006_Re_lambda_first8_s10_160.png`
+- `experiments/fem_manuscript/c3_spectrum_continuation/plots/branchA_h006_s10_160/branchA_h006_Re_lambda_first8_s10_160.pdf`
+
+Caveat:
+- The plotted curves are eigenvalue ranks sorted by real part at each
+  amplitude, not branch-tracked eigenvalue continuations. Branch tracking or
+  denser local sampling remains needed before treating individual curves as
+  continuous spectral branches.
+
+## 2026-05-22 — Branch A tracked spectrum plotting
+
+User-requested plot corrections:
+- The first plot had an indexing bug: the CSV stores `eigen_index=1,...,10`,
+  but the plotting loop matched `0,...,9`, so one eigenvalue was omitted and
+  labels were shifted.
+- A new plotting script,
+  `experiments/fem_manuscript/c3_spectrum_continuation/plot_tracked_spectrum.py`,
+  matches eigenvalues between adjacent amplitudes by nearest-neighbor
+  assignment in the complex plane, using both real and imaginary parts.
+- The new plot shows `Re(lambda)` versus the horizontal label `sigma`, uses
+  dotted connectors with open markers instead of solid curves, has title
+  `Eigenvalues of the linearized operator`, and omits the dashed `-0.1` line.
+
+Artifacts:
+- Tracked table:
+  `experiments/fem_manuscript/c3_spectrum_continuation/data/branchA_h006_tracked_s10_160_k10_eigenvalues.csv`.
+- New PNG:
+  `experiments/fem_manuscript/c3_spectrum_continuation/plots/branchA_h006_s10_160/branchA_h006_tracked_Re_lambda_first10_s10_160.png`.
+- New PDF:
+  `experiments/fem_manuscript/c3_spectrum_continuation/plots/branchA_h006_s10_160/branchA_h006_tracked_Re_lambda_first10_s10_160.pdf`.
+
+Caveat:
+- This is a plotting-level complex-plane assignment over the currently
+  available sparse amplitudes. The denser `[120,125]` refinement should be used
+  to make the zero-crossing trajectories less ambiguous.
+
+## 2026-05-23 — Branch A predictor tracking and marker update
+
+Plotting update:
+- Preserved the previous nearest-neighbor, stride-4 marker plots under
+  `*_nearest_stride4_comparison.{png,pdf}` filenames.
+- Restored all markers in the main plots while keeping them hollow
+  (`facecolors="none"`).
+- Added `--tracking-method nearest|predictor` to
+  `experiments/fem_manuscript/c3_spectrum_continuation/plot_tracked_spectrum.py`.
+- The new default method is `predictor`: after the first two samples, each
+  branch is linearly extrapolated in the complex plane and the next eigenvalues
+  are assigned by minimum total distance to those predictions.
+
+Artifacts:
+- Main current plot:
+  `experiments/fem_manuscript/c3_spectrum_continuation/plots/branchA_h006_s10_160/branchA_h006_tracked_Re_lambda_first10_s10_160.{png,pdf}`.
+- Main refined-grid plot:
+  `experiments/fem_manuscript/c3_spectrum_continuation/plots/branchA_h006_s0_160_refined_grid/branchA_h006_refined_s0_160_step5_plus150_k10_tracked_Re_lambda_first10.{png,pdf}`.
+- Nearest/all-marker comparisons were also written with
+  `*_nearest_allmarkers_comparison.{png,pdf}` filenames.
+
+Caveat:
+- Predictor tracking is still eigenvalue-only. It can improve continuity over
+  adjacent nearest matching on coarse `s` grids, but it is not a substitute for
+  eigenvector-overlap or spectral-projector tracking when eigenvalues are
+  clustered or nearly crossing in the complex plane.
+
+## 2026-05-23 — Branch A s140 first-three eigenmode plots
+
+Generated real-part eigenmode visualization candidates for the first three
+`s=140` eigenvalues using the accepted `h=0.06` profile checkpoint. The script
+rebuilt the deterministic mesh, verified zero geometry difference against the
+checkpoint, loaded checkpointed `Omega`/`psi`, and reran only the linearized
+`k=10` eigensolve to reconstruct eigenfunctions.
+
+Eigenvalues plotted:
+- `lambda_1=-0.17510578023594836`
+- `lambda_2=-0.1750764792420153`
+- `lambda_3=-0.17316865118034597`
+
+Artifacts:
+- `experiments/fem_manuscript/c3_spectrum_continuation/plots/s140_first3_eigenmodes/s140_first3_OmegaRe_heatmap_panel.{png,pdf}`
+- `experiments/fem_manuscript/c3_spectrum_continuation/plots/s140_first3_eigenmodes/s140_first3_PsiRe_streamline_panel.{png,pdf}`
+- `experiments/fem_manuscript/c3_spectrum_continuation/plots/s140_first3_eigenmodes/s140_first3_modes_manifest.json`
+
+Caveat:
+- Eigenvector scale and sign are arbitrary, so plotted fields are normalized by
+  max absolute value per mode. The first three eigenvalues are close, so the
+  visual basis can be sensitive to eigensolver details if the invariant subspace
+  is nearly degenerate.
+
+## 2026-05-23 — Branch A s140 manuscript eigenmode panels
+
+Updated the `s=140` first-three eigenmode visualization script to use
+`$\sigma = 140$` in the regular heat-map title and to emit manuscript-style
+panels with no titles inside individual panels. The manuscript variants use a
+single normalized color scale per figure and write a separate LaTeX caption file.
+
+Artifacts:
+- `experiments/fem_manuscript/c3_spectrum_continuation/plots/s140_first3_eigenmodes/s140_first3_OmegaRe_heatmap_panel_manuscript.{png,pdf}`
+- `experiments/fem_manuscript/c3_spectrum_continuation/plots/s140_first3_eigenmodes/s140_first3_PsiRe_streamline_panel_manuscript.{png,pdf}`
+- `experiments/fem_manuscript/c3_spectrum_continuation/plots/s140_first3_eigenmodes/s140_first3_manuscript_captions.tex`
+- `experiments/fem_manuscript/c3_spectrum_continuation/plots/s140_first3_eigenmodes/s140_first3_mode_arrays.npz`
+
+Implementation note:
+- The mode-array cache allows future typography-only changes to be generated
+  with `--reuse-mode-cache`, avoiding another full linear eigensolve.
+
+## 2026-05-23 — Branch B s140 symmetry-breaking candidate from eigenmode perturbation
+
+Implemented and ran
+`experiments/fem_manuscript/symmetry_breaking_profiles/run_s140_bifurcation_probe.py`
+using the accepted symmetric `s=140`, `h=0.06` profile checkpoint and the saved
+first-three eigenmode cache.
+
+Perturbation used:
+- Mode: real part of eigenmode `j=1` at `s=140`, with
+  `lambda_1=-0.175105780235948`.
+- Sign: `+1`.
+- Relative amplitude: `eta=0.5`.
+- Discrete formula:
+  `Omega_0 = Omega_sym + eta*rms(Omega_sym)/rms(deltaOmega_1)*deltaOmega_1`,
+  `psi_0 = psi_sym + eta*rms(Omega_sym)/rms(deltaOmega_1)*deltaPsi_1`.
+- The realized scalar multiplier was `121.1193014637879`.
+- The initial boundary mismatch was `0.0`; the perturbing `deltaOmega_1` has
+  zero boundary trace and Newton increments preserve the boundary condition.
+
+Newton result:
+- Fixed-boundary Newton converged in `7` iterations.
+- Final Newton residual norm: `1.48e-15`.
+- Final relative Omega step: `4.35e-13`.
+- Candidate weak residuals: `R_Omega=1.663622391e-04`,
+  `R_Psi=1.619473631e-11`.
+- Candidate boundary max absolute difference from the symmetric boundary values:
+  `0.0`.
+
+Comparison with the symmetric profile:
+- `Omega` RMS separation: `0.3251974138`, about `0.428` relative to the
+  symmetric `Omega` RMS.
+- `Omega` Linf separation: `14.74250019`.
+- `psi` RMS separation: `0.00344203342`, about `0.00195` relative to the
+  symmetric `psi` RMS.
+- `psi` Linf separation: `0.1160239847`.
+- C3 defect on the polar interpolation probe increased from `0.0157777` to
+  `0.2345973` for `Omega`, and from `8.62e-05` to `0.00248045` for `psi`.
+
+Artifacts:
+- Results CSV:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_eigenmode_perturb_probe_results.csv`.
+- Candidate checkpoint:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/checkpoints/branchB_s140_eigenmode_perturb_probe/mode1_eta0p5_signp1_profile.xdmf`.
+- Comparison plot:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_eigenmode_perturb_probe/mode1_eta0p5_signp1_omega_comparison.png`.
+
+Interpretation:
+- This is a strong first symmetry-breaking candidate: same boundary data,
+  converged fixed-boundary Newton solve, residual comparable to the accepted
+  symmetric profile, large separation in `Omega`, and much larger non-C3
+  content.
+- It is not yet a verified bifurcation/nonuniqueness claim. The next step must
+  check branch persistence, perturbation-sign/mode robustness, mesh refinement,
+  and symmetry/orbit diagnostics.
+
+## 2026-05-23 — Branch B artificial localized perturbation probe
+
+Implemented and ran
+`experiments/fem_manuscript/symmetry_breaking_profiles/run_s140_artificial_perturb_probe.py`
+using no eigenfunction computation. The perturbation is interior-only and
+non-threefold:
+
+`p_m(r,theta) = (r/Rdom)^m exp(-(r/r0)^2) (1-(r/Rdom)^2)^2 cos(m theta + phase)`.
+
+The first successful candidate used:
+- `m=1`, `phase=0`, `r0=2.5`, `eta=0.25`.
+- `Omega_0 = Omega_sym + scale*p_1`, with `scale=9.753457734137669`.
+- `psi_0` was recomputed by the baseline Poisson solve using the same boundary
+  flux, so the initial guess remained on the `Delta psi = Omega` manifold.
+- Initial and final boundary mismatch: `0.0`.
+
+Newton result:
+- Converged in `16` fixed-boundary Newton iterations.
+- Final residual norm: `1.63e-15`.
+- Final relative Omega step: `7.46e-15`.
+- Candidate weak residuals: `R_Omega=1.663622677e-04`,
+  `R_Psi=1.180686185e-12`.
+
+Profile comparison:
+- `Omega` RMS separation: `0.2658916101`, relative RMS separation `0.3499555102`.
+- `Omega` Linf separation: `14.82373301`.
+- `psi` RMS separation: `0.00273363575`, relative RMS separation `0.00154962587`.
+- `psi` Linf separation: `0.1155655807`.
+
+Symmetry diagnostics:
+- Raw `Omega` C3 defect: symmetric `0.0157777`, candidate `0.23511745`.
+- Bias-reduced raw-defect excess: `0.21933974`.
+- Non-C3 fraction of the difference field `Omega_candidate - Omega_sym`:
+  `0.81706565`.
+- Non-C3 fraction of `psi_candidate - psi_sym`: `0.89225352`.
+
+Interpretation:
+- The raw symmetric C3 defect is not a clean standalone metric because mesh and
+  polar interpolation introduce a nonzero floor. The better first-pass metrics
+  are the defect excess over the symmetric reference and especially the non-C3
+  fraction of the difference field, since common interpolation/mesh artifacts
+  largely cancel.
+
+Artifacts:
+- Results CSV:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_artificial_localized_probe_results.csv`.
+- Candidate checkpoint:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/checkpoints/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_profile.xdmf`.
+- Comparison plot:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_omega_comparison.png`.
+
+## 2026-05-23 — Branch B broken branch tracking in sigma
+
+Updated the vorticity comparison labels from `candidate` to
+`symmetry-breaking` and regenerated the artificial `sigma=140` comparison plot
+with title `$\sigma = 140$: bifurcation of vorticity profiles`.
+
+Implemented and ran
+`experiments/fem_manuscript/symmetry_breaking_profiles/run_broken_branch_sigma_tracking.py`.
+The run seeded from the artificial localized broken profile at `sigma=140`,
+tracked upward to `150`, then reset to the seed and tracked downward through
+`130,125,120,115,110`. For each target sigma, the previous broken `Omega` was
+scaled by the sigma ratio, boundary dofs were reset to the exact target
+symmetric boundary, and `psi` was recomputed by the baseline Poisson solve
+before fixed-boundary Newton.
+
+Summary:
+
+| sigma | status | rel Omega separation | Omega difference non-C3 | R_Omega | boundary diff |
+| ---: | --- | ---: | ---: | ---: | ---: |
+| 150 | completed | 3.13581e-01 | 8.09333e-01 | 1.78538e-04 | 0 |
+| 140 | seed | 3.49956e-01 | 8.17066e-01 | 1.66362e-04 | 0 |
+| 130 | completed | 2.18127e-01 | 8.93609e-01 | 1.54244e-04 | 0 |
+| 125 | completed | 1.15364e-01 | 9.67239e-01 | 1.48205e-04 | 0 |
+| 120 | completed | 2.36e-12 | not meaningful at tiny separation | 1.42179e-04 | 0 |
+| 115 | completed | 1.46e-13 | not meaningful at tiny separation | 1.36165e-04 | 0 |
+| 110 | completed | 2.32e-14 | not meaningful at tiny separation | 1.30162e-04 | 0 |
+
+Interpretation:
+- The broken branch persists at `sigma=150,140,130,125` and collapses back to
+  the symmetric branch by `sigma=120` to roundoff-level separation.
+- This aligns with Branch A's eigenvalue zero-crossing bracket `[120,125]`.
+- Difference-field non-C3 fractions are meaningful only while the separation is
+  non-negligible; below `sigma=120`, the difference field is too close to zero
+  for its normalized non-C3 fraction to be interpreted.
+
+Artifacts:
+- Results CSV:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_broken_branch_sigma_track_s150_110_results.csv`.
+- Checkpoints:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/checkpoints/branchB_broken_branch_sigma_track_s150_110/`.
+- Plots:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_broken_branch_sigma_track_s150_110/`.
+
+## 2026-05-23 — Branch B refined broken-branch separation plot
+
+Added and ran
+`experiments/fem_manuscript/symmetry_breaking_profiles/plot_broken_branch_separation.py`.
+The script merges the split continuation CSVs, keeps the largest measured
+relative separation for duplicate `sigma` rows, writes a refined summary CSV,
+and saves a log-scale plot with horizontal label `$\sigma$`.
+
+Additional h0.06 tracking runs:
+- From the saved `sigma=140` artificial localized broken checkpoint:
+  added `sigma=145` upward and `sigma=135` downward.
+- From the saved `sigma=110` broken checkpoint:
+  added `sigma=105` and `sigma=100` downward.
+- Each run used the same fixed-boundary Newton continuation, exact boundary
+  reset, recomputed Poisson state, weak/profile residual diagnostics, and
+  checkpointed broken profiles.
+
+Refined relative RMS separation in `Omega`:
+
+| sigma | relative RMS separation | status |
+| ---: | ---: | --- |
+| 100 | 1.76e-14 | completed |
+| 105 | 1.57e-13 | completed |
+| 110 | 2.32e-14 | completed |
+| 115 | 1.46e-13 | completed |
+| 120 | 2.36e-12 | completed |
+| 125 | 1.15364e-01 | completed |
+| 130 | 2.18127e-01 | completed |
+| 135 | 2.90585e-01 | completed |
+| 140 | 3.49956e-01 | seed |
+| 145 | 4.00604e-01 | completed |
+| 150 | 3.13581e-01 | completed |
+
+Artifacts:
+- Refined summary CSV:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_broken_branch_separation_summary_refined.csv`.
+- Log-scale plot:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_broken_branch_sigma_track_s150_110/branchB_broken_branch_relative_separation_vs_sigma_refined_log.png`
+  and `.pdf`.
+- Legacy-style two-curve log plot, matching the earlier `vs_s_log` figure but
+  including the added experimental points:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_broken_branch_sigma_track_s150_110/branchB_broken_branch_relative_separation_vs_s_log_refined.png`
+  and `.pdf`.
+- Additional result CSVs:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_broken_branch_sigma_track_extra_135_145_results.csv`
+  and
+  `experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_broken_branch_sigma_track_extra_105_100_results.csv`.
+
+Interpretation:
+- The branch is still roundoff-close to the symmetric profile at
+  `sigma=100,105,110,115,120`.
+- It separates sharply between `sigma=120` and `125`, consistent with the
+  Branch A eigenvalue zero-crossing bracket.
+- The current evidence remains numerical continuation evidence; mesh
+  refinement and continuation-method robustness are still needed before a
+  manuscript-level bifurcation claim.
+
+## 2026-05-23 — C4, mu=2/3 coarse bifurcation scout
+
+Added a dedicated case driver:
+`experiments/fem_manuscript/k4_mu2over3_bifurcation/run_k4_mu2over3_bifurcation.py`.
+It uses the baseline FEM workflow with exact boundary data
+`s cos(4 theta)`, encoded as baseline Fourier coefficient `c4=s/2`, and
+physical parameter `mu=2/3`.
+
+The first h=0.06 attempts showed:
+- At `s=200`, the symmetric profile converged and the first 10 eigenvalues
+  were all stable. The minimum real part was about `1.00275e-01`.
+- At `s=220`, using finer continuation, the symmetric profile converged and
+  the first 10 eigenvalues were still all stable. The minimum real part was
+  about `3.91861e-02`.
+- Direct h=0.06 continuation/seeded attempts beyond this became expensive or
+  failed to produce an accepted `s=240` profile, so the search switched to a
+  cheaper h=0.08 scout as requested.
+
+Coarse h=0.08 scout command:
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 MPLCONFIGDIR=/private/tmp/mplconfig-euler \
+XDG_CACHE_HOME=/private/tmp/xdg-cache-euler conda run --no-capture-output -n femx_spc \
+  python experiments/fem_manuscript/k4_mu2over3_bifurcation/run_k4_mu2over3_bifurcation.py \
+  --execute \
+  --stop-on-distinct \
+  --run-tag branchB_k4_mu2over3_h008_s200_320_scout \
+  --mesh 0.08 0.08 \
+  --s-start 200 \
+  --s-step 20 \
+  --s-max 320 \
+  --sigma-steps 41 \
+  --max-newton 64 \
+  --k-eigs 10 \
+  --required-unstable 4
+```
+
+Accepted h=0.08 spectra:
+
+| s | unstable count among first 10 | min Re(lambda) | R_Omega | R_Psi |
+| ---: | ---: | ---: | ---: | ---: |
+| 200 | 0 | 1.00895e-01 | 7.33224e-05 | 2.24297e-13 |
+| 220 | 0 | 8.23266e-02 | 8.06726e-05 | 2.46867e-13 |
+| 240 | 4 | -8.59217e-02 | 8.80443e-05 | 2.71396e-13 |
+
+At `s=240`, the first four h=0.08 eigenvalues were real and negative:
+`-8.59217e-02`, `-8.39022e-02`, `-8.24736e-02`, and `-7.85960e-02`.
+This gives a coarse instability bracket between `s=220` and `s=240`.
+
+Artificial perturbation probe at h=0.08, `s=240`:
+- Perturbation family:
+  `(r/Rdom)^m exp(-(r/r0)^2) (1-(r/Rdom)^2)^2 cos(m theta + phase)`,
+  with exact boundary preservation.
+- The accepted distinct candidate used `m=3`, `phase=0`, `eta=0.5`,
+  scale `234.65377104801738`.
+- Fixed-boundary Newton converged in `18` iterations.
+- Final Newton residual: `1.62e-15`.
+- Boundary mismatch: `0.0`.
+- Weak residuals: `R_Omega=8.80508e-05`, `R_Psi=7.68125e-13`.
+- Relative RMS separation in `Omega`: `2.57001e-01`.
+- `Omega` non-C4 fraction of the difference field: `6.30121e-01`.
+- Raw `Omega` C4 defect increased from `2.69161e-02` for the symmetric profile
+  to `1.46969e-01` for the candidate.
+
+Artifacts:
+- Eigenvalue CSV:
+  `experiments/fem_manuscript/k4_mu2over3_bifurcation/data/branchB_k4_mu2over3_h008_s200_320_scout_eigenvalues.csv`.
+- Perturbation CSV:
+  `experiments/fem_manuscript/k4_mu2over3_bifurcation/data/branchB_k4_mu2over3_h008_s200_320_scout_perturbations.csv`.
+- Manifest:
+  `experiments/fem_manuscript/k4_mu2over3_bifurcation/logs/branchB_k4_mu2over3_h008_s200_320_scout_manifest.json`.
+- Symmetric profile checkpoints:
+  `experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s200_h0p08_0p08_profile.xdmf`,
+  `s220_h0p08_0p08_profile.xdmf`, and `s240_h0p08_0p08_profile.xdmf`.
+- Candidate checkpoint:
+  `experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s240_m3_phase0_eta0p5_profile.xdmf`.
+- Candidate comparison plot:
+  `experiments/fem_manuscript/k4_mu2over3_bifurcation/plots/branchB_k4_mu2over3_h008_s200_320_scout/s240_m3_phase0_eta0p5_omega_comparison.png`.
+
+Caveat:
+- The h=0.08 run is a successful scout and bifurcation candidate detector, not
+  final manuscript validation. The next step should refine/validate near
+  `s=240`, preferably by transferring or reproducing the candidate on
+  `h=0.06` and checking whether the four unstable modes and profile separation
+  survive mesh refinement.
+
+## 2026-05-23 — C4, mu=2/3 refinement attempts from h=0.08 toward h=0.06
+
+Goal:
+- Use the h=0.08 `s=240`, `mu=2/3`, `cos(4 theta)` symmetric and broken
+  profiles as guidance for h=0.06 validation.
+- Plot titles should use the user's alpha convention
+  `alpha=3/4`, since `mu = 1/(2 alpha)`.
+
+Implemented:
+- Added
+  `experiments/fem_manuscript/k4_mu2over3_bifurcation/run_k4_mu2over3_h006_refinement.py`
+  to transfer h=0.08 HDF5 fields onto an h=0.06 mesh using linear
+  interpolation with nearest fallback, reset exact boundary values, recompute
+  `psi`, and run fixed-boundary Newton.
+- Added
+  `experiments/fem_manuscript/k4_mu2over3_bifurcation/run_k4_mu2over3_h006_seeded_ladder.py`
+  for same-mesh h=0.06 continuation from the accepted h=0.06 `s=220`
+  checkpoint.
+- Regenerated the h=0.08 accepted candidate plot with title
+  `alpha = 3/4, boundary data = 240 cos(4 theta)`.
+
+Mesh refinement summary:
+
+| mesh | s | status | unstable count | min Re(lambda) | note |
+| --- | ---: | --- | ---: | ---: | --- |
+| h=0.08 | 200 | completed | 0 | 1.00895e-01 | stable-side scout |
+| h=0.06 | 200 | completed | 0 | 1.00275e-01 | stable-side check agrees closely |
+| h=0.08 | 220 | completed | 0 | 8.23266e-02 | stable-side scout |
+| h=0.06 | 220 | completed | 0 | 3.91861e-02 | stable but closer to crossing |
+| h=0.08 | 240 | completed | 4 | -8.59217e-02 | coarse unstable candidate |
+| h=0.06 | 240 | failed | n/a | n/a | h=0.08-to-h=0.06 symmetric transfer failed Newton |
+| h=0.06 | 225 | failed | n/a | n/a | same-mesh continuation from h=0.06 `s=220` failed Newton |
+| h=0.07 | 240 | terminated | n/a | n/a | zero-start continuation ran long without checkpoint |
+
+Important outcome:
+- The h=0.08 bifurcation candidate is reproducible and well documented, but the
+  attempted h=0.06 validation did not produce an accepted symmetric profile at
+  or above `s=225`.
+- Therefore the current evidence is not yet sufficient to claim mesh-robust
+  bifurcation at `s=240`.
+- Stable-side comparison shows h=0.08 and h=0.06 agree well at `s=200`, but
+  the minimum real part differs more at `s=220`; h=0.06 appears closer to the
+  instability threshold.
+
+Artifacts:
+- Refinement summary CSV:
+  `experiments/fem_manuscript/k4_mu2over3_bifurcation/data/branchB_k4_mu2over3_refinement_attempts_summary.csv`.
+- h=0.08 accepted candidate plot with alpha title:
+  `experiments/fem_manuscript/k4_mu2over3_bifurcation/plots/branchB_k4_mu2over3_h008_s200_320_scout/s240_m3_phase0_eta0p5_omega_comparison_alpha_title.png`
+  and `.pdf`.
+- h=0.06 transfer script:
+  `experiments/fem_manuscript/k4_mu2over3_bifurcation/run_k4_mu2over3_h006_refinement.py`.
+- h=0.06 seeded ladder script:
+  `experiments/fem_manuscript/k4_mu2over3_bifurcation/run_k4_mu2over3_h006_seeded_ladder.py`.
+
+Recommended next technical direction:
+- Do not treat the h=0.08 broken profile as manuscript-level mesh-robust
+  evidence yet.
+- The h=0.06 continuation difficulty suggests using a more robust branch
+  continuation method near the turn/instability region: smaller amplitude
+  steps from `s=220`, pseudo-arclength continuation, or controlled damping /
+  trust-region Newton. Another practical intermediate check is h=0.075 or
+  h=0.07 at `s=225,230,235` rather than jumping directly to `s=240`.
+
+## 2026-05-24 — Branch B s=140 broken-profile spectra
+
+Goal:
+- For boundary data `140 cos(3 theta)` at `h_min=h_max=0.06`, compute the
+  first 10 linearized eigenvalues around previously found symmetry-breaking
+  profiles and around additional analytic-perturbation candidates.
+
+Implemented:
+- Added
+  `experiments/fem_manuscript/symmetry_breaking_profiles/run_s140_broken_profile_spectra.py`.
+- The script reuses the saved symmetric Branch A profile, loads saved Branch B
+  broken-profile checkpoints, tries analytic localized perturbations
+  `(r/Rdom)^m exp(-(r/r0)^2)(1-(r/Rdom)^2)^2 cos(m theta+phase)`, and computes
+  shift-invert spectra for selected candidates.
+- The run used analytic modes `m=2,4,5`, `phase=0`, `eta=0.25`, `r0=2.5`,
+  then computed spectra for the saved artificial candidate, the saved
+  eigenmode-perturbation candidate, and the new analytic `m=2` candidate.
+
+Profile outcome:
+- `m=2` analytic perturbation converged to a distinct symmetry-breaking
+  candidate with relative Omega RMS separation `3.496e-01`.
+- `m=4` and `m=5` analytic perturbations converged back to the symmetric
+  profile by relative Omega RMS duplicate checks.
+
+Spectrum summary:
+
+| profile | min Re(lambda) | note |
+| --- | ---: | --- |
+| symmetric reference | `-1.75106e-01` | saved Branch A spectrum |
+| saved artificial m1 candidate | `-1.74494e-01` | one negative real eigenvalue in first 10 |
+| saved eigenmode mode1 candidate | `3.32157e-01` | no negative real eigenvalue among returned first 10 |
+| analytic m2 candidate | `-1.73993e-01` | one negative real eigenvalue in first 10 |
+
+Artifacts:
+- Script:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/run_s140_broken_profile_spectra.py`.
+- Profile summary:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_broken_profile_spectra_profile_summary.csv`.
+- Eigenvalue CSV:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_broken_profile_spectra_eigenvalues.csv`.
+- New analytic-profile checkpoints:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/checkpoints/branchB_s140_broken_profile_spectra/`.
+- Registry row appended with tag
+  `fem-branchB-branchB_s140_broken_profile_spectra`.
+
+## 2026-05-24 — Branch B s=140 orbit comparison and extra eigenmode perturbations
+
+Goal:
+- Compare the saved artificial m1, saved eigenmode-mode1, and analytic m2
+  broken profiles up to rotations/reflections.
+- Probe the remaining two unstable eigenmodes of the symmetric `s=140`
+  profile as fixed-boundary Newton perturbations.
+
+Implemented:
+- Ran `run_s140_bifurcation_probe.py` with modes `2,3`, signs `+/-`, and
+  `eta=0.5`.
+- Added
+  `experiments/fem_manuscript/symmetry_breaking_profiles/compare_s140_broken_profile_orbits.py`.
+- The comparison samples profiles on a common polar grid and minimizes pairwise
+  relative RMS distance over rotations and reflections.  It reports both full
+  Omega distance and symmetry-breaking defect distance for
+  `Omega - Omega_symmetric`.
+
+Key outcomes:
+- Eigenmode mode 2 with positive sign converged to the same orbit as the saved
+  artificial m1 profile: defect distance `2.6e-11`.
+- Analytic m2 and eigenmode mode 2 with negative sign are close after a
+  `120 degree` rotation: full Omega distance `2.62e-02`, defect distance
+  `5.67e-02`; this is likely the same branch/orbit up to small numerical
+  differences, but should be checked visually before collapsing labels.
+- The saved eigenmode-mode1 profile remains distinct from the artificial/mode2
+  and analytic/mode2 candidates under the defect metric.
+- Eigenmode mode 3, both signs, converged to profiles with small residuals and
+  large separation from the symmetric profile, but they were not flagged by the
+  C3-excess symmetry-breaking criterion; treat them as additional distinct
+  candidates requiring follow-up diagnostics rather than confirmed broken
+  branches.
+
+Artifacts:
+- Pairwise distance CSV:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_orbit_comparison_pairwise_distances.csv`.
+- Three-profile plot:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_orbit_comparison/s140_three_broken_profiles.png`
+  and `.pdf`.
+- Aligned defect plot:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_orbit_comparison/s140_three_broken_profiles_aligned_defects.png`
+  and `.pdf`.
+- All-candidate profile plot:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_orbit_comparison/s140_all_broken_profile_candidates.png`
+  and `.pdf`.
+- Mode 2/3 perturbation results:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_eigenmode23_perturb_probe_results.csv`.
+
+## 2026-05-24 — Branch B s=140 C3 orbit classes with spectra
+
+Goal:
+- Compute missing spectra for the newly found eigenmode-2/eigenmode-3
+  candidates.
+- Group all `s=140` broken-profile candidates into branches/orbit classes
+  using only the actual C3 rotations `0, 120, 240` degrees, then attach spectra
+  to each class.
+
+Implemented:
+- Extended
+  `experiments/fem_manuscript/symmetry_breaking_profiles/run_s140_broken_profile_spectra.py`
+  to include saved mode-2 and mode-3 perturbation checkpoints.
+- Ran spectra for:
+  `broken_eigenmode_mode2_eta0p5_signp1`,
+  `broken_eigenmode_mode2_eta0p5_signm1`,
+  `broken_eigenmode_mode3_eta0p5_signp1`,
+  `broken_eigenmode_mode3_eta0p5_signm1`.
+- Added
+  `experiments/fem_manuscript/symmetry_breaking_profiles/group_s140_orbit_classes_with_spectra.py`.
+- Grouping uses relative RMS of the defect `Omega - Omega_symmetric` sampled on
+  a polar grid, minimized over C3 rotations only.  The class threshold used was
+  `0.08`.
+
+C3 orbit classes:
+
+| class | members | min Re(lambda) range | negative count among first 10 |
+| ---: | --- | ---: | ---: |
+| 1 | `eigenmode1` | `3.32157e-01` | 0 |
+| 2 | `eigenmode3_minus` | `3.21119e-01` | 0 |
+| 3 | `eigenmode3_plus` | `3.20092e-01` | 0 |
+| 4 | `analytic_m2`, `eigenmode2_minus` | `-1.74049e-01` to `-1.73993e-01` | 1 |
+| 5 | `artificial_m1`, `eigenmode2_plus` | `-1.74494e-01` | 1 |
+
+Selected C3 distances:
+- `artificial_m1` vs `eigenmode2_plus`: defect distance `2.6e-11`.
+- `analytic_m2` vs `eigenmode2_minus`: defect distance `5.67e-02` after a
+  `120 degree` rotation.
+- `artificial_m1` vs `analytic_m2`: defect distance `9.97e-01`; separated
+  under C3 rotations.
+- `eigenmode3_plus` vs `eigenmode3_minus`: defect distance `1.44`; separated
+  under C3 rotations.
+
+Artifacts:
+- C3 pairwise distances:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_c3_orbit_classes_with_spectra_pairwise_c3_distances.csv`.
+- Class summary:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_c3_orbit_classes_with_spectra_class_summary.csv`.
+- Class-member spectra:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_c3_orbit_classes_with_spectra_class_members_spectra.csv`.
+- Class representative plot:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_c3_orbit_classes_with_spectra/s140_c3_orbit_class_representatives.png`
+  and `.pdf`.
+
+## 2026-05-24 — Branch B s=140 spectral pattern analysis
+
+Goal:
+- Compare the full first-ten spectra of the symmetric profile and the five C3
+  orbit-class representative broken profiles.
+- Check whether the broken-profile spectra look like new eigenvalues or
+  continuations/splittings of the symmetric-profile eigenvalues.
+
+Implemented:
+- Added
+  `experiments/fem_manuscript/symmetry_breaking_profiles/analyze_s140_spectral_patterns.py`.
+- The script writes class-level spectral summaries and nearest complex-plane
+  matches from each broken-profile eigenvalue to the symmetric spectrum.
+
+Key outcomes:
+- Symmetric profile: 3 negative-real eigenvalues among the first 10.
+- Classes 4 and 5: 1 negative-real eigenvalue among the first 10, close to
+  one of the symmetric negative eigenvalues.
+- Classes 1, 2, and 3: no negative-real eigenvalue among the first 10.
+- The stable complex-conjugate pairs are largely shared across profiles:
+  symmetric pairs near `0.400 +/- 0.386i` and `0.571 +/- 0.545i` persist as
+  nearby pairs in the broken spectra.
+- The most visible change is not wholesale creation of new high modes, but
+  movement/splitting of the low real modes near the symmetric instability.
+
+Artifacts:
+- Spectral summary:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_spectral_pattern_summary.csv`.
+- Nearest symmetric-spectrum matches:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_spectral_matches_to_symmetric.csv`.
+
+## 2026-05-25 — Branch B s=140 spatial symmetry diagnostics
+
+Goal:
+- Check whether classes 2 and 3 are actually C3-symmetric.
+- Check whether classes 4 and 5 have an odd/reflection anti-symmetry about
+  selected axes, including the vertical y-axis for class 5.
+
+Implemented:
+- Added
+  `experiments/fem_manuscript/symmetry_breaking_profiles/analyze_s140_spatial_symmetries.py`.
+- The script samples each profile on a polar grid and computes:
+  C3 rotation defects for full `Omega` and for `Omega - Omega_symmetric`;
+  even/odd reflection residuals over named axes and best-fit axes.
+
+Key outcomes:
+- Classes 2 and 3 are C3-symmetric to the same level as the symmetric
+  reference: full C3 defect about `1.52e-02`; defect C3 defect about
+  `3.1e-02`.
+- Class 4 is not C3-symmetric, but is nearly odd under reflection about the
+  `30 degree` axis: full odd residual `2.13e-02`, defect odd residual
+  `4.00e-02`.
+- Class 5 is not C3-symmetric, but is nearly odd under reflection about the
+  vertical y-axis: full odd residual `2.23e-02`, defect odd residual
+  `5.21e-02`.
+- Classes 4 and 5 therefore look like reflection-odd broken branches with
+  different axis orientation, not C3-symmetric branches.
+
+Artifacts:
+- Summary:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_spatial_symmetry_diagnostics_summary.csv`.
+- Axis residuals:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_spatial_symmetry_diagnostics_axis_residuals.csv`.

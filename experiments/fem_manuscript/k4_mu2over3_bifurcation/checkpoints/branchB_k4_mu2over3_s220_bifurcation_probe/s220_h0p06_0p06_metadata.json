@@ -1,0 +1,92 @@
+{
+  "boundary": {
+    "analytic": "barOmega(theta) = s cos(4 theta)",
+    "baseline_coeffs": {
+      "4": 110.0
+    },
+    "note": "FourierBC mirrors positive modes, so c4=s/2 gives exact s cos(4 theta).",
+    "s": 220.0
+  },
+  "completed_at": "2026-05-23T17:43:15.149739",
+  "eigs": {
+    "eigenvalues": [
+      {
+        "imag": 0.0,
+        "index": 1,
+        "real": 0.039186064401882215
+      },
+      {
+        "imag": 0.0,
+        "index": 2,
+        "real": 0.04220333255724995
+      },
+      {
+        "imag": 0.0,
+        "index": 3,
+        "real": 0.04267952667525465
+      },
+      {
+        "imag": 0.0,
+        "index": 4,
+        "real": 0.04516137852255442
+      },
+      {
+        "imag": -0.7117736158301835,
+        "index": 5,
+        "real": 0.08210386948186832
+      },
+      {
+        "imag": 0.7117736158301835,
+        "index": 6,
+        "real": 0.08210386948186832
+      },
+      {
+        "imag": -0.8583869165741989,
+        "index": 7,
+        "real": 0.198777083396958
+      },
+      {
+        "imag": 0.8583869165741989,
+        "index": 8,
+        "real": 0.198777083396958
+      },
+      {
+        "imag": -0.8584157889306948,
+        "index": 9,
+        "real": 0.1990675713362371
+      },
+      {
+        "imag": 0.0,
+        "index": 10,
+        "real": 0.22417755328836297
+      }
+    ],
+    "k_requested": 10,
+    "unstable_count_re_lt_0": 0,
+    "wall_time_sec": 1253.507157866843
+  },
+  "mesh": {
+    "h_max": 0.06,
+    "h_min": 0.06
+  },
+  "mesh_stats": {
+    "cells": 202248,
+    "dofs_omega": 101649,
+    "dofs_psi": 101649,
+    "vertices": 101649
+  },
+  "mode": 4,
+  "mu": 0.6666666666666666,
+  "profile": {
+    "wall_time_sec": 1673.2067272486165,
+    "weak_residuals": {
+      "Omega_l2": 8.64257027072867e-05,
+      "Psi_l2": 1.9701859419039948e-13
+    }
+  },
+  "profile_checkpoint": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_s220_bifurcation_probe/s220_h0p06_0p06_profile.xdmf",
+  "s": 220.0,
+  "started_at": "2026-05-23T16:54:21.712352",
+  "status": "completed",
+  "wall_time_sec": 2926.8302404023707
+}

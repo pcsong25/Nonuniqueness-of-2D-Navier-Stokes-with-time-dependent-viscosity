@@ -1,0 +1,42 @@
+{
+  "boundary_policy": "deltaOmega_j has zero boundary trace; Newton increments also impose homogeneous omega boundary.",
+  "etas": [
+    0.5
+  ],
+  "mesh_stats": {
+    "cells": 202248,
+    "dofs_omega": 101649,
+    "dofs_psi": 101649,
+    "vertices": 101649
+  },
+  "modes": [
+    1,
+    2,
+    3
+  ],
+  "num_trials": 1,
+  "outputs": {
+    "checkpoints": "experiments/fem_manuscript/symmetry_breaking_profiles/checkpoints/branchB_s140_eigenmode_perturb_probe",
+    "csv": "experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_eigenmode_perturb_probe_results.csv",
+    "plots": "experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_eigenmode_perturb_probe"
+  },
+  "perturbation_formula": "Omega0=Omega_sym+sign*eta*rms(Omega_sym)/rms(deltaOmega_j)*deltaOmega_j; psi0=psi_sym+same_scale*deltaPsi_j; delta fields are real parts of saved eigenmode j.",
+  "profile_checkpoint_geometry_diff": 0.0,
+  "run_tag": "branchB_s140_eigenmode_perturb_probe",
+  "s": 140.0,
+  "signs": [
+    1.0,
+    -1.0
+  ],
+  "status": "completed",
+  "stop_reason": "distinct candidate found: mode1_eta0p5_signp1",
+  "symmetric_c3": {
+    "Omega": 0.015777706663998553,
+    "psi": 8.615195272520244e-05
+  },
+  "symmetric_profile_residuals": {
+    "Omega_l2": 0.00016636230645579475,
+    "Psi_l2": 6.916208267157059e-13
+  },
+  "wall_time_sec": 175.87029326334596
+}

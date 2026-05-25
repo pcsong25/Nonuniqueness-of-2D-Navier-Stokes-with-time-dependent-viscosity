@@ -1,0 +1,36 @@
+
+[2026-05-22T11:59:13.653751] s160 failed
+PETSc.Error(-1)
+Traceback (most recent call last):
+  File "petsc4py/PETSc/PETSc.pyx", line 348, in petsc4py.PETSc.PetscPythonErrorHandler
+  File "petsc4py/PETSc/PETSc.pyx", line 348, in petsc4py.PETSc.PetscPythonErrorHandler
+  File "petsc4py/PETSc/PETSc.pyx", line 348, in petsc4py.PETSc.PetscPythonErrorHandler
+  [Previous line repeated 6 more times]
+  File "petsc4py/PETSc/libpetsc4py.pyx", line 755, in petsc4py.PETSc.MatMult_Python
+  File "/Users/caltech/Peicong/euler-selfsimilar-eigs/src/baseline/eigs_linearized_new.py", line 318, in mult
+    raise RuntimeError(
+RuntimeError: Inner KSP failed: reason=-3, its=800
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/Users/caltech/Peicong/euler-selfsimilar-eigs/experiments/fem_manuscript/c3_spectrum_continuation/run_spectrum_continuation.py", line 440, in run_execution
+    result = run_one_amplitude(args, manifest, amplitude_s)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caltech/Peicong/euler-selfsimilar-eigs/experiments/fem_manuscript/c3_spectrum_continuation/run_spectrum_continuation.py", line 356, in run_one_amplitude
+    modes = esolver.solve(
+            ^^^^^^^^^^^^^^
+  File "/Users/caltech/Peicong/euler-selfsimilar-eigs/src/baseline/eigs_linearized_new.py", line 487, in solve
+    eps.solve()
+  File "slepc4py/SLEPc/EPS.pyx", line 1294, in slepc4py.SLEPc.EPS.solve
+petsc4py.PETSc.Error: error code -1
+[0] EPSSolve() at /Users/runner/miniforge3/conda-bld/slepc_1733219884361/work/src/eps/interface/epssolve.c:145
+[0] EPSSolve_KrylovSchur_Default() at /Users/runner/miniforge3/conda-bld/slepc_1733219884361/work/src/eps/impls/krylov/krylovschur/krylovschur.c:262
+[0] BVMatArnoldi() at /Users/runner/miniforge3/conda-bld/slepc_1733219884361/work/src/sys/classes/bv/interface/bvkrylov.c:89
+[0] BVMatMultColumn() at /Users/runner/miniforge3/conda-bld/slepc_1733219884361/work/src/sys/classes/bv/interface/bvops.c:879
+[0] MatMult() at /Users/runner/miniforge3/conda-bld/bld/rattler-build_petsc_1741089267/work/src/mat/interface/matrix.c:2661
+[0] MatMult_Shell() at /Users/runner/miniforge3/conda-bld/bld/rattler-build_petsc_1741089267/work/src/mat/impls/shell/shell.c:994
+[0] MatMult_STOperator() at /Users/runner/miniforge3/conda-bld/slepc_1733219884361/work/src/sys/classes/st/interface/stsolve.c:256
+[0] STApply_Generic() at /Users/runner/miniforge3/conda-bld/slepc_1733219884361/work/src/sys/classes/st/interface/stsolve.c:22
+[0] MatMult() at /Users/runner/miniforge3/conda-bld/bld/rattler-build_petsc_1741089267/work/src/mat/interface/matrix.c:2661
+

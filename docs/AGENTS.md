@@ -1,5 +1,18 @@
 # AGENTS.md
 
+## Current active branch note (2026-05-22)
+
+The active direction is now a manuscript-oriented FEM experiment branch using
+the verified baseline FEM workflow in `src/baseline/` as the main
+computational engine. New experiment orchestration belongs under
+`experiments/fem_manuscript/`, with documentation in
+`docs/fem_manuscript_experiments_plan.md`.
+
+The previous nextgen finite-difference / finite-volume work remains documented
+and should not be erased or overwritten. The nextgen-oriented instructions
+below are historical and remain relevant only when work explicitly resumes on
+that implementation direction.
+
 ## Project goal
 
 Develop a new numerical codebase for computing the lowest eigenvalues and eigenfunctions

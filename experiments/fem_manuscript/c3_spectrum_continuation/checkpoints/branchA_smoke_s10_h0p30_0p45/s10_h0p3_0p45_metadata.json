@@ -1,0 +1,61 @@
+{
+  "boundary": {
+    "analytic": "barOmega(theta) = s cos(3 theta)",
+    "baseline_coeffs": {
+      "3": 5.0
+    },
+    "note": "FourierBC mirrors positive modes, so c3=s/2 gives exact s cos(3 theta).",
+    "s": 10.0
+  },
+  "completed_at": "2026-05-22T10:22:56.132844",
+  "eigs": {
+    "eig_residual_note": "not computed in the first coarse smoke runner",
+    "eigenvalues": [
+      {
+        "imag": -0.26074274673872966,
+        "index": 1,
+        "real": -0.02402511506933691
+      },
+      {
+        "imag": -0.1294952595660477,
+        "index": 2,
+        "real": -0.01076633700351648
+      },
+      {
+        "imag": 0.1294952595660477,
+        "index": 3,
+        "real": -0.01076633700351648
+      }
+    ],
+    "k_requested": 3,
+    "k_returned": 3,
+    "max_it": 200,
+    "shift": -1.0,
+    "tol": 1e-08,
+    "wall_time_sec": 1.373818775638938
+  },
+  "mesh": {
+    "h_max": 0.45,
+    "h_min": 0.3
+  },
+  "mesh_stats": {
+    "cells": 3660,
+    "dofs_omega": 1901,
+    "dofs_psi": 1901,
+    "vertices": 1901
+  },
+  "profile": {
+    "status": "completed",
+    "wall_time_sec": 2.3935268353670835,
+    "weak_residuals": {
+      "Omega_l2": 0.8853044570899161,
+      "Psi_l2": 6.845943433128637e-14
+    }
+  },
+  "profile_checkpoint": "experiments/fem_manuscript/c3_spectrum_continuation/checkpoints/branchA_smoke_s10_h0p30_0p45/s10_h0p3_0p45_profile.xdmf",
+  "run_tag": "branchA_smoke_s10_h0p30_0p45",
+  "s": 10.0,
+  "started_at": "2026-05-22T10:22:48.701162",
+  "status": "completed",
+  "wall_time_sec": 7.431109278462827
+}

@@ -1,0 +1,21 @@
+{
+  "mesh": {
+    "h_max": 0.06,
+    "h_min": 0.06
+  },
+  "mesh_stats": {
+    "cells": 202248,
+    "dofs_omega": 101649,
+    "dofs_psi": 101649,
+    "vertices": 101649
+  },
+  "note": "Symmetric profile computed for Branch B separation at sigma=145; no eigensolve.",
+  "profile_checkpoint": "experiments/fem_manuscript/c3_spectrum_continuation/checkpoints/branchB_tracking_symmetric_s145/s145_h0p06_0p06_profile.xdmf",
+  "s": 145.0,
+  "status": "completed",
+  "wall_time_sec": 626.2848687563092,
+  "weak_residuals": {
+    "Omega_l2": 0.0001724425951642741,
+    "Psi_l2": 7.235386045874285e-13
+  }
+}

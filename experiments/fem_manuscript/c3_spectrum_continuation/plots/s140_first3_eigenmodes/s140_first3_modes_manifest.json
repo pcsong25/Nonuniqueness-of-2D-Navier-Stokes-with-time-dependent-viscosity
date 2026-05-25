@@ -1,0 +1,38 @@
+{
+  "checkpoint_h5": "experiments/fem_manuscript/c3_spectrum_continuation/checkpoints/branchA_h006_refine_s125_140_k10/s140_h0p06_0p06_profile.h5",
+  "eig_max_it": 300,
+  "eig_shift": -1.0,
+  "eig_tol": 1e-08,
+  "eigenvalues": [
+    {
+      "imag_lambda": 0.0,
+      "mode_index": 1,
+      "real_lambda": -0.17510578023594836
+    },
+    {
+      "imag_lambda": 0.0,
+      "mode_index": 2,
+      "real_lambda": -0.1750764792420153
+    },
+    {
+      "imag_lambda": 0.0,
+      "mode_index": 3,
+      "real_lambda": -0.17316865118034597
+    }
+  ],
+  "k_solve": 10,
+  "max_checkpoint_geometry_diff": 0.0,
+  "mesh_stats": {
+    "cells": 202248,
+    "dofs_omega": 101649,
+    "dofs_psi": 101649,
+    "vertices": 101649
+  },
+  "mode_cache": "experiments/fem_manuscript/c3_spectrum_continuation/plots/s140_first3_eigenmodes/s140_first3_mode_arrays.npz",
+  "n_plot": 3,
+  "note": "Real parts of eigenmodes are plotted; eigenvector scaling/sign is arbitrary, so fields are normalized by max absolute value per mode.",
+  "output_dir": "experiments/fem_manuscript/c3_spectrum_continuation/plots/s140_first3_eigenmodes",
+  "reused_mode_cache": true,
+  "s": 140.0,
+  "wall_time_sec": 14.337979321368039
+}

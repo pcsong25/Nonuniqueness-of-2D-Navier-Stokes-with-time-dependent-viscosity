@@ -1,0 +1,6 @@
+class_id,representative,members,num_members,min_real_lambda_range,negative_count_range_first10,first_three_eigenvalues_by_member
+1,eigenmode1,eigenmode1,1,0.332156930322 to 0.332156930322,0 to 0,eigenmode1: 3.321569e-01+0.000000e+00i; 3.395913e-01+0.000000e+00i; 3.573378e-01-1.380716e-02i
+2,eigenmode3_minus,eigenmode3_minus,1,0.321118895898 to 0.321118895898,0 to 0,eigenmode3_minus: 3.211189e-01-3.980842e-03i; 3.211189e-01+3.980842e-03i; 3.518485e-01-1.160348e-02i
+3,eigenmode3_plus,eigenmode3_plus,1,0.320092145333 to 0.320092145333,0 to 0,eigenmode3_plus: 3.200921e-01-3.960937e-03i; 3.200921e-01+3.960937e-03i; 3.513352e-01-1.116343e-02i
+4,analytic_m2,analytic_m2; eigenmode2_minus,2,-0.174049493061 to -0.173993294329,1 to 1,analytic_m2: -1.739933e-01+0.000000e+00i; 3.381349e-01+0.000000e+00i; 3.544377e-01-8.797122e-03i | eigenmode2_minus: -1.740495e-01+0.000000e+00i; 3.382244e-01+0.000000e+00i; 3.544830e-01-1.102232e-02i
+5,artificial_m1,artificial_m1; eigenmode2_plus,2,-0.174494101562 to -0.174494101562,1 to 1,artificial_m1: -1.744941e-01+0.000000e+00i; 3.386975e-01+0.000000e+00i; 3.548991e-01-9.547441e-03i | eigenmode2_plus: -1.744941e-01+0.000000e+00i; 3.386975e-01+0.000000e+00i; 3.548991e-01-9.547441e-03i

@@ -1,0 +1,96 @@
+{
+  "boundary": {
+    "analytic": "barOmega(theta) = s cos(3 theta)",
+    "baseline_coeffs": {
+      "3": 27.5
+    },
+    "note": "FourierBC mirrors positive modes, so c3=s/2 gives exact s cos(3 theta).",
+    "s": 55.0
+  },
+  "completed_at": "2026-05-22T22:14:15.309276",
+  "eigs": {
+    "eig_residual_note": "not computed in the first coarse smoke runner",
+    "eigenvalues": [
+      {
+        "imag": 0.0,
+        "index": 1,
+        "real": 0.5003489514885129
+      },
+      {
+        "imag": -0.5233162149699805,
+        "index": 2,
+        "real": 0.6250774477376673
+      },
+      {
+        "imag": 0.5233162149699805,
+        "index": 3,
+        "real": 0.6250774477376673
+      },
+      {
+        "imag": -0.696544892979151,
+        "index": 4,
+        "real": 0.6994200688675338
+      },
+      {
+        "imag": 0.696544892979151,
+        "index": 5,
+        "real": 0.6994200688675338
+      },
+      {
+        "imag": -0.6965465839714287,
+        "index": 6,
+        "real": 0.699424763846431
+      },
+      {
+        "imag": 0.6965465839714287,
+        "index": 7,
+        "real": 0.699424763846431
+      },
+      {
+        "imag": -0.18133979415953502,
+        "index": 8,
+        "real": 1.2083442792589292
+      },
+      {
+        "imag": 0.18133979415953502,
+        "index": 9,
+        "real": 1.2083442792589292
+      },
+      {
+        "imag": -0.46353162765957373,
+        "index": 10,
+        "real": 1.2752535518268764
+      }
+    ],
+    "k_requested": 10,
+    "k_returned": 10,
+    "max_it": 300,
+    "shift": -1.0,
+    "tol": 1e-08,
+    "wall_time_sec": 391.1726126857102
+  },
+  "mesh": {
+    "h_max": 0.06,
+    "h_min": 0.06
+  },
+  "mesh_stats": {
+    "cells": 202248,
+    "dofs_omega": 101649,
+    "dofs_psi": 101649,
+    "vertices": 101649
+  },
+  "profile": {
+    "status": "completed",
+    "wall_time_sec": 436.3609731514007,
+    "weak_residuals": {
+      "Omega_l2": 6.47521072484119e-05,
+      "Psi_l2": 2.670029413326982e-13
+    }
+  },
+  "profile_checkpoint": "experiments/fem_manuscript/c3_spectrum_continuation/checkpoints/branchA_h006_refined_s0_120_step5_plus150_k10/s55_h0p06_0p06_profile.xdmf",
+  "run_tag": "branchA_h006_refined_s0_120_step5_plus150_k10",
+  "s": 55.0,
+  "started_at": "2026-05-22T22:00:21.658696",
+  "status": "completed",
+  "wall_time_sec": 833.6823943229392
+}

@@ -1,0 +1,12 @@
+{
+  "run_tag": "branchB_k4_mu2over3_h006_seeded_s225_240",
+  "s_values": [
+    225.0,
+    230.0,
+    235.0,
+    240.0
+  ],
+  "seed_profile_h5": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_s220_bifurcation_probe/s220_h0p06_0p06_profile.h5",
+  "seed_s": 220.0,
+  "status": "dry_run"
+}

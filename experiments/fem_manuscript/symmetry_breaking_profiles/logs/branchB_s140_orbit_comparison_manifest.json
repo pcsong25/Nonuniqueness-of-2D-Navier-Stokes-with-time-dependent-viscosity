@@ -1,0 +1,25 @@
+{
+  "outputs": {
+    "aligned_defects_plot_png": "experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_orbit_comparison/s140_three_broken_profiles_aligned_defects.png",
+    "all_profile_plot_png": "experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_orbit_comparison/s140_all_broken_profile_candidates.png",
+    "pairwise_csv": "experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_orbit_comparison_pairwise_distances.csv",
+    "three_profile_plot_png": "experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_orbit_comparison/s140_three_broken_profiles.png"
+  },
+  "polar_grid": {
+    "r_count": 72,
+    "r_max": 9.5,
+    "theta_count": 720
+  },
+  "profiles": {
+    "analytic_m2": "experiments/fem_manuscript/symmetry_breaking_profiles/checkpoints/branchB_s140_broken_profile_spectra/analytic_m2_phase0_eta0p25_profile.h5",
+    "eigenmode_mode2_signm1": "experiments/fem_manuscript/symmetry_breaking_profiles/checkpoints/branchB_s140_eigenmode23_perturb_probe/mode2_eta0p5_signm1_profile.h5",
+    "eigenmode_mode2_signp1": "experiments/fem_manuscript/symmetry_breaking_profiles/checkpoints/branchB_s140_eigenmode23_perturb_probe/mode2_eta0p5_signp1_profile.h5",
+    "eigenmode_mode3_signm1": "experiments/fem_manuscript/symmetry_breaking_profiles/checkpoints/branchB_s140_eigenmode23_perturb_probe/mode3_eta0p5_signm1_profile.h5",
+    "eigenmode_mode3_signp1": "experiments/fem_manuscript/symmetry_breaking_profiles/checkpoints/branchB_s140_eigenmode23_perturb_probe/mode3_eta0p5_signp1_profile.h5",
+    "saved_artificial_m1": "experiments/fem_manuscript/symmetry_breaking_profiles/checkpoints/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_profile.h5",
+    "saved_eigenmode_mode1": "experiments/fem_manuscript/symmetry_breaking_profiles/checkpoints/branchB_s140_eigenmode_perturb_probe/mode1_eta0p5_signp1_profile.h5",
+    "symmetric": "experiments/fem_manuscript/c3_spectrum_continuation/checkpoints/branchA_h006_refine_s125_140_k10/s140_h0p06_0p06_profile.h5"
+  },
+  "run_tag": "branchB_s140_orbit_comparison",
+  "status": "completed"
+}

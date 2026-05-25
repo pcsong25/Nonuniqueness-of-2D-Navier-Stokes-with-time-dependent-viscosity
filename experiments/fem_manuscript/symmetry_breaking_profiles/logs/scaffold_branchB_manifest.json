@@ -1,0 +1,44 @@
+{
+  "boundary": {
+    "analytic": "barOmega(theta) = s cos(3 theta)",
+    "baseline_coeffs": {
+      "3": 70.0
+    },
+    "note": "FourierBC mirrors positive modes, so c3=s/2 gives exact s cos(3 theta).",
+    "s": 140.0
+  },
+  "branch": "B_symmetry_breaking_profiles",
+  "mesh": {
+    "h_max": 0.18,
+    "h_min": 0.12
+  },
+  "notes": [
+    "No FEM solve is launched by the scaffold mode.",
+    "A single perturbed run is not enough to claim bifurcation or nonuniqueness."
+  ],
+  "perturbation": {
+    "amplitude": 0.2,
+    "boundary_policy": "interior perturbation only; boundary data remain exact s cos(3 theta)",
+    "family": "m1_core"
+  },
+  "planned_outputs": {
+    "checkpoint_dir": "experiments/fem_manuscript/symmetry_breaking_profiles/checkpoints/scaffold_branchB",
+    "log_file": "experiments/fem_manuscript/symmetry_breaking_profiles/logs/scaffold_branchB.log",
+    "plot_dir": "experiments/fem_manuscript/symmetry_breaking_profiles/plots/scaffold_branchB",
+    "profile_table": "experiments/fem_manuscript/symmetry_breaking_profiles/data/scaffold_branchB_profiles.csv"
+  },
+  "profile_targets": [
+    "symmetric",
+    "interior_perturbed"
+  ],
+  "required_diagnostics": [
+    "same boundary data check",
+    "weak residuals for both profiles",
+    "Poisson/compatibility diagnostics",
+    "non-threefold component fraction",
+    "Omega and psi separation norms",
+    "mesh refinement comparison"
+  ],
+  "run_tag": "scaffold_branchB",
+  "status": "scaffold_dry_run"
+}

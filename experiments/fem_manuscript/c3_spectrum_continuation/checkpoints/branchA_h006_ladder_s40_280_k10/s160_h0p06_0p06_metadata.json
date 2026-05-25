@@ -1,0 +1,33 @@
+{
+  "boundary": {
+    "analytic": "barOmega(theta) = s cos(3 theta)",
+    "baseline_coeffs": {
+      "3": 80.0
+    },
+    "note": "FourierBC mirrors positive modes, so c3=s/2 gives exact s cos(3 theta).",
+    "s": 160.0
+  },
+  "mesh": {
+    "h_max": 0.06,
+    "h_min": 0.06
+  },
+  "mesh_stats": {
+    "cells": 202248,
+    "dofs_omega": 101649,
+    "dofs_psi": 101649,
+    "vertices": 101649
+  },
+  "profile": {
+    "status": "completed",
+    "wall_time_sec": 529.1375168273225,
+    "weak_residuals": {
+      "Omega_l2": 15185624610589.76,
+      "Psi_l2": 0.041842251109885494
+    }
+  },
+  "profile_checkpoint": "experiments/fem_manuscript/c3_spectrum_continuation/checkpoints/branchA_h006_ladder_s40_280_k10/s160_h0p06_0p06_profile.xdmf",
+  "run_tag": "branchA_h006_ladder_s40_280_k10",
+  "s": 160.0,
+  "started_at": "2026-05-22T11:49:41.947927",
+  "status": "started"
+}

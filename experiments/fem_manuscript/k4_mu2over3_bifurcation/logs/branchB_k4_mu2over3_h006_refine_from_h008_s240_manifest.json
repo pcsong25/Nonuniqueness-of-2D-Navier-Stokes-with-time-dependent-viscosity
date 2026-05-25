@@ -1,0 +1,13 @@
+{
+  "h008_broken_h5": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s240_m3_phase0_eta0p5_profile.h5",
+  "h008_symmetric_h5": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s240_h0p08_0p08_profile.h5",
+  "mode": 4,
+  "mu": 0.6666666666666666,
+  "run_tag": "branchB_k4_mu2over3_h006_refine_from_h008_s240",
+  "s": 240.0,
+  "status": "dry_run",
+  "target_mesh": [
+    0.06,
+    0.06
+  ]
+}
