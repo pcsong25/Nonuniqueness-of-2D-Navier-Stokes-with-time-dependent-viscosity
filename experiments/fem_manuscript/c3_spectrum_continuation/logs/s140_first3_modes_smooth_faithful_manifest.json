@@ -1,0 +1,13 @@
+{
+  "cmap": "seismic",
+  "color_scale": "shared normalized scale [-1, 1], no percentile clipping or saturation.",
+  "levels": 1024,
+  "mode_cache": "experiments/fem_manuscript/c3_spectrum_continuation/plots/s140_first3_eigenmodes/s140_first3_mode_arrays.npz",
+  "normalization": "Each eigenmode is divided by max(abs(Re(deltaOmega))) before plotting; eigenvector amplitude is arbitrary.",
+  "outputs": {
+    "pdf": "experiments/fem_manuscript/c3_spectrum_continuation/plots/s140_first3_eigenmodes/s140_first3_OmegaRe_heatmap_panel_faithful_smooth.pdf",
+    "png": "experiments/fem_manuscript/c3_spectrum_continuation/plots/s140_first3_eigenmodes/s140_first3_OmegaRe_heatmap_panel_faithful_smooth.png"
+  },
+  "profile_h5": "experiments/fem_manuscript/c3_spectrum_continuation/checkpoints/branchA_h006_refine_s125_140_k10/s140_h0p06_0p06_profile.h5",
+  "status": "completed"
+}

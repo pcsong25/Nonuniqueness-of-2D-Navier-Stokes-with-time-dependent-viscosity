@@ -1,0 +1,16 @@
+{
+  "epsilon": 0.01,
+  "mesh": {
+    "h_max": 0.06,
+    "h_min": 0.06
+  },
+  "run_tag": "dirac_pair_eps0p01_M50_h0p06_0p06_sigma40_from30",
+  "seed_profile_h5": "experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_eps0p01_M50_h0p06_0p06_sigma_ladder/sigma30_eps0p01_M50_h0p06_0p06_profile.h5",
+  "seed_sigma": 30.0,
+  "sigma_values": [
+    40.0
+  ],
+  "status": "initialized",
+  "stop_min_real_below": 0.0,
+  "truncation_M": 50
+}

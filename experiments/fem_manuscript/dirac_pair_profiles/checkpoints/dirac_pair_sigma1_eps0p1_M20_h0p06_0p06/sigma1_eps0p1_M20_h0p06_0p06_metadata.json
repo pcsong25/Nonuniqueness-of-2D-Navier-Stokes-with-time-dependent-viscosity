@@ -1,0 +1,82 @@
+{
+  "baseline": {
+    "R": 150.0,
+    "Rdom": 10.0,
+    "max_newton": 48,
+    "mu": 0.8,
+    "sigma_steps": 21,
+    "tol_newton": 1e-08
+  },
+  "boundary_diagnostics": {
+    "max_barOmega": 8.862269201529196,
+    "mean_sampled_barOmega": 1.0019190308033998,
+    "min_barOmega": -3.970759852158036e-08,
+    "nonzero_positive_coefficients": {
+      "0": 1.0,
+      "10": 0.3678794411714422,
+      "12": 0.23692775868212165,
+      "14": 0.14085842092104497,
+      "16": 0.07730474044329971,
+      "18": 0.03916389509898703,
+      "2": 0.9607894391523232,
+      "20": 0.018315638888734165,
+      "22": 0.007907054051593435,
+      "24": 0.0031511115984444358,
+      "26": 0.0011592291739045894,
+      "28": 0.0003936690406550779,
+      "30": 0.00012340980408667932,
+      "32": 3.5712849641635144e-05,
+      "34": 9.540162873079214e-06,
+      "36": 2.3525752000097624e-06,
+      "38": 5.35534780279309e-07,
+      "4": 0.8521437889662113,
+      "40": 1.1253517471925872e-07,
+      "6": 0.697676326071031,
+      "8": 0.5272924240430485
+    }
+  },
+  "boundary_formula": "sigma * (1 + 2 * sum_{m=1}^M exp(-4 epsilon^2 m^2) cos(2m theta))",
+  "completed_at": "2026-06-19T18:03:18.285692",
+  "mesh": {
+    "h_max": 0.06,
+    "h_min": 0.06
+  },
+  "mesh_stats": {
+    "cells": 202248,
+    "dofs_omega": 101649,
+    "dofs_psi": 101649,
+    "vertices": 101649
+  },
+  "outputs": {
+    "heatmap_pdf": "experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma1_eps0p1_M20_h0p06_0p06/sigma1_eps0p1_M20_h0p06_0p06_omega_heatmap.pdf",
+    "heatmap_png": "experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma1_eps0p1_M20_h0p06_0p06/sigma1_eps0p1_M20_h0p06_0p06_omega_heatmap.png",
+    "profile_h5": "experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_sigma1_eps0p1_M20_h0p06_0p06/sigma1_eps0p1_M20_h0p06_0p06_profile.h5",
+    "profile_xdmf": "experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_sigma1_eps0p1_M20_h0p06_0p06/sigma1_eps0p1_M20_h0p06_0p06_profile.xdmf",
+    "summary_csv": "experiments/fem_manuscript/dirac_pair_profiles/data/dirac_pair_sigma1_eps0p1_M20_h0p06_0p06_profile_summary.csv"
+  },
+  "parameters": {
+    "epsilon": 0.1,
+    "fourier_cutoff": 40,
+    "sigma": 1.0,
+    "truncation_M": 20
+  },
+  "planned_outputs": {
+    "checkpoint_dir": "experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_sigma1_eps0p1_M20_h0p06_0p06",
+    "data_csv": "experiments/fem_manuscript/dirac_pair_profiles/data/dirac_pair_sigma1_eps0p1_M20_h0p06_0p06_profile_summary.csv",
+    "log_file": "experiments/fem_manuscript/dirac_pair_profiles/logs/dirac_pair_sigma1_eps0p1_M20_h0p06_0p06.log",
+    "plot_dir": "experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma1_eps0p1_M20_h0p06_0p06"
+  },
+  "plot_path": "experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma1_eps0p1_M20_h0p06_0p06/sigma1_eps0p1_M20_h0p06_0p06_omega_heatmap.pdf",
+  "profile": {
+    "wall_time_sec": 387.0049839038402,
+    "weak_residuals": {
+      "Omega_l2": 4.314922684996029e-06,
+      "Psi_l2": 4.1568498869276343e-14
+    }
+  },
+  "profile_checkpoint": "experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_sigma1_eps0p1_M20_h0p06_0p06/sigma1_eps0p1_M20_h0p06_0p06_profile.xdmf",
+  "run_tag": "dirac_pair_sigma1_eps0p1_M20_h0p06_0p06",
+  "started_at": "2026-06-19T17:56:32.120719",
+  "status": "completed",
+  "wall_time_sec": 406.17353516072035
+}

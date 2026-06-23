@@ -1,0 +1,11 @@
+
+[2026-06-19T17:56:07.080640] failed
+ModuleNotFoundError("No module named 'io_utils'")
+Traceback (most recent call last):
+  File "/Users/caltech/Peicong/euler-selfsimilar-eigs/experiments/fem_manuscript/dirac_pair_profiles/run_dirac_pair_profile.py", line 396, in main
+    result = run_profile(args, manifest)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caltech/Peicong/euler-selfsimilar-eigs/experiments/fem_manuscript/dirac_pair_profiles/run_dirac_pair_profile.py", line 244, in run_profile
+    from io_utils import write_xdmf
+ModuleNotFoundError: No module named 'io_utils'
+

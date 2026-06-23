@@ -1,0 +1,35 @@
+{
+  "baseline": {
+    "R": 150.0,
+    "Rdom": 10.0,
+    "max_newton": 48,
+    "mu": 0.8,
+    "sigma_steps": 21,
+    "tol_newton": 1e-08
+  },
+  "boundary_formula": "sigma * (1 + 2 * sum_{m=1}^M exp(-4 epsilon^2 m^2) cos(2m theta))",
+  "eigs": {
+    "k_requested": 6,
+    "max_it": 300,
+    "shift": -1.0,
+    "tol": 1e-08
+  },
+  "mesh": {
+    "h_max": 0.06,
+    "h_min": 0.06
+  },
+  "parameters": {
+    "epsilon": 0.01,
+    "fourier_cutoff": 100,
+    "sigma": 50.0,
+    "truncation_M": 50
+  },
+  "planned_outputs": {
+    "data_csv": "experiments/fem_manuscript/dirac_pair_profiles/data/dirac_pair_sigma50_eps0p01_M50_h0p06_0p06_k6_eigs_eigenvalues.csv",
+    "log_file": "experiments/fem_manuscript/dirac_pair_profiles/logs/dirac_pair_sigma50_eps0p01_M50_h0p06_0p06_k6_eigs.log",
+    "metadata": "experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_sigma50_eps0p01_M50_h0p06_0p06_k6_eigs/dirac_pair_sigma50_eps0p01_M50_h0p06_0p06_k6_eigs_metadata.json"
+  },
+  "profile_h5": "experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_eps0p01_M50_h0p06_0p06_sigma_ladder/sigma50_eps0p01_M50_h0p06_0p06_profile.h5",
+  "run_tag": "dirac_pair_sigma50_eps0p01_M50_h0p06_0p06_k6_eigs",
+  "status": "initialized"
+}

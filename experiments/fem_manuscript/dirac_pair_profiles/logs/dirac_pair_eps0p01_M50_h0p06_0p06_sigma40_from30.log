@@ -1,0 +1,12 @@
+
+[2026-06-20T17:20:31.754605] failed
+UnboundLocalError("cannot access local variable 'final' where it is not associated with a value")
+Traceback (most recent call last):
+  File "/Users/caltech/Peicong/euler-selfsimilar-eigs/experiments/fem_manuscript/dirac_pair_profiles/run_dirac_pair_sigma_ladder.py", line 484, in main
+    result = solve_point(args, run_tag, float(sigma), prev_sigma, prev_h5, out_dirs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/caltech/Peicong/euler-selfsimilar-eigs/experiments/fem_manuscript/dirac_pair_profiles/run_dirac_pair_sigma_ladder.py", line 311, in solve_point
+    "newton_iterations": int(final["iteration"]),
+                             ^^^^^
+UnboundLocalError: cannot access local variable 'final' where it is not associated with a value
+

@@ -1,0 +1,112 @@
+{
+  "baseline": {
+    "R": 150.0,
+    "Rdom": 10.0,
+    "max_newton": 48,
+    "mu": 0.8,
+    "sigma_steps": 21,
+    "tol_newton": 1e-08
+  },
+  "boundary_diagnostics": {
+    "max_barOmega": 750.4784016010658,
+    "mean_sampled_barOmega": 10.180736734586512,
+    "min_barOmega": -67.7101825904258,
+    "nonzero_positive_coefficients": {
+      "0": 10.0,
+      "10": 9.900498337491682,
+      "100": 3.6787944117144233,
+      "12": 9.85703184122443,
+      "14": 9.805908312024284,
+      "16": 9.747249016017939,
+      "18": 9.681192569165628,
+      "2": 9.996000799893345,
+      "20": 9.607894391523232,
+      "22": 9.52752609803211,
+      "24": 9.440274829178357,
+      "26": 9.346342525174487,
+      "28": 9.245945147602107,
+      "30": 9.139311852712282,
+      "32": 9.02668412080942,
+      "34": 8.908314846343089,
+      "36": 8.784467393499312,
+      "38": 8.65541462221766,
+      "4": 9.984012793176063,
+      "40": 8.521437889662113,
+      "42": 8.382826032242335,
+      "44": 8.239874333317031,
+      "46": 8.09288348171332,
+      "48": 7.942158526165467,
+      "50": 7.788007830714049,
+      "52": 7.630742036013361,
+      "54": 7.470673031371956,
+      "56": 7.308112942200039,
+      "58": 7.143373137359575,
+      "6": 9.964064722309933,
+      "60": 6.97676326071031,
+      "62": 6.8085902909192475,
+      "64": 6.639157633354735,
+      "66": 6.468764247621298,
+      "68": 6.297703814010031,
+      "70": 6.126263941844162,
+      "72": 5.954725422392697,
+      "74": 5.783361528709441,
+      "76": 5.612437364432349,
+      "78": 5.4422092632520735,
+      "8": 9.93620436379149,
+      "80": 5.272924240430486,
+      "82": 5.104819497422892,
+      "84": 4.938121980333461,
+      "86": 4.773047992614457,
+      "88": 4.609802862108335,
+      "90": 4.448580662229411,
+      "92": 4.28956398679073,
+      "94": 4.132923777703442,
+      "96": 3.978819204512046,
+      "98": 3.827397594480691
+    }
+  },
+  "boundary_formula": "sigma * (1 + 2 * sum_{m=1}^M exp(-4 epsilon^2 m^2) cos(2m theta))",
+  "completed_at": "2026-06-19T18:41:47.551812",
+  "mesh": {
+    "h_max": 0.06,
+    "h_min": 0.06
+  },
+  "mesh_stats": {
+    "cells": 202248,
+    "dofs_omega": 101649,
+    "dofs_psi": 101649,
+    "vertices": 101649
+  },
+  "outputs": {
+    "heatmap_pdf": "experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06/sigma10_eps0p01_M50_h0p06_0p06_omega_heatmap.pdf",
+    "heatmap_png": "experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06/sigma10_eps0p01_M50_h0p06_0p06_omega_heatmap.png",
+    "profile_h5": "experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06/sigma10_eps0p01_M50_h0p06_0p06_profile.h5",
+    "profile_xdmf": "experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06/sigma10_eps0p01_M50_h0p06_0p06_profile.xdmf",
+    "summary_csv": "experiments/fem_manuscript/dirac_pair_profiles/data/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06_profile_summary.csv"
+  },
+  "parameters": {
+    "epsilon": 0.01,
+    "fourier_cutoff": 100,
+    "sigma": 10.0,
+    "truncation_M": 50
+  },
+  "planned_outputs": {
+    "checkpoint_dir": "experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06",
+    "data_csv": "experiments/fem_manuscript/dirac_pair_profiles/data/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06_profile_summary.csv",
+    "log_file": "experiments/fem_manuscript/dirac_pair_profiles/logs/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06.log",
+    "plot_dir": "experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06"
+  },
+  "plot_path": "experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06/sigma10_eps0p01_M50_h0p06_0p06_omega_heatmap.pdf",
+  "profile": {
+    "wall_time_sec": 488.75531080178916,
+    "weak_residuals": {
+      "Omega_l2": 0.00440270712531795,
+      "Psi_l2": 4.110743390479999e-13
+    }
+  },
+  "profile_checkpoint": "experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06/sigma10_eps0p01_M50_h0p06_0p06_profile.xdmf",
+  "run_tag": "dirac_pair_sigma10_eps0p01_M50_h0p06_0p06",
+  "started_at": "2026-06-19T18:33:29.900770",
+  "status": "completed",
+  "wall_time_sec": 497.661410484463
+}

@@ -1,0 +1,109 @@
+{
+  "baseline": {
+    "R": 150.0,
+    "Rdom": 10.0,
+    "max_newton": 48,
+    "mu": 0.8,
+    "sigma_steps": 21,
+    "tol_newton": 1e-08
+  },
+  "boundary_formula": "sigma * (1 + 2 * sum_{m=1}^M exp(-4 epsilon^2 m^2) cos(2m theta))",
+  "completed_at": "2026-06-19T18:48:39.914906",
+  "eigs": {
+    "eig_residual_note": "not computed; baseline SLEPc tolerance was used",
+    "eigenvalues": [
+      {
+        "imag": 0.0,
+        "index": 1,
+        "real": 0.5533147291806453
+      },
+      {
+        "imag": 0.0,
+        "index": 2,
+        "real": 1.3666852560848826
+      },
+      {
+        "imag": 0.0,
+        "index": 3,
+        "real": 1.4347008020242673
+      },
+      {
+        "imag": -3.583333699757307,
+        "index": 4,
+        "real": 2.1628648243970154
+      },
+      {
+        "imag": 3.583333699757307,
+        "index": 5,
+        "real": 2.1628648243970154
+      },
+      {
+        "imag": 0.0,
+        "index": 6,
+        "real": 2.229396702061435
+      },
+      {
+        "imag": 0.0,
+        "index": 7,
+        "real": 2.6086072963644806
+      },
+      {
+        "imag": 0.0,
+        "index": 8,
+        "real": 2.975841477654583
+      },
+      {
+        "imag": -2.7264429316612926,
+        "index": 9,
+        "real": 3.0849289362008046
+      },
+      {
+        "imag": 2.7264429316612926,
+        "index": 10,
+        "real": 3.0849289362008046
+      }
+    ],
+    "k_requested": 10,
+    "k_returned": 10,
+    "max_it": 300,
+    "shift": -1.0,
+    "tol": 1e-08,
+    "wall_time_sec": 382.94865963049233
+  },
+  "mesh": {
+    "h_max": 0.06,
+    "h_min": 0.06
+  },
+  "mesh_stats": {
+    "cells": 202248,
+    "dofs_omega": 101649,
+    "dofs_psi": 101649,
+    "vertices": 101649
+  },
+  "outputs": {
+    "eigenvalues_csv": "experiments/fem_manuscript/dirac_pair_profiles/data/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06_k10_eigs_eigenvalues.csv"
+  },
+  "parameters": {
+    "epsilon": 0.01,
+    "fourier_cutoff": 100,
+    "sigma": 10.0,
+    "truncation_M": 50
+  },
+  "planned_outputs": {
+    "data_csv": "experiments/fem_manuscript/dirac_pair_profiles/data/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06_k10_eigs_eigenvalues.csv",
+    "log_file": "experiments/fem_manuscript/dirac_pair_profiles/logs/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06_k10_eigs.log",
+    "metadata": "experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06_k10_eigs/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06_k10_eigs_metadata.json"
+  },
+  "profile": {
+    "weak_residuals": {
+      "Omega_l2": 0.00440270712531795,
+      "Psi_l2": 4.110743390479999e-13
+    }
+  },
+  "profile_checkpoint_geometry_diff": 0.0,
+  "profile_h5": "experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06/sigma10_eps0p01_M50_h0p06_0p06_profile.h5",
+  "run_tag": "dirac_pair_sigma10_eps0p01_M50_h0p06_0p06_k10_eigs",
+  "started_at": "2026-06-19T18:42:09.821685",
+  "status": "completed",
+  "wall_time_sec": 390.0994044523686
+}

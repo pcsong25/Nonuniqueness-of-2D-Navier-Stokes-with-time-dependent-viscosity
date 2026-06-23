@@ -1,0 +1,21 @@
+{
+  "diff_percentile": 99.2,
+  "field_percentile": 99.6,
+  "outputs": {
+    "clean_heatmap_pdf": "experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_omega_comparison_heatmap_clean.pdf",
+    "clean_heatmap_png": "experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_omega_comparison_heatmap_clean.png",
+    "difference_detail_pdf": "experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_omega_difference_detail_manuscript.pdf",
+    "difference_detail_png": "experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_omega_difference_detail_manuscript.png",
+    "faithful_heatmap_pdf": "experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_omega_comparison_heatmap_faithful.pdf",
+    "faithful_heatmap_png": "experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_omega_comparison_heatmap_faithful.png",
+    "faithful_smooth_heatmap_pdf": "experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_omega_comparison_heatmap_faithful_smooth.pdf",
+    "faithful_smooth_heatmap_png": "experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_omega_comparison_heatmap_faithful_smooth.png",
+    "full_pdf": "experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_omega_comparison_manuscript.pdf",
+    "full_png": "experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_omega_comparison_manuscript.png",
+    "zoom_pdf": "experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_omega_comparison_zoom_manuscript.pdf",
+    "zoom_png": "experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_omega_comparison_zoom_manuscript.png"
+  },
+  "run_tag": "branchB_s140_artificial_localized_probe",
+  "status": "completed",
+  "zoom_radius": 4.0
+}

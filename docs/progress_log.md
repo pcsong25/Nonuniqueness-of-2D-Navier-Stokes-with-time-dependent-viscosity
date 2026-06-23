@@ -3679,3 +3679,352 @@ Artifacts:
   `experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_spatial_symmetry_diagnostics_summary.csv`.
 - Axis residuals:
   `experiments/fem_manuscript/symmetry_breaking_profiles/data/branchB_s140_spatial_symmetry_diagnostics_axis_residuals.csv`.
+
+## 2026-05-28 — Branch B s=140 artificial-perturbation manuscript plots
+
+Goal:
+- Improve the readability of the simple symmetry-breaking comparison plot for
+  the artificial localized `m=1`, `eta=0.25` candidate at `sigma=140`.
+
+Implemented:
+- Added
+  `experiments/fem_manuscript/symmetry_breaking_profiles/plot_s140_artificial_manuscript.py`.
+- Regenerated larger, higher-resolution manuscript-style plots with larger
+  fonts, explicit symmetric color levels, contour overlays, zoom panels, and a
+  difference-focused figure.
+- The original plot was left untouched for comparison.
+
+Artifacts:
+- Full comparison:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_omega_comparison_manuscript.pdf`
+  and `.png`.
+- Clean heatmap-only comparison with shared color scale and no suptitle:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_omega_comparison_heatmap_clean.pdf`
+  and `.png`.
+- Faithful no-saturation heatmap with true shared max scale:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_omega_comparison_heatmap_faithful.pdf`
+  and `.png`.
+- Smooth faithful heatmap with 1024 color levels and higher export DPI:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_omega_comparison_heatmap_faithful_smooth.pdf`
+  and `.png`.
+- Full plus zoom:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_omega_comparison_zoom_manuscript.pdf`
+  and `.png`.
+- Difference detail:
+  `experiments/fem_manuscript/symmetry_breaking_profiles/plots/branchB_s140_artificial_localized_probe/m1_phase0_eta0p25_omega_difference_detail_manuscript.pdf`
+  and `.png`.
+
+## 2026-05-28 — Smooth faithful heatmaps for eigenmodes and k=4 scout
+
+Goal:
+- Apply the same heatmap-only, no-suptitle, no-contour, high-contrast plotting
+  style to the saved `sigma=140` unstable eigenmode panel and the saved
+  `k=4`, `mu=2/3`, `s=240`, `h=0.08` bifurcation scout comparison.
+
+Implemented:
+- Added
+  `experiments/fem_manuscript/c3_spectrum_continuation/plot_s140_first3_modes_smooth_faithful.py`.
+- Added
+  `experiments/fem_manuscript/k4_mu2over3_bifurcation/plot_s240_bifurcation_smooth_faithful.py`.
+- Both scripts are pure post-processing of saved NPZ/HDF5 data. No FEM solve or
+  eigensolve was launched.
+
+Plot conventions:
+- Eigenmodes are normalized panel-by-panel by
+  `max(abs(Re(deltaOmega)))`, since eigenvector amplitude is arbitrary; the
+  shared displayed scale is `[-1,1]`.
+- The `k=4` profile comparison uses the true shared maximum over the symmetric,
+  symmetry-breaking, and difference fields, with no percentile clipping.
+- Both figures use 1024 color levels, no contour overlays, and no overall title.
+
+Artifacts:
+- `sigma=140` first-three vorticity eigenmodes:
+  `experiments/fem_manuscript/c3_spectrum_continuation/plots/s140_first3_eigenmodes/s140_first3_OmegaRe_heatmap_panel_faithful_smooth.pdf`
+  and `.png`.
+- `k=4`, `mu=2/3`, `s=240` bifurcation scout:
+  `experiments/fem_manuscript/k4_mu2over3_bifurcation/plots/branchB_k4_mu2over3_h008_s200_320_scout/s240_m3_phase0_eta0p5_omega_comparison_heatmap_faithful_smooth.pdf`
+  and `.png`.
+
+## 2026-06-19 — Regularized two-Dirac boundary profile, first FEM run
+
+Goal:
+- Use the baseline FEM continuation/Newton profile solver for the boundary
+  family
+  `sigma * (1 + 2 * sum_{m=1}^M exp(-4 epsilon^2 m^2) cos(2m theta))`,
+  interpreted as a smooth two-Dirac approximation in the angular variable.
+
+Implemented:
+- Added
+  `experiments/fem_manuscript/dirac_pair_profiles/run_dirac_pair_profile.py`.
+- The script is resumable and writes a manifest, XDMF/HDF5 profile checkpoint,
+  CSV summary, plot, log file, and registry row.
+- Fourier coefficients use the baseline `FourierBC` convention:
+  `c_0=sigma`, `c_{2m}=sigma*exp(-4 epsilon^2 m^2)` for `1 <= m <= M`;
+  mirroring then gives the intended `2 c_{2m} cos(2m theta)` terms.
+
+Run:
+- Parameters: `sigma=1`, `epsilon=0.1`, `M=20`, Fourier cutoff `40`,
+  `mu=0.8`, `R=150`, `Rdom=10`, `h_min=h_max=0.06`,
+  `sigma_steps=21`, `max_newton=48`.
+- Mesh: `101649` vertices, `202248` cells.
+- Continuation reached final amplitude with Newton convergence in three
+  iterations at the printed continuation checkpoints.
+- Weak residuals: `Omega_l2=4.314922684996029e-06`,
+  `Psi_l2=4.1568498869276343e-14`.
+
+Artifacts:
+- Profile checkpoint:
+  `experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_sigma1_eps0p1_M20_h0p06_0p06/sigma1_eps0p1_M20_h0p06_0p06_profile.xdmf`
+  and `.h5`.
+- Metadata:
+  `experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_sigma1_eps0p1_M20_h0p06_0p06/sigma1_eps0p1_M20_h0p06_0p06_metadata.json`.
+- Summary CSV:
+  `experiments/fem_manuscript/dirac_pair_profiles/data/dirac_pair_sigma1_eps0p1_M20_h0p06_0p06_profile_summary.csv`.
+- Vorticity heatmap:
+  `experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma1_eps0p1_M20_h0p06_0p06/sigma1_eps0p1_M20_h0p06_0p06_omega_heatmap.pdf`
+  and `.png`.
+
+## 2026-06-19 — Regularized two-Dirac boundary, first 10 eigenvalues
+
+Goal:
+- Compute the first 10 baseline linearized eigenvalues around the saved
+  `sigma=1`, `epsilon=0.1`, `M=20`, `h=0.06` regularized two-Dirac profile.
+
+Implemented:
+- Added
+  `experiments/fem_manuscript/dirac_pair_profiles/run_dirac_pair_eigenvalues.py`.
+- The script rebuilds the same baseline FEM context, loads the saved profile
+  checkpoint, verifies zero mesh-geometry mismatch, recomputes weak residuals,
+  and runs the baseline shift-invert eigenvalue solver.
+
+Run:
+- Profile checkpoint geometry difference: `0.0`.
+- Weak residuals reused/recomputed: `Omega_l2=4.314922684996029e-06`,
+  `Psi_l2=4.1568498869276343e-14`.
+- Eigensolver: `k=10`, shift `-1.0`, tolerance `1e-8`, max iterations `300`.
+- Eigensolve wall time: `168.78` seconds.
+- All first 10 returned eigenvalues have positive real part for this first
+  `sigma=1` run.
+
+Eigenvalues:
+- `0.5957586169920632 + 0.0i`
+- `1.3967728975258118 + 0.0i`
+- `1.4032392224581174 + 0.0i`
+- `2.1994678917995603 - 0.4012921547620468i`
+- `2.1994678917995603 + 0.4012921547620468i`
+- `2.2015904560067883 + 0.0i`
+- `3.000485999051967 - 0.6499796615811361i`
+- `3.000485999051967 + 0.6499796615811361i`
+- `3.0063558429546484 - 0.13764613709114873i`
+- `3.0063558429546484 + 0.13764613709114873i`
+
+Artifacts:
+- Eigenvalue CSV:
+  `experiments/fem_manuscript/dirac_pair_profiles/data/dirac_pair_sigma1_eps0p1_M20_h0p06_0p06_k10_eigs_eigenvalues.csv`.
+- Metadata:
+  `experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_sigma1_eps0p1_M20_h0p06_0p06_k10_eigs/dirac_pair_sigma1_eps0p1_M20_h0p06_0p06_k10_eigs_metadata.json`.
+
+## 2026-06-19 — Regularized two-Dirac boundary M=50 truncation check
+
+Goal:
+- Repeat the regularized two-Dirac boundary profile/eigenvalue computation
+  with `M=50`, keeping `sigma=1`, `epsilon=0.1`, and `h_min=h_max=0.06`
+  unchanged.
+
+Run:
+- Boundary Fourier cutoff: `100`.
+- Mesh: `101649` vertices, `202248` cells.
+- Profile weak residuals: `Omega_l2=4.314922679412399e-06`,
+  `Psi_l2=4.153811497179291e-14`.
+- Eigensolver: `k=10`, shift `-1.0`, tolerance `1e-8`, max iterations `300`.
+- Eigensolve wall time: `167.80` seconds.
+
+Eigenvalues:
+- `0.5957586169073719 + 0.0i`
+- `1.3967728975259601 + 0.0i`
+- `1.4032392224580668 + 0.0i`
+- `2.1994678919588404 - 0.40129215477676833i`
+- `2.1994678919588404 + 0.40129215477676833i`
+- `2.20159045594505 + 0.0i`
+- `3.000485999087805 - 0.6499796615839294i`
+- `3.000485999087805 + 0.6499796615839294i`
+- `3.006355842908773 - 0.13764613714008023i`
+- `3.006355842908773 + 0.13764613714008023i`
+
+Truncation comparison:
+- Compared against the `M=20`, `epsilon=0.1` run at the same mesh and
+  physical parameters.
+- Maximum complex difference among the first 10 eigenvalues:
+  `1.599590169019541e-10`.
+- This confirms that for `epsilon=0.1`, the `M=20` truncation already captured
+  the first ten eigenvalues to the displayed precision.
+
+Artifacts:
+- Heatmap:
+  `experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma1_eps0p1_M50_h0p06_0p06/sigma1_eps0p1_M50_h0p06_0p06_omega_heatmap.pdf`
+  and `.png`.
+- Profile checkpoint:
+  `experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_sigma1_eps0p1_M50_h0p06_0p06/sigma1_eps0p1_M50_h0p06_0p06_profile.xdmf`
+  and `.h5`.
+- Eigenvalue CSV:
+  `experiments/fem_manuscript/dirac_pair_profiles/data/dirac_pair_sigma1_eps0p1_M50_h0p06_0p06_k10_eigs_eigenvalues.csv`.
+- Eigenvalue metadata:
+  `experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_sigma1_eps0p1_M50_h0p06_0p06_k10_eigs/dirac_pair_sigma1_eps0p1_M50_h0p06_0p06_k10_eigs_metadata.json`.
+
+## 2026-06-19 — Regularized two-Dirac boundary, epsilon=0.01 and sigma=10
+
+Goal:
+- Repeat the regularized two-Dirac profile/eigenvalue computation with sharper
+  angular regularization and larger amplitude: `epsilon=0.01`, `sigma=10`,
+  `M=50`, `h_min=h_max=0.06`.
+
+Run:
+- Boundary Fourier cutoff: `100`.
+- Boundary sampled range: approximately `[-67.7102, 750.4784]`.
+- Mesh: `101649` vertices, `202248` cells.
+- Profile weak residuals: `Omega_l2=0.00440270712531795`,
+  `Psi_l2=4.110743390479999e-13`.
+- The vorticity residual is higher than in the smoother `epsilon=0.1` cases but
+  remains below the `1e-2` profile gate used in earlier Branch A scripts.
+- Eigensolver: `k=10`, shift `-1.0`, tolerance `1e-8`, max iterations `300`.
+- Eigensolve wall time: `382.95` seconds.
+- No negative-real eigenvalues appeared among the first 10 returned eigenvalues.
+
+Eigenvalues:
+- `0.5533147291806453 + 0.0i`
+- `1.3666852560848826 + 0.0i`
+- `1.4347008020242673 + 0.0i`
+- `2.1628648243970154 - 3.583333699757307i`
+- `2.1628648243970154 + 3.583333699757307i`
+- `2.229396702061435 + 0.0i`
+- `2.6086072963644806 + 0.0i`
+- `2.975841477654583 + 0.0i`
+- `3.0849289362008046 - 2.7264429316612926i`
+- `3.0849289362008046 + 2.7264429316612926i`
+
+Artifacts:
+- Heatmap:
+  `experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06/sigma10_eps0p01_M50_h0p06_0p06_omega_heatmap.pdf`
+  and `.png`.
+- Profile checkpoint:
+  `experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06/sigma10_eps0p01_M50_h0p06_0p06_profile.xdmf`
+  and `.h5`.
+- Eigenvalue CSV:
+  `experiments/fem_manuscript/dirac_pair_profiles/data/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06_k10_eigs_eigenvalues.csv`.
+- Eigenvalue metadata:
+  `experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06_k10_eigs/dirac_pair_sigma10_eps0p01_M50_h0p06_0p06_k10_eigs_metadata.json`.
+
+## 2026-06-20 — Regularized two-Dirac sigma ladder, first stride
+
+Goal:
+- Start a seeded sigma ladder for `epsilon=0.01`, `M=50`,
+  `h_min=h_max=0.06`, using the saved `sigma=10` profile as the seed.
+- Use stride `20` and compute the first 10 eigenvalues at each accepted point,
+  stopping when a negative-real eigenvalue appears.
+
+Implemented:
+- Added
+  `experiments/fem_manuscript/dirac_pair_profiles/run_dirac_pair_sigma_ladder.py`.
+- The script scales the previous profile by `sigma_new/sigma_old`, resets the
+  exact boundary values, recomputes `psi` with the baseline Poisson solver, and
+  runs fixed-boundary Newton before computing eigenvalues.
+- After observing a long eigensolve at `sigma=50`, patched the script so future
+  interrupted runs preserve profile residual metadata immediately after the
+  profile stage, before the eigensolve starts.
+
+Completed point:
+- `sigma=30`.
+- Source seed: `sigma=10`.
+- Newton iterations: `7`.
+- Weak residuals: `Omega_l2=0.012885141976322281`,
+  `Psi_l2=1.347985281820043e-12`.
+- The absolute vorticity residual is above the old `1e-2` gate, but its
+  residual-per-amplitude is close to the `sigma=10` value; this should be
+  treated as acceptable for exploration but not yet final manuscript-quality
+  evidence without refinement/relative diagnostics.
+- First 10 eigenvalues all have positive real part.
+- Minimum real part: `0.472410589330325`.
+
+Eigenvalues at `sigma=30`:
+- `0.472410589330325 + 0.0i`
+- `1.297355117857288 + 0.0i`
+- `1.5102769063329204 + 0.0i`
+- `2.241125990254062 + 0.0i`
+- `2.632119031347366 + 0.0i`
+- `3.031293950926301 + 0.0i`
+- `4.062005492912718 - 0.3636579395005389i`
+- `4.062005492912718 + 0.3636579395005389i`
+- `4.206046134255045 - 1.0462419960146558i`
+- `4.206046134255045 + 1.0462419960146558i`
+
+Interrupted point:
+- `sigma=50`.
+- The seeded profile checkpoint and heatmap were written.
+- The eigensolve was interrupted after it ran much longer than prior points;
+  no eigenvalue rows were saved for `sigma=50`.
+- Metadata was marked `interrupted_during_eigensolve`.
+
+Artifacts:
+- Ladder summary:
+  `experiments/fem_manuscript/dirac_pair_profiles/data/dirac_pair_eps0p01_M50_h0p06_0p06_sigma_ladder_summary.csv`.
+- Ladder eigenvalues:
+  `experiments/fem_manuscript/dirac_pair_profiles/data/dirac_pair_eps0p01_M50_h0p06_0p06_sigma_ladder_eigenvalues.csv`.
+- `sigma=30` heatmap:
+  `experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_eps0p01_M50_h0p06_0p06_sigma_ladder/sigma30_eps0p01_M50_h0p06_0p06_omega_heatmap.pdf`
+  and `.png`.
+- `sigma=50` partial profile heatmap:
+  `experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_eps0p01_M50_h0p06_0p06_sigma_ladder/sigma50_eps0p01_M50_h0p06_0p06_omega_heatmap.pdf`
+  and `.png`.
+
+## 2026-06-20 — Sigma=50 low-spectrum resume attempt
+
+Goal:
+- Resume only the `sigma=50`, `epsilon=0.01`, `M=50`, `h=0.06` eigenvalue
+  computation from the saved profile.
+- First try `k=6`; run `k=10` only if the `k=6` solve returns normally.
+
+Run:
+- Rebuilt the same baseline FEM context and loaded:
+  `experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_eps0p01_M50_h0p06_0p06_sigma_ladder/sigma50_eps0p01_M50_h0p06_0p06_profile.h5`.
+- Profile geometry mismatch: `0.0`.
+- Recomputed weak residuals before the eigensolve:
+  `Omega_l2=0.046638820243552766`,
+  `Psi_l2=4.460151921584505e-11`.
+- Started baseline shift-invert eigensolve with `k=6`, shift `-1.0`,
+  tolerance `1e-8`, max iterations `300`.
+- The `k=6` eigensolve did not return after a long wait and was interrupted.
+- Because `k=6` did not return normally, `k=10` was not launched.
+
+Artifacts:
+- Metadata marked `interrupted_during_eigensolve`:
+  `experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_sigma50_eps0p01_M50_h0p06_0p06_k6_eigs/dirac_pair_sigma50_eps0p01_M50_h0p06_0p06_k6_eigs_metadata.json`.
+
+## 2026-06-20 — Sigma=40 step-back attempt
+
+Goal:
+- Step back from the stalled `sigma=50` spectrum and try `sigma=40` for
+  `epsilon=0.01`, `M=50`, `h_min=h_max=0.06`.
+- Seed the profile solve from the completed `sigma=30` profile.
+
+Run:
+- Fixed a metadata-ordering bug in
+  `experiments/fem_manuscript/dirac_pair_profiles/run_dirac_pair_sigma_ladder.py`
+  that appeared after adding early profile metadata writes.
+- Seeded Newton converged for `sigma=40` in `6` iterations.
+- Final Newton residual: `2.5299824765056163e-14`.
+- Final relative step: `1.0006519500016477e-10`.
+- Weak residuals: `Omega_l2=0.01975612526200049`,
+  `Psi_l2=1.700639789362238e-12`.
+- The profile checkpoint and heatmap were saved.
+- The `k=10`, shift `-1.0` eigensolve did not return after a long wait and was
+  interrupted; no eigenvalue CSV was produced.
+
+Artifacts:
+- Profile checkpoint:
+  `experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_eps0p01_M50_h0p06_0p06_sigma40_from30/sigma40_eps0p01_M50_h0p06_0p06_profile.xdmf`
+  and `.h5`.
+- Heatmap:
+  `experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_eps0p01_M50_h0p06_0p06_sigma40_from30/sigma40_eps0p01_M50_h0p06_0p06_omega_heatmap.pdf`
+  and `.png`.
+- Metadata marked `interrupted_during_eigensolve`:
+  `experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_eps0p01_M50_h0p06_0p06_sigma40_from30/sigma40_eps0p01_M50_h0p06_0p06_metadata.json`.

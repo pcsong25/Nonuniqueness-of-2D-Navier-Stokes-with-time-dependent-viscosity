@@ -1,0 +1,13 @@
+{
+  "broken_h5": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s240_m3_phase0_eta0p5_profile.h5",
+  "cmap": "seismic",
+  "color_scale": "true shared max over symmetric, symmetry-breaking, and difference fields; no percentile clipping or saturation.",
+  "levels": 1024,
+  "outputs": {
+    "pdf": "experiments/fem_manuscript/k4_mu2over3_bifurcation/plots/branchB_k4_mu2over3_h008_s200_320_scout/s240_m3_phase0_eta0p5_omega_comparison_heatmap_faithful_smooth.pdf",
+    "png": "experiments/fem_manuscript/k4_mu2over3_bifurcation/plots/branchB_k4_mu2over3_h008_s200_320_scout/s240_m3_phase0_eta0p5_omega_comparison_heatmap_faithful_smooth.png"
+  },
+  "shared_vmax": 13.304702514914823,
+  "status": "completed",
+  "symmetric_h5": "experiments/fem_manuscript/k4_mu2over3_bifurcation/checkpoints/branchB_k4_mu2over3_h008_s200_320_scout/s240_h0p08_0p08_profile.h5"
+}

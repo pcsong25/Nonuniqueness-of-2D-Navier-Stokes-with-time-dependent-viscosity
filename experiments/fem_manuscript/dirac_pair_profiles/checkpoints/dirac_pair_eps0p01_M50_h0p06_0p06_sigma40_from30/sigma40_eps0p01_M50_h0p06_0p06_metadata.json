@@ -1,0 +1,40 @@
+{
+  "epsilon": 0.01,
+  "fourier_cutoff": 100,
+  "interrupted_at": "2026-06-20T17:40:00",
+  "interruption_note": "Seeded sigma=40 profile converged and was checkpointed, but the k=10 shift=-1 eigensolve did not return after a long wait and was interrupted.",
+  "mesh": {
+    "h_max": 0.06,
+    "h_min": 0.06
+  },
+  "mesh_stats": {
+    "cells": 202248,
+    "dofs_omega": 101649,
+    "dofs_psi": 101649,
+    "vertices": 101649
+  },
+  "outputs": {
+    "heatmap_pdf": "experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_eps0p01_M50_h0p06_0p06_sigma40_from30/sigma40_eps0p01_M50_h0p06_0p06_omega_heatmap.pdf",
+    "heatmap_png": "experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_eps0p01_M50_h0p06_0p06_sigma40_from30/sigma40_eps0p01_M50_h0p06_0p06_omega_heatmap.png",
+    "profile_h5": "experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_eps0p01_M50_h0p06_0p06_sigma40_from30/sigma40_eps0p01_M50_h0p06_0p06_profile.h5",
+    "profile_xdmf": "experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_eps0p01_M50_h0p06_0p06_sigma40_from30/sigma40_eps0p01_M50_h0p06_0p06_profile.xdmf"
+  },
+  "profile": {
+    "final_newton_residual": 2.5299824765056163e-14,
+    "final_relative_step": 1.0006519500016477e-10,
+    "newton_iterations": 6,
+    "wall_time_sec": 35.26040805503726,
+    "weak_residuals": {
+      "Omega_l2": 0.01975612526200049,
+      "Psi_l2": 1.700639789362238e-12
+    }
+  },
+  "run_tag": "dirac_pair_eps0p01_M50_h0p06_0p06_sigma40_from30",
+  "sigma": 40.0,
+  "source_profile_geometry_diff": 0.0,
+  "source_profile_h5": "experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_eps0p01_M50_h0p06_0p06_sigma_ladder/sigma30_eps0p01_M50_h0p06_0p06_profile.h5",
+  "source_sigma": 30.0,
+  "started_at": "2026-06-20T17:21:34.944736",
+  "status": "interrupted_during_eigensolve",
+  "truncation_M": 50
+}
