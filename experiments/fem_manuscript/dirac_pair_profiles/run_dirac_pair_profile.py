@@ -8,6 +8,8 @@ The baseline FourierBC mirrors positive coefficients, so the coefficient for
 mode 2m is sigma * exp(-4 eps^2 m^2), and the constant coefficient is sigma.
 """
 
+# A test of pull request on github
+
 from __future__ import annotations
 
 import argparse
