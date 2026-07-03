@@ -1,0 +1,94 @@
+{
+  "note": "Symmetry metrics use interpolated Omega samples on the disk r<=9.65. Pairwise distances are relative RMS distances minimized over identity, rotation by pi, reflection_x, and reflection_y.",
+  "outputs": {
+    "difference_panel": "experiments/fem_manuscript/four_delta_profiles/plots/four_delta_sigma20_profile_symmetry_comparison/sigma20_three_profile_difference_panel.pdf",
+    "pairwise_csv": "experiments/fem_manuscript/four_delta_profiles/data/four_delta_sigma20_profile_pairwise_distances_d2.csv",
+    "profile_panel": "experiments/fem_manuscript/four_delta_profiles/plots/four_delta_sigma20_profile_symmetry_comparison/sigma20_three_profile_omega_panel.pdf",
+    "symmetry_csv": "experiments/fem_manuscript/four_delta_profiles/data/four_delta_sigma20_profile_symmetry_metrics.csv"
+  },
+  "pairwise_distances": [
+    {
+      "best_omega_relative_rms": 0.4842779402706284,
+      "best_symmetry": "identity",
+      "omega_relative_rms_identity": 0.4842779402706284,
+      "omega_relative_rms_reflection_x": 1.3539626916409568,
+      "omega_relative_rms_reflection_y": 1.3539600583427345,
+      "omega_relative_rms_rotation_pi": 0.4849340651822387,
+      "profile_a": "symmetric",
+      "profile_b": "mode1_branch"
+    },
+    {
+      "best_omega_relative_rms": 0.4782758379503634,
+      "best_symmetry": "identity",
+      "omega_relative_rms_identity": 0.4782758379503634,
+      "omega_relative_rms_reflection_x": 1.3534966848905972,
+      "omega_relative_rms_reflection_y": 1.353496306129822,
+      "omega_relative_rms_rotation_pi": 0.47839190486031763,
+      "profile_a": "symmetric",
+      "profile_b": "mode2_branch"
+    },
+    {
+      "best_omega_relative_rms": 0.4642922476170501,
+      "best_symmetry": "identity",
+      "omega_relative_rms_identity": 0.4642922476170501,
+      "omega_relative_rms_reflection_x": 1.358074815035891,
+      "omega_relative_rms_reflection_y": 1.3580720974452924,
+      "omega_relative_rms_rotation_pi": 0.46521511940121224,
+      "profile_a": "mode1_branch",
+      "profile_b": "mode2_branch"
+    }
+  ],
+  "profiles": [
+    {
+      "label": "symmetric",
+      "path": "experiments/fem_manuscript/four_delta_profiles/checkpoints/four_delta_eps0p01_M30_h0p06_0p06_sigma_ladder/sigma20_eps0p01_M30_h0p06_0p06_profile.h5",
+      "profile_id": "symmetric"
+    },
+    {
+      "label": "mode 1 branch",
+      "path": "experiments/fem_manuscript/four_delta_profiles/checkpoints/four_delta_sigma20_mode1_bifurcation_probe/mode1_eta0p5_signp1_profile.h5",
+      "profile_id": "mode1_branch"
+    },
+    {
+      "label": "mode 2 branch",
+      "path": "experiments/fem_manuscript/four_delta_profiles/checkpoints/four_delta_sigma20_mode1_bifurcation_probe/mode2_eta0p5_signp1_profile.h5",
+      "profile_id": "mode2_branch"
+    }
+  ],
+  "status": "completed",
+  "symmetry_group": [
+    "identity",
+    "rotation_pi",
+    "reflection_x",
+    "reflection_y"
+  ],
+  "symmetry_metrics": [
+    {
+      "label": "symmetric",
+      "omega_identity_rel_rms": 0.0,
+      "omega_reflection_x_rel_rms": 1.3599684607073963,
+      "omega_reflection_y_rel_rms": 1.3599681095382876,
+      "omega_rotation_pi_rel_rms": 0.013549599970712109,
+      "profile_h5": "experiments/fem_manuscript/four_delta_profiles/checkpoints/four_delta_eps0p01_M30_h0p06_0p06_sigma_ladder/sigma20_eps0p01_M30_h0p06_0p06_profile.h5",
+      "profile_id": "symmetric"
+    },
+    {
+      "label": "mode 1 branch",
+      "omega_identity_rel_rms": 0.0,
+      "omega_reflection_x_rel_rms": 1.3585465785292252,
+      "omega_reflection_y_rel_rms": 1.3585415980334978,
+      "omega_rotation_pi_rel_rms": 0.6615704673644631,
+      "profile_h5": "experiments/fem_manuscript/four_delta_profiles/checkpoints/four_delta_sigma20_mode1_bifurcation_probe/mode1_eta0p5_signp1_profile.h5",
+      "profile_id": "mode1_branch"
+    },
+    {
+      "label": "mode 2 branch",
+      "omega_identity_rel_rms": 0.0,
+      "omega_reflection_x_rel_rms": 1.3584739448568,
+      "omega_reflection_y_rel_rms": 1.3584735356473399,
+      "omega_rotation_pi_rel_rms": 0.013121849586384427,
+      "profile_h5": "experiments/fem_manuscript/four_delta_profiles/checkpoints/four_delta_sigma20_mode1_bifurcation_probe/mode2_eta0p5_signp1_profile.h5",
+      "profile_id": "mode2_branch"
+    }
+  ]
+}

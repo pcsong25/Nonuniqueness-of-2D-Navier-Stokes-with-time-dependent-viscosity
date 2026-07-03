@@ -4028,3 +4028,192 @@ Artifacts:
   and `.png`.
 - Metadata marked `interrupted_during_eigensolve`:
   `experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_eps0p01_M50_h0p06_0p06_sigma40_from30/sigma40_eps0p01_M50_h0p06_0p06_metadata.json`.
+
+## 2026-07-02 — Dirac-pair sigma=30 first-three eigenmode plots
+
+Goal:
+- For the completed `sigma=30`, `epsilon=0.01`, `M=50`,
+  `h_min=h_max=0.06` regularized two-Dirac profile, plot the first three
+  eigenfunctions of the linearized operator.
+
+Run:
+- Added `experiments/fem_manuscript/dirac_pair_profiles/plot_sigma30_first3_modes.py`.
+- Reused the saved sigma=30 profile checkpoint and recomputed only the first
+  three eigenmodes with the baseline FEM eigensolver.
+- Mesh: `h_max=0.06`, `202248` cells, `101649` vertices.
+- Existing profile weak residuals: `Omega_l2=0.012885141976322281`,
+  `Psi_l2=1.347985281820043e-12`.
+- Eigenvalues:
+  `0.472410589330299 + 0i`,
+  `1.297355117857046 + 0i`,
+  `1.5102769063330053 + 0i`.
+
+Artifacts:
+- Vorticity eigenfunction panel:
+  `experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma30_first3_eigenmodes/sigma30_first3_OmegaRe_heatmap_panel.pdf`
+  and `.png`.
+- Streamfunction eigenfunction panel:
+  `experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma30_first3_eigenmodes/sigma30_first3_PsiRe_heatmap_panel.pdf`
+  and `.png`.
+- Mode array cache, eigenvalue CSV, and manifest:
+  `experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma30_first3_eigenmodes/sigma30_first3_mode_arrays.npz`,
+  `sigma30_first3_eigenvalues.csv`,
+  `sigma30_first3_eigenmodes_manifest.json`.
+
+## 2026-07-02 — Four-delta alternating-sign boundary first ladder point
+
+Goal:
+- Start a new FEM experiment family with
+  `Omega_bar_1(theta)=Omega_bar(theta)-Omega_bar(theta+pi/2)`, where
+  `Omega_bar` is the regularized two-Dirac boundary family.
+- Use `M=30`, `epsilon=0.01`, `h_min=h_max=0.06`, and compute profiles plus
+  the first five eigenvalues while increasing `sigma` from `20`.
+
+Implementation:
+- Added
+  `experiments/fem_manuscript/four_delta_profiles/run_four_delta_sigma_ladder.py`.
+- In the baseline Fourier convention, the constant mode cancels and
+  `c_{2m}=sigma*exp(-4 epsilon^2 m^2)*(1-(-1)^m)`, so only odd `m`
+  terms survive.
+- The first point uses the baseline continuation from zero boundary data; later
+  points are seeded by scaling the previous saved profile and then enforcing
+  the exact new boundary values before Newton.
+
+Run:
+- Executed the ladder for planned `sigma=20,40`, but stopped after `sigma=20`
+  because the first point already had negative-real eigenvalues.
+- Mesh: `202248` cells, `101649` vertices.
+- Weak residuals at `sigma=20`: `Omega_l2=0.0061393680208851435`,
+  `Psi_l2=1.280304530070357e-12`.
+- First five eigenvalues at `sigma=20`:
+  `-0.2053331491431244 + 0i`,
+  `-0.20366871830894595 + 0i`,
+  `0.46261315200065445 + 0i`,
+  `0.6014810517921114 + 0i`,
+  `0.6082679506043482 + 0i`.
+- This indicates that the imaginary-axis crossing for this family has already
+  occurred below `sigma=20`.
+
+Artifacts:
+- Profile checkpoint:
+  `experiments/fem_manuscript/four_delta_profiles/checkpoints/four_delta_eps0p01_M30_h0p06_0p06_sigma_ladder/sigma20_eps0p01_M30_h0p06_0p06_profile.xdmf`
+  and `.h5`.
+- Heatmap:
+  `experiments/fem_manuscript/four_delta_profiles/plots/four_delta_eps0p01_M30_h0p06_0p06_sigma_ladder/sigma20_eps0p01_M30_h0p06_0p06_omega_heatmap.pdf`
+  and `.png`.
+- Summary and eigenvalue CSVs:
+  `experiments/fem_manuscript/four_delta_profiles/data/four_delta_eps0p01_M30_h0p06_0p06_sigma_ladder_summary.csv`,
+  `experiments/fem_manuscript/four_delta_profiles/data/four_delta_eps0p01_M30_h0p06_0p06_sigma_ladder_eigenvalues.csv`.
+
+## 2026-07-02 — Four-delta sigma=20 eigenmode perturbation probe
+
+Goal:
+- Plot the first two unstable eigenfunctions for the saved four-delta
+  `sigma=20`, `epsilon=0.01`, `M=30`, `h_min=h_max=0.06` profile.
+- Use the first unstable eigenmode as an interior perturbation, rerun
+  fixed-boundary Newton, and compute the first five eigenvalues around the
+  converged candidate profile.
+
+Implementation:
+- Added
+  `experiments/fem_manuscript/four_delta_profiles/run_sigma20_eigenmode_bifurcation_probe.py`.
+- Perturbation used:
+  `Omega0 = Omega_sym + eta*rms(Omega_sym)/rms(Re(deltaOmega_1))*Re(deltaOmega_1)`
+  with `eta=0.5`, positive sign. The exact four-delta boundary was reimposed
+  before solving the Poisson equation for the initial `psi0`.
+
+Run:
+- Reconstructed and cached the first two eigenmodes. Their eigenvalues were
+  `-0.20533314914312817 + 0i` and `-0.2036687183089605 + 0i`.
+- Newton from the mode-1 perturbed state converged in `8` iterations.
+- Final Newton residual: `9.833338007941561e-15`.
+- Final relative step: `1.3695070948491332e-11`.
+- Candidate weak residuals: `Omega_l2=0.006139349054101822`,
+  `Psi_l2=1.3093170754055922e-12`.
+- Boundary difference from the symmetric profile on the outer boundary:
+  `1.1102230246251565e-15`.
+- Separation from the symmetric profile:
+  `Omega` relative RMS `0.49200321687925436`,
+  `Omega` Linf `20.964188572588835`,
+  `psi` relative RMS `0.0023812940137714583`.
+- The first five eigenvalues around the perturbed Newton solution were
+  all positive-real:
+  `0.466213212797818 + 0i`,
+  `0.6040352663776691 + 0i`,
+  `0.6099012954198391 + 0i`,
+  `0.6879220454007275 + 0i`,
+  `0.7734809097051587 + 0i`.
+
+Artifacts:
+- First-two eigenmode panels:
+  `experiments/fem_manuscript/four_delta_profiles/plots/four_delta_sigma20_mode1_bifurcation_probe/sigma20_first2_OmegaRe_heatmap_panel.pdf`,
+  `experiments/fem_manuscript/four_delta_profiles/plots/four_delta_sigma20_mode1_bifurcation_probe/sigma20_first2_PsiRe_heatmap_panel.pdf`.
+- Candidate profile checkpoint:
+  `experiments/fem_manuscript/four_delta_profiles/checkpoints/four_delta_sigma20_mode1_bifurcation_probe/mode1_eta0p5_signp1_profile.xdmf`
+  and `.h5`.
+- Candidate comparison plot:
+  `experiments/fem_manuscript/four_delta_profiles/plots/four_delta_sigma20_mode1_bifurcation_probe/mode1_eta0p5_signp1_omega_comparison.pdf`.
+- Candidate metadata and eigenvalue CSV:
+  `experiments/fem_manuscript/four_delta_profiles/checkpoints/four_delta_sigma20_mode1_bifurcation_probe/mode1_eta0p5_signp1_metadata.json`,
+  `experiments/fem_manuscript/four_delta_profiles/data/four_delta_sigma20_mode1_bifurcation_probe_candidate_eigenvalues.csv`.
+
+## 2026-07-02 — Four-delta sigma=20 second unstable-mode perturbation
+
+Goal:
+- Repeat the four-delta `sigma=20` bifurcation probe using the second
+  unstable eigenmode as the perturbation direction.
+- Compare the symmetric profile, the mode-1 perturbed branch, and the mode-2
+  perturbed branch to understand their symmetry patterns.
+
+Run:
+- Reused the cached first-two eigenmode arrays from
+  `four_delta_sigma20_mode1_bifurcation_probe`.
+- Perturbation used:
+  `Omega0 = Omega_sym + 0.5*rms(Omega_sym)/rms(Re(deltaOmega_2))*Re(deltaOmega_2)`,
+  with exact boundary values reimposed before Newton.
+- Newton converged in `8` iterations.
+- Final Newton residual: `1.010398389327205e-14`.
+- Final relative step: `1.698263473495567e-11`.
+- Candidate weak residuals: `Omega_l2=0.006139347978942327`,
+  `Psi_l2=1.3078916497457497e-12`.
+- Boundary difference from the symmetric profile on the outer boundary:
+  `1.1102230246251565e-15`.
+- Separation from the symmetric profile:
+  `Omega` relative RMS `0.4862385168376267`,
+  `Omega` Linf `20.837826386791363`,
+  `psi` relative RMS `0.002561776929777739`.
+- The first five eigenvalues around the mode-2 candidate profile were
+  all positive-real:
+  `0.4663084375819393 + 0i`,
+  `0.6042277341573778 + 0i`,
+  `0.6098481674652434 + 0i`,
+  `0.6878921942417278 + 0i`,
+  `0.7734086971249994 + 0i`.
+
+Comparison:
+- Added
+  `experiments/fem_manuscript/four_delta_profiles/compare_sigma20_bifurcation_profiles.py`.
+- The three-profile panel and difference panel compare the symmetric, mode-1,
+  and mode-2 profiles on common color scales.
+- Symmetry diagnostics were computed for `Omega` on an interpolated disk probe
+  under identity, rotation by `pi`, reflection across the `x` axis, and
+  reflection across the `y` axis.
+- The symmetric profile and mode-2 branch have small `pi`-rotation defects
+  (`0.01355` and `0.01312`, respectively), while the mode-1 branch has a much
+  larger `pi`-rotation defect (`0.66157`).
+- The best boundary-preserving-symmetry-adjusted relative RMS distance between
+  the mode-1 and mode-2 branches is `0.4642922476170501`, so the two computed
+  branches are not the same profile under the tested `D2` symmetries.
+
+Artifacts:
+- Mode-2 profile checkpoint and metadata:
+  `experiments/fem_manuscript/four_delta_profiles/checkpoints/four_delta_sigma20_mode1_bifurcation_probe/mode2_eta0p5_signp1_profile.xdmf`
+  and `.h5`,
+  `experiments/fem_manuscript/four_delta_profiles/checkpoints/four_delta_sigma20_mode1_bifurcation_probe/mode2_eta0p5_signp1_metadata.json`.
+- Three-profile comparison panel:
+  `experiments/fem_manuscript/four_delta_profiles/plots/four_delta_sigma20_profile_symmetry_comparison/sigma20_three_profile_omega_panel.pdf`.
+- Difference panel:
+  `experiments/fem_manuscript/four_delta_profiles/plots/four_delta_sigma20_profile_symmetry_comparison/sigma20_three_profile_difference_panel.pdf`.
+- Symmetry metrics and pairwise distances:
+  `experiments/fem_manuscript/four_delta_profiles/data/four_delta_sigma20_profile_symmetry_metrics.csv`,
+  `experiments/fem_manuscript/four_delta_profiles/data/four_delta_sigma20_profile_pairwise_distances_d2.csv`.

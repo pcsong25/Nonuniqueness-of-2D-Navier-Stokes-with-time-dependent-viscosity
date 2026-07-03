@@ -1,0 +1,141 @@
+{
+  "candidate_checkpoint_geometry_diff": 0.0,
+  "candidate_eigs": {
+    "eigenvalues": [
+      {
+        "imag": 0.0,
+        "index": 1,
+        "real": 0.466213212797818
+      },
+      {
+        "imag": 0.0,
+        "index": 2,
+        "real": 0.6040352663776691
+      },
+      {
+        "imag": 0.0,
+        "index": 3,
+        "real": 0.6099012954198391
+      },
+      {
+        "imag": 0.0,
+        "index": 4,
+        "real": 0.6879220454007275
+      },
+      {
+        "imag": 0.0,
+        "index": 5,
+        "real": 0.7734809097051587
+      }
+    ],
+    "k_requested": 5,
+    "min_real_lambda": 0.466213212797818,
+    "shift": -1.0,
+    "tol": 1e-08,
+    "unstable_count_re_lt_0": 0,
+    "wall_time_sec": 1871.9586596935987
+  },
+  "candidate_profile_residuals": {
+    "Omega_l2": 0.006139349054101822,
+    "Psi_l2": 1.3093170754055922e-12
+  },
+  "epsilon": 0.01,
+  "final_newton_residual": 9.833338007941561e-15,
+  "final_relative_step": 1.3695070948491332e-11,
+  "initial_boundary_max_abs_diff": 1.1102230246251565e-15,
+  "mesh_stats": {
+    "cells": 202248,
+    "dofs_omega": 101649,
+    "dofs_psi": 101649,
+    "vertices": 101649
+  },
+  "newton_history": [
+    {
+      "alpha": 0.0,
+      "iteration": 0,
+      "relative_step": null,
+      "residual_norm": 2.038010477340259
+    },
+    {
+      "alpha": 1.0,
+      "iteration": 1,
+      "relative_step": 0.3434614799134839,
+      "residual_norm": 1.1485665562720175
+    },
+    {
+      "alpha": 0.5,
+      "iteration": 2,
+      "relative_step": 0.22032401304798296,
+      "residual_norm": 0.8393939040979091
+    },
+    {
+      "alpha": 1.0,
+      "iteration": 3,
+      "relative_step": 0.24070827628538485,
+      "residual_norm": 0.34243457381635384
+    },
+    {
+      "alpha": 1.0,
+      "iteration": 4,
+      "relative_step": 0.09896340792049318,
+      "residual_norm": 0.09739959704508878
+    },
+    {
+      "alpha": 1.0,
+      "iteration": 5,
+      "relative_step": 0.020004614876467156,
+      "residual_norm": 0.002539522433204931
+    },
+    {
+      "alpha": 1.0,
+      "iteration": 6,
+      "relative_step": 0.000812472583755005,
+      "residual_norm": 7.89424275248369e-06
+    },
+    {
+      "alpha": 1.0,
+      "iteration": 7,
+      "relative_step": 1.7908688642427607e-06,
+      "residual_norm": 5.069864077570858e-11
+    },
+    {
+      "alpha": 1.0,
+      "iteration": 8,
+      "relative_step": 1.3695070948491332e-11,
+      "residual_norm": 9.833338007941561e-15
+    }
+  ],
+  "newton_status": "newton_started",
+  "newton_wall_time_sec": 47.75945563055575,
+  "outputs": {
+    "candidate_comparison_plot": "experiments/fem_manuscript/four_delta_profiles/plots/four_delta_sigma20_mode1_bifurcation_probe/mode1_eta0p5_signp1_omega_comparison.pdf",
+    "candidate_eigenvalues_csv": "experiments/fem_manuscript/four_delta_profiles/data/four_delta_sigma20_mode1_bifurcation_probe_candidate_eigenvalues.csv",
+    "candidate_profile_h5": "experiments/fem_manuscript/four_delta_profiles/checkpoints/four_delta_sigma20_mode1_bifurcation_probe/mode1_eta0p5_signp1_profile.h5",
+    "mode_cache": "experiments/fem_manuscript/four_delta_profiles/plots/four_delta_sigma20_mode1_bifurcation_probe/sigma20_first2_mode_arrays.npz",
+    "mode_omega_plot": "experiments/fem_manuscript/four_delta_profiles/plots/four_delta_sigma20_mode1_bifurcation_probe/sigma20_first2_OmegaRe_heatmap_panel.pdf",
+    "mode_psi_plot": "experiments/fem_manuscript/four_delta_profiles/plots/four_delta_sigma20_mode1_bifurcation_probe/sigma20_first2_PsiRe_heatmap_panel.pdf"
+  },
+  "perturbation_scale": 162.1718795461234,
+  "profile_checkpoint_geometry_diff": 0.0,
+  "run_tag": "four_delta_sigma20_mode1_bifurcation_probe",
+  "separation": {
+    "boundary_max_abs_diff": 1.1102230246251565e-15,
+    "omega_linf": 20.964188572588835,
+    "omega_relative_rms": 0.49200321687925436,
+    "omega_rms": 0.5005205727853861,
+    "psi_linf": 0.21695560692250204,
+    "psi_relative_rms": 0.0023812940137714583,
+    "psi_rms": 0.0077646318793652335
+  },
+  "sigma": 20.0,
+  "source_eigenvalue": {
+    "imag": 0.0,
+    "real": -0.20533314914312817
+  },
+  "status": "completed",
+  "symmetric_profile_residuals": {
+    "Omega_l2": 0.0061393680208851435,
+    "Psi_l2": 1.280304530070357e-12
+  },
+  "truncation_M": 30
+}

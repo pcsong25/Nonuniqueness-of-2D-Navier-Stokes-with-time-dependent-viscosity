@@ -1,0 +1,77 @@
+{
+  "candidate_eigenvalues": [
+    {
+      "imag": 0.0,
+      "index": 1,
+      "real": 0.4663084375819393
+    },
+    {
+      "imag": 0.0,
+      "index": 2,
+      "real": 0.6042277341573778
+    },
+    {
+      "imag": 0.0,
+      "index": 3,
+      "real": 0.6098481674652434
+    },
+    {
+      "imag": 0.0,
+      "index": 4,
+      "real": 0.6878921942417278
+    },
+    {
+      "imag": 0.0,
+      "index": 5,
+      "real": 0.7734086971249994
+    }
+  ],
+  "candidate_k": 5,
+  "candidate_metadata": "experiments/fem_manuscript/four_delta_profiles/checkpoints/four_delta_sigma20_mode1_bifurcation_probe/mode2_eta0p5_signp1_metadata.json",
+  "candidate_separation": {
+    "boundary_max_abs_diff": 1.1102230246251565e-15,
+    "omega_linf": 20.837826386791363,
+    "omega_relative_rms": 0.4862385168376267,
+    "omega_rms": 0.4946560766443384,
+    "psi_linf": 0.2159803404621874,
+    "psi_relative_rms": 0.002561776929777739,
+    "psi_rms": 0.008353128467858174
+  },
+  "eig_shift": -1.0,
+  "eig_tol": 1e-08,
+  "epsilon": 0.01,
+  "mesh": {
+    "h_max": 0.06,
+    "h_min": 0.06
+  },
+  "mesh_stats": {
+    "cells": 202248,
+    "dofs_omega": 101649,
+    "dofs_psi": 101649,
+    "vertices": 101649
+  },
+  "mode_k": 2,
+  "mode_wall_time_sec": 0.0,
+  "outputs": {
+    "candidate_comparison_plot": "experiments/fem_manuscript/four_delta_profiles/plots/four_delta_sigma20_mode1_bifurcation_probe/mode2_eta0p5_signp1_omega_comparison.pdf",
+    "candidate_eigenvalues_csv": "experiments/fem_manuscript/four_delta_profiles/data/four_delta_sigma20_mode1_bifurcation_probe_candidate_eigenvalues.csv",
+    "candidate_profile_h5": "experiments/fem_manuscript/four_delta_profiles/checkpoints/four_delta_sigma20_mode1_bifurcation_probe/mode2_eta0p5_signp1_profile.h5",
+    "mode_cache": "experiments/fem_manuscript/four_delta_profiles/plots/four_delta_sigma20_mode1_bifurcation_probe/sigma20_first2_mode_arrays.npz",
+    "mode_omega_plot": "experiments/fem_manuscript/four_delta_profiles/plots/four_delta_sigma20_mode1_bifurcation_probe/sigma20_first2_OmegaRe_heatmap_panel.pdf",
+    "mode_psi_plot": "experiments/fem_manuscript/four_delta_profiles/plots/four_delta_sigma20_mode1_bifurcation_probe/sigma20_first2_PsiRe_heatmap_panel.pdf"
+  },
+  "perturbation": {
+    "boundary_policy": "exact four-delta boundary values are reimposed after adding the eigenmode.",
+    "eta": 0.5,
+    "formula": "Omega0=Omega_sym+sign*eta*rms(Omega_sym)/rms(Re(deltaOmega_j))*Re(deltaOmega_j); psi0 solved from perturbed Omega0.",
+    "mode": 2,
+    "sign": 1.0
+  },
+  "profile_checkpoint_geometry_diff": 0.0,
+  "profile_h5": "experiments/fem_manuscript/four_delta_profiles/checkpoints/four_delta_eps0p01_M30_h0p06_0p06_sigma_ladder/sigma20_eps0p01_M30_h0p06_0p06_profile.h5",
+  "run_tag": "four_delta_sigma20_mode1_bifurcation_probe",
+  "sigma": 20.0,
+  "status": "completed",
+  "truncation_M": 30,
+  "wall_time_sec": 1800.6360161397606
+}

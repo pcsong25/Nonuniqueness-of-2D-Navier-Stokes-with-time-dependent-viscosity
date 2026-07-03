@@ -1,0 +1,73 @@
+{
+  "completed_at": "2026-07-02T17:57:14.570209",
+  "eigs": {
+    "eigenvalues": [
+      {
+        "imag": 0.0,
+        "index": 1,
+        "real": -0.2053331491431244
+      },
+      {
+        "imag": 0.0,
+        "index": 2,
+        "real": -0.20366871830894595
+      },
+      {
+        "imag": 0.0,
+        "index": 3,
+        "real": 0.46261315200065445
+      },
+      {
+        "imag": 0.0,
+        "index": 4,
+        "real": 0.6014810517921114
+      },
+      {
+        "imag": 0.0,
+        "index": 5,
+        "real": 0.6082679506043482
+      }
+    ],
+    "k_requested": 5,
+    "min_real_lambda": -0.2053331491431244,
+    "shift": -1.0,
+    "tol": 1e-08,
+    "unstable_count_re_lt_0": 2,
+    "wall_time_sec": 1430.0077563412488
+  },
+  "epsilon": 0.01,
+  "fourier_cutoff": 60,
+  "mesh": {
+    "h_max": 0.06,
+    "h_min": 0.06
+  },
+  "mesh_stats": {
+    "cells": 202248,
+    "dofs_omega": 101649,
+    "dofs_psi": 101649,
+    "vertices": 101649
+  },
+  "outputs": {
+    "heatmap_pdf": "experiments/fem_manuscript/four_delta_profiles/plots/four_delta_eps0p01_M30_h0p06_0p06_sigma_ladder/sigma20_eps0p01_M30_h0p06_0p06_omega_heatmap.pdf",
+    "heatmap_png": "experiments/fem_manuscript/four_delta_profiles/plots/four_delta_eps0p01_M30_h0p06_0p06_sigma_ladder/sigma20_eps0p01_M30_h0p06_0p06_omega_heatmap.png",
+    "profile_h5": "experiments/fem_manuscript/four_delta_profiles/checkpoints/four_delta_eps0p01_M30_h0p06_0p06_sigma_ladder/sigma20_eps0p01_M30_h0p06_0p06_profile.h5",
+    "profile_xdmf": "experiments/fem_manuscript/four_delta_profiles/checkpoints/four_delta_eps0p01_M30_h0p06_0p06_sigma_ladder/sigma20_eps0p01_M30_h0p06_0p06_profile.xdmf"
+  },
+  "profile": {
+    "method": "baseline_continuation_from_zero",
+    "wall_time_sec": 594.3059184271842,
+    "weak_residuals": {
+      "Omega_l2": 0.0061393680208851435,
+      "Psi_l2": 1.280304530070357e-12
+    }
+  },
+  "run_tag": "four_delta_eps0p01_M30_h0p06_0p06_sigma_ladder",
+  "sigma": 20.0,
+  "source_profile_geometry_diff": null,
+  "source_profile_h5": null,
+  "source_sigma": null,
+  "started_at": "2026-07-02T17:23:19.944356",
+  "status": "completed",
+  "truncation_M": 30,
+  "wall_time_sec": 2034.6812748592347
+}

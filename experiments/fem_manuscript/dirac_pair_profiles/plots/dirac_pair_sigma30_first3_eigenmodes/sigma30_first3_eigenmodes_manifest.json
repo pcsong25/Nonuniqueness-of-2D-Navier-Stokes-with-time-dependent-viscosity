@@ -1,0 +1,49 @@
+{
+  "eig_max_it": 300,
+  "eig_shift": -1.0,
+  "eig_tol": 1e-08,
+  "eigenvalues": [
+    {
+      "imag": 0.0,
+      "index": 1,
+      "real": 0.472410589330299
+    },
+    {
+      "imag": 0.0,
+      "index": 2,
+      "real": 1.297355117857046
+    },
+    {
+      "imag": 0.0,
+      "index": 3,
+      "real": 1.5102769063330053
+    }
+  ],
+  "eigs_wall_time_sec": 719.8091130182147,
+  "epsilon": 0.01,
+  "k": 3,
+  "mesh_stats": {
+    "cells": 202248,
+    "dofs_omega": 101649,
+    "dofs_psi": 101649,
+    "vertices": 101649
+  },
+  "output_dir": "experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma30_first3_eigenmodes",
+  "outputs": {
+    "eigenvalue_csv": "experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma30_first3_eigenmodes/sigma30_first3_eigenvalues.csv",
+    "mode_cache": "experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma30_first3_eigenmodes/sigma30_first3_mode_arrays.npz",
+    "omega_heatmap_pdf": "experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma30_first3_eigenmodes/sigma30_first3_OmegaRe_heatmap_panel.pdf",
+    "omega_heatmap_png": "experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma30_first3_eigenmodes/sigma30_first3_OmegaRe_heatmap_panel.png",
+    "psi_heatmap_pdf": "experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma30_first3_eigenmodes/sigma30_first3_PsiRe_heatmap_panel.pdf",
+    "psi_heatmap_png": "experiments/fem_manuscript/dirac_pair_profiles/plots/dirac_pair_sigma30_first3_eigenmodes/sigma30_first3_PsiRe_heatmap_panel.png"
+  },
+  "profile_checkpoint_geometry_diff": 0.0,
+  "profile_h5": "experiments/fem_manuscript/dirac_pair_profiles/checkpoints/dirac_pair_eps0p01_M50_h0p06_0p06_sigma_ladder/sigma30_eps0p01_M50_h0p06_0p06_profile.h5",
+  "profile_residuals": {
+    "Omega_l2": 0.012885141976322281,
+    "Psi_l2": 1.347985281820043e-12
+  },
+  "sigma": 30.0,
+  "status": "completed",
+  "truncation_M": 50
+}

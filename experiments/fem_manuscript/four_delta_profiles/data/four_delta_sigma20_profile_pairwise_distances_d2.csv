@@ -1,0 +1,4 @@
+best_omega_relative_rms,best_symmetry,omega_relative_rms_identity,omega_relative_rms_reflection_x,omega_relative_rms_reflection_y,omega_relative_rms_rotation_pi,profile_a,profile_b
+0.4842779402706284,identity,0.4842779402706284,1.3539626916409568,1.3539600583427345,0.4849340651822387,symmetric,mode1_branch
+0.4782758379503634,identity,0.4782758379503634,1.3534966848905972,1.353496306129822,0.47839190486031763,symmetric,mode2_branch
+0.4642922476170501,identity,0.4642922476170501,1.358074815035891,1.3580720974452924,0.46521511940121224,mode1_branch,mode2_branch

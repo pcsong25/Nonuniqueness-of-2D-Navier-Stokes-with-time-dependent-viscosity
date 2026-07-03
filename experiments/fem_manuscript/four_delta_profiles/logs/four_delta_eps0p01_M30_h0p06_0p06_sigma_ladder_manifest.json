@@ -1,0 +1,45 @@
+{
+  "boundary_diagnostics_at_first_sigma": {
+    "max": 1070.4187055901261,
+    "mean": 0.26126890544055387,
+    "min": -1070.4187055901261,
+    "nonzero_coefficients": {
+      "10": 39.601993349966726,
+      "14": 39.22363324809714,
+      "18": 38.72477027666251,
+      "2": 39.98400319957338,
+      "22": 38.11010439212844,
+      "26": 37.38537010069795,
+      "30": 36.55724741084913,
+      "34": 35.633259385372355,
+      "38": 34.62165848887064,
+      "42": 33.53130412896934,
+      "46": 32.37153392685328,
+      "50": 31.152031322856196,
+      "54": 29.882692125487825,
+      "58": 28.5734925494383,
+      "6": 39.85625888923973
+    }
+  },
+  "boundary_formula": "Omega_bar_1(theta)=Omega_bar(theta)-Omega_bar(theta+pi/2)",
+  "coefficient_convention": "baseline FourierBC mirrors positive modes; c_2m=sigma*exp(-4 eps^2 m^2)*(1-(-1)^m)",
+  "eigs": {
+    "k": 5,
+    "max_it": 300,
+    "shift": -1.0,
+    "tol": 1e-08
+  },
+  "epsilon": 0.01,
+  "mesh": {
+    "h_max": 0.06,
+    "h_min": 0.06
+  },
+  "run_tag": "four_delta_eps0p01_M30_h0p06_0p06_sigma_ladder",
+  "sigma_values": [
+    20.0,
+    40.0
+  ],
+  "status": "initialized",
+  "stop_min_real_below": 0.0,
+  "truncation_M": 30
+}
